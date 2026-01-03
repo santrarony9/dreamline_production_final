@@ -204,7 +204,47 @@
             <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
         </div>
         <a href="tel:+918240054002" class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
+    
+        <!-- MOBILE HAMBURGER -->
+    <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+        <span class="w-6 h-[2px] bg-white block"></span>
+        <span class="w-6 h-[2px] bg-white block"></span>
+        <span class="w-6 h-[2px] bg-white block"></span>
+    </button>
     </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
+
+  <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+
+      <a onclick="closeMenu()" href="index.html#page-home" class="interactive">History</a>
+
+      <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
+        Luxury Weddings
+      </a>
+
+      <a onclick="closeMenu()" href="index.html#page-gallery" class="interactive">Visuals</a>
+
+      <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
+
+      <a onclick="closeMenu()" href="index.html#contact" class="interactive text-[#c5a059]">
+        Booking
+      </a>
+
+      <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
+        Commercial
+      </a>
+
+      <a onclick="closeMenu()" href="tel:+918240054002"
+         class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">
+         Inquire Now
+      </a>
+
+  </div>
+
+</div>
+
+
 
     <main id="content-host">
         <!-- VIEW: HOME -->
@@ -299,6 +339,19 @@
                 }
             });
         });
+
+
+
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
+
+menuBtn.addEventListener("click", () => {
+  mobileMenu.classList.toggle("hidden");
+});
+
+function closeMenu(){
+  mobileMenu.classList.add("hidden");
+}
 
         // Hover Effects
         document.querySelectorAll('.interactive').forEach(el => {
