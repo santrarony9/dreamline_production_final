@@ -16,6 +16,28 @@
             --text-gray: #a1a1aa;
         }
 
+html, body{
+  overflow-x:hidden;
+}
+
+
+@media (max-width: 768px){
+
+  nav{
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    transform: none !important;
+    border-radius: 0 !important;
+  }
+
+}
+@media (max-width: 768px){
+  nav{
+    border-radius: 18px !important;
+  }
+}
+
         body {
             background-color: var(--black);
             color: #ffffff;
@@ -136,6 +158,16 @@
         .text-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.2); color: transparent; transition: all 0.5s ease; }
         .text-outline:hover { -webkit-text-stroke: 1px var(--gold); }
 
+        @media (max-width: 768px){
+  *{
+    cursor: auto !important;
+  }
+  #cursor-dot,
+  #cursor-outline{
+    display:none !important;
+  }
+}
+
         /* Premium Card Effects */
         .premium-card { 
             position: relative; overflow: hidden; border-radius: 1.5rem; 
@@ -224,7 +256,7 @@
     </button>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
+    <div id="mobile-menu" class="fixed inset-0 w-screen h-screen bg-black/95 z-[999] hidden overflow-y-auto">
 
   <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
 
@@ -557,47 +589,8 @@
             </section>
         </div>
 
-        <!-- Studio Contact & Map -->
-    <section id="contact" class="py-32 bg-black">
-        <div class="container mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-0 rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl">
-                <div class="bg-zinc-950 p-12 md:p-20 flex flex-col justify-center">
-                    <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Ready for Action?</span>
-                    <h2 class="font-heading text-5xl md:text-7xl font-black mb-10 leading-none">LET'S<br>CREATE.</h2>
-                    
-                    <div class="space-y-12 mb-16">
-                        <div>
-                            <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Location</h5>
-                            <address class="not-italic text-2xl font-bold">
-                                85, Tilottama Plaza, First Floor<br>
-                                Kolkata 700082, West Bengal
-                            </address>
-                        </div>
-                        <div>
-                            <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Inquiries</h5>
-                            <a href="tel:+918240054002" class="text-3xl md:text-5xl font-black hover:text-[#c5a059] transition-colors tracking-tighter">+91 82400 54002</a>
-                        </div>
-                    </div>
+    
 
-                    <div class="flex gap-6">
-                        <a href="#" class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Instagram</a>
-                        <a href="#" class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">YouTube</a>
-                        <a href="#" class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Vimeo</a>
-                    </div>
-                </div>
-                <div class="bg-zinc-900 relative min-h-[500px] flex items-center justify-center grayscale contrast-125 overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200" class="absolute inset-0 w-full h-full object-cover opacity-20">
-                    <div class="relative z-10 text-center">
-                        <div class="w-24 h-24 border border-[#c5a059] rounded-full mx-auto mb-6 flex items-center justify-center">
-                            <svg class="h-8 w-8 text-[#c5a059]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
-                        </div>
-                        <h4 class="font-heading font-bold text-xl uppercase tracking-tighter">Visit the Suite</h4>
-                        <p class="text-xs text-gray-500 mt-2 uppercase tracking-widest">Appointment Only</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- PARTNERS/COMPANIES WORKED FOR -->
             <section class="py-20 border-y border-white/5 bg-zinc-900/20 overflow-hidden">
@@ -737,6 +730,48 @@
                 </div>
             </section>
 
+
+
+        <section id="contact" class="py-32 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-0 rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl">
+                <div class="bg-zinc-950 p-12 md:p-20 flex flex-col justify-center">
+                    <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Ready for Action?</span>
+                    <h2 class="font-heading text-5xl md:text-7xl font-black mb-10 leading-none">LET'S<br>CREATE.</h2>
+                    
+                    <div class="space-y-12 mb-16">
+                        <div>
+                            <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Location</h5>
+                            <address class="not-italic text-2xl font-bold">
+                                85, Tilottama Plaza, First Floor<br>
+                                Kolkata 700082, West Bengal
+                            </address>
+                        </div>
+                        <div>
+                            <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Inquiries</h5>
+                            <a href="tel:+918240054002" class="text-3xl md:text-5xl font-black hover:text-[#c5a059] transition-colors tracking-tighter">+91 82400 54002</a>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-6">
+                        <a href="#" class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Instagram</a>
+                        <a href="#" class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">YouTube</a>
+                        <a href="#" class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Vimeo</a>
+                    </div>
+                </div>
+                <div class="bg-zinc-900 relative min-h-[500px] flex items-center justify-center grayscale contrast-125 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200" class="absolute inset-0 w-full h-full object-cover opacity-20">
+                    <div class="relative z-10 text-center">
+                        <div class="w-24 h-24 border border-[#c5a059] rounded-full mx-auto mb-6 flex items-center justify-center">
+                            <svg class="h-8 w-8 text-[#c5a059]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
+                        </div>
+                        <h4 class="font-heading font-bold text-xl uppercase tracking-tighter">Visit the Suite</h4>
+                        <p class="text-xs text-gray-500 mt-2 uppercase tracking-widest">Appointment Only</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>        
     <!-- Global Footer -->
     <footer class="py-20 border-t border-white/5 text-center">
         <div class="container mx-auto px-6">
@@ -862,10 +897,17 @@ const mobileMenu = document.getElementById("mobile-menu");
 
 menuBtn.addEventListener("click", () => {
   mobileMenu.classList.toggle("hidden");
+
+  if(!mobileMenu.classList.contains("hidden")){
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
 });
 
 function closeMenu(){
   mobileMenu.classList.add("hidden");
+  document.body.style.overflow = "auto";
 }
 
 
