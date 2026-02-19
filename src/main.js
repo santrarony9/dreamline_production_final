@@ -28,3 +28,13 @@ backToTopBtn.addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+// Review Slider Logic
+const reviewTrack = document.querySelector('.review-track');
+if (reviewTrack) {
+    const reviews = Array.from(reviewTrack.children);
+    reviews.forEach(review => {
+        const clone = review.cloneNode(true);
+        reviewTrack.appendChild(clone);
+    });
+}

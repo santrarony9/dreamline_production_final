@@ -298,35 +298,53 @@
     box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
 }
 
-/* Back to Top Button */
+/* Back to Top Logic */
 #back-to-top {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #c5a059;
-    color: black;
-    width: 50px;
-    height: 50px;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    background: var(--gold);
+    color: var(--black);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
     opacity: 0;
     pointer-events: none;
-    transform: translateY(20px);
     transition: all 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
 }
 
 #back-to-top.visible {
     opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
+    pointer-events: all;
 }
 
 #back-to-top:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(197, 160, 89, 0.4);
+    box-shadow: 0 8px 16px rgba(197, 160, 89, 0.5);
+}
+
+/* Review Slider Animation */
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-scroll {
+    animation: scroll 40s linear infinite;
+    width: max-content;
+}
+
+.animate-scroll:hover {
+    animation-play-state: paused;
 }
