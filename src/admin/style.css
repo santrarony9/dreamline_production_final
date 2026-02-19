@@ -1,0 +1,36 @@
+/* Basic resets are handled by Tailwind */
+
+/* Custom Admin Styles */
+#login-screen {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+}
+
+.text-gold-500 {
+    color: #d4af37;
+}
+
+.bg-gold-500 {
+    background-color: #d4af37;
+}
+
+.bg-gold-600:hover {
+    background-color: #bfa030;
+}
+
+/* Scrollbar for modal */
+#edit-modal .overflow-y-auto::-webkit-scrollbar {
+    width: 8px;
+}
+
+#edit-modal .overflow-y-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#edit-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+#edit-modal .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

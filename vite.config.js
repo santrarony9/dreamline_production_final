@@ -12,7 +12,22 @@ export default defineConfig({
                 about: resolve(__dirname, 'about.html'),
                 booking: resolve(__dirname, 'booking.html'),
                 weddingDetails: resolve(__dirname, 'wedding-details.html'),
+                admin: resolve(__dirname, 'admin.html'),
             },
         },
     },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
+                secure: false,
+            },
+            '/uploads': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
+                secure: false,
+            }
+        }
+    }
 });
