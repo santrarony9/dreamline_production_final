@@ -2,48 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('cloudinary').v2;
-const mongoose = require('mongoose');
-const path = require('path');
-
-const Wedding = require('./models/Wedding');
-const Content = require('./models/Content');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../public'))); // Serve static files (if any remain)
-
-// --- CONFIGURATION ---
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error('MongoDB Connection Error:', err));
-
-// Cloudinary Config
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'dreamline_uploads',
-        allowed_formats: ['jpg', 'png', 'jpeg', 'mp4', 'mov'],
-        resource_type: 'auto'
-    }
-});
-
-const upload = multer({ storage: storage });
+const upload = require('./s3-config');
 
 // --- API ENDPOINTS ---
 
@@ -147,11 +106,16 @@ app.post('/api/content', async (req, res) => {
 // --- UPLOAD ENDPOINT ---
 app.post('/api/upload', upload.single('file'), (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    res.json({ url: req.file.path }); // Cloudinary returns the absolute URL in 'path'
+    res.json({ url: req.file.location }); // AWS S3 returns the absolute URL in 'location'
 });
 
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Start Server (Only for local dev)
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+// Export the app for Vercel
+module.exports = app;
