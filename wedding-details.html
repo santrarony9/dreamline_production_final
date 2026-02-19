@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Details | Dreamline Production</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17805539120');
+    </script>
+
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/wedding-loader.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --black: #050505;
+            --deep-gray: #121212;
+            --text-gray: #a1a1aa;
+        }
+
+        body {
+            background-color: var(--black);
+            color: white;
+            font-family: 'Instrument Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .details-gallery::-webkit-scrollbar {
+            display: none;
+        }
+
+        .interactive:hover {
+            color: var(--gold);
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Standard Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html"
+                class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+            <a href="luxury.html" class="hover:text-white transition-colors interactive">BACK TO WEDDINGS</a>
+        </div>
+        <a href="booking.html"
+            class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
+    </nav>
+
+    <!-- CONTENT CONTAINER -->
+    <main id="details-content" class="min-h-screen pt-32 pb-20 px-4 md:px-0">
+
+        <!-- Hero Section -->
+        <section id="hero-section" class="container mx-auto px-6 mb-24 text-center">
+            <p id="wedding-subtitle" class="text-[#c5a059] text-xs font-black uppercase tracking-[0.3em] mb-4">
+                Loading...</p>
+            <h1 id="wedding-title" class="font-heading text-4xl md:text-7xl font-black uppercase mb-8"></h1>
+            <p id="wedding-desc" class="max-w-2xl mx-auto text-white/60 text-lg leading-relaxed mb-12"></p>
+        </section>
+
+        <!-- Dynamic Content Loader -->
+        <div id="dynamic-loader" class="text-center text-white/30 animate-pulse">
+            Loading Wedding Details...
+        </div>
+
+        <!-- Content populated by JS -->
+        <div id="content-body" class="hidden">
+
+            <!-- Cinematic Video -->
+            <section class="container mx-auto px-6 mb-32">
+                <div class="aspect-video w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                    <iframe id="wedding-video" width="100%" height="100%" src="" frameborder="0" allowfullscreen
+                        class="w-full h-full"></iframe>
+                </div>
+            </section>
+
+            <!-- Gallery Grid (20 Photos) -->
+            <section class="container mx-auto px-6 mb-32">
+                <h2 class="font-heading text-3xl font-black mb-12 flex items-center gap-4">
+                    <span class="w-12 h-[1px] bg-[#c5a059]"></span> Visual Gallery
+                </h2>
+                <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Images injected here -->
+                </div>
+            </section>
+
+            <!-- Album Section (Canvera) -->
+            <section class="container mx-auto px-6 mb-32">
+                <div class="bg-[#111] border border-white/5 rounded-3xl p-8 md:p-16 text-center">
+                    <h2 class="font-heading text-3xl font-black mb-6">Digital Album</h2>
+                    <p class="text-white/60 mb-8 max-w-xl mx-auto">Experience the complete wedding story through our
+                        signature Canvera digital album interface.</p>
+
+                    <a id="album-link" href="#" target="_blank"
+                        class="inline-flex items-center gap-2 bg-[#c5a059] text-black px-8 py-4 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-transform">
+                        <span>View Canvera Album</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Client Reviews -->
+            <section class="container mx-auto px-6 mb-20">
+                <h2 class="font-heading text-3xl font-black mb-12 flex items-center gap-4">
+                    <span class="w-12 h-[1px] bg-[#c5a059]"></span> Client Love
+                </h2>
+                <div id="reviews-container" class="grid md:grid-cols-2 gap-8">
+                    <!-- Reviews injected here -->
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-white/5 text-center text-[10px] text-gray-600 uppercase tracking-widest">
+        &copy; 2025 Dreamline Production
+    </footer>
+
+</body>
+
+</html>
