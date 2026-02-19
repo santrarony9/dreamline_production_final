@@ -1,7 +1,7 @@
 
-import { weddings } from './data/weddings.js';
+// import { weddings } from './data/weddings.js'; // Removed static import
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // 1. Get ID from URL
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
@@ -11,7 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 2. Find Data & Index
+    // 2. Fetch Data
+    let weddings = [];
+    try {
+        const res = await fetch('/api/weddings');
+        if (!res.ok) throw new Error('Failed to fetch weddings');
+        weddings = await res.json();
+    } catch (err) {
+        console.error(err);
+        document.getElementById('details-content').innerHTML = '<h1 class="text-center mt-20 text-4xl font-heading">Error Loading Data</h1>';
+        return;
+    }
+
+    // 3. Find Data & Index
     const index = weddings.findIndex(w => w.id === id);
     if (index === -1) {
         document.getElementById('details-content').innerHTML = '<h1 class="text-center mt-20 text-4xl font-heading">Wedding Not Found</h1>';
@@ -19,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const data = weddings[index];
 
-    // 3. Populate DOM
+    // 4. Populate DOM
     document.getElementById('wedding-title').textContent = data.title;
     document.getElementById('wedding-subtitle').textContent = data.subtitle;
     document.getElementById('wedding-desc').textContent = data.description;

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamline Admin Dashboard</title>
+    <link rel="stylesheet" href="/src/style.css"> <!-- Main styles -->
+    <link rel="stylesheet" href="/src/admin/style.css"> <!-- Admin specific styles -->
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-900">
+
+    <div id="login-screen" class="flex items-center justify-center h-screen bg-black">
+        <div class="bg-white p-8 rounded shadow-md w-96">
+            <h2 class="text-2xl font-bold mb-4 text-center">Admin Login</h2>
+            <input type="password" id="password-input" placeholder="Enter Password"
+                class="w-full p-2 border border-gray-300 rounded mb-4">
+            <button id="login-btn" class="w-full bg-gold-500 text-white p-2 rounded hover:bg-gold-600">Login</button>
+            <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
+        </div>
+    </div>
+
+    <div id="dashboard" class="hidden min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-black text-white p-4 flex justify-between items-center shadow-md">
+            <h1 class="text-xl font-bold text-gold-500">Dreamline Admin</h1>
+            <button id="logout-btn" class="text-sm bg-gray-700 px-3 py-1 rounded hover:bg-gray-600">Logout</button>
+        </header>
+
+        <main class="flex-grow p-6 container mx-auto">
+
+            <!-- Tabs -->
+            <div class="flex space-x-4 mb-6 border-b border-gray-300 pb-2">
+                <button id="tab-weddings"
+                    class="px-4 py-2 font-semibold text-gold-500 border-b-2 border-gold-500">Weddings</button>
+                <button id="tab-content" class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500">Site
+                    Content</button>
+            </div>
+
+            <!-- Weddings Section -->
+            <div id="section-weddings">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold">Manage Weddings</h2>
+                    <button id="add-wedding-btn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+
+                        Add New Wedding</button>
+                </div>
+
+                <div id="loading-weddings" class="text-center py-10 hidden">Loading...</div>
+
+                <div id="wedding-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Wedding Cards will be injected here -->
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div id="section-content" class="hidden">
+                <h2 class="text-2xl font-semibold mb-6">Manage Site Content</h2>
+                <div id="loading-content" class="text-center py-10 hidden">Loading...</div>
+
+                <form id="content-form" class="bg-white p-6 rounded shadow max-w-4xl">
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Title Line 1</label>
+                            <input type="text" id="hero-title-line1" class="w-full p-2 border rounded">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Title Line 2</label>
+                            <input type="text" id="hero-title-line2" class="w-full p-2 border rounded">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium mb-1">Subtitle</label>
+                            <input type="text" id="hero-subtitle" class="w-full p-2 border rounded">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium mb-1">Hero Background (Video/Image URL)</label>
+                            <input type="file" id="hero-video-upload" class="mb-2 w-full text-sm">
+                            <input type="text" id="hero-video-url" class="w-full p-2 border rounded"
+                                placeholder="Paste URL">
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Marquee Text</h3>
+                    <div id="marquee-container" class="space-y-2 mb-4">
+                        <!-- Marquee inputs injected here -->
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Stats</h3>
+                    <div id="stats-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <!-- Stats inputs injected here -->
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Motion Gallery</h3>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">Gallery Title</label>
+                        <input type="text" id="gallery-title" class="w-full p-2 border rounded">
+                        <label class="block text-sm font-medium mb-1 mt-2">Gallery Subtitle</label>
+                        <input type="text" id="gallery-subtitle" class="w-full p-2 border rounded">
+                        <label class="block text-sm font-medium mb-1 mt-2">Gallery Images (Comma separated URLs)</label>
+                        <textarea id="gallery-images" class="w-full p-2 border rounded h-24"></textarea>
+                    </div>
+
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Projects (Commercial/Portfolio)
+                    </h3>
+                    <div id="projects-container" class="space-y-4 mb-4">
+                        <!-- Projects injected here -->
+                    </div>
+                    <button type="button" id="add-project-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
+                        Project</button>
+
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Updates</h3>
+                    <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save
+                        Content</button>
+                </form>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal for Editing/Adding -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button id="close-modal"
+                class="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl">&times;</button>
+            <h2 id="modal-title" class="text-2xl font-bold mb-6">Edit Wedding</h2>
+
+            <form id="wedding-form" class="space-y-4">
+                <input type="hidden" id="wedding-id">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Title</label>
+                        <input type="text" id="title" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Subtitle</label>
+                        <input type="text" id="subtitle" class="w-full p-2 border rounded">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Description</label>
+                    <textarea id="description" class="w-full p-2 border rounded h-24"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Cover Image</label>
+                        <input type="file" id="cover-image-upload" class="mb-2 w-full text-sm">
+                        <input type="text" id="cover-image-url" class="w-full p-2 border rounded"
+                            placeholder="Or paste URL">
+                        <img id="preview-cover" src="" class="mt-2 h-32 object-cover w-full bg-gray-100 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Hover Video (URL/Upload)</label>
+                        <input type="file" id="hover-video-upload" class="mb-2 w-full text-sm">
+                        <input type="text" id="hover-video-url" class="w-full p-2 border rounded"
+                            placeholder="Paste URL">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">YouTube Video URL</label>
+                        <input type="text" id="youtube-url" class="w-full p-2 border rounded"
+                            placeholder="https://www.youtube.com/embed/...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Album URL</label>
+                        <input type="text" id="album-url" class="w-full p-2 border rounded">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <h3 class="text-lg font-semibold">Story Chapters</h3>
+                <div id="chapters-container" class="space-y-4">
+                    <!-- Chapters injected via JS -->
+                </div>
+                <button type="button" id="add-chapter-btn" class="text-sm text-blue-600 hover:underline">+ Add
+                    Chapter</button>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" id="cancel-btn"
+                        class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">Save
+                        Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/src/admin/main.js"></script>
+</body>
+
+</html>
