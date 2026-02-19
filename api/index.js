@@ -11,18 +11,43 @@ const Content = require('./models/Content');
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// Cached connection variable
+let cachedDb = null;
 
-// MongoDB Connection
-// Note: In serverless, we should cache the connection if possible, but for now standard connect is fine.
-// Mongoose caches connection internally so calling connect multiple times is okay.
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error('MongoDB Connection Error:', err));
+async function connectToDatabase() {
+    if (cachedDb) {
+        return cachedDb;
+    }
+
+    if (!process.env.MONGODB_URI) {
+        throw new Error('MONGODB_URI is missing in environment variables');
+    }
+
+    // Connect to MongoDB
+    const db = await mongoose.connect(process.env.MONGODB_URI, {
+        bufferCommands: false, // Disable Mongoose buffering to avoid hanging
+    });
+
+    cachedDb = db;
+    console.log("New MongoDB Connection Established");
+    return db;
+}
+
+// Middleware to ensure DB is connected
+app.use(async (req, res, next) => {
+    try {
+        await connectToDatabase();
+        next();
+    } catch (error) {
+        console.error("Database connection failed:", error);
+        res.status(500).json({ error: "Database connection failed", details: error.message });
+    }
+});
+
+// Health Check Endpoint
+app.get('/api', (req, res) => {
+    res.json({ status: 'API is running', timestamp: new Date() });
+});
 
 // --- API ENDPOINTS ---
 
