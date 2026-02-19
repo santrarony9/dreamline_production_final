@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <title>Journal Details | Dreamline Production</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17805539120');
+    </script>
+
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/journal-loader.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --black: #050505;
+            --deep-gray: #121212;
+            --text-gray: #a1a1aa;
+        }
+
+        body {
+            background-color: var(--black);
+            color: #ffffff;
+            font-family: 'Instrument Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .interactive:hover {
+            color: var(--gold);
+        }
+
+        /* Content Typography */
+        .journal-content h3 {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .journal-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #d4d4d8;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Standard Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+            <a href="journal.html" class="hover:text-white transition-colors interactive">BACK TO JOURNAL</a>
+        </div>
+        <a href="booking.html"
+            class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
+    </nav>
+
+    <main class="min-h-screen pt-32 pb-20">
+        <!-- Hero Image -->
+        <div class="container mx-auto px-6 mb-12">
+            <div class="aspect-video w-full rounded-3xl overflow-hidden border border-white/10 relative">
+                <img id="post-image" src="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="absolute bottom-10 left-10 right-10">
+                    <div class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-[#c5a059]">
+                        <span id="post-date"></span>
+                        <span class="w-[1px] h-3 bg-white/50"></span>
+                        <span id="post-category"></span>
+                    </div>
+                    <h1 id="post-title"
+                        class="font-heading text-3xl md:text-5xl font-black uppercase leading-tight max-w-4xl"></h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <article class="container mx-auto px-6 max-w-4xl">
+            <div id="post-content" class="journal-content text-lg font-light text-gray-300">
+                <!-- Content injected here -->
+            </div>
+
+            <!-- Inquire CTA -->
+            <div class="mt-20 p-10 border border-white/10 rounded-2xl bg-[#0a0a0a] text-center">
+                <h3 class="font-heading text-2xl font-bold mb-4">Inspired?</h3>
+                <p class="text-gray-400 mb-8 max-w-xl mx-auto">Whether it's a wedding or a brand film, let's create
+                    something cinematic together.</p>
+                <a href="booking.html"
+                    class="inline-block bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-transform">Start
+                    Project</a>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-white/5 text-center text-[10px] text-gray-600 uppercase tracking-widest">
+        &copy; 2025 Dreamline Production
+    </footer>
+</body>
+
+</html>

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.png" type="image/png">
     <title>Dreamline Production | Cinematic Visual House</title>
 
     <!-- Google tag (gtag.js) -->
@@ -448,8 +449,11 @@
     <!-- Navigation -->
     <nav
         class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
-        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html"
-                class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
         <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
             <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
             <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
@@ -516,81 +520,38 @@
                         <h2 class="font-heading text-5xl font-black">BLOGS</h2>
                     </div>
 
-                    <div class="grid lg:grid-cols-3 gap-10">
-                        <!-- Post 1 -->
-                        <article class="blog-card rounded-3xl group">
-                            <div class="h-64 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Wedding Photography Kolkata Tips">
-                            </div>
-                            <div class="p-8">
-                                <div
-                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                                    <span>Mar 24, 2024</span>
-                                    <span class="text-[#c5a059]">Wedding Guide</span>
-                                </div>
-                                <h3
-                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
-                                    Navigating the Best Wedding Venues in North Kolkata</h3>
-                                <p class="text-sm text-gray-400 mb-6 font-light">From historical rajbaris to modern
-                                    luxury halls, we break down the most photogenic spots...</p>
-                                <a href="#"
-                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
-                                    Insight</a>
-                            </div>
-                        </article>
-
-                        <!-- Post 2 -->
-                        <article class="blog-card rounded-3xl group">
-                            <div class="h-64 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Video Marketing Strategy">
-                            </div>
-                            <div class="p-8">
-                                <div
-                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                                    <span>Feb 12, 2024</span>
-                                    <span class="text-[#c5a059]">Commercial</span>
-                                </div>
-                                <h3
-                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
-                                    Why Professional Video Content is Mandatory for Kolkata Brands</h3>
-                                <p class="text-sm text-gray-400 mb-6 font-light">The digital landscape of Bengal is
-                                    changing. Here is how video production scales ROI...</p>
-                                <a href="#"
-                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
-                                    Insight</a>
-                            </div>
-                        </article>
-
-                        <!-- Post 3 -->
-                        <article class="blog-card rounded-3xl group">
-                            <div class="h-64 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Technical Photography Blog">
-                            </div>
-                            <div class="p-8">
-                                <div
-                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                                    <span>Jan 05, 2024</span>
-                                    <span class="text-[#c5a059]">Technical</span>
-                                </div>
-                                <h3
-                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
-                                    Mastering Low Light Photography: Tilottama Plaza Studio Secrets</h3>
-                                <p class="text-sm text-gray-400 mb-6 font-light">A technical breakdown of our signature
-                                    lighting style that defines Dreamline Production...</p>
-                                <a href="#"
-                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
-                                    Insight</a>
-                            </div>
-                        </article>
+                    <div id="journal-grid" class="grid lg:grid-cols-3 gap-10">
+                        <!-- Dynamic Content -->
                     </div>
                 </div>
             </section>
+        </div>
+
+        <script type="module">
+            import { journals } from './src/data/journals.js';
+
+            const grid = document.getElementById('journal-grid');
+            if (grid) {
+                grid.innerHTML = journals.map(post => `
+                    <article class="blog-card rounded-3xl group">
+                        <div class="h-64 overflow-hidden">
+                            <img src="${post.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${post.title}">
+                        </div>
+                        <div class="p-8">
+                            <div class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                <span>${post.date}</span>
+                                <span class="text-[#c5a059]">${post.category}</span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">${post.title}</h3>
+                            <p class="text-sm text-gray-400 mb-6 font-light">${post.excerpt}</p>
+                            <a href="journal-details.html?id=${post.id}" class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read Insight</a>
+                        </div>
+                    </article>
+                `).join('');
+            }
+        </script>
+        </div>
+        </section>
 
 
 

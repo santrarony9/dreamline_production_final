@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.png" type="image/png">
     <title>Dreamline Production | Cinematic Visual House</title>
 
     <!-- Google tag (gtag.js) -->
@@ -444,22 +445,16 @@
             <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
         </div>
     </div>
-    <!-- Loader -->
-    <div id="loader">
-        <div class="text-center">
-            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
-            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
-                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
-            </div>
-            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
-        </div>
-    </div>
+
 
     <!-- Navigation -->
     <nav
         class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
-        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html"
-                class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
         <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
             <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
             <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
@@ -581,9 +576,8 @@
                 filterGallery('all');
             } catch (err) {
                 console.error('Failed to fetch artworks:', err);
-                artworks = [
-                    // Fallback if needed, or leave empty
-                ];
+                artworks = [];
+                renderContent(); // Ensure empty grid is rendered
             }
         }
         fetchArtworks();
@@ -593,10 +587,10 @@
             const prog = document.getElementById('loader-progress');
             const loader = document.getElementById('loader');
 
-            prog.style.width = '100%';
+            if (prog) prog.style.width = '100%';
 
             setTimeout(() => {
-                loader.style.transform = 'translateY(-100%)';
+                if (loader) loader.style.transform = 'translateY(-100%)';
                 document.body.style.overflow = 'auto';
             }, 800);
         });
@@ -661,12 +655,7 @@
         });
 
         // Start
-        window.onload = () => {
-            document.getElementById('page-loader').style.transform = 'translateY(-100%)';
-            setTimeout(() => {
-                document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('active-reveal'));
-            }, 300);
-        };
+
 
         // Render Functions
         function renderContent() {
@@ -740,21 +729,7 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Navigation Logic
-        function navigateTo(pageId) {
-            const loader = document.getElementById('loader');
-            loader.style.opacity = '1';
-            loader.style.pointerEvents = 'auto';
 
-            setTimeout(() => {
-                document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
-                document.getElementById('page-' + pageId).classList.add('active-view');
-                window.scrollTo(0, 0);
-                loader.style.opacity = '0';
-                loader.style.pointerEvents = 'none';
-                renderContent(pageId);
-            }, 800);
-        }
 
 
 
