@@ -1,4 +1,5 @@
 import { websiteContent } from './content.js';
+import { getOptimizedUrl } from './media-utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Hero Section
@@ -9,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Background Video/Image
     const heroBg = document.getElementById('hero-bg-img');
     if (heroBg && websiteContent.hero.videoUrl) {
-        heroBg.src = websiteContent.hero.videoUrl;
+        heroBg.src = getOptimizedUrl(websiteContent.hero.videoUrl, 1920);
     }
 
     // Stats
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create 2 sets of images for seamless loop
         const images = [...websiteContent.gallery.images, ...websiteContent.gallery.images];
         galleryContainer.innerHTML = images.map(src => `
-            <div class="motion-card"><img src="${src}"></div>
+            <div class="motion-card"><img src="${getOptimizedUrl(src, 600)}"></div>
         `).join('');
     }
 });
