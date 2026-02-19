@@ -9,6 +9,10 @@
     .font-heading {
         font-family: 'Unbounded', sans-serif;
     }
+
+    .section-padding {
+        @apply py-20 md:py-32 px-6 md:px-12;
+    }
 }
 
 /* Custom Scrollbar */
@@ -90,7 +94,8 @@
 }
 
 .motion-card {
-    width: 350px;
+    width: 80vw;
+    max-width: 350px;
     height: 500px;
     border-radius: 1rem;
     overflow: hidden;
