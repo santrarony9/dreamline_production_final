@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamline Production | Booking</title>
+
+    <script type="module" src="/src/main.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --black: #050505;
+            --deep-gray: #121212;
+            --text-gray: #a1a1aa;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--black);
+            color: #ffffff;
+            font-family: 'Instrument Sans', sans-serif;
+        }
+
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Creative Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .interactive:hover {
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+            </div>
+            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html"
+                class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HISTORY</a>
+            <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+            <a href="index.html#page-gallery" class="hover:text-white transition-colors interactive">VISUALS</a>
+            <a href="journal.html" class="hover:text-white transition-colors interactive">JOURNAL</a>
+            <a href="booking.html" class="text-[#c5a059] transition-colors interactive">BOOKING</a>
+        </div>
+        <a href="tel:+918240054002"
+            class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
+
+        <!-- MOBILE HAMBURGER -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 w-screen h-screen bg-black/95 z-[999] hidden overflow-y-auto">
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+            <a href="index.html" class="interactive">History</a>
+            <a href="luxury.html" class="interactive text-[#c5a059]">Luxury Weddings</a>
+            <a href="index.html#page-gallery" class="interactive">Visuals</a>
+            <a href="journal.html" class="interactive">Journal</a>
+            <a href="booking.html" class="interactive text-[#c5a059]">Booking</a>
+            <a href="commercial.html" class="interactive text-[#c5a059]">Commercial</a>
+            <a href="tel:+918240054002" class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">Inquire
+                Now</a>
+        </div>
+    </div>
+
+    <main class="pt-32">
+        <section id="contact" class="py-20 bg-black min-h-screen">
+            <div class="container mx-auto px-6">
+                <div class="grid lg:grid-cols-2 gap-0 rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl">
+                    <div class="bg-zinc-950 p-12 md:p-20 flex flex-col justify-center">
+                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Ready for
+                            Action?</span>
+                        <h2 class="font-heading text-5xl md:text-7xl font-black mb-10 leading-none">LET'S<br>CREATE.
+                        </h2>
+
+                        <div class="space-y-12 mb-16">
+                            <div>
+                                <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Location
+                                </h5>
+                                <address class="not-italic text-2xl font-bold">
+                                    85, Tilottama Plaza, First Floor<br>
+                                    Kolkata 700082, West Bengal
+                                </address>
+                            </div>
+                            <div>
+                                <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Inquiries
+                                </h5>
+                                <a href="tel:+918240054002"
+                                    class="text-3xl md:text-5xl font-black hover:text-[#c5a059] transition-colors tracking-tighter">+91
+                                    82400 54002</a>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6">
+                            <a href="#"
+                                class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Instagram</a>
+                            <a href="#"
+                                class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">YouTube</a>
+                            <a href="#"
+                                class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Vimeo</a>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-zinc-900 relative min-h-[500px] flex items-center justify-center grayscale contrast-125 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200"
+                            class="absolute inset-0 w-full h-full object-cover opacity-20">
+                        <div class="relative z-10 text-center">
+                            <div
+                                class="w-24 h-24 border border-[#c5a059] rounded-full mx-auto mb-6 flex items-center justify-center">
+                                <svg class="h-8 w-8 text-[#c5a059]" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                            </div>
+                            <h4 class="font-heading font-bold text-xl uppercase tracking-tighter">Visit the Suite</h4>
+                            <p class="text-xs text-gray-500 mt-2 uppercase tracking-widest">Appointment Only</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="py-20 border-t border-white/5 text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span class="text-[#c5a059]">PRODUCTION</span>
+            </h2>
+            <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
+            <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+            <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Loader Progress
+        window.addEventListener('load', () => {
+            const prog = document.getElementById('loader-progress');
+            const loader = document.getElementById('loader');
+
+            prog.style.width = '100%';
+
+            setTimeout(() => {
+                loader.style.transform = 'translateY(-100%)';
+            }, 800);
+        });
+
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+
+            if (!mobileMenu.classList.contains("hidden")) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "auto";
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -66,20 +66,6 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Custom Cursor */
-#cursor-dot {
-    width: 6px;
-    height: 6px;
-    @apply bg-gold fixed rounded-full pointer-events-none z-[9999];
-}
-
-#cursor-outline {
-    width: 45px;
-    height: 45px;
-    border: 1px solid theme('colors.gold');
-    @apply fixed rounded-full pointer-events-none z-[9998] transition-all duration-150 ease-out;
-}
-
 /* Kinetic Typography Scroll */
 .kinetic-bg {
     @apply absolute text-[25vw] font-heading font-black leading-none text-white/5 whitespace-nowrap pointer-events-none -z-10 uppercase;
@@ -147,21 +133,6 @@
 /* Custom Hover Glow */
 .interactive:hover {
     @apply text-gold;
-}
-
-* {
-    cursor: none !important;
-}
-
-@media (max-width: 768px) {
-    * {
-        cursor: auto !important;
-    }
-
-    #cursor-dot,
-    #cursor-outline {
-        display: none !important;
-    }
 }
 
 /* Review Card Glow */

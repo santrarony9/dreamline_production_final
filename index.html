@@ -117,27 +117,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Custom Cursor */
-        #cursor-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--gold);
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-
-        #cursor-outline {
-            width: 45px;
-            height: 45px;
-            border: 1px solid var(--gold);
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            transition: all 0.15s ease-out;
-        }
+        < !-- Loader -->
 
         /* Kinetic Typography Scroll */
         .kinetic-bg {
@@ -217,9 +197,7 @@
             color: var(--gold);
         }
 
-        * {
-            cursor: none !important;
-        }
+
 
         /* Review Card Glow */
         .review-card {
@@ -457,8 +435,7 @@
 </head>
 
 <body>
-    <div id="cursor-dot"></div>
-    <div id="cursor-outline"></div>
+
     <!-- Loader -->
     <div id="loader">
         <div class="text-center">
@@ -481,7 +458,7 @@
             <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
             <a href="#page-gallery" class="hover:text-white transition-colors interactive">VISUALS</a>
             <a href="journal.html" class="hover:text-white transition-colors interactive">JOURNAL</a>
-            <a href="#contact" class="hover:text-[#c5a059] transition-colors interactive">BOOKING</a>
+            <a href="booking.html" class="hover:text-[#c5a059] transition-colors interactive">BOOKING</a>
 
         </div>
         <a href="tel:+918240054002"
@@ -509,7 +486,7 @@
 
             <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
 
-            <a onclick="closeMenu()" href="#contact" class="interactive text-[#c5a059]">
+            <a href="booking.html" class="interactive text-[#c5a059]">
                 Booking
             </a>
 
@@ -1117,62 +1094,7 @@
 
 
 
-        <section id="contact" class="py-32 bg-black">
-            <div class="container mx-auto px-6">
-                <div class="grid lg:grid-cols-2 gap-0 rounded-[3rem] overflow-hidden border border-white/5 shadow-2xl">
-                    <div class="bg-zinc-950 p-12 md:p-20 flex flex-col justify-center">
-                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Ready for
-                            Action?</span>
-                        <h2 class="font-heading text-5xl md:text-7xl font-black mb-10 leading-none">LET'S<br>CREATE.
-                        </h2>
 
-                        <div class="space-y-12 mb-16">
-                            <div>
-                                <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Location
-                                </h5>
-                                <address class="not-italic text-2xl font-bold">
-                                    85, Tilottama Plaza, First Floor<br>
-                                    Kolkata 700082, West Bengal
-                                </address>
-                            </div>
-                            <div>
-                                <h5 class="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Inquiries
-                                </h5>
-                                <a href="tel:+918240054002"
-                                    class="text-3xl md:text-5xl font-black hover:text-[#c5a059] transition-colors tracking-tighter">+91
-                                    82400 54002</a>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-6">
-                            <a href="#"
-                                class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Instagram</a>
-                            <a href="#"
-                                class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">YouTube</a>
-                            <a href="#"
-                                class="text-[10px] uppercase font-bold tracking-[0.3em] hover:text-[#c5a059]">Vimeo</a>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-zinc-900 relative min-h-[500px] flex items-center justify-center grayscale contrast-125 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200"
-                            class="absolute inset-0 w-full h-full object-cover opacity-20">
-                        <div class="relative z-10 text-center">
-                            <div
-                                class="w-24 h-24 border border-[#c5a059] rounded-full mx-auto mb-6 flex items-center justify-center">
-                                <svg class="h-8 w-8 text-[#c5a059]" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                </svg>
-                            </div>
-                            <h4 class="font-heading font-bold text-xl uppercase tracking-tighter">Visit the Suite</h4>
-                            <p class="text-xs text-gray-500 mt-2 uppercase tracking-widest">Appointment Only</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <!-- Global Footer -->
         <footer class="py-20 border-t border-white/5 text-center">
             <div class="container mx-auto px-6">
@@ -1221,19 +1143,7 @@
 
 
 
-        // Custom Cursor
-        const dot = document.getElementById('cursor-dot');
-        const outline = document.getElementById('cursor-outline');
 
-        document.addEventListener('mousemove', (e) => {
-            dot.style.left = `${e.clientX}px`;
-            dot.style.top = `${e.clientY}px`;
-
-            outline.animate({
-                left: `${e.clientX - 22}px`,
-                top: `${e.clientY - 22}px`
-            }, { duration: 500, fill: "forwards" });
-        });
 
         // Kinetic Text Animation on Scroll
         window.addEventListener('scroll', () => {
@@ -1253,17 +1163,7 @@
             });
         });
 
-        // Hover Effects
-        document.querySelectorAll('.interactive').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                outline.style.transform = 'scale(2)';
-                outline.style.backgroundColor = 'rgba(255,255,255,0.05)';
-            });
-            el.addEventListener('mouseleave', () => {
-                outline.style.transform = 'scale(1)';
-                outline.style.backgroundColor = 'transparent';
-            });
-        });
+
 
         // Start
         window.onload = () => {
