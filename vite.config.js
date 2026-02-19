@@ -9,6 +9,8 @@ export default defineConfig({
                 commercial: resolve(__dirname, 'commercial.html'),
                 luxury: resolve(__dirname, 'luxury.html'),
                 journal: resolve(__dirname, 'journal.html'),
+                about: resolve(__dirname, 'about.html'),
+                booking: resolve(__dirname, 'booking.html'),
             },
         },
     },
