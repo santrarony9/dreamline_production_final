@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreamline Production | About Us</title>
+
+    <script type="module" src="/src/main.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --black: #050505;
+            --deep-gray: #121212;
+            --text-gray: #a1a1aa;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--black);
+            color: #ffffff;
+            font-family: 'Instrument Sans', sans-serif;
+        }
+
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .interactive:hover {
+            color: var(--gold);
+        }
+
+        /* Text Gradients */
+        .text-gold {
+            color: var(--gold);
+        }
+
+        /* Grid Layouts */
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+            </div>
+            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html"
+                class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="about.html" class="text-[#c5a059] transition-colors interactive">HISTORY</a>
+            <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+            <a href="index.html#page-gallery" class="hover:text-white transition-colors interactive">VISUALS</a>
+            <a href="journal.html" class="hover:text-white transition-colors interactive">JOURNAL</a>
+            <a href="booking.html" class="hover:text-[#c5a059] transition-colors interactive">BOOKING</a>
+        </div>
+        <a href="tel:+918240054002"
+            class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
+
+        <!-- MOBILE HAMBURGER -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 w-screen h-screen bg-black/95 z-[999] hidden overflow-y-auto">
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+            <a href="about.html" class="interactive text-[#c5a059]">History</a>
+            <a href="luxury.html" class="interactive text-[#c5a059]">Luxury Weddings</a>
+            <a href="index.html#page-gallery" class="interactive">Visuals</a>
+            <a href="journal.html" class="interactive">Journal</a>
+            <a href="booking.html" class="interactive text-[#c5a059]">Booking</a>
+            <a href="commercial.html" class="interactive text-[#c5a059]">Commercial</a>
+            <a href="tel:+918240054002" class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">Inquire
+                Now</a>
+        </div>
+    </div>
+
+    <main class="pt-32">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-6 mb-20">
+            <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Est. 2010 • Govt.
+                Registered</span>
+            <h1 class="font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-12 leading-none">
+                TRUSTED PRODUCTION<br>
+                <span class="text-white/20">HOUSE IN KOLKATA.</span>
+            </h1>
+            <p class="max-w-3xl text-lg text-gray-400 leading-relaxed mb-12">
+                Dreamline Production is a leading production house in Kolkata delivering cinematic video production,
+                photography, and digital content solutions for brands, businesses, and individuals. Known for
+                creativity, professionalism, and storytelling excellence, we transform ideas into visually powerful
+                content that creates emotional impact and brand value.
+            </p>
+            <div class="h-[1px] w-full bg-white/10 mb-20"></div>
+
+            <!-- About & Vision -->
+            <div class="grid md:grid-cols-2 gap-16 mb-24">
+                <div>
+                    <h2 class="font-heading text-3xl font-black mb-6 uppercase">About Us</h2>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Dreamline Production is a Kolkata-based creative production company dedicated to producing
+                        high-quality visual content with strong storytelling and cinematic aesthetics. We combine
+                        creative direction, modern equipment, and industry experience to deliver professional results
+                        across multiple industries.
+                    </p>
+                    <p class="text-gray-400 leading-relaxed">
+                        We work with corporate brands, startups, agencies, influencers, and families who want premium
+                        visuals that communicate authenticity and excellence.
+                    </p>
+                </div>
+                <div class="space-y-12">
+                    <div class="service-card">
+                        <h3 class="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR VISION</h3>
+                        <p class="text-sm text-gray-400">To become one of the most trusted and innovative production
+                            houses in Kolkata recognized for cinematic storytelling and professional execution.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR MISSION</h3>
+                        <p class="text-sm text-gray-400">To help brands and individuals communicate their stories
+                            through powerful visuals, strategic content, and high-quality production.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="py-20 bg-zinc-950">
+            <div class="container mx-auto px-6">
+                <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">What We Do</span>
+                <h2 class="font-heading text-4xl md:text-5xl font-black mb-16 uppercase">Production Services</h2>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Corporate Video Production</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Professional brand films, company profile
+                            videos, training videos, and promotional content designed to build trust and strengthen
+                            brand identity.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Wedding Cinematography</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Emotion-driven cinematic wedding films
+                            capturing real moments, celebrations, and memories with artistic storytelling.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Commercial Shoots</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">High-impact advertisement films, product
+                            promotions, and marketing videos crafted to increase engagement and conversions.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Photography Services</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Corporate photography, product photography,
+                            event coverage, and creative photoshoots that enhance visual branding.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Social Media Content</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Reels, YouTube content, short-form videos, and
+                            branded creatives optimized for maximum reach and audience engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Why
+                            Us</span>
+                        <h2 class="font-heading text-4xl md:text-5xl font-black mb-10 leading-none">THE
+                            DREAMLINE<br>DIFFERENCE.</h2>
+                        <p class="text-gray-400 mb-8">We don't just record events; we craft stories that emotionally
+                            connect with audiences.</p>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <span class="text-[#c5a059] font-bold">01.</span>
+                                <div>
+                                    <h4 class="font-bold uppercase text-sm mb-1">Creative Storytelling</h4>
+                                    <p class="text-xs text-gray-500">Narratives that resonate and engaging visuals.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="text-[#c5a059] font-bold">02.</span>
+                                <div>
+                                    <h4 class="font-bold uppercase text-sm mb-1">Professional Equipment</h4>
+                                    <p class="text-xs text-gray-500">Cinema-line cameras and expert lighting.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="text-[#c5a059] font-bold">03.</span>
+                                <div>
+                                    <h4 class="font-bold uppercase text-sm mb-1">End-to-End Production</h4>
+                                    <p class="text-xs text-gray-500">From concept to final edit, we handle it all.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-zinc-900 rounded-[2rem] p-10 border border-white/5">
+                        <h3 class="font-heading text-2xl font-bold mb-8 uppercase text-center">Our Process</h3>
+                        <div class="space-y-8">
+                            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                                <h4 class="font-bold text-sm">Concept & Planning</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 1</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                                <h4 class="font-bold text-sm">Shooting & Direction</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 2</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                                <h4 class="font-bold text-sm">Post Production</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 3</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm">Delivery & Optimization</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20 text-center">
+            <h2 class="font-heading text-3xl md:text-5xl font-black mb-8 uppercase">Let's Create Something <span
+                    class="text-[#c5a059]">Extraordinary.</span></h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">Whether you need a corporate film, advertisement video,
+                wedding cinematography, or digital content, Dreamline Production is ready to bring your vision to life.
+            </p>
+            <a href="booking.html"
+                class="inline-block bg-[#c5a059] text-black px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-white transition-colors">Start
+                Your Project</a>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="py-20 border-t border-white/5 text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span class="text-[#c5a059]">PRODUCTION</span>
+            </h2>
+            <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
+            <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+            <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+
+            if (!mobileMenu.classList.contains("hidden")) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "auto";
+            }
+        });
+    </script>
+</body>
+
+</html>
