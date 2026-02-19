@@ -11,6 +11,7 @@ export default defineConfig({
                 journal: resolve(__dirname, 'journal.html'),
                 about: resolve(__dirname, 'about.html'),
                 booking: resolve(__dirname, 'booking.html'),
+                weddingDetails: resolve(__dirname, 'wedding-details.html'),
             },
         },
     },
