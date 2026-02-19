@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dreamline Production | Cinematic Visual House</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="module" src="/src/main.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --gold: #c5a059;
@@ -23,12 +26,23 @@
             overflow-x: hidden;
         }
 
-        .font-heading { font-family: 'Unbounded', sans-serif; }
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--black); }
-        ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
 
         /* Creative Loader */
         #loader {
@@ -42,7 +56,7 @@
             transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
         }
 
-                /* Cinematic Masking */
+        /* Cinematic Masking */
         .mask-text {
             background: linear-gradient(to right, #fff 50%, #444 50%);
             background-size: 200% 100%;
@@ -51,7 +65,10 @@
             -webkit-text-fill-color: transparent;
             transition: background-position 1s ease;
         }
-        .reveal:hover .mask-text { background-position: 0 0; }
+
+        .reveal:hover .mask-text {
+            background-position: 0 0;
+        }
 
         /* Parallax Backgrounds */
         .parallax-bg {
@@ -64,109 +81,314 @@
 
 
         /* Magnetic Button Effect */
-        .magnetic-wrap { display: inline-block; transition: transform 0.3s ease; }
+        .magnetic-wrap {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
 
         /* Floating Nav */
         .nav-glass {
             background: rgba(10, 10, 10, 0.6);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Custom Cursor */
-        #cursor-dot { width: 6px; height: 6px; background: var(--gold); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9999; }
-        #cursor-outline { width: 45px; height: 45px; border: 1px solid var(--gold); position: fixed; border-radius: 50%; pointer-events: none; z-index: 9998; transition: all 0.15s ease-out; }
+        #cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #cursor-outline {
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--gold);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease-out;
+        }
 
         /* Kinetic Typography Scroll */
-        .kinetic-bg { position: absolute; font-size: 25vw; font-family: 'Unbounded'; font-weight: 900; line-height: 1; color: rgba(255,255,255,0.03); white-space: nowrap; pointer-events: none; z-index: -1; text-transform: uppercase; }
-        
+        .kinetic-bg {
+            position: absolute;
+            font-size: 25vw;
+            font-family: 'Unbounded';
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            text-transform: uppercase;
+        }
+
         /* Motion Gallery */
-        .motion-track { display: flex; gap: 2rem; width: fit-content; animation: glide 40s linear infinite; }
-        @keyframes glide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        
-        .motion-card { width: 350px; height: 500px; border-radius: 1rem; overflow: hidden; flex-shrink: 0; position: relative; transition: transform 0.5s ease; }
-        .motion-card:hover { transform: scale(1.05) translateY(-20px); z-index: 10; }
-        .motion-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) brightness(0.7); transition: all 0.5s ease; }
-        .motion-card:hover img { filter: grayscale(0) brightness(1); }
+        .motion-track {
+            display: flex;
+            gap: 2rem;
+            width: fit-content;
+            animation: glide 40s linear infinite;
+        }
+
+        @keyframes glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
 
         /* Floating Text Effects */
-        .reveal-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
-        .reveal-inner { transform: translateY(100%); transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1); }
-        .active-reveal .reveal-inner { transform: translateY(0); }
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
 
         /* Custom Hover Glow */
-        .interactive:hover { color: var(--gold); }
+        .interactive:hover {
+            color: var(--gold);
+        }
 
         * {
             cursor: none !important;
         }
 
         /* Review Card Glow */
-        .review-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s ease; }
-        .review-card:hover { background: rgba(255,255,255,0.05); border-color: var(--gold); transform: translateY(-10px); }
+        .review-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
 
         /* Floating Text Effects */
-        .reveal-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
-        .reveal-inner { transform: translateY(100%); transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1); }
-        .active-reveal .reveal-inner { transform: translateY(0); }
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
 
         /* Brand Ticker */
-        .brand-track { display: flex; gap: 4rem; width: fit-content; animation: brand-glide 30s linear infinite; align-items: center; }
-        @keyframes brand-glide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .brand-track {
+            display: flex;
+            gap: 4rem;
+            width: fit-content;
+            animation: brand-glide 30s linear infinite;
+            align-items: center;
+        }
+
+        @keyframes brand-glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
 
 
         /* Marquee Animation */
-        .marquee { white-space: nowrap; overflow: hidden; display: flex; gap: 4rem; padding: 2rem 0; }
-        .marquee-inner { display: flex; gap: 4rem; animation: scroll 40s linear infinite; }
-        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            gap: 4rem;
+            padding: 2rem 0;
+        }
 
-         /* Vertical Gallery Motion */
-        .v-track-up { animation: glide-up 30s linear infinite; }
-        .v-track-down { animation: glide-down 30s linear infinite; }
-        @keyframes glide-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-        @keyframes glide-down { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+        .marquee-inner {
+            display: flex;
+            gap: 4rem;
+            animation: scroll 40s linear infinite;
+        }
 
-        .motion-card { width: 350px; height: 500px; border-radius: 1rem; overflow: hidden; flex-shrink: 0; position: relative; transition: transform 0.5s ease; }
-        .motion-card:hover { transform: scale(1.05) translateY(-20px); z-index: 10; }
-        .motion-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) brightness(0.7); transition: all 0.5s ease; }
-        .motion-card:hover img { filter: grayscale(0) brightness(1); }
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
 
-        
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Vertical Gallery Motion */
+        .v-track-up {
+            animation: glide-up 30s linear infinite;
+        }
+
+        .v-track-down {
+            animation: glide-down 30s linear infinite;
+        }
+
+        @keyframes glide-up {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes glide-down {
+            from {
+                transform: translateY(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+
         /* Text Stroke Effect */
-        .text-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.2); color: transparent; transition: all 0.5s ease; }
-        .text-outline:hover { -webkit-text-stroke: 1px var(--gold); }
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+            transition: all 0.5s ease;
+        }
+
+        .text-outline:hover {
+            -webkit-text-stroke: 1px var(--gold);
+        }
 
         /* Premium Card Effects */
-        .premium-card { 
-            position: relative; overflow: hidden; border-radius: 1.5rem; 
+        .premium-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
             transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid rgba(255,255,255,0.03);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             background: var(--slate);
         }
-        .premium-card:hover { border-color: var(--gold); transform: translateY(-12px); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.5); }
-        .premium-card img { transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        .premium-card:hover img { transform: scale(1.08); filter: brightness(0.7); }
+
+        .premium-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .premium-card img {
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .premium-card:hover img {
+            transform: scale(1.08);
+            filter: brightness(0.7);
+        }
 
         /* Blog Card Shine */
         .blog-card {
             position: relative;
             overflow: hidden;
             background: var(--deep-gray);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .blog-card::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
             background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.1), transparent);
             transition: 0.5s;
         }
-        .blog-card:hover::before { left: 100%; }
+
+        .blog-card:hover::before {
+            left: 100%;
+        }
 
         /* Timeline Dots */
         .timeline-dot {
-            width: 12px; height: 12px;
+            width: 12px;
+            height: 12px;
             background: var(--gold);
             border-radius: 50%;
             position: relative;
@@ -174,27 +396,39 @@
         }
 
         @keyframes pulse-ring {
-            0% { transform: scale(.33); opacity: 1; }
-            80%, 100% { opacity: 0; }
+            0% {
+                transform: scale(.33);
+                opacity: 1;
+            }
+
+            80%,
+            100% {
+                opacity: 0;
+            }
         }
+
         .dot-ring::after {
             content: '';
             position: absolute;
-            top: -100%; left: -100%;
-            width: 300%; height: 300%;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
             border-radius: 50%;
             border: 2px solid var(--gold);
             animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
         }
-
     </style>
 </head>
-<body> 
+
+<body>
     <div id="cursor-dot"></div>
     <div id="cursor-outline"></div>
     <!-- Navigation -->
-    <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
-        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html" class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter"><a href="index.html"
+                class="interactive">D/P</a><span class="text-[#c5a059]">.</span></div>
         <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
             <a href="index.html#page-home" class="hover:text-white transition-colors interactive">HISTORY</a>
             <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
@@ -202,48 +436,49 @@
             <a href="index.html#page-gallery" class="hover:text-white transition-colors interactive">VISUALS</a>
             <a href="journal.html" class="hover:text-white transition-colors interactive">JOURNAL</a>
             <a href="index.html#contact" class="hover:text-[#c5a059] transition-colors interactive">BOOKING</a>
-            
+
         </div>
-        <a href="tel:+918240054002" class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
-    
+        <a href="tel:+918240054002"
+            class="bg-[#c5a059] text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">Inquire</a>
+
         <!-- MOBILE HAMBURGER -->
-    <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
-        <span class="w-6 h-[2px] bg-white block"></span>
-        <span class="w-6 h-[2px] bg-white block"></span>
-        <span class="w-6 h-[2px] bg-white block"></span>
-    </button>
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
     </nav>
 
     <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
 
-  <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
 
-      <a onclick="closeMenu()" href="index.html#page-home" class="interactive">History</a>
+            <a onclick="closeMenu()" href="index.html#page-home" class="interactive">History</a>
 
-      <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
-        Luxury Weddings
-      </a>
+            <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
+                Luxury Weddings
+            </a>
 
-      <a onclick="closeMenu()" href="index.html#page-gallery" class="interactive">Visuals</a>
+            <a onclick="closeMenu()" href="index.html#page-gallery" class="interactive">Visuals</a>
 
-      <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
+            <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
 
-      <a onclick="closeMenu()" href="index.html#contact" class="interactive text-[#c5a059]">
-        Booking
-      </a>
+            <a onclick="closeMenu()" href="index.html#contact" class="interactive text-[#c5a059]">
+                Booking
+            </a>
 
-      <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
-        Commercial
-      </a>
+            <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
+                Commercial
+            </a>
 
-      <a onclick="closeMenu()" href="tel:+918240054002"
-         class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">
-         Inquire Now
-      </a>
+            <a onclick="closeMenu()" href="tel:+918240054002"
+                class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">
+                Inquire Now
+            </a>
 
-  </div>
+        </div>
 
-</div>
+    </div>
 
 
 
@@ -252,101 +487,126 @@
         <div id="view-home" class="page-view">
 
 
-        <!-- Blog / Journal Section (Enhanced SEO) -->
-    <section id="blog" class="py-32 bg-[#080808]">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20">
-                <h2 class="font-heading text-5xl font-black">BLOGS</h2>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-10">
-                <!-- Post 1 -->
-                <article class="blog-card rounded-3xl group">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Wedding Photography Kolkata Tips">
+            <!-- Blog / Journal Section (Enhanced SEO) -->
+            <section id="blog" class="py-32 bg-[#080808]">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-20">
+                        <h2 class="font-heading text-5xl font-black">BLOGS</h2>
                     </div>
-                    <div class="p-8">
-                        <div class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                            <span>Mar 24, 2024</span>
-                            <span class="text-[#c5a059]">Wedding Guide</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">Navigating the Best Wedding Venues in North Kolkata</h3>
-                        <p class="text-sm text-gray-400 mb-6 font-light">From historical rajbaris to modern luxury halls, we break down the most photogenic spots...</p>
-                        <a href="#" class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read Insight</a>
-                    </div>
-                </article>
 
-                <!-- Post 2 -->
-                <article class="blog-card rounded-3xl group">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Video Marketing Strategy">
-                    </div>
-                    <div class="p-8">
-                        <div class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                            <span>Feb 12, 2024</span>
-                            <span class="text-[#c5a059]">Commercial</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">Why Professional Video Content is Mandatory for Kolkata Brands</h3>
-                        <p class="text-sm text-gray-400 mb-6 font-light">The digital landscape of Bengal is changing. Here is how video production scales ROI...</p>
-                        <a href="#" class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read Insight</a>
-                    </div>
-                </article>
+                    <div class="grid lg:grid-cols-3 gap-10">
+                        <!-- Post 1 -->
+                        <article class="blog-card rounded-3xl group">
+                            <div class="h-64 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    alt="Wedding Photography Kolkata Tips">
+                            </div>
+                            <div class="p-8">
+                                <div
+                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                    <span>Mar 24, 2024</span>
+                                    <span class="text-[#c5a059]">Wedding Guide</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                    Navigating the Best Wedding Venues in North Kolkata</h3>
+                                <p class="text-sm text-gray-400 mb-6 font-light">From historical rajbaris to modern
+                                    luxury halls, we break down the most photogenic spots...</p>
+                                <a href="#"
+                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                    Insight</a>
+                            </div>
+                        </article>
 
-                <!-- Post 3 -->
-                <article class="blog-card rounded-3xl group">
-                    <div class="h-64 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Technical Photography Blog">
+                        <!-- Post 2 -->
+                        <article class="blog-card rounded-3xl group">
+                            <div class="h-64 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    alt="Video Marketing Strategy">
+                            </div>
+                            <div class="p-8">
+                                <div
+                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                    <span>Feb 12, 2024</span>
+                                    <span class="text-[#c5a059]">Commercial</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                    Why Professional Video Content is Mandatory for Kolkata Brands</h3>
+                                <p class="text-sm text-gray-400 mb-6 font-light">The digital landscape of Bengal is
+                                    changing. Here is how video production scales ROI...</p>
+                                <a href="#"
+                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                    Insight</a>
+                            </div>
+                        </article>
+
+                        <!-- Post 3 -->
+                        <article class="blog-card rounded-3xl group">
+                            <div class="h-64 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    alt="Technical Photography Blog">
+                            </div>
+                            <div class="p-8">
+                                <div
+                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                    <span>Jan 05, 2024</span>
+                                    <span class="text-[#c5a059]">Technical</span>
+                                </div>
+                                <h3
+                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                    Mastering Low Light Photography: Tilottama Plaza Studio Secrets</h3>
+                                <p class="text-sm text-gray-400 mb-6 font-light">A technical breakdown of our signature
+                                    lighting style that defines Dreamline Production...</p>
+                                <a href="#"
+                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                    Insight</a>
+                            </div>
+                        </article>
                     </div>
-                    <div class="p-8">
-                        <div class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                            <span>Jan 05, 2024</span>
-                            <span class="text-[#c5a059]">Technical</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">Mastering Low Light Photography: Tilottama Plaza Studio Secrets</h3>
-                        <p class="text-sm text-gray-400 mb-6 font-light">A technical breakdown of our signature lighting style that defines Dreamline Production...</p>
-                        <a href="#" class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read Insight</a>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </section>
+                </div>
+            </section>
 
-        
 
-            
 
-            
+
+
+
         </div>
 
         <div id="views-container" class="pt-24">
 
 
-  
 
-        
 
-        
 
-    </div>
 
-            
+
+
         </div>
 
-        
-    <!-- Global Footer -->
-    <footer class="py-20 border-t border-white/5 text-center">
-        <div class="container mx-auto px-6">
-            <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span class="text-[#c5a059]">PRODUCTION</span></h2>
-            <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
-            <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
-            <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
-                &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
-                GOVT. REGISTRATION NO: WB-PR-00XXXXXX
-            </p>
-        </div>
-    </footer>
 
-       
+        </div>
+
+
+        <!-- Global Footer -->
+        <footer class="py-20 border-t border-white/5 text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span
+                        class="text-[#c5a059]">PRODUCTION</span></h2>
+                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
+                <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+                <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                    &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+                </p>
+            </div>
+        </footer>
+
+
 
     </main>
 
@@ -364,21 +624,21 @@
             { id: 7, type: 'music', title: 'The Unplugged Session', img: 'https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=800' },
             { id: 8, type: 'commercial', title: 'Textile Narrative', img: 'https://images.unsplash.com/photo-1445205170230-053b830c6050?auto=format&fit=crop&w=800' }
         ];
-        
+
         // Custom Loader Progress
         window.addEventListener('load', () => {
             const prog = document.getElementById('loader-progress');
             const loader = document.getElementById('loader');
-            
+
             prog.style.width = '100%';
-            
+
             setTimeout(() => {
                 loader.style.transform = 'translateY(-100%)';
                 document.body.style.overflow = 'auto';
             }, 800);
         });
 
-        
+
 
         // Custom Cursor
         const dot = document.getElementById('cursor-dot');
@@ -387,7 +647,7 @@
         document.addEventListener('mousemove', (e) => {
             dot.style.left = `${e.clientX}px`;
             dot.style.top = `${e.clientY}px`;
-            
+
             outline.animate({
                 left: `${e.clientX - 22}px`,
                 top: `${e.clientY - 22}px`
@@ -406,7 +666,7 @@
             // Reveal animations on scroll
             document.querySelectorAll('.reveal-text').forEach(section => {
                 const top = section.getBoundingClientRect().top;
-                if(top < window.innerHeight * 0.8) {
+                if (top < window.innerHeight * 0.8) {
                     section.classList.add('active-reveal');
                 }
             });
@@ -432,12 +692,12 @@
             }, 300);
         };
 
-                // Render Functions
+        // Render Functions
         function renderContent() {
-  document.querySelectorAll('#wedding-grid').forEach(weddingGrid => {
-    weddingGrid.innerHTML = artworks
-      .filter(a => a.type === 'wedding')
-      .map(item => `
+            document.querySelectorAll('#wedding-grid').forEach(weddingGrid => {
+                weddingGrid.innerHTML = artworks
+                    .filter(a => a.type === 'wedding')
+                    .map(item => `
         <div class="premium-card aspect-[3/4] interactive">
           <img src="${item.img}" class="w-full h-full object-cover">
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-80"></div>
@@ -447,9 +707,9 @@
           </div>
         </div>
       `).join('');
-  });
-}
-renderContent();
+            });
+        }
+        renderContent();
 
 
 
@@ -499,17 +759,17 @@ renderContent();
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        
-const menuBtn = document.getElementById("menu-btn");
-const mobileMenu = document.getElementById("mobile-menu");
 
-menuBtn.addEventListener("click", () => {
-  mobileMenu.classList.toggle("hidden");
-});
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
 
-function closeMenu(){
-  mobileMenu.classList.add("hidden");
-}
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+
+        function closeMenu() {
+            mobileMenu.classList.add("hidden");
+        }
 
 
         // Navigation Logic
@@ -532,9 +792,33 @@ function closeMenu(){
 
     </script>
     <style>
-        .filter-btn { padding: 10px 25px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); font-[10px]; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; }
-        .filter-btn.active { background: #c5a059; color: black; border-color: #c5a059; box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2); }
-        @keyframes loading { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #c5a059;
+            color: black;
+            border-color: #c5a059;
+            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
     </style>
 </body>
 

@@ -1,0 +1,323 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+    body {
+        @apply bg-black text-white font-body overflow-x-hidden;
+    }
+
+    .font-heading {
+        font-family: 'Unbounded', sans-serif;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 10px;
+}
+
+/* Creative Loader */
+#loader {
+    @apply fixed inset-0 z-50 bg-black flex items-center justify-center transition-transform duration-1000;
+    transition-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+/* Cinematic Masking */
+.mask-text {
+    background: linear-gradient(to right, #fff 50%, #444 50%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 1s ease;
+}
+
+.reveal:hover .mask-text {
+    background-position: 0 0;
+}
+
+/* Parallax Backgrounds */
+.parallax-bg {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Magnetic Button Effect */
+.magnetic-wrap {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+/* Floating Nav */
+.nav-glass {
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Custom Cursor */
+#cursor-dot {
+    width: 6px;
+    height: 6px;
+    @apply bg-gold fixed rounded-full pointer-events-none z-[9999];
+}
+
+#cursor-outline {
+    width: 45px;
+    height: 45px;
+    border: 1px solid theme('colors.gold');
+    @apply fixed rounded-full pointer-events-none z-[9998] transition-all duration-150 ease-out;
+}
+
+/* Kinetic Typography Scroll */
+.kinetic-bg {
+    @apply absolute text-[25vw] font-heading font-black leading-none text-white/5 whitespace-nowrap pointer-events-none -z-10 uppercase;
+}
+
+/* Motion Gallery */
+.motion-track {
+    display: flex;
+    gap: 2rem;
+    width: fit-content;
+    animation: glide 40s linear infinite;
+}
+
+@keyframes glide {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.motion-card {
+    width: 350px;
+    height: 500px;
+    border-radius: 1rem;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+.motion-card:hover {
+    transform: scale(1.05) translateY(-20px);
+    z-index: 10;
+}
+
+.motion-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) brightness(0.7);
+    transition: all 0.5s ease;
+}
+
+.motion-card:hover img {
+    filter: grayscale(0) brightness(1);
+}
+
+/* Floating Text Effects */
+.reveal-text {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.reveal-inner {
+    transform: translateY(100%);
+    transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.active-reveal .reveal-inner {
+    transform: translateY(0);
+}
+
+/* Custom Hover Glow */
+.interactive:hover {
+    @apply text-gold;
+}
+
+* {
+    cursor: none !important;
+}
+
+@media (max-width: 768px) {
+    * {
+        cursor: auto !important;
+    }
+
+    #cursor-dot,
+    #cursor-outline {
+        display: none !important;
+    }
+}
+
+/* Review Card Glow */
+.review-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s ease;
+}
+
+.review-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    @apply border-gold -translate-y-2;
+}
+
+/* Brand Ticker */
+.brand-track {
+    display: flex;
+    gap: 4rem;
+    width: fit-content;
+    animation: brand-glide 30s linear infinite;
+    align-items: center;
+}
+
+@keyframes brand-glide {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Marquee Animation */
+.marquee {
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    gap: 4rem;
+    padding: 2rem 0;
+}
+
+.marquee-inner {
+    display: flex;
+    gap: 4rem;
+    animation: scroll 40s linear infinite;
+}
+
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* Vertical Gallery Motion */
+.v-track-up {
+    animation: glide-up 30s linear infinite;
+}
+
+.v-track-down {
+    animation: glide-down 30s linear infinite;
+}
+
+@keyframes glide-up {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes glide-down {
+    from {
+        transform: translateY(-50%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Text Stroke Effect */
+.text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: transparent;
+    transition: all 0.5s ease;
+}
+
+.text-outline:hover {
+    -webkit-text-stroke: 1px theme('colors.gold');
+}
+
+/* Premium Card Effects */
+.premium-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    @apply bg-slate-900;
+    /* fall back */
+}
+
+.premium-card:hover {
+    @apply border-gold -translate-y-3 shadow-2xl;
+}
+
+.premium-card img {
+    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.premium-card:hover img {
+    transform: scale(1.08);
+    filter: brightness(0.7);
+}
+
+/* Blog Card Shine */
+.blog-card {
+    position: relative;
+    overflow: hidden;
+    @apply bg-deep-gray border border-white/5;
+}
+
+.blog-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.1), transparent);
+    transition: 0.5s;
+}
+
+.blog-card:hover::before {
+    left: 100%;
+}
+
+.filter-btn {
+    padding: 10px 25px;
+    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+    @apply bg-gold text-black border-gold shadow-lg;
+    box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+}
