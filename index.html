@@ -87,6 +87,7 @@
             background-size: 200% 100%;
             background-position: 100% 0;
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             transition: background-position 1s ease;
         }
@@ -487,7 +488,7 @@
 
             <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
 
-            <a href="booking.html" class="interactive text-[#c5a059]">
+            <a onclick="closeMenu()" href="booking.html" class="interactive text-[#c5a059]">
                 Booking
             </a>
 
@@ -581,7 +582,7 @@
             </div>
 
             <!-- THE MOTION GALLERY (Continuous Glide) -->
-            <section class="py-32 bg-[#080808] overflow-hidden">
+            <section id="page-gallery" class="py-32 bg-[#080808] overflow-hidden">
                 <div class="px-12 mb-16 flex justify-between items-end">
                     <h2 class="font-heading text-4xl md:text-6xl font-black tracking-tighter uppercase">The Motion
                         <br><span class="text-white/20">Archive.</span>
