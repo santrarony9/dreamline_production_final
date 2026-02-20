@@ -40,7 +40,16 @@ app.use(async (req, res, next) => {
         next();
     } catch (error) {
         console.error("Database connection failed:", error);
-        res.status(500).json({ error: "Database connection failed", details: error.message });
+
+        // DEBUG: Show what URI is being used (hide password)
+        const uri = process.env.MONGODB_URI || "UNDEFINED";
+        const maskedUri = uri.replace(/:([^:@]+)@/, ":****@");
+
+        res.status(500).json({
+            error: "Database connection failed",
+            details: error.message,
+            debug_uri: maskedUri // This will help us see if Vercel has the right config
+        });
     }
 });
 
