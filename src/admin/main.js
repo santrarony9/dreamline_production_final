@@ -1,7 +1,7 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.3.7 Loaded - Hyper-Stable Auth');
+console.log('Admin Panel v1.3.7 Loaded - Stable Auth');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';

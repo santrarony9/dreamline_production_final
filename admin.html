@@ -54,7 +54,7 @@
                     Dashboard</button>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p id="login-error" class="text-red-500 text-xs font-bold hidden">Incorrect password</p>
-                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.7 (Hyper-Stable)</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.7 (Stable)</p>
                 </div>
             </div>
 
@@ -437,9 +437,8 @@
 
                 console.log("UI Switched. Alerting user...");
 
-                // Allow repaint, then alert
+                // Allow repaint and initialize
                 setTimeout(() => {
-                    alert("Login Successful! Opening Admin Panel v1.3.7...");
                     if (window.initializeDashboard) {
                         window.initializeDashboard();
                     } else {
