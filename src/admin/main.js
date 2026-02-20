@@ -934,14 +934,15 @@ const showDashboard = () => {
     }
 };
 
-const handleLogin = () => {
+const handleLogin = async () => {
     // Redundant now as admin.html has inline handler, 
     // but kept as safety for Enter key binding
     try {
-        const pInput = document.getElementById('password-input');
+        const pInput = document.getElementById('pass-key');
         if (!pInput) return;
+        await new Promise(r => setTimeout(r, 100)); // Browser delay
         const pass = pInput.value.trim();
-        if (pass === 'admin123') {
+        if (pass.toLowerCase() === 'admin123') {
             localStorage.setItem('isAdmin', 'true');
             showDashboard();
         }
