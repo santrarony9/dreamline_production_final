@@ -2,9 +2,12 @@
 :root {
     --gold: #c5a059;
     --gold-hover: #b38f4d;
-    --black: #000000;
+    --black: #050505;
+    --navy-dark: #0a0e14;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --gold-glass: rgba(197, 160, 89, 0.1);
     --white: #ffffff;
-    --gray-bg: #f3f4f6;
 }
 
 /* Premium Login Styles */
@@ -64,13 +67,62 @@
     background-color: #1a1a1a !important;
 }
 
-/* Global Overrides */
-.hidden {
-    display: none !important;
+/* Global Theme Overrides */
+body {
+    background-color: var(--black) !important;
+    background-image:
+        radial-gradient(circle at 0% 0%, rgba(197, 160, 89, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(10, 14, 20, 0.8) 0%, transparent 50%);
+    color: #e5e7eb;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
 }
 
-body {
-    background-color: #000;
+.text-gold {
+    color: var(--gold);
+}
+
+.gold-gradient-text {
+    background: linear-gradient(135deg, #c5a059 0%, #f9e3aa 50%, #c5a059 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Unbounded', sans-serif;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(197, 160, 89, 0.3);
+    transform: translateY(-4px);
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
 }
 
 /* Generic Utility Buttons (Tailwind Fallbacks) */
@@ -236,20 +288,23 @@ body {
     background-color: #1d4ed8;
 }
 
-/* Admin Card Styling */
+/* Admin Card Styling (Theme Sync) */
 .admin-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .admin-card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(197, 160, 89, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .admin-card-thumb {
@@ -340,6 +395,57 @@ body {
     transition: box-shadow 0.2s;
 }
 
-.vault-item:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+/* Glass Tab & Navigation Enhancement */
+.active-tab {
+    background: var(--gold-glass) !important;
+    border-bottom: 2px solid var(--gold) !important;
+    color: var(--gold) !important;
+}
+
+/* Luxury Form Labels & Titles */
+#dashboard h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.1em;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+#dashboard h3 {
+    color: var(--gold);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border-bottom-width: 1px;
+    border-color: rgba(197, 160, 89, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+label {
+    color: #6b7280;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Scrollbar Theme */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 10px;
 }

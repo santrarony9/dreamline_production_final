@@ -28,9 +28,9 @@
 <body class="bg-gray-100 font-sans text-gray-900">
 
     <div id="login-screen" class="login-container flex items-center justify-center h-screen hidden-force">
-        <div class="login-card p-10 rounded-xl w-full max-w-md mx-6">
+        <div class="glass-panel p-10 rounded-2xl w-full max-w-md mx-6 border-gold-glass">
             <div class="text-center mb-10">
-                <div class="inline-block p-4 rounded-full bg-white/5 mb-6">
+                <div class="inline-block p-4 rounded-full bg-white/5 mb-6 glass-panel">
                     <img src="/logo.svg" alt="Dreamline" class="w-12 h-12">
                 </div>
                 <h2 class="text-3xl font-bold login-title">Admin Access</h2>
@@ -70,37 +70,39 @@
         </div>
     </div>
 
-    <div id="dashboard" class="min-h-screen flex flex-col">
+    <div id="dashboard" class="min-h-screen flex flex-col bg-black">
         <!-- Header -->
-        <header class="bg-black text-white p-4 flex justify-between items-center shadow-md">
-            <h1 class="text-xl font-bold text-gold-500">Dreamline Admin</h1>
-            <button id="logout-btn" class="text-sm bg-gray-700 px-3 py-1 rounded hover:bg-gray-600">Logout</button>
+        <header class="glass-panel text-white p-6 flex justify-between items-center shadow-2xl sticky top-0 z-40">
+            <h1 class="text-2xl font-bold gold-gradient-text tracking-tighter">DREAMLINE ADMIN</h1>
+            <button id="logout-btn"
+                class="text-sm bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10 transition-all">Logout</button>
         </header>
 
         <main class="flex-grow p-6 container mx-auto">
 
             <!-- Tabs -->
-            <div class="flex space-x-4 mb-6 border-b border-gray-300 pb-2 overflow-x-auto">
+            <div class="flex space-x-6 mb-10 border-b border-white/10 pb-4 overflow-x-auto">
                 <button id="tab-home"
-                    class="px-4 py-2 font-semibold text-gold-500 border-b-2 border-gold-500 whitespace-nowrap">Home
+                    class="px-6 py-2 font-bold gold-gradient-text border-b-2 border-gold-500 whitespace-nowrap uppercase text-xs tracking-widest">Home
                     Page</button>
                 <button id="tab-about"
-                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">About</button>
+                    class="px-6 py-2 font-bold text-gray-500 hover:text-gold-500 whitespace-nowrap uppercase text-xs tracking-widest transition-colors">About</button>
                 <button id="tab-weddings"
-                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Weddings</button>
+                    class="px-6 py-2 font-bold text-gray-500 hover:text-gold-500 whitespace-nowrap uppercase text-xs tracking-widest transition-colors">Weddings</button>
                 <button id="tab-master-gallery"
-                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Master
+                    class="px-6 py-2 font-bold text-gray-500 hover:text-gold-500 whitespace-nowrap uppercase text-xs tracking-widest transition-colors">Master
                     Gallery</button>
                 <button id="tab-journal"
-                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Journal</button>
+                    class="px-6 py-2 font-bold text-gray-500 hover:text-gold-500 whitespace-nowrap uppercase text-xs tracking-widest transition-colors">Journal</button>
             </div>
 
             <!-- Weddings Section -->
             <div id="section-weddings">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold">Manage Weddings</h2>
-                    <button id="add-wedding-btn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+
-                        Add New Wedding</button>
+                <div class="flex justify-between items-center mb-10">
+                    <h2 class="gold-gradient-text">Manage Weddings</h2>
+                    <button id="add-wedding-btn"
+                        class="bg-gold/10 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all font-bold">+
+                        ADD NEW WEDDING</button>
                 </div>
 
                 <div id="loading-weddings" class="text-center py-10 hidden">Loading...</div>
@@ -112,35 +114,36 @@
 
             <!-- Home Page Section -->
             <div id="section-home">
-                <h2 class="text-2xl font-semibold mb-6">Manage Home Page</h2>
+                <h2 class="gold-gradient-text">Manage Home Page</h2>
                 <div id="loading-home" class="text-center py-10 hidden">Loading...</div>
 
-                <form id="home-form" class="bg-white p-6 rounded shadow max-w-4xl">
+                <form id="home-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8">
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>
-                            <label class="block text-sm font-medium mb-1">Title Line 1</label>
-                            <input type="text" id="hero-title-line1" class="w-full p-2 border rounded">
+                            <label>Title Line 1</label>
+                            <input type="text" id="hero-title-line1" class="w-full p-4 rounded-xl glass-input">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium mb-1">Title Line 2</label>
-                            <input type="text" id="hero-title-line2" class="w-full p-2 border rounded">
+                            <label>Title Line 2</label>
+                            <input type="text" id="hero-title-line2" class="w-full p-4 rounded-xl glass-input">
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium mb-1">Subtitle</label>
-                            <input type="text" id="hero-subtitle" class="w-full p-2 border rounded">
+                            <label>Subtitle</label>
+                            <input type="text" id="hero-subtitle" class="w-full p-4 rounded-xl glass-input">
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium mb-1">Hero Background (Video/Image Link)</label>
-                            <div class="upload-group mb-2">
-                                <label class="btn-upload">
-                                    <input type="file" id="hero-media-upload">
-                                    <span>Upload Media</span>
+                            <label>Hero Background (Video/Image Link)</label>
+                            <div class="flex items-center gap-4 mb-3">
+                                <label class="btn-gold px-4 py-2 rounded-lg text-xs cursor-pointer">
+                                    <input type="file" id="hero-media-upload" class="hidden">
+                                    UPLOAD MEDIA
                                 </label>
-                                <span id="hero-media-status" class="upload-status"></span>
+                                <span id="hero-media-status"
+                                    class="text-[10px] uppercase tracking-tighter opacity-50"></span>
                             </div>
-                            <input type="text" id="hero-media-url" class="w-full p-2 border rounded"
-                                placeholder="Paste URL or Upload">
+                            <input type="text" id="hero-media-url" class="w-full p-4 rounded-xl glass-input"
+                                placeholder="Paste URL or use Upload button">
                         </div>
                     </div>
 
@@ -178,36 +181,37 @@
                         <textarea id="gallery-images" class="hidden"></textarea> <!-- Hidden backing field -->
                     </div>
 
-                    <button type="submit" class="btn-black px-8 py-3 rounded-lg mt-6 shadow-md">Save Home
-                        Content</button>
+                    <button type="submit" class="btn-gold px-10 py-4 rounded-full shadow-2xl mt-10 mx-auto block">SAVE
+                        CHANGES</button>
                 </form>
             </div>
 
             <!-- Master Gallery Section -->
             <div id="section-master-gallery" class="hidden">
-                <h2 class="text-2xl font-semibold mb-6">Manage Master Gallery</h2>
+                <h2 class="gold-gradient-text">Manage Master Gallery</h2>
                 <div id="loading-master-gallery" class="text-center py-10 hidden">Loading...</div>
 
-                <form id="master-gallery-form" class="bg-white p-6 rounded shadow max-w-4xl">
+                <form id="master-gallery-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8">
                     <div id="master-gallery-container"
                         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
                         <!-- Projects injected here -->
                     </div>
                     <button type="button" id="add-project-btn"
-                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4">+ Add Project</button>
+                        class="bg-gold/10 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all font-bold mb-4">+
+                        ADD PROJECT</button>
                     <div class="mt-4">
-                        <button type="submit" class="btn-black px-8 py-3 rounded-lg shadow-md">Save
-                            Master Gallery</button>
+                        <button type="submit" class="btn-gold px-10 py-4 rounded-full shadow-2xl mx-auto block">SAVE
+                            MASTER GALLERY</button>
                     </div>
                 </form>
             </div>
 
             <!-- About Section -->
             <div id="section-about" class="hidden">
-                <h2 class="text-2xl font-semibold mb-6">Manage About Page</h2>
+                <h2 class="gold-gradient-text">Manage About Page</h2>
                 <div id="loading-about" class="text-center py-10 hidden">Loading...</div>
 
-                <form id="about-form" class="bg-white p-6 rounded shadow max-w-4xl space-y-6">
+                <form id="about-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-10">
                     <div>
                         <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -264,18 +268,19 @@
                     </div>
 
                     <div class="flex justify-end">
-                        <button type="submit" class="btn-black px-8 py-3 rounded-lg shadow-md">Save About
-                            Content</button>
+                        <button type="submit" class="btn-gold px-10 py-4 rounded-full shadow-2xl">SAVE ABOUT
+                            CONTENT</button>
                     </div>
                 </form>
             </div>
 
             <!-- Journal Section -->
             <div id="section-journal" class="hidden">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold">Manage Journal</h2>
-                    <button id="add-journal-btn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+
-                        New Article</button>
+                <div class="flex justify-between items-center mb-10">
+                    <h2 class="gold-gradient-text">Manage Journal</h2>
+                    <button id="add-journal-btn"
+                        class="bg-gold/10 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all font-bold">+
+                        NEW ARTICLE</button>
                 </div>
                 <div id="loading-journal" class="text-center py-10 hidden">Loading...</div>
                 <div id="journal-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
