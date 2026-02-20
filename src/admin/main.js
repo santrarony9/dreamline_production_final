@@ -170,9 +170,62 @@ const renderHomeForm = () => {
     if (siteContent.gallery) {
         document.getElementById('gallery-title').value = siteContent.gallery.title || '';
         document.getElementById('gallery-subtitle').value = siteContent.gallery.subtitle || '';
-        document.getElementById('gallery-images').value = (siteContent.gallery.images || []).join(',\n');
+
+        // Render Gallery Grid
+        renderMotionGalleryForm(siteContent.gallery.images || []);
     }
 };
+
+const renderMotionGalleryForm = (images) => {
+    const container = document.getElementById('gallery-container');
+    const hiddenInput = document.getElementById('gallery-images');
+
+    // Update hidden input
+    hiddenInput.value = images.join(',');
+
+    container.innerHTML = images.map((img, i) => `
+        <div class="gallery-item group relative">
+            <img src="${img}" class="w-full h-full object-cover">
+            <div class="gallery-item-actions">
+                <button type="button" class="btn-remove-img" onclick="removeGalleryImage(${i})">Remove</button>
+            </div>
+        </div>
+    `).join('');
+};
+
+window.removeGalleryImage = (index) => {
+    const hiddenInput = document.getElementById('gallery-images');
+    const images = hiddenInput.value.split(',').filter(s => s);
+    images.splice(index, 1);
+    renderMotionGalleryForm(images);
+};
+
+// Gallery Upload Listener
+document.getElementById('gallery-upload').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files);
+    const statusEl = document.getElementById('gallery-upload-status');
+    const hiddenInput = document.getElementById('gallery-images');
+    let currentImages = hiddenInput.value.split(',').filter(s => s);
+
+    if (files.length === 0) return;
+
+    statusEl.textContent = 'Uploading...';
+    statusEl.className = 'upload-status loading';
+
+    try {
+        for (const file of files) {
+            const url = await uploadFile(file);
+            if (url) currentImages.push(url);
+        }
+        renderMotionGalleryForm(currentImages);
+        statusEl.textContent = 'Done!';
+        statusEl.className = 'upload-status success';
+        setTimeout(() => statusEl.textContent = '', 2000);
+    } catch (err) {
+        statusEl.textContent = 'Error';
+        statusEl.className = 'upload-status error';
+    }
+});
 
 const renderAboutForm = () => {
     if (!siteContent.about) return;
@@ -317,7 +370,9 @@ homeForm.addEventListener('submit', async (e) => {
     // Update Gallery
     updatedContent.gallery.title = document.getElementById('gallery-title').value;
     updatedContent.gallery.subtitle = document.getElementById('gallery-subtitle').value;
-    updatedContent.gallery.images = document.getElementById('gallery-images').value.split(',').map(s => s.trim()).filter(s => s);
+    updatedContent.gallery.title = document.getElementById('gallery-title').value;
+    updatedContent.gallery.subtitle = document.getElementById('gallery-subtitle').value;
+    updatedContent.gallery.images = document.getElementById('gallery-images').value.split(',').filter(s => s);
 
     await saveContent(updatedContent);
 });
@@ -371,22 +426,35 @@ const saveContent = async (content) => {
 };
 
 // Upload for Content Form
-document.getElementById('hero-video-upload').addEventListener('change', async (e) => {
-    if (e.target.files[0]) {
-        const url = await uploadFile(e.target.files[0]);
-        if (url) {
-            document.getElementById('hero-video-url').value = url;
+// Upload for Content Form (Enhanced)
+const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
+    document.getElementById(inputId).addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        const statusEl = document.getElementById(statusId);
+        if (!file) return;
+
+        statusEl.textContent = 'Uploading...';
+        statusEl.className = 'upload-status loading';
+
+        try {
+            const url = await uploadFile(file);
+            if (url) {
+                document.getElementById(urlInputId).value = url;
+                if (previewId) document.getElementById(previewId).src = url;
+                statusEl.textContent = 'Success!';
+                statusEl.className = 'upload-status success';
+            }
+        } catch (err) {
+            statusEl.textContent = 'Failed';
+            statusEl.className = 'upload-status error';
         }
-    }
-});
-document.getElementById('about-founder-upload').addEventListener('change', async (e) => {
-    if (e.target.files[0]) {
-        const url = await uploadFile(e.target.files[0]);
-        if (url) {
-            document.getElementById('about-founder-img').value = url;
-        }
-    }
-});
+    });
+};
+
+// Init Uploaders
+setupFileUpload('hero-video-upload', 'hero-video-status', 'hero-video-url');
+setupFileUpload('about-founder-upload', 'about-founder-status', 'about-founder-img');
+
 
 // --- JOURNAL FUNCTIONS ---
 
