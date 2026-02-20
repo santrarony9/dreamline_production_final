@@ -895,67 +895,106 @@ weddingForm.addEventListener('submit', async (e) => {
 // Init
 // --- AUTHENTICATION ---
 const checkAuth = () => {
-    const isAdmin = localStorage.getItem('isAdmin');
-    if (isAdmin === 'true') {
-        showDashboard();
+    try {
+        const isAdmin = localStorage.getItem('isAdmin');
+        if (isAdmin === 'true') {
+            showDashboard();
+        }
+    } catch (err) {
+        console.error('Auth check failed:', err);
     }
 };
 
 const showDashboard = () => {
-    loginScreen.classList.add('hidden');
-    dashboard.classList.remove('hidden');
-    fetchWeddings();
-    // Default tab is home, but let's load it
-    // switchTab('home'); // already default?
-    // Trigger click on default
-    tabHome.click();
-};
+    try {
+        console.log('Showing dashboard...');
+        const screen = document.getElementById('login-screen');
+        const dash = document.getElementById('dashboard');
 
-// --- AUTHENTICATION ---
-const handleLogin = () => {
-    console.log('Login attempt started...');
-    const password = passwordInput.value;
-    console.log('Password entered:', password ? '****' : '(empty)');
+        if (screen) screen.classList.add('hidden');
+        if (dash) dash.classList.remove('hidden');
 
-    if (password === 'admin123') {
-        console.log('Login successful!');
-        localStorage.setItem('isAdmin', 'true');
-        showDashboard();
-    } else {
-        console.log('Login failed: Incorrect password');
-        loginError.classList.remove('hidden');
+        fetchWeddings();
+
+        const homeTab = document.getElementById('tab-home');
+        if (homeTab) {
+            homeTab.click();
+        } else {
+            console.warn('tab-home not found for initial click');
+        }
+    } catch (err) {
+        console.error('showDashboard failed:', err);
+        alert('Dashboard load error: ' + err.message);
     }
 };
 
-if (loginBtn) {
-    console.log('Attaching click listener to loginBtn');
-    loginBtn.addEventListener('click', handleLogin);
-} else {
-    console.warn('loginBtn NOT found in DOM!');
-}
+const handleLogin = () => {
+    try {
+        console.log('handleLogin triggered');
+        const pInput = document.getElementById('password-input');
+        const lError = document.getElementById('login-error');
 
-if (passwordInput) {
-    passwordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
-    });
-}
+        if (!pInput) {
+            alert('Error: password-input element not found!');
+            return;
+        }
 
-// Password toggle logic
-const toggleBtn = document.getElementById('toggle-password');
-if (toggleBtn && passwordInput) {
-    toggleBtn.addEventListener('click', () => {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
+        const password = pInput.value.trim();
+        console.log('Attempting login with password length:', password.length);
 
-        // Update icon opacity or something
-        toggleBtn.style.opacity = type === 'text' ? '1' : '0.5';
-    });
-}
+        if (password === 'admin123') {
+            console.log('Credentials valid. Logging in...');
+            localStorage.setItem('isAdmin', 'true');
+            showDashboard();
+        } else {
+            console.warn('Invalid password attempt');
+            if (lError) lError.classList.remove('hidden');
+            alert('Incorrect Security Key. Please check the key and try again.');
+        }
+    } catch (err) {
+        console.error('handleLogin crash:', err);
+        alert('Login process error: ' + err.message);
+    }
+};
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-    localStorage.removeItem('isAdmin');
-    location.reload();
+// Global Initialization
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded - Initializing Admin UI');
+
+    // Attach Login
+    const lBtn = document.getElementById('login-btn');
+    if (lBtn) {
+        lBtn.addEventListener('click', handleLogin);
+        console.log('Login button listener attached');
+    } else {
+        console.error('login-btn not found during init!');
+    }
+
+    const pInput = document.getElementById('password-input');
+    if (pInput) {
+        pInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    }
+
+    // Password toggle
+    const tBtn = document.getElementById('toggle-password');
+    if (tBtn && pInput) {
+        tBtn.addEventListener('click', () => {
+            const type = pInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pInput.setAttribute('type', type);
+            tBtn.style.opacity = type === 'text' ? '1' : '0.5';
+        });
+    }
+
+    // Logout
+    const logout = document.getElementById('logout-btn');
+    if (logout) {
+        logout.addEventListener('click', () => {
+            localStorage.removeItem('isAdmin');
+            location.reload();
+        });
+    }
+
+    checkAuth();
 });
-
-// Init
-checkAuth();
