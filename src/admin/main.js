@@ -22,7 +22,7 @@ const renderStatsList = () => {
         <div class="admin-card p-3">
             <div class="mb-2">
                 <label class="block text-xs font-bold mb-1">Number</label>
-                <input type="text" class="w-full p-1 border rounded text-xs" value="${s.number}" oninput="window.updateStat(${i}, 'number', this.value)">
+                <input type="text" class="w-full p-1 border rounded text-xs" value="${s.value}" oninput="window.updateStat(${i}, 'value', this.value)">
             </div>
             <div class="mb-2">
                 <label class="block text-xs font-bold mb-1">Label</label>
@@ -56,7 +56,7 @@ const renderMarqueeFields = () => {
 
 document.getElementById('add-stat-btn').addEventListener('click', () => {
     if (!siteContent.stats) siteContent.stats = [];
-    siteContent.stats.push({ number: '0', label: 'New Stat' });
+    siteContent.stats.push({ value: '0', label: 'New Stat' });
     renderStatsList();
 });
 
@@ -189,7 +189,7 @@ const renderHomeForm = () => {
     document.getElementById('hero-title-line1').value = siteContent.hero.title?.line1 || '';
     document.getElementById('hero-title-line2').value = siteContent.hero.title?.line2 || '';
     document.getElementById('hero-subtitle').value = siteContent.hero.subtitle || '';
-    document.getElementById('hero-media-url').value = siteContent.hero.bg || '';
+    document.getElementById('hero-media-url').value = siteContent.hero.videoUrl || '';
 
     // Setup Hero Media Upload
     setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url');
@@ -494,7 +494,7 @@ homeForm.addEventListener('submit', async (e) => {
     updatedContent.hero.title.line1 = document.getElementById('hero-title-line1').value;
     updatedContent.hero.title.line2 = document.getElementById('hero-title-line2').value;
     updatedContent.hero.subtitle = document.getElementById('hero-subtitle').value;
-    updatedContent.hero.bg = document.getElementById('hero-media-url').value;
+    updatedContent.hero.videoUrl = document.getElementById('hero-media-url').value;
 
     // Update Video Vault
     updatedContent.videoVault = siteContent.videoVault;
