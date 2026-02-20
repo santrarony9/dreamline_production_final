@@ -1,4 +1,84 @@
 /* Admin Specific Styles */
+:root {
+    --gold: #c5a059;
+    --gold-hover: #b38f4d;
+    --black: #000000;
+    --white: #ffffff;
+    --gray-bg: #f3f4f6;
+}
+
+/* Premium Login Styles */
+.login-container {
+    background: #0a0a0a;
+    color: white;
+    font-family: 'Inter', sans-serif;
+}
+
+.login-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.login-title {
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.login-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white !important;
+}
+
+.login-input:focus {
+    border-color: var(--gold);
+    outline: none;
+}
+
+/* Explicit Button Styles (Fixes invisibility) */
+.btn-gold {
+    background-color: var(--gold) !important;
+    color: black !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    background-color: var(--gold-hover) !important;
+    transform: translateY(-1px);
+}
+
+.btn-black {
+    background-color: var(--black) !important;
+    color: white !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-black:hover {
+    background-color: #1a1a1a !important;
+}
+
+/* Generic Utility Buttons (Tailwind Fallbacks) */
+.btn-primary {
+    background-color: #2563eb !important;
+    color: white !important;
+}
+
+.btn-success {
+    background-color: #10b981 !important;
+    color: white !important;
+}
+
+.btn-danger {
+    background-color: #ef4444 !important;
+    color: white !important;
+}
 
 /* Upload Button Styling */
 .upload-group {

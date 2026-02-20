@@ -12,13 +12,30 @@
 
 <body class="bg-gray-100 font-sans text-gray-900">
 
-    <div id="login-screen" class="flex items-center justify-center h-screen bg-black">
-        <div class="bg-white p-8 rounded shadow-md w-96">
-            <h2 class="text-2xl font-bold mb-4 text-center">Admin Login</h2>
-            <input type="password" id="password-input" placeholder="Enter Password"
-                class="w-full p-2 border border-gray-300 rounded mb-4">
-            <button id="login-btn" class="w-full bg-gold-500 text-white p-2 rounded hover:bg-gold-600">Login</button>
-            <p id="login-error" class="text-red-500 text-sm mt-2 hidden">Incorrect password</p>
+    <div id="login-screen" class="login-container flex items-center justify-center h-screen">
+        <div class="login-card p-10 rounded-xl w-full max-w-md mx-6">
+            <div class="text-center mb-10">
+                <div class="inline-block p-4 rounded-full bg-white/5 mb-6">
+                    <img src="/logo.svg" alt="Dreamline" class="w-12 h-12">
+                </div>
+                <h2 class="text-3xl font-bold login-title">Admin Access</h2>
+                <p class="text-gray-500 text-sm mt-2">Enter credentials to manage your cinema</p>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gold-500 font-bold mb-2">Security
+                        Key</label>
+                    <input type="password" id="password-input" placeholder="••••••••"
+                        class="login-input w-full p-4 rounded-lg">
+                </div>
+                <button id="login-btn" class="btn-gold w-full p-4 rounded-lg shadow-lg">Login Dashboard</button>
+                <p id="login-error" class="text-red-500 text-sm text-center font-bold hidden">Incorrect password</p>
+            </div>
+
+            <div class="mt-12 text-center">
+                <p class="text-[10px] text-gray-600 uppercase tracking-widest">Authorized Personnel Only</p>
+            </div>
         </div>
     </div>
 
@@ -130,7 +147,7 @@
                         <textarea id="gallery-images" class="hidden"></textarea> <!-- Hidden backing field -->
                     </div>
 
-                    <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 mt-4">Save Home
+                    <button type="submit" class="btn-black px-8 py-3 rounded-lg mt-6 shadow-md">Save Home
                         Content</button>
                 </form>
             </div>
@@ -148,7 +165,7 @@
                     <button type="button" id="add-project-btn"
                         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4">+ Add Project</button>
                     <div class="mt-4">
-                        <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save
+                        <button type="submit" class="btn-black px-8 py-3 rounded-lg shadow-md">Save
                             Master Gallery</button>
                     </div>
                 </form>
@@ -216,7 +233,7 @@
                     </div>
 
                     <div class="flex justify-end">
-                        <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save About
+                        <button type="submit" class="btn-black px-8 py-3 rounded-lg shadow-md">Save About
                             Content</button>
                     </div>
                 </form>
@@ -303,7 +320,7 @@
                 <div class="mt-6 flex justify-end gap-3">
                     <button type="button" id="cancel-btn"
                         class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">Save
+                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save
                         Changes</button>
                 </div>
             </form>
@@ -356,7 +373,7 @@
                 <div class="mt-6 flex justify-end gap-3">
                     <button type="button" id="cancel-journal-btn"
                         class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">Save
+                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save
                         Article</button>
                 </div>
             </form>
@@ -365,7 +382,7 @@
 
     <footer class="bg-gray-900 text-white py-6 text-center mt-12 mb-8">
         <p>&copy; 2025 Dreamline. All rights reserved.</p>
-        <p class="text-xs text-gray-500 mt-1">Admin Panel v1.2 (Debug Mode)</p>
+        <p class="text-xs text-gray-500 mt-1">Admin Panel v1.3 (Premium UI)</p>
     </footer>
 
     <script type="module" src="/src/admin/main.js"></script>
