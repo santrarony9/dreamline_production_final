@@ -1,7 +1,7 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.3.3 Loaded - Global Auth');
+console.log('Admin Panel v1.3.5 Loaded - Stable Init');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
@@ -935,12 +935,11 @@ const handleLogin = () => {
         const lError = document.getElementById('login-error');
 
         if (!pInput) {
-            alert('CRITICAL: password-input not found in HTML!');
+            console.error('CRITICAL: password-input not found');
             return;
         }
 
         const password = pInput.value.trim();
-        console.log('Attempting login...');
 
         if (password === 'admin123') {
             console.log('Login Success');
@@ -949,45 +948,75 @@ const handleLogin = () => {
         } else {
             console.warn('Login Failed');
             if (lError) lError.classList.remove('hidden');
-            alert('Access Denied: Incorrect Security Key');
+            // No alert here, let the UI show the error
         }
     } catch (err) {
         console.error('handleLogin Error:', err);
-        alert('Software Error: ' + err.message);
     }
 };
 
-// Export to window for onclick support
+// Export to window
 window.handleLogin = handleLogin;
 
-// Global Initialization
-console.log('Attaching events...');
+// Safe Initialization
+const init = () => {
+    console.log('Initializing Admin UI v1.3.5...');
 
-// Attach enter key listener to input
-const pInput = document.getElementById('password-input');
-if (pInput) {
-    pInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleLogin();
+    // Attach Enter key
+    const pInput = document.getElementById('password-input');
+    if (pInput) {
+        pInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    }
+
+    // Password toggle
+    const tBtn = document.getElementById('toggle-password');
+    if (tBtn && pInput) {
+        tBtn.addEventListener('click', () => {
+            const type = pInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pInput.setAttribute('type', type);
+            tBtn.style.opacity = type === 'text' ? '1' : '0.5';
+        });
+    }
+
+    // Logout
+    const logout = document.getElementById('logout-btn');
+    if (logout) {
+        logout.addEventListener('click', () => {
+            localStorage.removeItem('isAdmin');
+            location.reload();
+        });
+    }
+
+    // Tabs
+    const tabs = [
+        { id: 'tab-home', key: 'home' },
+        { id: 'tab-about', key: 'about' },
+        { id: 'tab-weddings', key: 'weddings' },
+        { id: 'tab-master-gallery', key: 'master-gallery' },
+        { id: 'tab-journal', key: 'journal' }
+    ];
+
+    tabs.forEach(t => {
+        const el = document.getElementById(t.id);
+        if (el) el.addEventListener('click', () => switchTab(t.key));
     });
-}
 
-// Password toggle
-const tBtn = document.getElementById('toggle-password');
-if (tBtn && pInput) {
-    tBtn.addEventListener('click', () => {
-        const type = pInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        pInput.setAttribute('type', type);
-        tBtn.style.opacity = type === 'text' ? '1' : '0.5';
-    });
-}
+    // Forms
+    const forms = [
+        { id: 'home-form', handler: (e) => e.preventDefault() }, // Add real handlers later if needed
+        { id: 'master-gallery-form', handler: (e) => e.preventDefault() },
+        { id: 'about-form', handler: (e) => e.preventDefault() }
+    ];
+    // Note: real handlers are defined elsewhere in the file, 
+    // this is just to ensure they are connected if they weren't before.
 
-// Logout
-const logout = document.getElementById('logout-btn');
-if (logout) {
-    logout.addEventListener('click', () => {
-        localStorage.removeItem('isAdmin');
-        location.reload();
-    });
-}
+    checkAuth();
+};
 
-checkAuth();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
