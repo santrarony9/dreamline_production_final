@@ -13,6 +13,12 @@ const ContentSchema = new mongoose.Schema({
             link: String
         }]
     },
+    videoVault: [{
+        title: String,
+        category: String,
+        image: String,
+        videoUrl: String
+    }],
     marquee: [String],
     stats: [{
         value: String,
