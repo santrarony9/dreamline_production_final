@@ -1,7 +1,7 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.3.7 Loaded - Stable Auth');
+console.log('Admin Panel v1.5.1 Loaded - Premium Luxury Theme');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
@@ -19,16 +19,16 @@ const renderStatsList = () => {
     if (!siteContent.stats) siteContent.stats = [];
 
     container.innerHTML = siteContent.stats.map((s, i) => `
-        <div class="admin-card p-3">
-            <div class="mb-2">
-                <label class="block text-xs font-bold mb-1">Number</label>
-                <input type="text" class="w-full p-1 border rounded text-xs" value="${s.value}" oninput="window.updateStat(${i}, 'value', this.value)">
+        <div class="glass-card p-4 rounded-xl border-white/5 shadow-xl">
+            <div class="mb-3">
+                <label>Number</label>
+                <input type="text" class="glass-input w-full p-3 rounded-lg text-sm" value="${s.value}" oninput="window.updateStat(${i}, 'value', this.value)">
             </div>
-            <div class="mb-2">
-                <label class="block text-xs font-bold mb-1">Label</label>
-                <input type="text" class="w-full p-1 border rounded text-xs" value="${s.label}" oninput="window.updateStat(${i}, 'label', this.value)">
+            <div class="mb-3">
+                <label>Label</label>
+                <input type="text" class="glass-input w-full p-3 rounded-lg text-sm" value="${s.label}" oninput="window.updateStat(${i}, 'label', this.value)">
             </div>
-            <button type="button" class="btn-delete-card w-full mt-1" onclick="window.deleteStat(${i})">Remove</button>
+            <button type="button" class="w-full mt-2 text-[10px] text-red-400 opacity-50 hover:opacity-100 uppercase tracking-widest font-bold transition-opacity" onclick="window.deleteStat(${i})">Remove Stat</button>
         </div>
     `).join('');
 };
@@ -50,7 +50,7 @@ const renderMarqueeFields = () => {
     const marqueeContainer = document.getElementById('marquee-container');
     marqueeContainer.innerHTML = '';
     (siteContent.marquee || []).forEach((text, i) => {
-        marqueeContainer.innerHTML += `<input type="text" class="w-full p-2 border rounded" value="${text}" name="marquee_${i}">`;
+        marqueeContainer.innerHTML += `<input type="text" class="w-full p-4 rounded-xl glass-input mb-2" value="${text}" name="marquee_${i}">`;
     });
 };
 
@@ -114,34 +114,34 @@ const switchTab = (tab) => {
 
     // Reset tab styles
     [tabHome, tabWeddings, tabMasterGallery, tabAbout, tabJournal].forEach(t => {
-        t.classList.remove('text-gold-500', 'border-b-2', 'border-gold-500');
+        t.classList.remove('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         t.classList.add('text-gray-500');
     });
 
     // Show active section & style tab
     if (tab === 'home') {
         sectionHome.classList.remove('hidden');
-        tabHome.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabHome.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         tabHome.classList.remove('text-gray-500');
-        fetchContent(); // Reload to get fresh data
+        fetchContent();
     } else if (tab === 'weddings') {
         sectionWeddings.classList.remove('hidden');
-        tabWeddings.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabWeddings.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         tabWeddings.classList.remove('text-gray-500');
         fetchWeddings();
     } else if (tab === 'master-gallery') {
         sectionMasterGallery.classList.remove('hidden');
-        tabMasterGallery.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabMasterGallery.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         tabMasterGallery.classList.remove('text-gray-500');
-        fetchContent(); // Master Gallery projects are part of content
+        fetchContent();
     } else if (tab === 'about') {
         sectionAbout.classList.remove('hidden');
-        tabAbout.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabAbout.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         tabAbout.classList.remove('text-gray-500');
-        fetchContent(); // About is part of content
+        fetchContent();
     } else if (tab === 'journal') {
         sectionJournal.classList.remove('hidden');
-        tabJournal.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabJournal.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         tabJournal.classList.remove('text-gray-500');
         fetchJournals();
     }
@@ -221,14 +221,14 @@ const renderMotionGalleryForm = (images) => {
     hiddenInput.value = images.join(',');
 
     container.innerHTML = images.map((img, i) => `
-        <div class="gallery-item group relative">
-            <img src="${img}" class="w-full h-full object-cover">
-            <div class="gallery-item-actions">
-                <label class="btn-replace-img">
+        <div class="glass-card p-2 rounded-xl border-white/5 overflow-hidden group relative aspect-square">
+            <img src="${img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                <label class="bg-gold text-black text-[10px] font-bold px-3 py-1 rounded-full cursor-pointer hover:bg-white transition-colors">
                     <input type="file" onchange="window.replaceGalleryImage(this, ${i})" class="hidden">
-                    Replace
+                    REPLACE
                 </label>
-                <button type="button" class="btn-remove-img" onclick="removeGalleryImage(${i})">Remove</button>
+                <button type="button" class="text-[10px] font-bold text-red-400 hover:text-white transition-colors" onclick="removeGalleryImage(${index})">REMOVE</button>
             </div>
         </div>
     `).join('');
@@ -305,45 +305,45 @@ const renderMasterGalleryList = () => {
     if (!siteContent.projects) siteContent.projects = [];
 
     container.innerHTML = siteContent.projects.map((proj, i) => `
-        <div class="admin-card">
-            <img src="${proj.img}" class="admin-card-thumb">
-            <div class="admin-card-body">
-                <span class="admin-card-title">${proj.title || 'Untitled'}</span>
-                <span class="admin-card-subtitle">${proj.type || 'Commercial'}</span>
+        <div class="glass-card overflow-hidden">
+            <img src="${proj.img}" class="w-full h-40 object-cover border-b border-white/5">
+            <div class="p-4">
+                <span class="block text-gold font-bold text-sm tracking-tight mb-1 truncate">${proj.title || 'Untitled'}</span>
+                <span class="block text-[10px] text-gray-500 uppercase tracking-widest">${proj.type || 'Commercial'}</span>
             </div>
-            <div class="admin-card-actions">
-                <button type="button" class="btn-edit-card" onclick="window.toggleEditProject(${i})">Edit</button>
-                <button type="button" class="btn-delete-card" onclick="window.deleteProject(${i})">Delete</button>
+            <div class="p-4 pt-0 flex gap-2">
+                <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-bold py-2 rounded-lg hover:bg-gold hover:text-black transition-all" onclick="window.toggleEditProject(${i})">EDIT</button>
+                <button type="button" class="bg-red-900/20 text-red-500 text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-red-600 hover:text-white transition-all" onclick="window.deleteProject(${i})">DEL</button>
             </div>
             
             <!-- Edit Form (Hidden by default) -->
-            <div id="edit-project-${i}" class="admin-card-edit hidden">
-                <div class="grid grid-cols-2 gap-2 mb-2">
+            <div id="edit-project-${i}" class="p-4 pt-0 space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold mb-1">Title</label>
-                        <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.title}" oninput="window.updateProject(${i}, 'title', this.value)">
+                        <label>Title</label>
+                        <input type="text" class="glass-input w-full p-2 rounded-lg text-xs" value="${proj.title}" oninput="window.updateProject(${i}, 'title', this.value)">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold mb-1">Type</label>
-                        <select class="w-full p-1 border rounded text-xs" onchange="window.updateProject(${i}, 'type', this.value)">
+                        <label>Type</label>
+                        <select class="glass-input w-full p-2 rounded-lg text-xs" onchange="window.updateProject(${i}, 'type', this.value)">
                             <option value="commercial" ${proj.type === 'commercial' ? 'selected' : ''}>Commercial</option>
                             <option value="wedding" ${proj.type === 'wedding' ? 'selected' : ''}>Wedding</option>
                             <option value="music" ${proj.type === 'music' ? 'selected' : ''}>Music</option>
                         </select>
                     </div>
                 </div>
-                <div class="mb-2">
-                     <label class="block text-xs font-bold mb-1">Image</label>
-                     <div class="upload-group mb-1">
-                        <label class="btn-upload py-1 px-2 text-xs">
-                            <input type="file" onchange="window.uploadProjectImage(this, ${i})">
-                            <span>Replace Image</span>
+                <div>
+                     <label>Image URL</label>
+                     <div class="flex items-center gap-2 mb-2">
+                        <label class="bg-gold/10 text-gold border border-gold/30 px-3 py-1 rounded text-[10px] font-bold cursor-pointer hover:bg-gold hover:text-black transition-all">
+                            <input type="file" onchange="window.uploadProjectImage(this, ${i})" class="hidden">
+                            UPLOAD
                         </label>
-                        <span id="proj-status-${i}" class="upload-status"></span>
+                        <span id="proj-status-${i}" class="text-[9px] uppercase opacity-50"></span>
                     </div>
-                     <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.img}" oninput="window.updateProject(${i}, 'img', this.value)">
+                     <input type="text" class="glass-input w-full p-2 rounded-lg text-xs" value="${proj.img}" oninput="window.updateProject(${i}, 'img', this.value)">
                 </div>
-                <button type="button" class="text-xs text-blue-600 underline" onclick="window.toggleEditProject(${i})">Done</button>
+                <button type="button" class="w-full text-[10px] font-bold text-gold uppercase tracking-widest text-center py-2 bg-gold/5 rounded-lg border border-gold/10" onclick="window.toggleEditProject(${i})">DONE</button>
             </div>
         </div>
     `).join('');
@@ -594,19 +594,21 @@ setupFileUpload('about-founder-upload', 'about-founder-status', 'about-founder-i
 const renderJournalList = () => {
     const list = document.getElementById('journal-list');
     list.innerHTML = journals.map(j => `
-        <div class="bg-white rounded shadow p-4 flex flex-col justify-between">
-            <div>
-                 <img src="${j.image}" alt="${j.title}" class="w-full h-40 object-cover rounded mb-4 bg-gray-100">
-                <div class="flex gap-2 text-xs font-bold text-gray-500 mb-2">
-                    <span>${j.date || 'No Date'}</span>
-                     <span class="text-gold-500">${j.category || 'Uncategorized'}</span>
-                </div>
-                <h3 class="font-bold text-lg leading-tight mb-2">${j.title}</h3>
-                <p class="text-gray-500 text-xs line-clamp-3">${j.excerpt || ''}</p>
+        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between border-white/5 transition-all">
+            <div class="relative group overflow-hidden rounded-xl mb-4">
+                 <img src="${j.image}" alt="${j.title}" class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110">
+                 <div class="absolute top-3 left-3 flex gap-2">
+                    <span class="bg-black/60 backdrop-blur-md text-[9px] text-white px-3 py-1 rounded-full uppercase tracking-widest font-bold">${j.date || ''}</span>
+                    <span class="bg-gold/80 backdrop-blur-md text-[9px] text-black px-3 py-1 rounded-full uppercase tracking-widest font-bold">${j.category || ''}</span>
+                 </div>
             </div>
-             <div class="mt-4 flex gap-2">
-                <button onclick="window.editJournal('${j.id}')" class="flex-1 bg-blue-600 text-white py-2 rounded text-sm hover:bg-blue-700">Edit</button>
-                <button onclick="window.deleteJournal('${j.id}')" class="bg-red-500 text-white px-3 py-2 rounded text-sm hover:bg-red-600">Del</button>
+            <div>
+                <h3 class="font-bold text-lg text-white leading-tight mb-3 line-clamp-2">${j.title}</h3>
+                <p class="text-gray-500 text-xs line-clamp-3 leading-relaxed mb-6">${j.excerpt || ''}</p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="window.editJournal('${j.id}')" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-bold py-3 rounded-xl hover:bg-gold hover:text-black transition-all uppercase tracking-widest">EDIT</button>
+                <button onclick="window.deleteJournal('${j.id}')" class="bg-red-900/20 text-red-500 text-[10px] font-bold px-4 py-3 rounded-xl hover:bg-red-600 hover:text-white transition-all uppercase tracking-widest">DEL</button>
             </div>
         </div>
     `).join('');
@@ -709,16 +711,18 @@ window.deleteJournal = async (id) => {
 // --- RENDERING ---
 const renderWeddingList = () => {
     weddingList.innerHTML = weddings.map(w => `
-        <div class="bg-white rounded shadow p-4 flex flex-col justify-between">
+        <div class="glass-card p-6 rounded-2xl flex flex-col justify-between border-white/5">
             <div>
-                <img src="${w.coverImage}" alt="${w.title}" class="w-full h-40 object-cover rounded mb-4">
-                <h3 class="font-bold text-lg">${w.title}</h3>
-                <p class="text-gray-500 text-sm mb-2">${w.subtitle}</p>
-                <p class="text-gray-700 text-sm line-clamp-3">${w.description}</p>
+                <div class="relative overflow-hidden rounded-xl mb-5">
+                    <img src="${w.coverImage}" alt="${w.title}" class="w-full h-52 object-cover transition-transform duration-700 hover:scale-105">
+                </div>
+                <h3 class="font-bold text-lg gold-gradient-text transition-all">${w.title}</h3>
+                <p class="text-gray-400 text-xs font-medium mb-3 uppercase tracking-widest">${w.subtitle || ''}</p>
+                <p class="text-gray-500 text-xs line-clamp-3 leading-relaxed mb-6">${w.description}</p>
             </div>
-            <div class="mt-4 flex gap-2">
-                <button onclick="window.editWedding('${w.id}')" class="flex-1 bg-blue-600 text-white py-2 rounded text-sm hover:bg-blue-700">Edit</button>
-                <button onclick="window.deleteWedding('${w.id}')" class="bg-red-500 text-white px-3 py-2 rounded text-sm hover:bg-red-600">Del</button>
+            <div class="flex gap-2">
+                <button onclick="window.editWedding('${w.id}')" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-bold py-3 rounded-xl hover:bg-gold hover:text-black transition-all uppercase tracking-widest">EDIT FILM</button>
+                <button onclick="window.deleteWedding('${w.id}')" class="bg-red-900/20 text-red-500 text-[10px] font-bold px-4 py-3 rounded-xl hover:bg-red-600 hover:text-white transition-all uppercase tracking-widest">DEL</button>
             </div>
         </div>
     `).join('');
