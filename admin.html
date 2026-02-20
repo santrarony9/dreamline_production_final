@@ -16,6 +16,12 @@
             opacity: 0 !important;
             pointer-events: none !important;
         }
+
+        /* Mask text as dots even if type is text (bypasses browser security lock) */
+        .masked-input {
+            -webkit-text-security: disc !important;
+            text-security: disc !important;
+        }
     </style>
 </head>
 
@@ -36,8 +42,8 @@
                     <label class="block text-xs uppercase tracking-widest text-gold-500 font-bold mb-2">Security
                         Key</label>
                     <div class="relative">
-                        <input type="password" id="pass-key" name="admin_password" autocomplete="current-password"
-                            placeholder="••••••••" class="login-input w-full p-4 pr-12 rounded-lg">
+                        <input type="text" id="secure-key-entry" name="dream_key" autocomplete="off"
+                            placeholder="••••••••" class="login-input w-full p-4 pr-12 rounded-lg masked-input">
                         <button type="button" id="toggle-password"
                             class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gold-500">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -54,7 +60,7 @@
                     Dashboard</button>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p id="login-error" class="text-red-500 text-xs font-bold hidden">Incorrect password</p>
-                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.4.0 (Stable)</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.4.1 (Stable)</p>
                 </div>
             </div>
 
@@ -411,73 +417,52 @@
     </footer>
 
     <script>
-        // Ultimate Login Logic (v1.4.0)
+        // Version 1.4.1 - The "Bypass" Logic
         async function handleLogin() {
-            console.log("Login v1.4.0 checking...");
-
-            // Try ID first, then generic selector
-            let pInput = document.getElementById('pass-key') || document.querySelector('input[type="password"]');
-
-            if (!pInput) {
-                alert("Error: Login box not found. Please refresh the page.");
+            const entry = document.getElementById('secure-key-entry');
+            if (!entry) {
+                alert("Critical Error: Login field missing. Please refresh.");
                 return;
             }
 
-            // Wait 150ms for browser to sync input values
-            await new Promise(r => setTimeout(r, 150));
+            // Small delay for stability
+            await new Promise(r => setTimeout(r, 100));
 
-            const rawValue = pInput.value;
-            const cleanValue = rawValue.trim().toLowerCase();
+            const password = entry.value.trim();
+            console.log("Read attempt: " + password.length + " chars.");
 
-            console.log("Diagnostic: Read length " + rawValue.length);
-
-            if (cleanValue === 'admin123') {
+            if (password.toLowerCase() === 'admin123') {
                 localStorage.setItem('isAdmin', 'true');
 
-                // Hide Login Screen
-                const lScreen = document.getElementById('login-screen');
-                const dBoard = document.getElementById('dashboard');
+                // Nuclear UI Switch
+                document.getElementById('login-screen').classList.add('hidden-force');
+                document.getElementById('dashboard').classList.remove('hidden', 'hidden-force');
+                document.getElementById('dashboard').style.setProperty('display', 'flex', 'important');
 
-                if (lScreen) {
-                    lScreen.classList.add('hidden-force');
-                    lScreen.style.setProperty('display', 'none', 'important');
-                }
-                if (dBoard) {
-                    dBoard.classList.remove('hidden', 'hidden-force');
-                    dBoard.style.setProperty('display', 'flex', 'important');
-                }
-
-                // Initialize logic
-                if (window.initializeDashboard) {
-                    window.initializeDashboard();
-                } else {
-                    location.reload(); // Fallback
-                }
+                if (window.initializeDashboard) window.initializeDashboard();
+                else setTimeout(() => location.reload(), 200);
             } else {
-                const lError = document.getElementById('login-error');
-                if (lError) lError.classList.remove('hidden');
-
-                // Diagnostic Alert
-                alert("Login Failed!\n\n" +
-                    "What you typed: [" + rawValue + "]\n" +
-                    "Length: " + rawValue.length + " characters.\n\n" +
-                    "Required: [admin123]\n\n" +
-                    "Tip: Please re-type 'admin123' slowly.");
-
-                pInput.value = ''; // Clear for retry
-                pInput.focus();
+                document.getElementById('login-error').classList.remove('hidden');
+                alert("Login Failed!\n\nRead Result: [" + (password || "EMPTY") + "]\nLength: " + password.length + "\n\nTip: Ensure Caps Lock is off and type 'admin123' again.");
+                entry.value = '';
+                entry.focus();
             }
         }
 
-        // Inline Password Toggle Support
+        // Mask Toggle (Local)
         document.addEventListener('DOMContentLoaded', () => {
-            const toggleBtn = document.getElementById('toggle-password');
-            const passInput = document.getElementById('pass-key') || document.querySelector('input[type="password"]');
-            if (toggleBtn && passInput) {
-                toggleBtn.onclick = function () {
-                    const isPass = passInput.getAttribute('type') === 'password';
-                    passInput.setAttribute('type', isPass ? 'text' : 'password');
-                    toggleBtn.style.color = isPass ? '#d4af37' : '#6b7280';
+            const btn = document.getElementById('toggle-password');
+            const box = document.getElementById('secure-key-entry');
+            if (btn && box) {
+                btn.onclick = () => {
+                    const isMasked = box.classList.contains('masked-input');
+                    if (isMasked) {
+                        box.classList.remove('masked-input');
+                        btn.style.color = '#d4af37';
+                    } else {
+                        box.classList.add('masked-input');
+                        btn.style.color = '#6b7280';
+                    }
                 };
             }
         });
