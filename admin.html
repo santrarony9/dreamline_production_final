@@ -73,7 +73,12 @@
     <div id="dashboard" class="min-h-screen flex flex-col bg-black">
         <!-- Header -->
         <header class="glass-panel text-white p-6 flex justify-between items-center shadow-2xl sticky top-0 z-40">
-            <h1 class="text-2xl font-bold gold-gradient-text tracking-tighter">DREAMLINE ADMIN</h1>
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl font-bold gold-gradient-text tracking-tighter">DREAMLINE ADMIN</h1>
+                <button id="view-logs-btn"
+                    class="text-[9px] bg-red-500/10 border border-red-500/20 text-red-500 px-3 py-1 rounded-full hover:bg-red-500 hover:text-white transition-all font-bold uppercase tracking-widest">System
+                    Logs</button>
+            </div>
             <button id="logout-btn"
                 class="text-sm bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-white/10 transition-all">Logout</button>
         </header>
@@ -132,18 +137,24 @@
                             <label>Subtitle</label>
                             <input type="text" id="hero-subtitle" class="w-full p-4 rounded-xl glass-input">
                         </div>
-                        <div class="col-span-2">
-                            <label>Hero Background (Video/Image Link)</label>
-                            <div class="flex items-center gap-4 mb-3">
-                                <label class="btn-gold px-4 py-2 rounded-lg text-xs cursor-pointer">
-                                    <input type="file" id="hero-media-upload" class="hidden">
+                        <div class="col-span-2 glass-card p-6 rounded-2xl border-white/5 bg-white/5">
+                            <label>Hero Background Media</label>
+                            <p class="help-text mb-4">Upload a cinematic video or high-res image for the main landing
+                                section.</p>
+                            <div class="flex flex-wrap items-center gap-6 mb-4">
+                                <label class="btn-upload">
+                                    <input type="file" id="hero-media-upload">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
                                     UPLOAD MEDIA
                                 </label>
-                                <span id="hero-media-status"
-                                    class="text-[10px] uppercase tracking-tighter opacity-50"></span>
+                                <span id="hero-media-status" class="upload-status">Ready</span>
                             </div>
-                            <input type="text" id="hero-media-url" class="w-full p-4 rounded-xl glass-input"
-                                placeholder="Paste URL or use Upload button">
+                            <input type="text" id="hero-media-url" class="w-full glass-input"
+                                placeholder="Paste direct URL or use the upload button above">
                         </div>
                     </div>
 
@@ -162,21 +173,34 @@
                         Stat</button>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Motion Gallery</h3>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Gallery Title</label>
-                        <input type="text" id="gallery-title" class="w-full p-2 border rounded">
-                        <label class="block text-sm font-medium mb-1 mt-2">Gallery Subtitle</label>
-                        <input type="text" id="gallery-subtitle" class="w-full p-2 border rounded">
+                    <div class="glass-card p-6 rounded-2xl border-white/5 bg-white/5 mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label>Gallery Title</label>
+                                <input type="text" id="gallery-title" class="w-full glass-input">
+                            </div>
+                            <div>
+                                <label>Gallery Subtitle</label>
+                                <input type="text" id="gallery-subtitle" class="w-full glass-input">
+                            </div>
+                        </div>
 
-                        <label class="block text-sm font-medium mb-1 mt-4">Gallery Images</label>
-                        <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"></div>
+                        <label>Gallery Images</label>
+                        <p class="help-text mb-6">Manage the flowing archive of cinematic moments.</p>
 
-                        <div class="upload-group">
+                        <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"></div>
+
+                        <div class="upload-group p-4 rounded-xl border border-white/5 bg-white/5">
                             <label class="btn-upload">
                                 <input type="file" id="gallery-upload" multiple>
-                                <span>+ Add Images</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Bulk Add Images</span>
                             </label>
-                            <span id="gallery-upload-status" class="upload-status"></span>
+                            <span id="gallery-upload-status" class="upload-status ml-4">Waiting...</span>
                         </div>
                         <textarea id="gallery-images" class="hidden"></textarea> <!-- Hidden backing field -->
                     </div>
@@ -212,29 +236,36 @@
                 <div id="loading-about" class="text-center py-10 hidden">Loading...</div>
 
                 <form id="about-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-10">
-                    <div>
-                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="glass-card p-6 rounded-2xl border-white/5 bg-white/5">
+                        <h3 class="font-bold text-lg mb-6 text-gold-500 border-b pb-2">Hero Section</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                             <div>
-                                <label class="block text-sm font-medium mb-1">Hero Title</label>
-                                <input type="text" id="about-hero-title" class="w-full p-2 border rounded">
+                                <label>Hero Title</label>
+                                <input type="text" id="about-hero-title" class="w-full glass-input">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1">Hero Subtitle</label>
-                                <input type="text" id="about-hero-subtitle" class="w-full p-2 border rounded">
+                                <label>Hero Subtitle</label>
+                                <input type="text" id="about-hero-subtitle" class="w-full glass-input">
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium mb-1">Hero Media (Image or Video URL)</label>
-                        <div class="upload-group mb-2">
-                            <label class="btn-upload">
-                                <input type="file" onchange="window.uploadHeroMedia(this)">
-                                <span>Upload Video/Image</span>
-                            </label>
-                            <span id="hero-upload-status" class="upload-status"></span>
+                        <div class="mb-4">
+                            <label>Hero Media (Image or Video)</label>
+                            <p class="help-text mb-4">The main background for your About story. Paste a link or upload a
+                                file.</p>
+                            <div class="flex items-center gap-4 mb-4">
+                                <label class="btn-upload">
+                                    <input type="file" id="about-hero-upload" onchange="window.uploadAboutHero(this)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                                    UPLOAD
+                                </label>
+                                <span id="hero-upload-status" class="upload-status">Ready</span>
+                            </div>
+                            <input type="text" id="hero-bg" class="w-full glass-input" placeholder="https://...">
                         </div>
-                        <input type="text" id="hero-bg" class="w-full p-2 border rounded" placeholder="https://...">
                     </div>
 
                     <div>
@@ -301,20 +332,20 @@
             <form id="wedding-form" class="space-y-4">
                 <input type="hidden" id="wedding-id">
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Title</label>
-                        <input type="text" id="title" class="w-full p-2 border rounded" required>
+                        <label>Title</label>
+                        <input type="text" id="title" class="w-full glass-input" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Subtitle</label>
-                        <input type="text" id="subtitle" class="w-full p-2 border rounded">
+                        <label>Subtitle</label>
+                        <input type="text" id="subtitle" class="w-full glass-input">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium mb-1">Description</label>
-                    <textarea id="description" class="w-full p-2 border rounded h-24"></textarea>
+                    <label>Description</label>
+                    <textarea id="description" class="w-full glass-input h-32"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -333,15 +364,16 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium mb-1">YouTube Video URL</label>
-                        <input type="text" id="youtube-url" class="w-full p-2 border rounded"
+                        <label>YouTube Video URL</label>
+                        <input type="text" id="youtube-url" class="w-full glass-input"
                             placeholder="https://www.youtube.com/embed/...">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Album URL</label>
-                        <input type="text" id="album-url" class="w-full p-2 border rounded">
+                        <label>Album URL</label>
+                        <input type="text" id="album-url" class="w-full glass-input"
+                            placeholder="Canvera or Digital Album Link">
                     </div>
                 </div>
 
@@ -373,32 +405,35 @@
             <form id="journal-form" class="space-y-4">
                 <input type="hidden" id="journal-id">
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Title</label>
-                        <input type="text" id="journal-title" class="w-full p-2 border rounded" required>
+                        <label>Title</label>
+                        <input type="text" id="journal-title" class="w-full glass-input" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Publish Date</label>
-                        <input type="text" id="journal-date" class="w-full p-2 border rounded">
+                        <label>Publish Date</label>
+                        <input type="text" id="journal-date" class="w-full glass-input">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium mb-1">Category</label>
-                        <input type="text" id="journal-category" class="w-full p-2 border rounded">
+                        <label>Category</label>
+                        <input type="text" id="journal-category" class="w-full glass-input"
+                            placeholder="e.g. INSIGHT, WEDDING">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-1">Featured Image</label>
-                        <input type="file" id="journal-image-upload" class="mb-2 w-full text-sm">
-                        <input type="text" id="journal-image" class="w-full p-2 border rounded" placeholder="Image URL">
+                        <label>Featured Image</label>
+                        <p class="help-text mb-2">Paste a URL or upload a header image for this post.</p>
+                        <input type="file" id="journal-image-upload" class="mb-2 w-full text-xs text-gray-400">
+                        <input type="text" id="journal-image" class="w-full glass-input" placeholder="Image URL">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium mb-1">Excerpt</label>
-                    <textarea id="journal-excerpt" class="w-full p-2 border rounded h-24"></textarea>
+                    <label>Excerpt</label>
+                    <p class="help-text mb-2">A short summary that appears in the feed.</p>
+                    <textarea id="journal-excerpt" class="w-full glass-input h-24"></textarea>
                 </div>
 
                 <div>
@@ -416,9 +451,33 @@
         </div>
     </div>
 
-    <footer class="bg-gray-900 text-white py-6 text-center mt-12 mb-8">
-        <p>&copy; 2025 Dreamline. All rights reserved.</p>
-        <p class="text-xs text-gray-500 mt-1">Admin Panel v1.3 (Premium UI)</p>
+    <!-- System Log Modal -->
+    <div id="log-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center hidden z-[100]">
+        <div class="glass-panel p-8 rounded-3xl w-full max-w-4xl border-white/10 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold gold-gradient-text">SYSTEM ACTIVITY LOG</h2>
+                <div class="flex gap-4">
+                    <button id="copy-logs-btn" class="btn-gold px-4 py-1 text-[10px] rounded-full">COPY TO
+                        CLIPBOARD</button>
+                    <button id="close-log-modal" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                </div>
+            </div>
+            <div id="log-console"
+                class="bg-black/50 p-6 rounded-2xl h-[50vh] overflow-y-auto font-mono text-[11px] leading-relaxed border border-white/5 space-y-2">
+                <!-- Logs injected here -->
+                <p class="text-gray-600 italic">// Waiting for activity...</p>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest">Console v1.0.0 (Debug Hook Active)</p>
+                <button id="clear-logs-btn"
+                    class="text-gray-600 hover:text-red-400 text-[9px] font-bold uppercase tracking-widest">Clear
+                    Log</button>
+            </div>
+        </div>
+    </div>
+    <p>&copy; 2025 Dreamline. All rights reserved.</p>
+    <p class="text-xs text-gray-500 mt-1">Admin Panel v1.3 (Premium UI)</p>
     </footer>
 
     <script>

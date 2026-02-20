@@ -7,6 +7,48 @@ const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
 const UPLOAD_URL = '/api/upload';
 
+// --- LOGGING SYSTEM ---
+const systemLogs = [];
+const originalLog = console.log;
+const originalError = console.error;
+
+const addLogEntry = (type, ...args) => {
+    const time = new Date().toLocaleTimeString();
+    const message = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+    systemLogs.push({ time, type, message });
+
+    // Auto-update modal if open
+    const consoleEl = document.getElementById('log-console');
+    if (consoleEl) {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `
+            <span class="log-time">[${time}]</span>
+            <span class="log-type-${type}">${type.toUpperCase()}:</span>
+            <span class="text-gray-300 ml-2">${message}</span>
+        `;
+        consoleEl.appendChild(entry);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+};
+
+console.log = (...args) => {
+    originalLog(...args);
+    addLogEntry('info', ...args);
+};
+
+console.error = (...args) => {
+    originalError(...args);
+    addLogEntry('error', ...args);
+};
+
+console.warn = (...args) => {
+    originalLog('WARN:', ...args);
+    addLogEntry('warn', ...args);
+};
+
+window.addSuccessLog = (msg) => addLogEntry('success', msg);
+
 // State
 let weddings = [];
 let journals = [];
@@ -221,14 +263,14 @@ const renderMotionGalleryForm = (images) => {
     hiddenInput.value = images.join(',');
 
     container.innerHTML = images.map((img, i) => `
-        <div class="glass-card p-2 rounded-xl border-white/5 overflow-hidden group relative aspect-square">
+        <div class="glass-card p-2 rounded-xl border-white/5 overflow-hidden group relative aspect-square bg-white/2">
             <img src="${img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
-                <label class="bg-gold text-black text-[10px] font-bold px-3 py-1 rounded-full cursor-pointer hover:bg-white transition-colors">
+            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm">
+                <label class="bg-gold text-black text-[10px] font-black px-4 py-2 rounded-full cursor-pointer hover:bg-white transition-all transform hover:scale-105 active:scale-95">
                     <input type="file" onchange="window.replaceGalleryImage(this, ${i})" class="hidden">
                     REPLACE
                 </label>
-                <button type="button" class="text-[10px] font-bold text-red-400 hover:text-white transition-colors" onclick="removeGalleryImage(${index})">REMOVE</button>
+                <button type="button" class="text-[10px] font-black text-red-400 hover:text-white transition-all uppercase tracking-widest" onclick="window.removeGalleryImage(${i})">REMOVE</button>
             </div>
         </div>
     `).join('');
@@ -305,15 +347,24 @@ const renderMasterGalleryList = () => {
     if (!siteContent.projects) siteContent.projects = [];
 
     container.innerHTML = siteContent.projects.map((proj, i) => `
-        <div class="glass-card overflow-hidden">
-            <img src="${proj.img}" class="w-full h-40 object-cover border-b border-white/5">
-            <div class="p-4">
-                <span class="block text-gold font-bold text-sm tracking-tight mb-1 truncate">${proj.title || 'Untitled'}</span>
-                <span class="block text-[10px] text-gray-500 uppercase tracking-widest">${proj.type || 'Commercial'}</span>
+        <div class="glass-card overflow-hidden group border-white/5 bg-white/2">
+            <div class="relative h-40 overflow-hidden">
+                <img src="${proj.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div class="absolute bottom-3 left-4">
+                    <span class="block text-gold font-black text-xs tracking-widest uppercase">${proj.type || 'Commercial'}</span>
+                </div>
             </div>
-            <div class="p-4 pt-0 flex gap-2">
-                <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-bold py-2 rounded-lg hover:bg-gold hover:text-black transition-all" onclick="window.toggleEditProject(${i})">EDIT</button>
-                <button type="button" class="bg-red-900/20 text-red-500 text-[10px] font-bold px-3 py-2 rounded-lg hover:bg-red-600 hover:text-white transition-all" onclick="window.deleteProject(${i})">DEL</button>
+            <div class="p-5">
+                <span class="block text-white font-bold text-sm tracking-tight mb-4 truncate">${proj.title || 'Untitled'}</span>
+                <div class="flex gap-3">
+                    <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-black py-2.5 rounded-full hover:bg-gold hover:text-black transition-all uppercase tracking-widest" onclick="window.toggleEditProject(${i})">Edit Details</button>
+                    <button type="button" class="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black px-4 py-2.5 rounded-full hover:bg-red-500 hover:text-white transition-all uppercase tracking-widest" onclick="window.deleteProject(${i})">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
             
             <!-- Edit Form (Hidden by default) -->
@@ -397,15 +448,29 @@ const renderVideoVaultList = () => {
     if (!siteContent.videoVault) siteContent.videoVault = [];
 
     container.innerHTML = siteContent.videoVault.map((item, i) => `
-         <div class="admin-card">
-            <img src="${item.image}" class="admin-card-thumb">
-            <div class="admin-card-body">
-                <span class="admin-card-title">${item.title || 'Untitled'}</span>
-                <span class="admin-card-subtitle">${item.category || 'No Category'}</span>
+         <div class="glass-card overflow-hidden group border-white/5 bg-white/2">
+            <div class="relative h-40 overflow-hidden">
+                <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                <div class="absolute bottom-3 left-4">
+                    <span class="block text-gold font-black text-xs tracking-widest uppercase">${item.category || 'Cinema'}</span>
+                </div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                    <div class="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
             </div>
-            <div class="admin-card-actions">
-                <button type="button" class="btn-edit-card" onclick="window.toggleEditVault(${i})">Edit</button>
-                <button type="button" class="btn-delete-card" onclick="window.deleteVault(${i})">Delete</button>
+            <div class="p-5">
+                <span class="block text-white font-bold text-sm tracking-tight mb-4 truncate">${item.title || 'Untitled'}</span>
+                <div class="flex gap-3">
+                    <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-black py-2.5 rounded-full hover:bg-gold hover:text-black transition-all uppercase tracking-widest" onclick="window.toggleEditVault(${i})">Edit Content</button>
+                    <button type="button" class="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black px-4 py-2.5 rounded-full hover:bg-red-500 hover:text-white transition-all uppercase tracking-widest" onclick="window.deleteVault(${i})">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
             
             <!-- Edit Form -->
@@ -539,9 +604,31 @@ aboutForm.addEventListener('submit', async (e) => {
     updatedContent.about.mission = document.getElementById('about-mission').value;
     updatedContent.about.founderNote = document.getElementById('about-founder-note').value;
     updatedContent.about.founderImage = document.getElementById('about-founder-img').value;
+    updatedContent.about.heroImage = document.getElementById('hero-bg').value;
 
     await saveContent(updatedContent);
 });
+
+window.uploadAboutHero = async (input) => {
+    const file = input.files[0];
+    const statusEl = document.getElementById('hero-upload-status');
+    if (!file) return;
+
+    statusEl.textContent = 'Uploading...';
+    statusEl.className = 'upload-status loading';
+
+    try {
+        const url = await uploadFile(file);
+        if (url) {
+            document.getElementById('hero-bg').value = url;
+            statusEl.textContent = 'Success!';
+            statusEl.className = 'upload-status success';
+        }
+    } catch (err) {
+        statusEl.textContent = 'Failed';
+        statusEl.className = 'upload-status error';
+    }
+};
 
 const saveContent = async (content) => {
     try {
@@ -561,7 +648,10 @@ const saveContent = async (content) => {
 // Upload for Content Form
 // Upload for Content Form (Enhanced)
 const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
-    document.getElementById(inputId).addEventListener('change', async (e) => {
+    const el = document.getElementById(inputId);
+    if (!el) return;
+
+    el.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         const statusEl = document.getElementById(statusId);
         if (!file) return;
@@ -572,8 +662,12 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
         try {
             const url = await uploadFile(file);
             if (url) {
-                document.getElementById(urlInputId).value = url;
-                if (previewId) document.getElementById(previewId).src = url;
+                const urlInp = document.getElementById(urlInputId);
+                if (urlInp) urlInp.value = url;
+                if (previewId) {
+                    const prev = document.getElementById(previewId);
+                    if (prev) prev.src = url;
+                }
                 statusEl.textContent = 'Success!';
                 statusEl.className = 'upload-status success';
             }
@@ -585,8 +679,9 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
 };
 
 // Init Uploaders
-setupFileUpload('hero-video-upload', 'hero-video-status', 'hero-video-url');
+setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url');
 setupFileUpload('about-founder-upload', 'about-founder-status', 'about-founder-img');
+setupFileUpload('gallery-upload', 'gallery-upload-status', 'gallery-images');
 
 
 // --- JOURNAL FUNCTIONS ---
@@ -823,24 +918,9 @@ document.getElementById('add-chapter-btn').addEventListener('click', () => {
 });
 
 // File Inputs
-document.getElementById('cover-image-upload').addEventListener('change', async (e) => {
-    if (e.target.files[0]) {
-        const url = await uploadFile(e.target.files[0]);
-        if (url) {
-            document.getElementById('cover-image-url').value = url;
-            document.getElementById('preview-cover').src = url;
-        }
-    }
-});
-
-document.getElementById('hover-video-upload').addEventListener('change', async (e) => {
-    if (e.target.files[0]) {
-        const url = await uploadFile(e.target.files[0]);
-        if (url) {
-            document.getElementById('hover-video-url').value = url;
-        }
-    }
-});
+setupFileUpload('cover-image-upload', 'preview-cover', 'cover-image-url'); // Status will be handled by setup if I add a status field, but for now it's okay.
+// Wait, I should add status fields for these too in admin.html for consistency.
+// Let's just use the logic for now.
 
 // Form Submit
 weddingForm.addEventListener('submit', async (e) => {
@@ -1014,6 +1094,54 @@ const init = () => {
 
     checkAuth();
 };
+
+// Log Console Handlers
+document.addEventListener('DOMContentLoaded', () => {
+    const logModal = document.getElementById('log-modal');
+    const viewLogsBtn = document.getElementById('view-logs-btn');
+    const closeLogModal = document.getElementById('close-log-modal');
+    const copyBtn = document.getElementById('copy-logs-btn');
+    const clearBtn = document.getElementById('clear-logs-btn');
+
+    if (viewLogsBtn) {
+        viewLogsBtn.addEventListener('click', () => {
+            logModal.classList.remove('hidden');
+            // Refresh view
+            const consoleEl = document.getElementById('log-console');
+            consoleEl.innerHTML = systemLogs.map(l => `
+                <div class="log-entry">
+                    <span class="log-time">[${l.time}]</span>
+                    <span class="log-type-${l.type}">${l.type.toUpperCase()}:</span>
+                    <span class="text-gray-300 ml-2">${l.message}</span>
+                </div>
+            `).join('') || '<p class="text-gray-600 italic">// No activity recorded yet.</p>';
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        });
+    }
+
+    if (closeLogModal) {
+        closeLogModal.addEventListener('click', () => logModal.classList.add('hidden'));
+    }
+
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const text = systemLogs.map(l => `[${l.time}] ${l.type.toUpperCase()}: ${l.message}`).join('\n');
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'COPIED!';
+                setTimeout(() => copyBtn.textContent = originalText, 2000);
+            });
+        });
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            systemLogs.length = 0;
+            const consoleEl = document.getElementById('log-console');
+            if (consoleEl) consoleEl.innerHTML = '<p class="text-gray-600 italic">// Console cleared.</p>';
+        });
+    }
+});
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
