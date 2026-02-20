@@ -1,7 +1,7 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.2 Loaded - Debug Mode');
+console.log('Admin Panel v1.3 Loaded - Premium UI');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
