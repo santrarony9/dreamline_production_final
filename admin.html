@@ -40,8 +40,9 @@
                     class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">About</button>
                 <button id="tab-weddings"
                     class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Weddings</button>
-                <button id="tab-commercial"
-                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Commercial</button>
+                <button id="tab-master-gallery"
+                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Master
+                    Gallery</button>
                 <button id="tab-journal"
                     class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Journal</button>
             </div>
@@ -96,7 +97,8 @@
                     </div>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Video Vault</h3>
-                    <div id="video-vault-container" class="space-y-4 mb-4"></div>
+                    <div id="video-vault-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+                    </div>
                     <button type="button" id="add-vault-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
                         Video Item</button>
 
@@ -131,20 +133,21 @@
                 </form>
             </div>
 
-            <!-- Commercial Section -->
-            <div id="section-commercial" class="hidden">
-                <h2 class="text-2xl font-semibold mb-6">Manage Commercial Projects</h2>
-                <div id="loading-commercial" class="text-center py-10 hidden">Loading...</div>
+            <!-- Master Gallery Section -->
+            <div id="section-master-gallery" class="hidden">
+                <h2 class="text-2xl font-semibold mb-6">Manage Master Gallery</h2>
+                <div id="loading-master-gallery" class="text-center py-10 hidden">Loading...</div>
 
-                <form id="commercial-form" class="bg-white p-6 rounded shadow max-w-4xl">
-                    <div id="projects-container" class="space-y-4 mb-4">
+                <form id="master-gallery-form" class="bg-white p-6 rounded shadow max-w-4xl">
+                    <div id="master-gallery-container"
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
                         <!-- Projects injected here -->
                     </div>
-                    <button type="button" id="add-project-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
-                        Project</button>
+                    <button type="button" id="add-project-btn"
+                        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4">+ Add Project</button>
                     <div class="mt-4">
                         <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save
-                            Commercial Projects</button>
+                            Master Gallery</button>
                     </div>
                 </form>
             </div>
