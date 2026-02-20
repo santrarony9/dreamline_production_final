@@ -34,24 +34,24 @@ const addJournalBtn = document.getElementById('add-journal-btn');
 // Tabs
 const tabHome = document.getElementById('tab-home');
 const tabWeddings = document.getElementById('tab-weddings');
-const tabCommercial = document.getElementById('tab-commercial');
+const tabMasterGallery = document.getElementById('tab-master-gallery');
 const tabAbout = document.getElementById('tab-about');
 const tabJournal = document.getElementById('tab-journal');
 
 const sectionHome = document.getElementById('section-home');
 const sectionWeddings = document.getElementById('section-weddings');
-const sectionCommercial = document.getElementById('section-commercial');
+const sectionMasterGallery = document.getElementById('section-master-gallery');
 const sectionAbout = document.getElementById('section-about');
 const sectionJournal = document.getElementById('section-journal');
 
 const homeForm = document.getElementById('home-form');
-const commercialForm = document.getElementById('commercial-form');
+const masterGalleryForm = document.getElementById('master-gallery-form');
 const aboutForm = document.getElementById('about-form');
 
 // --- TABS ---
 tabHome.addEventListener('click', () => switchTab('home'));
 tabWeddings.addEventListener('click', () => switchTab('weddings'));
-tabCommercial.addEventListener('click', () => switchTab('commercial'));
+tabMasterGallery.addEventListener('click', () => switchTab('master-gallery'));
 tabAbout.addEventListener('click', () => switchTab('about'));
 tabJournal.addEventListener('click', () => switchTab('journal'));
 
@@ -59,12 +59,12 @@ const switchTab = (tab) => {
     // Hide all sections
     sectionHome.classList.add('hidden');
     sectionWeddings.classList.add('hidden');
-    sectionCommercial.classList.add('hidden');
+    sectionMasterGallery.classList.add('hidden');
     sectionAbout.classList.add('hidden');
     sectionJournal.classList.add('hidden');
 
     // Reset tab styles
-    [tabHome, tabWeddings, tabCommercial, tabAbout, tabJournal].forEach(t => {
+    [tabHome, tabWeddings, tabMasterGallery, tabAbout, tabJournal].forEach(t => {
         t.classList.remove('text-gold-500', 'border-b-2', 'border-gold-500');
         t.classList.add('text-gray-500');
     });
@@ -80,11 +80,11 @@ const switchTab = (tab) => {
         tabWeddings.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
         tabWeddings.classList.remove('text-gray-500');
         fetchWeddings();
-    } else if (tab === 'commercial') {
-        sectionCommercial.classList.remove('hidden');
-        tabCommercial.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
-        tabCommercial.classList.remove('text-gray-500');
-        fetchContent(); // Commercial projects are part of content
+    } else if (tab === 'master-gallery') {
+        sectionMasterGallery.classList.remove('hidden');
+        tabMasterGallery.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabMasterGallery.classList.remove('text-gray-500');
+        fetchContent(); // Master Gallery projects are part of content
     } else if (tab === 'about') {
         sectionAbout.classList.remove('hidden');
         tabAbout.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
@@ -126,7 +126,7 @@ const fetchContent = async () => {
         const res = await fetch(API_CONTENT_URL);
         siteContent = await res.json();
         renderHomeForm();
-        renderCommercialForm();
+        renderMasterGalleryList();
         renderAboutForm();
     } catch (err) {
         console.error('Failed to fetch content:', err);
@@ -143,9 +143,7 @@ const renderHomeForm = () => {
     document.getElementById('hero-video-url').value = siteContent.hero.videoUrl || '';
 
     // Video Vault
-    const vaultContainer = document.getElementById('video-vault-container');
-    vaultContainer.innerHTML = '';
-    (siteContent.videoVault || []).forEach((item, i) => addVideoVaultField(item, i));
+    renderVideoVaultList();
 
     // Marquee
     const marqueeContainer = document.getElementById('marquee-container');
@@ -238,104 +236,190 @@ const renderAboutForm = () => {
     document.getElementById('about-founder-img').value = siteContent.about.founderImage || '';
 };
 
-const renderCommercialForm = () => {
-    const projectsContainer = document.getElementById('projects-container');
-    projectsContainer.innerHTML = '';
-    (siteContent.projects || []).forEach((proj, i) => addProjectField(proj, i));
+const renderMasterGalleryList = () => {
+    const container = document.getElementById('master-gallery-container');
+    container.innerHTML = '';
+
+    if (!siteContent.projects) siteContent.projects = [];
+
+    container.innerHTML = siteContent.projects.map((proj, i) => `
+        <div class="admin-card">
+            <img src="${proj.img}" class="admin-card-thumb">
+            <div class="admin-card-body">
+                <span class="admin-card-title">${proj.title || 'Untitled'}</span>
+                <span class="admin-card-subtitle">${proj.type || 'Commercial'}</span>
+            </div>
+            <div class="admin-card-actions">
+                <button type="button" class="btn-edit-card" onclick="window.toggleEditProject(${i})">Edit</button>
+                <button type="button" class="btn-delete-card" onclick="window.deleteProject(${i})">Delete</button>
+            </div>
+            
+            <!-- Edit Form (Hidden by default) -->
+            <div id="edit-project-${i}" class="admin-card-edit hidden">
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                    <div>
+                        <label class="block text-xs font-bold mb-1">Title</label>
+                        <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.title}" oninput="window.updateProject(${i}, 'title', this.value)">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold mb-1">Type</label>
+                        <select class="w-full p-1 border rounded text-xs" onchange="window.updateProject(${i}, 'type', this.value)">
+                            <option value="commercial" ${proj.type === 'commercial' ? 'selected' : ''}>Commercial</option>
+                            <option value="wedding" ${proj.type === 'wedding' ? 'selected' : ''}>Wedding</option>
+                            <option value="music" ${proj.type === 'music' ? 'selected' : ''}>Music</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-2">
+                     <label class="block text-xs font-bold mb-1">Image</label>
+                     <div class="upload-group mb-1">
+                        <label class="btn-upload py-1 px-2 text-xs">
+                            <input type="file" onchange="window.uploadProjectImage(this, ${i})">
+                            <span>Replace Image</span>
+                        </label>
+                        <span id="proj-status-${i}" class="upload-status"></span>
+                    </div>
+                     <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.img}" oninput="window.updateProject(${i}, 'img', this.value)">
+                </div>
+                <button type="button" class="text-xs text-blue-600 underline" onclick="window.toggleEditProject(${i})">Done</button>
+            </div>
+        </div>
+    `).join('');
 };
 
-const addProjectField = (proj = { title: '', type: 'commercial', img: '' }, i) => {
-    const container = document.getElementById('projects-container');
-    const div = document.createElement('div');
-    div.className = 'border p-3 rounded bg-gray-50 project-item relative';
-    div.innerHTML = `
-        <div class="flex justify-between mb-2">
-            <h4 class="font-bold text-sm">Project ${i + 1}</h4>
-            <button type="button" class="text-red-500 text-xs hover:underline" onclick="this.parentElement.parentElement.remove()">Remove</button>
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-            <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.title}" placeholder="Title" name="proj_title">
-            <select class="w-full p-1 border rounded text-xs" name="proj_type">
-                <option value="commercial" ${proj.type === 'commercial' ? 'selected' : ''}>Commercial</option>
-                <option value="wedding" ${proj.type === 'wedding' ? 'selected' : ''}>Wedding</option>
-                <option value="music" ${proj.type === 'music' ? 'selected' : ''}>Music</option>
-            </select>
-        </div>
-        <div class="mt-2">
-             <label class="block text-xs font-semibold mb-1">Project Image</label>
-             <input type="file" class="w-full text-xs mb-1 proj-upload-input">
-             <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.img}" placeholder="Image URL" name="proj_img">
-        </div>
-    `;
-    container.appendChild(div);
+window.toggleEditProject = (index) => {
+    const el = document.getElementById(`edit-project-${index}`);
+    el.classList.toggle('hidden');
+};
 
-    // Attach upload listener to the new input
-    const fileInput = div.querySelector('.proj-upload-input');
-    const urlInput = div.querySelector('input[name="proj_img"]');
+window.updateProject = (index, field, value) => {
+    siteContent.projects[index][field] = value;
+    // We don't re-render list here to avoid losing focus, just update state
+    // Update preview if image changed via URL input
+    if (field === 'img') {
+        // Optional: update thumbnail src if we could find it easily
+    }
+};
 
-    fileInput.addEventListener('change', async (e) => {
-        if (e.target.files[0]) {
-            const url = await uploadFile(e.target.files[0]);
-            if (url) {
-                urlInput.value = url;
-            }
+window.deleteProject = (index) => {
+    if (!confirm('Delete this project?')) return;
+    siteContent.projects.splice(index, 1);
+    renderMasterGalleryList();
+};
+
+window.uploadProjectImage = async (input, index) => {
+    if (input.files[0]) {
+        const statusEl = document.getElementById(`proj-status-${index}`);
+        statusEl.textContent = '...';
+        const url = await uploadFile(input.files[0]);
+        if (url) {
+            siteContent.projects[index].img = url;
+            renderMasterGalleryList(); // Re-render to show new image
+        } else {
+            statusEl.textContent = 'Err';
         }
-    });
+    }
 };
 
 document.getElementById('add-project-btn').addEventListener('click', () => {
-    const count = document.getElementById('projects-container').children.length;
-    addProjectField({ title: '', type: 'commercial', img: '' }, count);
+    siteContent.projects.push({ title: 'New Project', type: 'commercial', img: '' });
+    renderMasterGalleryList();
+    // Open edit for the new item
+    window.toggleEditProject(siteContent.projects.length - 1);
 });
 
-const addVideoVaultField = (item = { title: '', category: '', image: '', videoUrl: '' }, i) => {
+const renderVideoVaultList = () => {
     const container = document.getElementById('video-vault-container');
-    const div = document.createElement('div');
-    div.className = 'border p-3 rounded bg-gray-50 vault-item relative';
-    div.innerHTML = `
-        <div class="flex justify-between mb-2">
-            <h4 class="font-bold text-sm">Video ${i + 1}</h4>
-            <button type="button" class="text-red-500 text-xs hover:underline" onclick="this.parentElement.parentElement.remove()">Remove</button>
-        </div>
-        <div class="grid grid-cols-2 gap-2 mb-2">
-            <input type="text" class="w-full p-1 border rounded text-xs" value="${item.title}" placeholder="Title" name="vault_title">
-            <input type="text" class="w-full p-1 border rounded text-xs" value="${item.category}" placeholder="Category (e.g. 2024 Project)" name="vault_category">
-        </div>
-        <div>
-             <label class="block text-xs font-semibold mb-1">Thumbnail Image</label>
-             <input type="file" class="w-full text-xs mb-1 vault-img-upload">
-             <input type="text" class="w-full p-1 border rounded text-xs mb-2" value="${item.image}" placeholder="Image URL" name="vault_image">
-             
-             <label class="block text-xs font-semibold mb-1">Video Source (URL)</label>
-             <input type="file" class="w-full text-xs mb-1 vault-vid-upload">
-             <input type="text" class="w-full p-1 border rounded text-xs" value="${item.videoUrl || ''}" placeholder="Video URL" name="vault_video">
-        </div>
-    `;
-    container.appendChild(div);
+    container.innerHTML = '';
 
-    // Attach listeners
-    const imgInput = div.querySelector('.vault-img-upload');
-    const imgUrl = div.querySelector('input[name="vault_image"]');
-    imgInput.addEventListener('change', async (e) => {
-        if (e.target.files[0]) {
-            const url = await uploadFile(e.target.files[0]);
-            if (url) imgUrl.value = url;
-        }
-    });
+    if (!siteContent.videoVault) siteContent.videoVault = [];
 
-    const vidInput = div.querySelector('.vault-vid-upload');
-    const vidUrl = div.querySelector('input[name="vault_video"]');
-    vidInput.addEventListener('change', async (e) => {
-        if (e.target.files[0]) {
-            const url = await uploadFile(e.target.files[0]);
-            if (url) vidUrl.value = url;
-        }
-    });
+    container.innerHTML = siteContent.videoVault.map((item, i) => `
+         <div class="admin-card">
+            <img src="${item.image}" class="admin-card-thumb">
+            <div class="admin-card-body">
+                <span class="admin-card-title">${item.title || 'Untitled'}</span>
+                <span class="admin-card-subtitle">${item.category || 'No Category'}</span>
+            </div>
+            <div class="admin-card-actions">
+                <button type="button" class="btn-edit-card" onclick="window.toggleEditVault(${i})">Edit</button>
+                <button type="button" class="btn-delete-card" onclick="window.deleteVault(${i})">Delete</button>
+            </div>
+            
+            <!-- Edit Form -->
+             <div id="edit-vault-${i}" class="admin-card-edit hidden">
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                    <input type="text" class="w-full p-1 border rounded text-xs" value="${item.title}" placeholder="Title" oninput="window.updateVault(${i}, 'title', this.value)">
+                    <input type="text" class="w-full p-1 border rounded text-xs" value="${item.category}" placeholder="Category" oninput="window.updateVault(${i}, 'category', this.value)">
+                </div>
+                <div class="mb-2">
+                     <label class="block text-xs font-bold mb-1">Thumbnail</label>
+                      <div class="upload-group mb-1">
+                        <label class="btn-upload py-1 px-2 text-xs">
+                            <input type="file" onchange="window.uploadVaultMedia(this, ${i}, 'image')">
+                            <span>Replace Thumb</span>
+                        </label>
+                        <span id="vault-img-status-${i}" class="upload-status"></span>
+                    </div>
+                     <input type="text" class="w-full p-1 border rounded text-xs" value="${item.image}" oninput="window.updateVault(${i}, 'image', this.value)">
+                </div>
+                <div>
+                     <label class="block text-xs font-bold mb-1">Video URL</label>
+                      <div class="upload-group mb-1">
+                         <label class="btn-upload py-1 px-2 text-xs">
+                            <input type="file" onchange="window.uploadVaultMedia(this, ${i}, 'videoUrl')">
+                            <span>Upload Video</span>
+                        </label>
+                         <span id="vault-vid-status-${i}" class="upload-status"></span>
+                     </div>
+                     <input type="text" class="w-full p-1 border rounded text-xs" value="${item.videoUrl}" oninput="window.updateVault(${i}, 'videoUrl', this.value)">
+                </div>
+                <button type="button" class="mt-2 text-xs text-blue-600 underline" onclick="window.toggleEditVault(${i})">Done</button>
+            </div>
+        </div>
+    `).join('');
 };
 
+window.toggleEditVault = (index) => {
+    document.getElementById(`edit-vault-${index}`).classList.toggle('hidden');
+};
+
+window.updateVault = (index, field, value) => {
+    siteContent.videoVault[index][field] = value;
+};
+
+window.deleteVault = (index) => {
+    if (!confirm('Delete this video?')) return;
+    siteContent.videoVault.splice(index, 1);
+    renderVideoVaultList();
+};
+
+window.uploadVaultMedia = async (input, index, field) => {
+    if (input.files[0]) {
+        const typeStr = field === 'image' ? 'img' : 'vid';
+        const statusEl = document.getElementById(`vault-${typeStr}-status-${index}`);
+        statusEl.textContent = '...';
+        const url = await uploadFile(input.files[0]);
+        if (url) {
+            siteContent.videoVault[index][field] = url;
+            if (field === 'image') renderVideoVaultList(); // Re-render for thumb
+            else {
+                // Just update text input if video
+                statusEl.textContent = 'Done';
+                // Force re-render not needed for video url text, but consistent state is key.
+                // Actually re-rendering is safer to update the inputs value attribute
+                renderVideoVaultList();
+            }
+        } else {
+            statusEl.textContent = 'Err';
+        }
+    }
+}
+
 document.getElementById('add-vault-btn').addEventListener('click', () => {
-    const count = document.getElementById('video-vault-container').children.length;
-    addVideoVaultField({ title: '', category: '', image: '', videoUrl: '' }, count);
+    siteContent.videoVault.push({ title: 'New Video', category: 'Category', image: '', videoUrl: '' });
+    renderVideoVaultList();
+    window.toggleEditVault(siteContent.videoVault.length - 1);
 });
 
 
@@ -351,12 +435,9 @@ homeForm.addEventListener('submit', async (e) => {
     updatedContent.hero.videoUrl = document.getElementById('hero-video-url').value;
 
     // Update Video Vault
-    updatedContent.videoVault = Array.from(document.getElementById('video-vault-container').children).map(div => ({
-        title: div.querySelector('input[name="vault_title"]').value,
-        category: div.querySelector('input[name="vault_category"]').value,
-        image: div.querySelector('input[name="vault_image"]').value,
-        videoUrl: div.querySelector('input[name="vault_video"]').value
-    }));
+    // Video Vault Update: Handled by state sync above, no need to scrape
+    // Just ensure updatedContent.videoVault is current siteContent.videoVault
+    updatedContent.videoVault = siteContent.videoVault;
 
     // Update Marquee
     updatedContent.marquee = Array.from(document.querySelectorAll('#marquee-container input')).map(input => input.value);
@@ -377,18 +458,13 @@ homeForm.addEventListener('submit', async (e) => {
     await saveContent(updatedContent);
 });
 
-// Commercial Form Submit
-commercialForm.addEventListener('submit', async (e) => {
+// Master Gallery Form Submit
+masterGalleryForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const updatedContent = { ...siteContent };
 
-    // Update Projects
-    updatedContent.projects = Array.from(document.getElementById('projects-container').children).map((div, i) => ({
-        id: i + 1,
-        title: div.querySelector('input[name="proj_title"]').value,
-        type: div.querySelector('select[name="proj_type"]').value,
-        img: div.querySelector('input[name="proj_img"]').value
-    }));
+    // projects are already updated in siteContent state via inputs
+    updatedContent.projects = siteContent.projects;
 
     await saveContent(updatedContent);
 });
