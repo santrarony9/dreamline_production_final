@@ -83,15 +83,15 @@
                             <input type="text" id="hero-subtitle" class="w-full p-2 border rounded">
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium mb-1">Hero Background (Video/Image)</label>
+                            <label class="block text-sm font-medium mb-1">Hero Background (Video/Image Link)</label>
                             <div class="upload-group mb-2">
                                 <label class="btn-upload">
-                                    <input type="file" id="hero-video-upload">
+                                    <input type="file" id="hero-media-upload">
                                     <span>Upload Media</span>
                                 </label>
-                                <span id="hero-video-status" class="upload-status"></span>
+                                <span id="hero-media-status" class="upload-status"></span>
                             </div>
-                            <input type="text" id="hero-video-url" class="w-full p-2 border rounded"
+                            <input type="text" id="hero-media-url" class="w-full p-2 border rounded"
                                 placeholder="Paste URL or Upload">
                         </div>
                     </div>
@@ -105,8 +105,10 @@
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Marquee Text</h3>
                     <div id="marquee-container" class="space-y-2 mb-4"></div>
 
-                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Stats</h3>
-                    <div id="stats-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
+                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Stats Cards</h3>
+                    <div id="stats-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4"></div>
+                    <button type="button" id="add-stat-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
+                        Stat</button>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Motion Gallery</h3>
                     <div class="mb-4">
@@ -170,6 +172,17 @@
                                 <input type="text" id="about-hero-subtitle" class="w-full p-2 border rounded">
                             </div>
                         </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">Hero Media (Image or Video URL)</label>
+                        <div class="upload-group mb-2">
+                            <label class="btn-upload">
+                                <input type="file" onchange="window.uploadHeroMedia(this)">
+                                <span>Upload Video/Image</span>
+                            </label>
+                            <span id="hero-upload-status" class="upload-status"></span>
+                        </div>
+                        <input type="text" id="hero-bg" class="w-full p-2 border rounded" placeholder="https://...">
                     </div>
 
                     <div>
