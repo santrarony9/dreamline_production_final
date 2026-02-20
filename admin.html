@@ -83,7 +83,13 @@
                         </div>
                         <div class="col-span-2">
                             <label class="block text-sm font-medium mb-1">Hero Background (Video/Image)</label>
-                            <input type="file" id="hero-video-upload" class="mb-2 w-full text-sm">
+                            <div class="upload-group mb-2">
+                                <label class="btn-upload">
+                                    <input type="file" id="hero-video-upload">
+                                    <span>Upload Media</span>
+                                </label>
+                                <span id="hero-video-status" class="upload-status"></span>
+                            </div>
                             <input type="text" id="hero-video-url" class="w-full p-2 border rounded"
                                 placeholder="Paste URL or Upload">
                         </div>
@@ -106,8 +112,18 @@
                         <input type="text" id="gallery-title" class="w-full p-2 border rounded">
                         <label class="block text-sm font-medium mb-1 mt-2">Gallery Subtitle</label>
                         <input type="text" id="gallery-subtitle" class="w-full p-2 border rounded">
-                        <label class="block text-sm font-medium mb-1 mt-2">Gallery Images (Comma separated URLs)</label>
-                        <textarea id="gallery-images" class="w-full p-2 border rounded h-24"></textarea>
+
+                        <label class="block text-sm font-medium mb-1 mt-4">Gallery Images</label>
+                        <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"></div>
+
+                        <div class="upload-group">
+                            <label class="btn-upload">
+                                <input type="file" id="gallery-upload" multiple>
+                                <span>+ Add Images</span>
+                            </label>
+                            <span id="gallery-upload-status" class="upload-status"></span>
+                        </div>
+                        <textarea id="gallery-images" class="hidden"></textarea> <!-- Hidden backing field -->
                     </div>
 
                     <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 mt-4">Save Home
