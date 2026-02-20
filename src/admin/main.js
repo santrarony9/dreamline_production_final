@@ -1,7 +1,8 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.3 Loaded - Premium UI');
+alert('Admin UI Script v1.3.3 Loading...');
+console.log('Admin Panel v1.3.3 Loaded - Global Auth');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
@@ -935,66 +936,59 @@ const handleLogin = () => {
         const lError = document.getElementById('login-error');
 
         if (!pInput) {
-            alert('Error: password-input element not found!');
+            alert('CRITICAL: password-input not found in HTML!');
             return;
         }
 
         const password = pInput.value.trim();
-        console.log('Attempting login with password length:', password.length);
+        console.log('Attempting login...');
 
         if (password === 'admin123') {
-            console.log('Credentials valid. Logging in...');
+            console.log('Login Success');
             localStorage.setItem('isAdmin', 'true');
             showDashboard();
         } else {
-            console.warn('Invalid password attempt');
+            console.warn('Login Failed');
             if (lError) lError.classList.remove('hidden');
-            alert('Incorrect Security Key. Please check the key and try again.');
+            alert('Access Denied: Incorrect Security Key');
         }
     } catch (err) {
-        console.error('handleLogin crash:', err);
-        alert('Login process error: ' + err.message);
+        console.error('handleLogin Error:', err);
+        alert('Software Error: ' + err.message);
     }
 };
 
+// Export to window for onclick support
+window.handleLogin = handleLogin;
+
 // Global Initialization
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM Content Loaded - Initializing Admin UI');
+console.log('Attaching events...');
 
-    // Attach Login
-    const lBtn = document.getElementById('login-btn');
-    if (lBtn) {
-        lBtn.addEventListener('click', handleLogin);
-        console.log('Login button listener attached');
-    } else {
-        console.error('login-btn not found during init!');
-    }
+// Attach enter key listener to input
+const pInput = document.getElementById('password-input');
+if (pInput) {
+    pInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+}
 
-    const pInput = document.getElementById('password-input');
-    if (pInput) {
-        pInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleLogin();
-        });
-    }
+// Password toggle
+const tBtn = document.getElementById('toggle-password');
+if (tBtn && pInput) {
+    tBtn.addEventListener('click', () => {
+        const type = pInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        pInput.setAttribute('type', type);
+        tBtn.style.opacity = type === 'text' ? '1' : '0.5';
+    });
+}
 
-    // Password toggle
-    const tBtn = document.getElementById('toggle-password');
-    if (tBtn && pInput) {
-        tBtn.addEventListener('click', () => {
-            const type = pInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            pInput.setAttribute('type', type);
-            tBtn.style.opacity = type === 'text' ? '1' : '0.5';
-        });
-    }
+// Logout
+const logout = document.getElementById('logout-btn');
+if (logout) {
+    logout.addEventListener('click', () => {
+        localStorage.removeItem('isAdmin');
+        location.reload();
+    });
+}
 
-    // Logout
-    const logout = document.getElementById('logout-btn');
-    if (logout) {
-        logout.addEventListener('click', () => {
-            localStorage.removeItem('isAdmin');
-            location.reload();
-        });
-    }
-
-    checkAuth();
-});
+checkAuth();
