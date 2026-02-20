@@ -186,6 +186,10 @@ const renderMotionGalleryForm = (images) => {
         <div class="gallery-item group relative">
             <img src="${img}" class="w-full h-full object-cover">
             <div class="gallery-item-actions">
+                <label class="btn-replace-img">
+                    <input type="file" onchange="window.replaceGalleryImage(this, ${i})" class="hidden">
+                    Replace
+                </label>
                 <button type="button" class="btn-remove-img" onclick="removeGalleryImage(${i})">Remove</button>
             </div>
         </div>
@@ -197,6 +201,25 @@ window.removeGalleryImage = (index) => {
     const images = hiddenInput.value.split(',').filter(s => s);
     images.splice(index, 1);
     renderMotionGalleryForm(images);
+};
+
+window.replaceGalleryImage = async (input, index) => {
+    if (input.files[0]) {
+        // Find the image element to show loading state if possible (optional)
+        const statusEl = document.getElementById('gallery-upload-status');
+        statusEl.textContent = 'Replacing...';
+
+        const url = await uploadFile(input.files[0]);
+        if (url) {
+            const hiddenInput = document.getElementById('gallery-images');
+            let images = hiddenInput.value.split(',').filter(s => s);
+            images[index] = url;
+            statusEl.textContent = 'Replaced!';
+            renderMotionGalleryForm(images);
+        } else {
+            statusEl.textContent = 'Err replacing';
+        }
+    }
 };
 
 // Gallery Upload Listener
