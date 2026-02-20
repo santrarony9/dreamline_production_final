@@ -54,7 +54,7 @@
                     Dashboard</button>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p id="login-error" class="text-red-500 text-xs font-bold hidden">Incorrect password</p>
-                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.9 (Stable)</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.4.0 (Stable)</p>
                 </div>
             </div>
 
@@ -411,26 +411,33 @@
     </footer>
 
     <script>
-        // Final Stable Login (v1.3.9)
+        // Ultimate Login Logic (v1.4.0)
         async function handleLogin() {
-            console.log("Login v1.3.9 check initiated");
-            const pInput = document.getElementById('pass-key');
+            console.log("Login v1.4.0 checking...");
+
+            // Try ID first, then generic selector
+            let pInput = document.getElementById('pass-key') || document.querySelector('input[type="password"]');
+
             if (!pInput) {
-                alert("Critical Error: Security input field vanished. Please refresh.");
+                alert("Error: Login box not found. Please refresh the page.");
                 return;
             }
 
-            // Short delay to ensure browser populated the field before reading
-            await new Promise(r => setTimeout(r, 100));
+            // Wait 150ms for browser to sync input values
+            await new Promise(r => setTimeout(r, 150));
 
-            const pass = pInput.value.trim();
-            const lError = document.getElementById('login-error');
-            const lScreen = document.getElementById('login-screen');
-            const dBoard = document.getElementById('dashboard');
+            const rawValue = pInput.value;
+            const cleanValue = rawValue.trim().toLowerCase();
 
-            // Support exact and case-insensitive check
-            if (pass.toLowerCase() === 'admin123') {
+            console.log("Diagnostic: Read length " + rawValue.length);
+
+            if (cleanValue === 'admin123') {
                 localStorage.setItem('isAdmin', 'true');
+
+                // Hide Login Screen
+                const lScreen = document.getElementById('login-screen');
+                const dBoard = document.getElementById('dashboard');
+
                 if (lScreen) {
                     lScreen.classList.add('hidden-force');
                     lScreen.style.setProperty('display', 'none', 'important');
@@ -439,18 +446,33 @@
                     dBoard.classList.remove('hidden', 'hidden-force');
                     dBoard.style.setProperty('display', 'flex', 'important');
                 }
-                if (window.initializeDashboard) window.initializeDashboard();
-                else setTimeout(() => location.reload(), 200);
+
+                // Initialize logic
+                if (window.initializeDashboard) {
+                    window.initializeDashboard();
+                } else {
+                    location.reload(); // Fallback
+                }
             } else {
+                const lError = document.getElementById('login-error');
                 if (lError) lError.classList.remove('hidden');
-                alert("Access Denied!\n\nDetails: Incorrect Security Key.\nAttempt Length: " + pass.length + " chars.\n\nTip: Use the Eye icon to verify your typing.");
+
+                // Diagnostic Alert
+                alert("Login Failed!\n\n" +
+                    "What you typed: [" + rawValue + "]\n" +
+                    "Length: " + rawValue.length + " characters.\n\n" +
+                    "Required: [admin123]\n\n" +
+                    "Tip: Please re-type 'admin123' slowly.");
+
+                pInput.value = ''; // Clear for retry
+                pInput.focus();
             }
         }
 
         // Inline Password Toggle Support
         document.addEventListener('DOMContentLoaded', () => {
             const toggleBtn = document.getElementById('toggle-password');
-            const passInput = document.getElementById('pass-key');
+            const passInput = document.getElementById('pass-key') || document.querySelector('input[type="password"]');
             if (toggleBtn && passInput) {
                 toggleBtn.onclick = function () {
                     const isPass = passInput.getAttribute('type') === 'password';

@@ -952,7 +952,6 @@ const handleLogin = async () => {
 };
 
 // Export to window
-window.handleLogin = handleLogin;
 window.initializeDashboard = showDashboard; // Allow inline script to trigger it
 
 // Safe Initialization
