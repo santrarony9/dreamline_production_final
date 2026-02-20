@@ -1,6 +1,23 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const path = require('path');
+const upload = require('./s3-config');
+
+// Models
+const Wedding = require('./models/Wedding');
+const Journal = require('./models/Journal');
+const Content = require('./models/Content');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// --- DATABASE ---
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.error('MongoDB Error:', err));
 
 // --- MIDDLEWARE ---
 app.use(cors());

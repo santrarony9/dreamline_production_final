@@ -107,22 +107,39 @@ body {
 }
 
 .glass-card:hover {
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(197, 160, 89, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(197, 160, 89, 0.4);
     transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.bg-white\/2 {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.bg-gold\/10 {
+    background-color: rgba(197, 160, 89, 0.1);
+}
+
+.border-gold\/30 {
+    border-color: rgba(197, 160, 89, 0.3);
 }
 
 .glass-input {
-    background: rgba(255, 255, 255, 0.03) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     color: white !important;
-    transition: all 0.3s ease;
+    padding: 1rem !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-input:focus {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
     border-color: var(--gold) !important;
-    box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
+    box-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
+    outline: none;
 }
 
 /* Generic Utility Buttons (Tailwind Fallbacks) */
@@ -165,44 +182,41 @@ body {
 }
 
 .btn-upload {
-    background-color: #f3f4f6;
-    border: 1px solid #d1d5db;
-    color: #374151;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    color: var(--gold);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 800;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-}
-
-.btn-upload input[type="file"] {
-    display: none;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .btn-upload:hover {
-    background-color: #e5e7eb;
-    border-color: #9ca3af;
-}
-
-.btn-upload svg {
-    width: 16px;
-    height: 16px;
+    background-color: var(--gold);
+    color: black;
+    border-color: var(--gold);
+    transform: scale(1.05);
 }
 
 .upload-status {
-    font-size: 12px;
-    color: #6b7280;
-    font-style: italic;
-    min-width: 80px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    min-width: 100px;
 }
 
 .upload-status.loading {
     color: #3b82f6;
-    font-weight: bold;
+    animation: pulse 1.5s infinite;
 }
 
 .upload-status.success {
@@ -211,6 +225,20 @@ body {
 
 .upload-status.error {
     color: #ef4444;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* Gallery Grid */
@@ -257,6 +285,13 @@ body {
 
 .gallery-item:hover .gallery-item-actions {
     opacity: 1;
+    backdrop-filter: blur(4px);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1.5rem;
 }
 
 .btn-remove-img {
@@ -427,13 +462,23 @@ body {
 }
 
 label {
-    color: #6b7280;
+    color: #a1a1aa;
+    /* Zinc-400 for better visibility */
     text-transform: uppercase;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
     display: block;
+}
+
+.help-text {
+    font-size: 10px;
+    color: #71717a;
+    /* Zinc-500 */
+    margin-top: 0.5rem;
+    display: block;
+    font-style: italic;
 }
 
 /* Scrollbar Theme */
@@ -448,4 +493,37 @@ label {
 ::-webkit-scrollbar-thumb {
     background: var(--gold);
     border-radius: 10px;
+}
+
+/* Log Console Styles */
+#log-console::-webkit-scrollbar {
+    width: 4px;
+}
+
+#log-console .log-entry {
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    word-break: break-all;
+}
+
+#log-console .log-time {
+    color: rgba(197, 160, 89, 0.5);
+    margin-right: 10px;
+}
+
+#log-console .log-type-info {
+    color: #3b82f6;
+}
+
+#log-console .log-type-error {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+#log-console .log-type-success {
+    color: #10b981;
+}
+
+#log-console .log-type-warn {
+    color: #f59e0b;
 }
