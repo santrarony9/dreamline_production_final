@@ -12,8 +12,22 @@ let weddings = [];
 
 // Init
 window.addEventListener('DOMContentLoaded', async () => {
-    console.log('Vite App Initializing...');
+    console.log('Dreamline Vite Initializing...');
     await Promise.all([fetchContent(), fetchWeddings()]);
+
+    // Create unified portfolio for Master Gallery
+    siteContent.masterPortfolio = [
+        ...(siteContent.projects || []).map(p => ({ ...p, category: 'commercial' })),
+        ...(weddings || []).map(w => ({
+            id: w.id,
+            title: w.title,
+            img: w.coverImage,
+            type: 'wedding',
+            category: 'wedding',
+            isWedding: true
+        }))
+    ];
+
     renderAll();
 });
 
@@ -153,25 +167,26 @@ const renderVideoVault = () => {
 
 const renderMasterGallery = (filter = 'all') => {
     const container = document.getElementById('master-grid');
-    if (!container || !siteContent.projects) return;
+    if (!container || !siteContent.masterPortfolio) return;
 
-    const projects = filter === 'all'
-        ? siteContent.projects
-        : siteContent.projects.filter(p => p.type === filter);
+    const items = filter === 'all'
+        ? siteContent.masterPortfolio
+        : siteContent.masterPortfolio.filter(p => p.category === filter || p.type === filter);
 
-    if (projects.length === 0) {
-        container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">No projects found in this category.</p>';
+    if (items.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10 uppercase tracking-widest text-[10px] font-bold">No projects found in this category.</p>';
         return;
     }
 
-    container.innerHTML = projects.map(proj => `
-        <div class="aspect-[4/5] bg-gray-900 overflow-hidden relative group">
-            <img src="${proj.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
-                <p class="text-[#c5a059] text-[10px] uppercase tracking-widest mb-2">${proj.type}</p>
-                <h3 class="text-white font-heading text-xl font-bold uppercase">${proj.title}</h3>
+    container.innerHTML = items.map(proj => `
+        <a href="${proj.isWedding ? `wedding-details.html?id=${proj.id}` : '#'}" class="aspect-[4/5] bg-gray-900 overflow-hidden relative group block">
+            <img src="${proj.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-8 flex flex-col justify-end">
+                <p class="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2">${proj.category || proj.type}</p>
+                <h3 class="text-white font-heading text-xl font-black uppercase leading-tight">${proj.title}</h3>
+                ${proj.isWedding ? '<span class="text-[9px] text-white/50 uppercase font-bold mt-4 tracking-tighter">View Story →</span>' : ''}
             </div>
-        </div>
+        </a>
     `).join('');
 };
 
