@@ -12,6 +12,54 @@ let weddings = [];
 let journals = [];
 let siteContent = {};
 
+const renderStatsList = () => {
+    const container = document.getElementById('stats-container');
+    container.innerHTML = '';
+
+    if (!siteContent.stats) siteContent.stats = [];
+
+    container.innerHTML = siteContent.stats.map((s, i) => `
+        <div class="admin-card p-3">
+            <div class="mb-2">
+                <label class="block text-xs font-bold mb-1">Number</label>
+                <input type="text" class="w-full p-1 border rounded text-xs" value="${s.number}" oninput="window.updateStat(${i}, 'number', this.value)">
+            </div>
+            <div class="mb-2">
+                <label class="block text-xs font-bold mb-1">Label</label>
+                <input type="text" class="w-full p-1 border rounded text-xs" value="${s.label}" oninput="window.updateStat(${i}, 'label', this.value)">
+            </div>
+            <button type="button" class="btn-delete-card w-full mt-1" onclick="window.deleteStat(${i})">Remove</button>
+        </div>
+    `).join('');
+};
+
+window.updateStat = (index, field, value) => {
+    siteContent.stats[index][field] = value;
+};
+
+window.deleteStat = (index) => {
+    siteContent.stats.splice(index, 1);
+    renderStatsList();
+};
+
+window.uploadHeroMedia = async (input) => {
+    // This function will be replaced by setupFileUpload in init
+};
+
+const renderMarqueeFields = () => {
+    const marqueeContainer = document.getElementById('marquee-container');
+    marqueeContainer.innerHTML = '';
+    (siteContent.marquee || []).forEach((text, i) => {
+        marqueeContainer.innerHTML += `<input type="text" class="w-full p-2 border rounded" value="${text}" name="marquee_${i}">`;
+    });
+};
+
+document.getElementById('add-stat-btn').addEventListener('click', () => {
+    if (!siteContent.stats) siteContent.stats = [];
+    siteContent.stats.push({ number: '0', label: 'New Stat' });
+    renderStatsList();
+});
+
 // DOM Elements
 const loginScreen = document.getElementById('login-screen');
 const dashboard = document.getElementById('dashboard');
@@ -141,29 +189,19 @@ const renderHomeForm = () => {
     document.getElementById('hero-title-line1').value = siteContent.hero.title?.line1 || '';
     document.getElementById('hero-title-line2').value = siteContent.hero.title?.line2 || '';
     document.getElementById('hero-subtitle').value = siteContent.hero.subtitle || '';
-    document.getElementById('hero-video-url').value = siteContent.hero.videoUrl || '';
+    document.getElementById('hero-media-url').value = siteContent.hero.bg || '';
+
+    // Setup Hero Media Upload
+    setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url');
 
     // Video Vault
     renderVideoVaultList();
 
-    // Marquee
-    const marqueeContainer = document.getElementById('marquee-container');
-    marqueeContainer.innerHTML = '';
-    (siteContent.marquee || []).forEach((text, i) => {
-        marqueeContainer.innerHTML += `<input type="text" class="w-full p-2 border rounded" value="${text}" name="marquee_${i}">`;
-    });
+    // Render Stats Cards
+    renderStatsList();
 
-    // Stats
-    const statsContainer = document.getElementById('stats-container');
-    statsContainer.innerHTML = '';
-    (siteContent.stats || []).forEach((stat, i) => {
-        statsContainer.innerHTML += `
-            <div class="border p-2 rounded">
-                <input type="text" class="w-full p-1 border rounded mb-1 text-sm font-bold" value="${stat.value}" name="stat_val_${i}" placeholder="Value">
-                <input type="text" class="w-full p-1 border rounded text-xs" value="${stat.label}" name="stat_lbl_${i}" placeholder="Label">
-            </div>
-        `;
-    });
+    // Render Marquee
+    renderMarqueeFields();
 
     // Gallery
     if (siteContent.gallery) {
@@ -456,21 +494,16 @@ homeForm.addEventListener('submit', async (e) => {
     updatedContent.hero.title.line1 = document.getElementById('hero-title-line1').value;
     updatedContent.hero.title.line2 = document.getElementById('hero-title-line2').value;
     updatedContent.hero.subtitle = document.getElementById('hero-subtitle').value;
-    updatedContent.hero.videoUrl = document.getElementById('hero-video-url').value;
+    updatedContent.hero.bg = document.getElementById('hero-media-url').value;
 
     // Update Video Vault
-    // Video Vault Update: Handled by state sync above, no need to scrape
-    // Just ensure updatedContent.videoVault is current siteContent.videoVault
     updatedContent.videoVault = siteContent.videoVault;
 
     // Update Marquee
     updatedContent.marquee = Array.from(document.querySelectorAll('#marquee-container input')).map(input => input.value);
 
-    // Update Stats
-    updatedContent.stats = Array.from(document.querySelectorAll('#stats-container > div')).map((div, i) => ({
-        value: div.querySelector(`input[name="stat_val_${i}"]`).value,
-        label: div.querySelector(`input[name="stat_lbl_${i}"]`).value
-    }));
+    // Update Stats (Now uses direct state sync)
+    updatedContent.stats = siteContent.stats;
 
     // Update Gallery
     updatedContent.gallery.title = document.getElementById('gallery-title').value;
