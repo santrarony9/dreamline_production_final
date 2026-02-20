@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
     <title>Dreamline Production | Cinematic Visual House</title>
 
     <!-- Google tag (gtag.js) -->
@@ -516,10 +516,11 @@
         class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
         <div class="font-heading font-black text-lg tracking-tighter">
             <a href="index.html" class="interactive flex items-center gap-2">
-                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+                <img src="/logo.svg" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
             </a>
         </div>
-        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+        <div
+            class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-gray-400 whitespace-nowrap">
             <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
             <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
             <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
@@ -590,12 +591,12 @@
 
                 <div class="text-center px-6">
                     <p class="text-[#c5a059] text-[10px] font-black uppercase tracking-[1em] mb-8 reveal-text">
-                        <span id="hero-subtitle" class="block reveal-inner">Est. 2010 • Govt. Registered House</span>
+                        <span id="hero-subtitle" class="block reveal-inner">Loading...</span>
                     </p>
                     <h1
                         class="font-heading text-6xl md:text-[9vw] font-black leading-[0.8] tracking-tighter uppercase mb-12 reveal-text">
-                        <span id="hero-title-1" class="block reveal-inner">Visionary</span>
-                        <span id="hero-title-2" class="block reveal-inner text-[#c5a059]">Cinema.</span>
+                        <span id="hero-title-1" class="block reveal-inner"></span>
+                        <span id="hero-title-2" class="block reveal-inner text-[#c5a059]"></span>
                     </h1>
                     <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
                         <a href="luxury.html" class="group flex items-center gap-4 interactive">
@@ -617,80 +618,29 @@
                 <!-- Industry Validation Marquee -->
                 <div class="bg-[#080808] border-y border-white/5 marquee py-4">
                     <div id="marquee-content" class="marquee-inner">
-                        <span class="font-heading font-black text-4xl text-outline">LUXURY WEDDINGS</span>
-                        <span class="font-heading font-black text-4xl text-[#c5a059]">ADVERTISING</span>
-                        <span class="font-heading font-black text-4xl text-outline">MUSIC CINEMA</span>
-                        <span class="font-heading font-black text-4xl text-[#c5a059]">CORPORATE NARRATIVES</span>
-                        <span class="font-heading font-black text-4xl text-outline">VFX STUDIO</span>
+                        <!-- Dynamic Content -->
                     </div>
                 </div>
 
-                <!-- Legacy Stats -->
+                <!-- Dynamic Stats -->
                 <section id="stats-container" class="py-32 px-8 md:px-16 grid grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="border-l border-white/10 pl-8 py-4">
-                        <div class="text-[#c5a059] font-heading text-5xl font-black mb-2">15+</div>
-                        <div class="text-[10px] font-black uppercase tracking-widest text-white/40">Years of Artistry
-                        </div>
-                    </div>
-                    <div class="border-l border-white/10 pl-8 py-4">
-                        <div class="text-[#c5a059] font-heading text-5xl font-black mb-2">800+</div>
-                        <div class="text-[10px] font-black uppercase tracking-widest text-white/40">Luxury Unions</div>
-                    </div>
-                    <div class="border-l border-white/10 pl-8 py-4">
-                        <div class="text-[#c5a059] font-heading text-5xl font-black mb-2">50+</div>
-                        <div class="text-[10px] font-black uppercase tracking-widest text-white/40">Brand Partners</div>
-                    </div>
-                    <div class="border-l border-white/10 pl-8 py-4">
-                        <div class="text-[#c5a059] font-heading text-5xl font-black mb-2">24/7</div>
-                        <div class="text-[10px] font-black uppercase tracking-widest text-white/40">In-House VFX Studio
-                        </div>
-                    </div>
+                    <!-- Dynamic Content -->
                 </section>
             </div>
 
             <!-- THE MOTION GALLERY (Continuous Glide) -->
             <section id="page-gallery" class="py-32 bg-[#080808] overflow-hidden">
                 <div class="px-12 mb-16 flex justify-between items-end">
-                    <h2 class="font-heading text-4xl md:text-6xl font-black tracking-tighter uppercase">The Motion
-                        <br><span class="text-white/20">Archive.</span>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black tracking-tighter uppercase">
+                        <span id="gallery-title">The Motion</span>
+                        <br><span class="text-white/20" id="gallery-subtitle">Archive.</span>
                     </h2>
                     <p class="text-[10px] font-black uppercase tracking-widest text-[#c5a059] mb-4">15+ Years of Frames
                     </p>
                 </div>
 
-                <div class="motion-track">
-                    <!-- Dynamic Clone for Loop -->
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=600">
-                    </div>
-                    <!-- Clones -->
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=600">
-                    </div>
-                    <div class="motion-card"><img
-                            src="https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=600">
-                    </div>
+                <div class="motion-track" id="motion-gallery-track">
+                    <!-- Dynamic Content -->
                 </div>
             </section>
 
@@ -1261,7 +1211,10 @@
                 <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
                 <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
                     &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
-                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX <br>
+                    <a href="/admin.html"
+                        class="text-[9px] text-gray-800 hover:text-gray-600 transition-colors mt-2 inline-block">Admin
+                        Login</a>
                 </p>
             </div>
         </footer>
@@ -1274,81 +1227,64 @@
     <script>
 
         // Data & Assets
-        const artworks = [
-            { id: 1, type: 'wedding', title: 'The Zamindar Soul', img: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800' },
-            { id: 2, type: 'wedding', title: 'Benarasi Dreams', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800' },
-            { id: 3, type: 'commercial', title: 'E-Commerce Luxe', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800' },
-            { id: 4, type: 'music', title: 'Neon Pulse', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800' },
-            { id: 5, type: 'commercial', title: 'Corporate Identity', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800' },
-            { id: 6, type: 'wedding', title: 'Sabyasachi Aesthetic', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800' },
-            { id: 7, type: 'music', title: 'The Unplugged Session', img: 'https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=800' },
-            { id: 8, type: 'commercial', title: 'Textile Narrative', img: 'https://images.unsplash.com/photo-1445205170230-053b830c6050?auto=format&fit=crop&w=800' }
-        ];
+        // Master Gallery Rendering
+        function renderMasterGallery() {
+            const grid = document.getElementById('master-grid');
+            if (!grid) return;
 
-        // Custom Loader Progress
-        window.addEventListener('load', () => {
-            const prog = document.getElementById('loader-progress');
-            const loader = document.getElementById('loader');
+            // Combine Weddings and Commercial Projects into a single "Artworks" list
+            // Normalize data structure: { id, type, title, img }
+            const weddingItems = (window.weddings || []).map(w => ({
+                id: w.id,
+                type: 'wedding',
+                title: w.title,
+                img: w.coverImage
+            }));
 
-            prog.style.width = '100%';
+            const projectItems = (window.siteContent?.projects || []).map(p => ({
+                id: p.id,
+                type: p.type || 'commercial', // default to commercial if undefined
+                title: p.title,
+                img: p.img
+            }));
 
-            setTimeout(() => {
-                loader.style.transform = 'translateY(-100%)';
-                document.body.style.overflow = 'auto';
-            }, 800);
-        });
+            // Expose globally for filtering
+            window.allArtworks = [...weddingItems, ...projectItems];
 
-
-
-
-
-        // Kinetic Text Animation on Scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const kinetics = document.querySelectorAll('.kinetic-bg');
-            kinetics.forEach((el, i) => {
-                const speed = 0.5 + (i * 0.2);
-                el.style.transform = `translateX(${(scrolled * speed) - 200}px)`;
-            });
-
-            // Reveal animations on scroll
-            document.querySelectorAll('.reveal-text').forEach(section => {
-                const top = section.getBoundingClientRect().top;
-                if (top < window.innerHeight * 0.8) {
-                    section.classList.add('active-reveal');
-                }
-            });
-        });
-
-
-
-        // Start
-        window.onload = () => {
-            document.getElementById('page-loader').style.transform = 'translateY(-100%)';
-            setTimeout(() => {
-                document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('active-reveal'));
-            }, 300);
-        };
-
-        // Render Functions
-        function renderContent() {
-            const weddingGrid = document.getElementById('wedding-grid');
-            if (weddingGrid) {
-                weddingGrid.innerHTML = artworks
-                    .filter(a => a.type === 'wedding')
-                    .map(item => `
-        <div class="premium-card aspect-[3/4] interactive">
-          <img src="${item.img}" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-80"></div>
-          <div class="absolute bottom-8 left-8">
-            <p class="text-[10px] font-black uppercase tracking-widest text-[#c5a059] mb-2">Heritage Selection</p>
-            <h3 class="font-heading text-xl font-black uppercase">${item.title}</h3>
-          </div>
-        </div>
-      `).join('');
-            }
+            // Initial render
+            filterGallery('all');
         }
-        renderContent();
+
+        // Expose render function for main.js to call
+        window.renderMasterGallery = renderMasterGallery;
+
+        function filterGallery(type, el = null) {
+            if (el) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+            }
+            const grid = document.getElementById('master-grid');
+            if (!grid) return;
+
+            const items = type === 'all' ? (window.allArtworks || []) : (window.allArtworks || []).filter(a => a.type === type);
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p class="text-white/40 text-xs uppercase tracking-widest col-span-full text-center py-10">No projects found in this category.</p>';
+                return;
+            }
+
+            grid.innerHTML = items.map(item => `
+                <div class="premium-card aspect-square group interactive">
+                    <img src="${item.img}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="text-center">
+                            <p class="text-[#c5a059] text-[8px] font-black uppercase tracking-[0.4em] mb-2">${item.type}</p>
+                            <h4 class="font-heading text-[10px] uppercase px-4">${item.title}</h4>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
 
 
 
@@ -1378,29 +1314,7 @@
 
         // Gallery Filtering Logic
 
-        function filterGallery(type, el = null) {
-            if (el) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                el.classList.add('active');
-            }
-            const grid = document.getElementById('master-grid');
-            if (!grid) return;
 
-            const items = type === 'all' ? artworks : artworks.filter(a => a.type === type);
-            grid.innerHTML = items.map(item => `
-                <div class="premium-card aspect-square group interactive">
-                    <img src="${item.img}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div class="text-center">
-                            <p class="text-[#c5a059] text-[8px] font-black uppercase tracking-[0.4em] mb-2">${item.type}</p>
-                            <h4 class="font-heading text-[10px] uppercase px-4">${item.title}</h4>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-        // Initial Load
-        filterGallery('all');
 
         // Smooth Scroll Logic
         function scrollToSec(id) {

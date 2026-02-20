@@ -162,9 +162,11 @@
     <main class="pt-32">
         <!-- Hero Section -->
         <section class="container mx-auto px-6 mb-20">
-            <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Est. 2010 • Govt.
+            <span id="about-hero-subtitle"
+                class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Est. 2010 • Govt.
                 Registered</span>
-            <h1 class="font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-12 leading-none">
+            <h1 id="about-hero-title"
+                class="font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-12 leading-none">
                 TRUSTED PRODUCTION<br>
                 <span class="text-white/20">HOUSE IN KOLKATA.</span>
             </h1>
@@ -194,12 +196,14 @@
                 <div class="space-y-12">
                     <div class="service-card">
                         <h3 class="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR VISION</h3>
-                        <p class="text-sm text-gray-400">To become one of the most trusted and innovative production
+                        <p id="about-vision" class="text-sm text-gray-400">To become one of the most trusted and
+                            innovative production
                             houses in Kolkata recognized for cinematic storytelling and professional execution.</p>
                     </div>
                     <div class="service-card">
                         <h3 class="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR MISSION</h3>
-                        <p class="text-sm text-gray-400">To help brands and individuals communicate their stories
+                        <p id="about-mission" class="text-sm text-gray-400">To help brands and individuals communicate
+                            their stories
                             through powerful visuals, strategic content, and high-quality production.</p>
                     </div>
                 </div>
@@ -212,7 +216,8 @@
                         <!-- Placeholder for Founder Image -->
                         <div
                             class="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
-                            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800"
+                            <img id="about-founder-img"
+                                src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800"
                                 class="w-full h-full object-cover" alt="Rony - Founder">
                         </div>
                         <div
@@ -225,7 +230,7 @@
                         <h2 class="font-heading text-3xl md:text-4xl font-black mb-8 uppercase leading-tight">Capturing
                             <br>The Unseen.
                         </h2>
-                        <p class="text-gray-400 leading-relaxed mb-8 italic">
+                        <p id="about-founder-note" class="text-gray-400 leading-relaxed mb-8 italic">
                             "At Dreamline, we don't just record events; we archive feelings. My journey began with a
                             simple belief: that every brand and every couple has a story that deserves to be told with
                             cinematic grandeur. Over the last decade, we've refined our craft to ensure that when you
@@ -799,7 +804,7 @@
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active-reveal');
                     if (entry.target.classList.contains('counter-box')) {
-                        startCounter(entry.target);
+                        // startCounter(entry.target); // Optional: re-enable if needed
                     }
                 }
             });
@@ -807,29 +812,29 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Stats Counter Animation
-        function startCounter(el) {
-            const counters = el.querySelectorAll('h3');
-            counters.forEach(counter => {
-                const target = parseInt(counter.innerText);
-                if (isNaN(target)) return; // Skip if suffix is present in text node
+        // Fetch and Render About Content Logic
+        async function fetchAboutContent() {
+            try {
+                const res = await fetch('/api/content');
+                if (!res.ok) return;
+                const data = await res.json();
+                const about = data.about;
 
-                let count = 0;
-                const speed = 2000 / target; // Normalize duration
+                if (about) {
+                    if (about.heroTitle) document.getElementById('about-hero-title').innerHTML = about.heroTitle.replace(/\n/g, '<br>');
+                    if (about.heroSubtitle) document.getElementById('about-hero-subtitle').innerText = about.heroSubtitle;
+                    if (about.vision) document.getElementById('about-vision').innerText = about.vision;
+                    if (about.mission) document.getElementById('about-mission').innerText = about.mission;
+                    if (about.founderNote) document.getElementById('about-founder-note').innerText = `"${about.founderNote}"`;
+                    if (about.founderImage) document.getElementById('about-founder-img').src = about.founderImage;
+                }
 
-                const updateCount = () => {
-                    const inc = target / 100;
-                    if (count < target) {
-                        count += inc;
-                        counter.childNodes[0].nodeValue = Math.ceil(count);
-                        setTimeout(updateCount, 10);
-                    } else {
-                        counter.childNodes[0].nodeValue = target;
-                    }
-                };
-                updateCount();
-            });
+            } catch (err) {
+                console.error("Failed to fetch about content", err);
+            }
         }
+
+        window.addEventListener('DOMContentLoaded', fetchAboutContent);
 
     </script>
 </body>

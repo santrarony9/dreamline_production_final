@@ -3,10 +3,12 @@ import '../style.css'; // Import main tailwind styles
 // Constants
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
+const API_JOURNALS_URL = '/api/journals';
 const UPLOAD_URL = '/api/upload';
 
 // State
 let weddings = [];
+let journals = [];
 let siteContent = {};
 
 // DOM Elements
@@ -22,63 +24,79 @@ const closeModal = document.getElementById('close-modal');
 const cancelBtn = document.getElementById('cancel-btn');
 const addWeddingBtn = document.getElementById('add-wedding-btn');
 
+// Journal Modal Elements
+const journalModal = document.getElementById('journal-modal');
+const journalForm = document.getElementById('journal-form');
+const closeJournalModal = document.getElementById('close-journal-modal');
+const cancelJournalBtn = document.getElementById('cancel-journal-btn');
+const addJournalBtn = document.getElementById('add-journal-btn');
+
 // Tabs
+const tabHome = document.getElementById('tab-home');
 const tabWeddings = document.getElementById('tab-weddings');
-const tabContent = document.getElementById('tab-content');
+const tabCommercial = document.getElementById('tab-commercial');
+const tabAbout = document.getElementById('tab-about');
+const tabJournal = document.getElementById('tab-journal');
+
+const sectionHome = document.getElementById('section-home');
 const sectionWeddings = document.getElementById('section-weddings');
-const sectionContent = document.getElementById('section-content');
-const contentForm = document.getElementById('content-form');
+const sectionCommercial = document.getElementById('section-commercial');
+const sectionAbout = document.getElementById('section-about');
+const sectionJournal = document.getElementById('section-journal');
 
-// --- AUTHENTICATION ---
-const checkAuth = () => {
-    if (localStorage.getItem('adminAuthenticated') === 'true') {
-        loginScreen.classList.add('hidden');
-        dashboard.classList.remove('hidden');
-        fetchWeddings();
-    }
-};
-
-loginBtn.addEventListener('click', () => {
-    if (passwordInput.value === 'admin123') {
-        localStorage.setItem('adminAuthenticated', 'true');
-        checkAuth();
-    } else {
-        loginError.classList.remove('hidden');
-    }
-});
-
-document.getElementById('logout-btn').addEventListener('click', () => {
-    localStorage.removeItem('adminAuthenticated');
-    window.location.reload();
-});
+const homeForm = document.getElementById('home-form');
+const commercialForm = document.getElementById('commercial-form');
+const aboutForm = document.getElementById('about-form');
 
 // --- TABS ---
-tabWeddings.addEventListener('click', () => {
-    switchTab('weddings');
-});
-tabContent.addEventListener('click', () => {
-    switchTab('content');
-});
+tabHome.addEventListener('click', () => switchTab('home'));
+tabWeddings.addEventListener('click', () => switchTab('weddings'));
+tabCommercial.addEventListener('click', () => switchTab('commercial'));
+tabAbout.addEventListener('click', () => switchTab('about'));
+tabJournal.addEventListener('click', () => switchTab('journal'));
 
 const switchTab = (tab) => {
-    if (tab === 'weddings') {
+    // Hide all sections
+    sectionHome.classList.add('hidden');
+    sectionWeddings.classList.add('hidden');
+    sectionCommercial.classList.add('hidden');
+    sectionAbout.classList.add('hidden');
+    sectionJournal.classList.add('hidden');
+
+    // Reset tab styles
+    [tabHome, tabWeddings, tabCommercial, tabAbout, tabJournal].forEach(t => {
+        t.classList.remove('text-gold-500', 'border-b-2', 'border-gold-500');
+        t.classList.add('text-gray-500');
+    });
+
+    // Show active section & style tab
+    if (tab === 'home') {
+        sectionHome.classList.remove('hidden');
+        tabHome.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabHome.classList.remove('text-gray-500');
+        fetchContent(); // Reload to get fresh data
+    } else if (tab === 'weddings') {
         sectionWeddings.classList.remove('hidden');
-        sectionContent.classList.add('hidden');
         tabWeddings.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
         tabWeddings.classList.remove('text-gray-500');
-        tabContent.classList.remove('text-gold-500', 'border-b-2', 'border-gold-500');
-        tabContent.classList.add('text-gray-500');
-    } else {
-        sectionWeddings.classList.add('hidden');
-        sectionContent.classList.remove('hidden');
-        tabWeddings.classList.remove('text-gold-500', 'border-b-2', 'border-gold-500');
-        tabWeddings.classList.add('text-gray-500');
-        tabContent.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
-        tabContent.classList.remove('text-gray-500');
-        fetchContent();
+        fetchWeddings();
+    } else if (tab === 'commercial') {
+        sectionCommercial.classList.remove('hidden');
+        tabCommercial.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabCommercial.classList.remove('text-gray-500');
+        fetchContent(); // Commercial projects are part of content
+    } else if (tab === 'about') {
+        sectionAbout.classList.remove('hidden');
+        tabAbout.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabAbout.classList.remove('text-gray-500');
+        fetchContent(); // About is part of content
+    } else if (tab === 'journal') {
+        sectionJournal.classList.remove('hidden');
+        tabJournal.classList.add('text-gold-500', 'border-b-2', 'border-gold-500');
+        tabJournal.classList.remove('text-gray-500');
+        fetchJournals();
     }
 };
-
 
 // --- DATA FETCHING (Weddings) ---
 const fetchWeddings = async () => {
@@ -91,18 +109,31 @@ const fetchWeddings = async () => {
     }
 };
 
+// --- DATA FETCHING (Journals) ---
+const fetchJournals = async () => {
+    try {
+        const res = await fetch(API_JOURNALS_URL);
+        journals = await res.json();
+        renderJournalList();
+    } catch (err) {
+        console.error('Failed to fetch journals:', err);
+    }
+};
+
 // --- DATA FETCHING (Content) ---
 const fetchContent = async () => {
     try {
         const res = await fetch(API_CONTENT_URL);
         siteContent = await res.json();
-        renderContentForm();
+        renderHomeForm();
+        renderCommercialForm();
+        renderAboutForm();
     } catch (err) {
         console.error('Failed to fetch content:', err);
     }
 };
 
-const renderContentForm = () => {
+const renderHomeForm = () => {
     if (!siteContent.hero) return;
 
     // Hero
@@ -136,8 +167,20 @@ const renderContentForm = () => {
         document.getElementById('gallery-subtitle').value = siteContent.gallery.subtitle || '';
         document.getElementById('gallery-images').value = (siteContent.gallery.images || []).join(',\n');
     }
+};
 
-    // Projects
+const renderAboutForm = () => {
+    if (!siteContent.about) return;
+
+    document.getElementById('about-hero-title').value = siteContent.about.heroTitle || '';
+    document.getElementById('about-hero-subtitle').value = siteContent.about.heroSubtitle || '';
+    document.getElementById('about-vision').value = siteContent.about.vision || '';
+    document.getElementById('about-mission').value = siteContent.about.mission || '';
+    document.getElementById('about-founder-note').value = siteContent.about.founderNote || '';
+    document.getElementById('about-founder-img').value = siteContent.about.founderImage || '';
+};
+
+const renderCommercialForm = () => {
     const projectsContainer = document.getElementById('projects-container');
     projectsContainer.innerHTML = '';
     (siteContent.projects || []).forEach((proj, i) => addProjectField(proj, i));
@@ -146,7 +189,7 @@ const renderContentForm = () => {
 const addProjectField = (proj = { title: '', type: 'commercial', img: '' }, i) => {
     const container = document.getElementById('projects-container');
     const div = document.createElement('div');
-    div.className = 'border p-3 rounded bg-gray-50 project-item';
+    div.className = 'border p-3 rounded bg-gray-50 project-item relative';
     div.innerHTML = `
         <div class="flex justify-between mb-2">
             <h4 class="font-bold text-sm">Project ${i + 1}</h4>
@@ -160,9 +203,26 @@ const addProjectField = (proj = { title: '', type: 'commercial', img: '' }, i) =
                 <option value="music" ${proj.type === 'music' ? 'selected' : ''}>Music</option>
             </select>
         </div>
-        <input type="text" class="w-full p-1 border rounded text-xs mt-2" value="${proj.img}" placeholder="Image URL" name="proj_img">
+        <div class="mt-2">
+             <label class="block text-xs font-semibold mb-1">Project Image</label>
+             <input type="file" class="w-full text-xs mb-1 proj-upload-input">
+             <input type="text" class="w-full p-1 border rounded text-xs" value="${proj.img}" placeholder="Image URL" name="proj_img">
+        </div>
     `;
     container.appendChild(div);
+
+    // Attach upload listener to the new input
+    const fileInput = div.querySelector('.proj-upload-input');
+    const urlInput = div.querySelector('input[name="proj_img"]');
+
+    fileInput.addEventListener('change', async (e) => {
+        if (e.target.files[0]) {
+            const url = await uploadFile(e.target.files[0]);
+            if (url) {
+                urlInput.value = url;
+            }
+        }
+    });
 };
 
 document.getElementById('add-project-btn').addEventListener('click', () => {
@@ -171,8 +231,8 @@ document.getElementById('add-project-btn').addEventListener('click', () => {
 });
 
 
-// Content Form Submit
-contentForm.addEventListener('submit', async (e) => {
+// Home Form Submit
+homeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const updatedContent = { ...siteContent };
 
@@ -196,26 +256,56 @@ contentForm.addEventListener('submit', async (e) => {
     updatedContent.gallery.subtitle = document.getElementById('gallery-subtitle').value;
     updatedContent.gallery.images = document.getElementById('gallery-images').value.split(',').map(s => s.trim()).filter(s => s);
 
+    await saveContent(updatedContent);
+});
+
+// Commercial Form Submit
+commercialForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const updatedContent = { ...siteContent };
+
     // Update Projects
     updatedContent.projects = Array.from(document.getElementById('projects-container').children).map((div, i) => ({
-        id: i + 1, // Simple ID regeneration
+        id: i + 1,
         title: div.querySelector('input[name="proj_title"]').value,
         type: div.querySelector('select[name="proj_type"]').value,
         img: div.querySelector('input[name="proj_img"]').value
     }));
 
+    await saveContent(updatedContent);
+});
+
+// About Form Submit
+aboutForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const updatedContent = { ...siteContent };
+
+    if (!updatedContent.about) updatedContent.about = {};
+
+    updatedContent.about.heroTitle = document.getElementById('about-hero-title').value;
+    updatedContent.about.heroSubtitle = document.getElementById('about-hero-subtitle').value;
+    updatedContent.about.vision = document.getElementById('about-vision').value;
+    updatedContent.about.mission = document.getElementById('about-mission').value;
+    updatedContent.about.founderNote = document.getElementById('about-founder-note').value;
+    updatedContent.about.founderImage = document.getElementById('about-founder-img').value;
+
+    await saveContent(updatedContent);
+});
+
+const saveContent = async (content) => {
     try {
         const res = await fetch(API_CONTENT_URL, {
-            method: 'POST', // or PUT
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedContent)
+            body: JSON.stringify(content)
         });
         if (!res.ok) throw new Error('Failed to save');
         alert('Content updated successfully!');
+        siteContent = content; // Update local state
     } catch (err) {
         alert('Error saving content');
     }
-});
+};
 
 // Upload for Content Form
 document.getElementById('hero-video-upload').addEventListener('change', async (e) => {
@@ -226,6 +316,131 @@ document.getElementById('hero-video-upload').addEventListener('change', async (e
         }
     }
 });
+document.getElementById('about-founder-upload').addEventListener('change', async (e) => {
+    if (e.target.files[0]) {
+        const url = await uploadFile(e.target.files[0]);
+        if (url) {
+            document.getElementById('about-founder-img').value = url;
+        }
+    }
+});
+
+// --- JOURNAL FUNCTIONS ---
+
+const renderJournalList = () => {
+    const list = document.getElementById('journal-list');
+    list.innerHTML = journals.map(j => `
+        <div class="bg-white rounded shadow p-4 flex flex-col justify-between">
+            <div>
+                 <img src="${j.image}" alt="${j.title}" class="w-full h-40 object-cover rounded mb-4 bg-gray-100">
+                <div class="flex gap-2 text-xs font-bold text-gray-500 mb-2">
+                    <span>${j.date || 'No Date'}</span>
+                     <span class="text-gold-500">${j.category || 'Uncategorized'}</span>
+                </div>
+                <h3 class="font-bold text-lg leading-tight mb-2">${j.title}</h3>
+                <p class="text-gray-500 text-xs line-clamp-3">${j.excerpt || ''}</p>
+            </div>
+             <div class="mt-4 flex gap-2">
+                <button onclick="window.editJournal('${j.id}')" class="flex-1 bg-blue-600 text-white py-2 rounded text-sm hover:bg-blue-700">Edit</button>
+                <button onclick="window.deleteJournal('${j.id}')" class="bg-red-500 text-white px-3 py-2 rounded text-sm hover:bg-red-600">Del</button>
+            </div>
+        </div>
+    `).join('');
+};
+
+
+const openJournalModal = (journal = null) => {
+    journalModal.classList.remove('hidden');
+    journalForm.reset();
+
+    if (journal) {
+        document.getElementById('journal-modal-title').textContent = 'Edit Article';
+        document.getElementById('journal-id').value = journal.id;
+        document.getElementById('journal-title').value = journal.title;
+        document.getElementById('journal-date').value = journal.date;
+        document.getElementById('journal-category').value = journal.category;
+        document.getElementById('journal-image').value = journal.image;
+        document.getElementById('journal-excerpt').value = journal.excerpt;
+        document.getElementById('journal-content').value = journal.content || '';
+    } else {
+        document.getElementById('journal-modal-title').textContent = 'New Article';
+        document.getElementById('journal-id').value = '';
+    }
+};
+
+const closeJournalModalFunc = () => {
+    journalModal.classList.add('hidden');
+};
+
+// Journal Events
+addJournalBtn.addEventListener('click', () => openJournalModal());
+closeJournalModal.addEventListener('click', closeJournalModalFunc);
+cancelJournalBtn.addEventListener('click', closeJournalModalFunc);
+
+document.getElementById('journal-image-upload').addEventListener('change', async (e) => {
+    if (e.target.files[0]) {
+        const url = await uploadFile(e.target.files[0]);
+        if (url) {
+            document.getElementById('journal-image').value = url;
+        }
+    }
+});
+
+journalForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById('journal-id').value || `journal-${Date.now()}`;
+    const newJournal = {
+        id,
+        title: document.getElementById('journal-title').value,
+        date: document.getElementById('journal-date').value,
+        category: document.getElementById('journal-category').value,
+        image: document.getElementById('journal-image').value,
+        excerpt: document.getElementById('journal-excerpt').value,
+        content: document.getElementById('journal-content').value
+    };
+
+    const existing = journals.find(j => j.id === id);
+    // If Updating, merge
+    if (existing) {
+        Object.assign(newJournal, { createdAt: existing.createdAt }); // Keep meta
+    }
+
+    try {
+        const method = existing ? 'PUT' : 'POST';
+        const url = existing ? `${API_JOURNALS_URL}/${id}` : API_JOURNALS_URL;
+
+        const res = await fetch(url, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newJournal)
+        });
+
+        if (!res.ok) throw new Error('Save failed');
+
+        closeJournalModalFunc();
+        fetchJournals();
+    } catch (err) {
+        console.error(err);
+        alert('Error saving journal');
+    }
+});
+
+// Global Journal Handlers
+window.editJournal = (id) => {
+    const journal = journals.find(j => j.id === id);
+    openJournalModal(journal);
+};
+
+window.deleteJournal = async (id) => {
+    if (!confirm('Delete this article?')) return;
+    try {
+        await fetch(`${API_JOURNALS_URL}/${id}`, { method: 'DELETE' });
+        fetchJournals();
+    } catch (err) {
+        alert('Error deleting journal');
+    }
+};
 
 // --- RENDERING ---
 const renderWeddingList = () => {
