@@ -227,5 +227,11 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     res.json({ url: req.file.location }); // AWS S3 returns the absolute URL in 'location'
 });
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('Server Error:', err);
+    res.status(500).json({ error: err.message || 'Internal Server Error', details: err });
+});
+
 // Export the app for Vercel Serverless
 module.exports = app;

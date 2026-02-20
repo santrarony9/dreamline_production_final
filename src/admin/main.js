@@ -676,12 +676,15 @@ const uploadFile = async (file) => {
             method: 'POST',
             body: formData
         });
-        if (!res.ok) throw new Error('Upload failed');
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || 'Upload failed');
+        }
         const data = await res.json();
         return data.url; // Relative path from server /uploads/...
     } catch (err) {
         console.error(err);
-        alert('File upload failed');
+        alert(`File upload failed: ${err.message}`);
         return null;
     }
 };
