@@ -142,6 +142,11 @@ const renderHomeForm = () => {
     document.getElementById('hero-subtitle').value = siteContent.hero.subtitle || '';
     document.getElementById('hero-video-url').value = siteContent.hero.videoUrl || '';
 
+    // Video Vault
+    const vaultContainer = document.getElementById('video-vault-container');
+    vaultContainer.innerHTML = '';
+    (siteContent.videoVault || []).forEach((item, i) => addVideoVaultField(item, i));
+
     // Marquee
     const marqueeContainer = document.getElementById('marquee-container');
     marqueeContainer.innerHTML = '';
@@ -230,6 +235,56 @@ document.getElementById('add-project-btn').addEventListener('click', () => {
     addProjectField({ title: '', type: 'commercial', img: '' }, count);
 });
 
+const addVideoVaultField = (item = { title: '', category: '', image: '', videoUrl: '' }, i) => {
+    const container = document.getElementById('video-vault-container');
+    const div = document.createElement('div');
+    div.className = 'border p-3 rounded bg-gray-50 vault-item relative';
+    div.innerHTML = `
+        <div class="flex justify-between mb-2">
+            <h4 class="font-bold text-sm">Video ${i + 1}</h4>
+            <button type="button" class="text-red-500 text-xs hover:underline" onclick="this.parentElement.parentElement.remove()">Remove</button>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mb-2">
+            <input type="text" class="w-full p-1 border rounded text-xs" value="${item.title}" placeholder="Title" name="vault_title">
+            <input type="text" class="w-full p-1 border rounded text-xs" value="${item.category}" placeholder="Category (e.g. 2024 Project)" name="vault_category">
+        </div>
+        <div>
+             <label class="block text-xs font-semibold mb-1">Thumbnail Image</label>
+             <input type="file" class="w-full text-xs mb-1 vault-img-upload">
+             <input type="text" class="w-full p-1 border rounded text-xs mb-2" value="${item.image}" placeholder="Image URL" name="vault_image">
+             
+             <label class="block text-xs font-semibold mb-1">Video Source (URL)</label>
+             <input type="file" class="w-full text-xs mb-1 vault-vid-upload">
+             <input type="text" class="w-full p-1 border rounded text-xs" value="${item.videoUrl || ''}" placeholder="Video URL" name="vault_video">
+        </div>
+    `;
+    container.appendChild(div);
+
+    // Attach listeners
+    const imgInput = div.querySelector('.vault-img-upload');
+    const imgUrl = div.querySelector('input[name="vault_image"]');
+    imgInput.addEventListener('change', async (e) => {
+        if (e.target.files[0]) {
+            const url = await uploadFile(e.target.files[0]);
+            if (url) imgUrl.value = url;
+        }
+    });
+
+    const vidInput = div.querySelector('.vault-vid-upload');
+    const vidUrl = div.querySelector('input[name="vault_video"]');
+    vidInput.addEventListener('change', async (e) => {
+        if (e.target.files[0]) {
+            const url = await uploadFile(e.target.files[0]);
+            if (url) vidUrl.value = url;
+        }
+    });
+};
+
+document.getElementById('add-vault-btn').addEventListener('click', () => {
+    const count = document.getElementById('video-vault-container').children.length;
+    addVideoVaultField({ title: '', category: '', image: '', videoUrl: '' }, count);
+});
+
 
 // Home Form Submit
 homeForm.addEventListener('submit', async (e) => {
@@ -241,6 +296,14 @@ homeForm.addEventListener('submit', async (e) => {
     updatedContent.hero.title.line2 = document.getElementById('hero-title-line2').value;
     updatedContent.hero.subtitle = document.getElementById('hero-subtitle').value;
     updatedContent.hero.videoUrl = document.getElementById('hero-video-url').value;
+
+    // Update Video Vault
+    updatedContent.videoVault = Array.from(document.getElementById('video-vault-container').children).map(div => ({
+        title: div.querySelector('input[name="vault_title"]').value,
+        category: div.querySelector('input[name="vault_category"]').value,
+        image: div.querySelector('input[name="vault_image"]').value,
+        videoUrl: div.querySelector('input[name="vault_video"]').value
+    }));
 
     // Update Marquee
     updatedContent.marquee = Array.from(document.querySelectorAll('#marquee-container input')).map(input => input.value);

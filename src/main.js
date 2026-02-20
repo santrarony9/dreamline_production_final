@@ -42,7 +42,8 @@ const renderAll = () => {
     renderMarquee();
     renderStats();
     renderMotionGallery();
-    renderMasterGallery(); // Not fully implemented in HTML yet, but logic can be here
+    renderVideoVault();
+    renderMasterGallery();
 };
 
 const renderHero = () => {
@@ -120,6 +121,66 @@ const renderMotionGallery = () => {
     container.innerHTML = allImages.map(img => `
         <div class="motion-card"><img src="${img}" loading="lazy"></div>
     `).join('');
+};
+
+const renderVideoVault = () => {
+    const container = document.getElementById('video-vault-grid');
+    if (!container || !siteContent.videoVault) return;
+
+    if (siteContent.videoVault.length === 0) {
+        container.innerHTML = '<p class="text-white/50 col-span-full text-center">No video items yet.</p>';
+        return;
+    }
+
+    container.innerHTML = siteContent.videoVault.map(item => `
+        <div class="motion-card w-full h-[400px] interactive group relative overflow-hidden rounded-xl">
+            <img src="${item.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            ${item.videoUrl ? `
+            <a href="${item.videoUrl}" target="_blank" class="video-overlay absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/40 transition-colors">
+                <div class="w-20 h-20 border border-white/30 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 fill-white ml-1" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                </div>
+            </a>` : ''}
+            <div class="absolute bottom-6 left-6 pointer-events-none">
+                <p class="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">${item.category}</p>
+                <h3 class="font-heading text-xl font-bold uppercase text-white">${item.title}</h3>
+            </div>
+        </div>
+    `).join('');
+};
+
+const renderMasterGallery = (filter = 'all') => {
+    const container = document.getElementById('master-grid');
+    if (!container || !siteContent.projects) return;
+
+    const projects = filter === 'all'
+        ? siteContent.projects
+        : siteContent.projects.filter(p => p.type === filter);
+
+    if (projects.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 col-span-full text-center py-10">No projects found in this category.</p>';
+        return;
+    }
+
+    container.innerHTML = projects.map(proj => `
+        <div class="aspect-[4/5] bg-gray-900 overflow-hidden relative group">
+            <img src="${proj.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
+                <p class="text-[#c5a059] text-[10px] uppercase tracking-widest mb-2">${proj.type}</p>
+                <h3 class="text-white font-heading text-xl font-bold uppercase">${proj.title}</h3>
+            </div>
+        </div>
+    `).join('');
+};
+
+window.filterGallery = (type, btn) => {
+    // Update active button state
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    renderMasterGallery(type);
 };
 
 // Global exports for other scripts if needed
