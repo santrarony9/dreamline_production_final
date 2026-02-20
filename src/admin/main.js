@@ -1,7 +1,6 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-alert('Admin UI Script v1.3.3 Loading...');
 console.log('Admin Panel v1.3.3 Loaded - Global Auth');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
