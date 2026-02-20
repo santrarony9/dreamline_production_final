@@ -626,4 +626,44 @@ weddingForm.addEventListener('submit', async (e) => {
 });
 
 // Init
+// --- AUTHENTICATION ---
+const checkAuth = () => {
+    const isAdmin = localStorage.getItem('isAdmin');
+    if (isAdmin === 'true') {
+        showDashboard();
+    }
+};
+
+const showDashboard = () => {
+    loginScreen.classList.add('hidden');
+    dashboard.classList.remove('hidden');
+    fetchWeddings();
+    // Default tab is home, but let's load it
+    // switchTab('home'); // already default?
+    // Trigger click on default
+    tabHome.click();
+};
+
+const handleLogin = () => {
+    const password = passwordInput.value;
+    if (password === 'admin123') {
+        localStorage.setItem('isAdmin', 'true');
+        showDashboard();
+    } else {
+        loginError.classList.remove('hidden');
+    }
+};
+
+loginBtn.addEventListener('click', handleLogin);
+
+passwordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleLogin();
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+    localStorage.removeItem('isAdmin');
+    location.reload();
+});
+
+// Init
 checkAuth();
