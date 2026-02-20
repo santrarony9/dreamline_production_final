@@ -1,7 +1,7 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.3.5 Loaded - Stable Init');
+console.log('Admin Panel v1.3.6 Loaded - Multi-Layer Auth');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
@@ -929,26 +929,15 @@ const showDashboard = () => {
 };
 
 const handleLogin = () => {
+    // Redundant now as admin.html has inline handler, 
+    // but kept as safety for Enter key binding
     try {
-        console.log('handleLogin triggered');
         const pInput = document.getElementById('password-input');
-        const lError = document.getElementById('login-error');
-
-        if (!pInput) {
-            console.error('CRITICAL: password-input not found');
-            return;
-        }
-
-        const password = pInput.value.trim();
-
-        if (password === 'admin123') {
-            console.log('Login Success');
+        if (!pInput) return;
+        const pass = pInput.value.trim();
+        if (pass === 'admin123') {
             localStorage.setItem('isAdmin', 'true');
             showDashboard();
-        } else {
-            console.warn('Login Failed');
-            if (lError) lError.classList.remove('hidden');
-            // No alert here, let the UI show the error
         }
     } catch (err) {
         console.error('handleLogin Error:', err);
@@ -957,10 +946,11 @@ const handleLogin = () => {
 
 // Export to window
 window.handleLogin = handleLogin;
+window.initializeDashboard = showDashboard; // Allow inline script to trigger it
 
 // Safe Initialization
 const init = () => {
-    console.log('Initializing Admin UI v1.3.5...');
+    console.log('Initializing Admin UI v1.3.6...');
 
     // Attach Enter key
     const pInput = document.getElementById('password-input');

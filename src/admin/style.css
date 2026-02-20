@@ -64,6 +64,15 @@
     background-color: #1a1a1a !important;
 }
 
+/* Global Overrides */
+.hidden {
+    display: none !important;
+}
+
+body {
+    background-color: #000;
+}
+
 /* Generic Utility Buttons (Tailwind Fallbacks) */
 .btn-primary {
     background-color: #2563eb !important;
