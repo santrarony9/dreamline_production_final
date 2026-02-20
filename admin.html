@@ -8,6 +8,15 @@
     <title>Dreamline Admin Dashboard</title>
     <link rel="stylesheet" href="/src/style.css"> <!-- Main styles -->
     <link rel="stylesheet" href="/src/admin/style.css"> <!-- Admin specific styles -->
+    <style>
+        /* Hyper-Stable Visibility Rule */
+        .hidden-force {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 font-sans text-gray-900">
@@ -45,7 +54,7 @@
                     Dashboard</button>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p id="login-error" class="text-red-500 text-xs font-bold hidden">Incorrect password</p>
-                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.5 (Stable)</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.7 (Hyper-Stable)</p>
                 </div>
             </div>
 
@@ -402,9 +411,9 @@
     </footer>
 
     <script>
-        // Inline Login Fallback (v1.3.6)
+        // Inline Login Fallback (v1.3.7 - Hyper-Stable)
         function handleLogin() {
-            console.log("Global handleLogin triggered");
+            console.log("Hyper-Stable handleLogin triggered");
             const pInput = document.getElementById('password-input');
             const lError = document.getElementById('login-error');
             const lScreen = document.getElementById('login-screen');
@@ -415,20 +424,32 @@
 
             if (pass === 'admin123') {
                 localStorage.setItem('isAdmin', 'true');
-                if (lScreen) lScreen.classList.add('hidden');
-                if (dBoard) dBoard.classList.remove('hidden');
-                alert("Login Successful! Entering Dashboard v1.3.6...");
 
-                // Trigger module logic if it's already there
-                if (window.initializeDashboard) {
-                    window.initializeDashboard();
-                } else {
-                    // Refresh if module isn't ready to let it boot into dashboard state
-                    location.reload();
+                // Immediate UI Switch (Direct DOM modification)
+                if (lScreen) {
+                    lScreen.classList.add('hidden-force');
+                    lScreen.style.setProperty('display', 'none', 'important');
                 }
+                if (dBoard) {
+                    dBoard.classList.remove('hidden', 'hidden-force');
+                    dBoard.style.setProperty('display', 'flex', 'important');
+                }
+
+                console.log("UI Switched. Alerting user...");
+
+                // Allow repaint, then alert
+                setTimeout(() => {
+                    alert("Login Successful! Opening Admin Panel v1.3.7...");
+                    if (window.initializeDashboard) {
+                        window.initializeDashboard();
+                    } else {
+                        location.reload();
+                    }
+                }, 50);
+
             } else {
                 if (lError) lError.classList.remove('hidden');
-                alert("Incorrect Security Key. Please try again.");
+                alert("Access Denied: Please check your security key.");
             }
         }
     </script>
