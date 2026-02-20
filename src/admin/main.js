@@ -1,7 +1,7 @@
 import '../style.css'; // Import main tailwind styles
 
 // Constants
-console.log('Admin Panel v1.3.6 Loaded - Multi-Layer Auth');
+console.log('Admin Panel v1.3.7 Loaded - Hyper-Stable Auth');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
@@ -911,8 +911,14 @@ const showDashboard = () => {
         const screen = document.getElementById('login-screen');
         const dash = document.getElementById('dashboard');
 
-        if (screen) screen.classList.add('hidden');
-        if (dash) dash.classList.remove('hidden');
+        if (screen) {
+            screen.classList.add('hidden-force');
+            screen.style.setProperty('display', 'none', 'important');
+        }
+        if (dash) {
+            dash.classList.remove('hidden', 'hidden-force');
+            dash.style.setProperty('display', 'flex', 'important');
+        }
 
         fetchWeddings();
 
