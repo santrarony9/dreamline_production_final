@@ -38,6 +38,10 @@
     gap: 8px;
 }
 
+.btn-upload input[type="file"] {
+    display: none;
+}
+
 .btn-upload:hover {
     background-color: #e5e7eb;
     border-color: #9ca3af;
