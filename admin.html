@@ -401,6 +401,37 @@
         <p class="text-xs text-gray-500 mt-1">Admin Panel v1.3 (Premium UI)</p>
     </footer>
 
+    <script>
+        // Inline Login Fallback (v1.3.6)
+        function handleLogin() {
+            console.log("Global handleLogin triggered");
+            const pInput = document.getElementById('password-input');
+            const lError = document.getElementById('login-error');
+            const lScreen = document.getElementById('login-screen');
+            const dBoard = document.getElementById('dashboard');
+
+            if (!pInput) return;
+            const pass = pInput.value.trim();
+
+            if (pass === 'admin123') {
+                localStorage.setItem('isAdmin', 'true');
+                if (lScreen) lScreen.classList.add('hidden');
+                if (dBoard) dBoard.classList.remove('hidden');
+                alert("Login Successful! Entering Dashboard v1.3.6...");
+
+                // Trigger module logic if it's already there
+                if (window.initializeDashboard) {
+                    window.initializeDashboard();
+                } else {
+                    // Refresh if module isn't ready to let it boot into dashboard state
+                    location.reload();
+                }
+            } else {
+                if (lError) lError.classList.remove('hidden');
+                alert("Incorrect Security Key. Please try again.");
+            }
+        }
+    </script>
     <script type="module" src="/src/admin/main.js"></script>
 </body>
 
