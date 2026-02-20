@@ -36,8 +36,8 @@
                     <label class="block text-xs uppercase tracking-widest text-gold-500 font-bold mb-2">Security
                         Key</label>
                     <div class="relative">
-                        <input type="password" id="password-input" placeholder="••••••••"
-                            class="login-input w-full p-4 pr-12 rounded-lg">
+                        <input type="password" id="pass-key" name="admin_password" autocomplete="current-password"
+                            placeholder="••••••••" class="login-input w-full p-4 pr-12 rounded-lg">
                         <button type="button" id="toggle-password"
                             class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gold-500">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -54,7 +54,7 @@
                     Dashboard</button>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p id="login-error" class="text-red-500 text-xs font-bold hidden">Incorrect password</p>
-                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.7 (Stable)</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.3.9 (Stable)</p>
                 </div>
             </div>
 
@@ -411,21 +411,26 @@
     </footer>
 
     <script>
-        // Hyper-Stable Login & Diagnostics (v1.3.8)
-        function handleLogin() {
-            console.log("Login check triggered");
-            const pInput = document.getElementById('password-input');
+        // Final Stable Login (v1.3.9)
+        async function handleLogin() {
+            console.log("Login v1.3.9 check initiated");
+            const pInput = document.getElementById('pass-key');
+            if (!pInput) {
+                alert("Critical Error: Security input field vanished. Please refresh.");
+                return;
+            }
+
+            // Short delay to ensure browser populated the field before reading
+            await new Promise(r => setTimeout(r, 100));
+
+            const pass = pInput.value.trim();
             const lError = document.getElementById('login-error');
             const lScreen = document.getElementById('login-screen');
             const dBoard = document.getElementById('dashboard');
 
-            if (!pInput) return;
-            const pass = pInput.value.trim();
-
-            // Support both exact and case-insensitive for easier user access
+            // Support exact and case-insensitive check
             if (pass.toLowerCase() === 'admin123') {
                 localStorage.setItem('isAdmin', 'true');
-
                 if (lScreen) {
                     lScreen.classList.add('hidden-force');
                     lScreen.style.setProperty('display', 'none', 'important');
@@ -434,25 +439,18 @@
                     dBoard.classList.remove('hidden', 'hidden-force');
                     dBoard.style.setProperty('display', 'flex', 'important');
                 }
-
-                setTimeout(() => {
-                    if (window.initializeDashboard) {
-                        window.initializeDashboard();
-                    } else {
-                        location.reload();
-                    }
-                }, 50);
-
+                if (window.initializeDashboard) window.initializeDashboard();
+                else setTimeout(() => location.reload(), 200);
             } else {
                 if (lError) lError.classList.remove('hidden');
-                alert("Access Denied!\n\nDetails: Incorrect Security Key.\nAttempt Length: " + pass.length + " characters.\n\nPlease type 'admin123' (all lowercase).");
+                alert("Access Denied!\n\nDetails: Incorrect Security Key.\nAttempt Length: " + pass.length + " chars.\n\nTip: Use the Eye icon to verify your typing.");
             }
         }
 
         // Inline Password Toggle Support
         document.addEventListener('DOMContentLoaded', () => {
             const toggleBtn = document.getElementById('toggle-password');
-            const passInput = document.getElementById('password-input');
+            const passInput = document.getElementById('pass-key');
             if (toggleBtn && passInput) {
                 toggleBtn.onclick = function () {
                     const isPass = passInput.getAttribute('type') === 'password';
