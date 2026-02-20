@@ -58,6 +58,8 @@ const renderAll = () => {
     renderMotionGallery();
     renderVideoVault();
     renderMasterGallery();
+    renderAbout();
+    renderJournal();
 };
 
 const renderHero = () => {
@@ -188,6 +190,60 @@ const renderMasterGallery = (filter = 'all') => {
             </div>
         </a>
     `).join('');
+};
+
+const renderAbout = () => {
+    if (!siteContent.about) return;
+    const { heroTitle, heroSubtitle, vision, mission, founderNote, founderImage } = siteContent.about;
+
+    const hTitle = document.getElementById('about-hero-title');
+    const hSub = document.getElementById('about-hero-subtitle');
+    const vis = document.getElementById('about-vision');
+    const mis = document.getElementById('about-mission');
+    const note = document.getElementById('about-founder-note');
+    const img = document.getElementById('about-founder-img');
+
+    if (hTitle && heroTitle) hTitle.innerHTML = heroTitle.replace(/\n/g, '<br>');
+    if (hSub && heroSubtitle) hSub.textContent = heroSubtitle;
+    if (vis && vision) vis.textContent = vision;
+    if (mis && mission) mis.textContent = mission;
+    if (note && founderNote) note.textContent = `"${founderNote}"`;
+    if (img && founderImage) img.src = founderImage;
+};
+
+const renderJournal = async () => {
+    const container = document.getElementById('journal-grid');
+    if (!container) return;
+
+    try {
+        const res = await fetch('/api/journals');
+        if (!res.ok) throw new Error('Failed to fetch journals');
+        const journals = await res.json();
+
+        if (journals.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center col-span-full py-10 uppercase tracking-widest text-[10px] font-bold">No insights shared yet.</p>';
+            return;
+        }
+
+        container.innerHTML = journals.map(post => `
+            <article class="blog-card rounded-3xl group">
+                <div class="h-64 overflow-hidden">
+                    <img src="${post.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${post.title}">
+                </div>
+                <div class="p-8">
+                    <div class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                        <span>${post.date || ''}</span>
+                        <span class="text-[#c5a059]">${post.category || 'INSIGHT'}</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">${post.title}</h3>
+                    <p class="text-sm text-gray-400 mb-6 font-light line-clamp-3">${post.excerpt || ''}</p>
+                    <a href="journal-details.html?id=${post.id}" class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read Insight</a>
+                </div>
+            </article>
+        `).join('');
+    } catch (err) {
+        console.error(err);
+    }
 };
 
 window.filterGallery = (type, btn) => {
