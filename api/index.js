@@ -8,8 +8,12 @@ const path = require('path');
 
 const Wedding = require('./models/Wedding');
 const Content = require('./models/Content');
+const Journal = require('./models/Journal');
 
 const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
 
 // Cached connection variable
 let cachedDb = null;
@@ -40,16 +44,7 @@ app.use(async (req, res, next) => {
         next();
     } catch (error) {
         console.error("Database connection failed:", error);
-
-        // DEBUG: Show what URI is being used (hide password)
-        const uri = process.env.MONGODB_URI || "UNDEFINED";
-        const maskedUri = uri.replace(/:([^:@]+)@/, ":****@");
-
-        res.status(500).json({
-            error: "Database connection failed",
-            details: error.message,
-            debug_uri: maskedUri // This will help us see if Vercel has the right config
-        });
+        res.status(500).json({ error: "Database connection failed", details: error.message });
     }
 });
 
@@ -116,6 +111,65 @@ app.delete('/api/weddings/:id', async (req, res) => {
     }
 });
 
+// --- JOURNAL ENDPOINTS ---
+
+// GET ALL JOURNALS
+app.get('/api/journals', async (req, res) => {
+    try {
+        const journals = await Journal.find().sort({ createdAt: -1 });
+        res.json(journals);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET SINGLE JOURNAL
+app.get('/api/journals/:id', async (req, res) => {
+    try {
+        const journal = await Journal.findOne({ id: req.params.id });
+        if (!journal) return res.status(404).json({ error: 'Journal not found' });
+        res.json(journal);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// CREATE JOURNAL
+app.post('/api/journals', async (req, res) => {
+    try {
+        const newJournal = new Journal(req.body);
+        await newJournal.save();
+        res.json(newJournal);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// UPDATE JOURNAL
+app.put('/api/journals/:id', async (req, res) => {
+    try {
+        const updatedJournal = await Journal.findOneAndUpdate(
+            { id: req.params.id },
+            req.body,
+            { new: true }
+        );
+        res.json(updatedJournal);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE JOURNAL
+app.delete('/api/journals/:id', async (req, res) => {
+    try {
+        await Journal.findOneAndDelete({ id: req.params.id });
+        res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
 // --- SITE CONTENT ENDPOINTS ---
 
 // 6. GET SITE CONTENT
@@ -129,7 +183,17 @@ app.get('/api/content', async (req, res) => {
                 marquee: [],
                 stats: [],
                 gallery: { title: 'Motion Archive', images: [] },
-                projects: []
+                projects: [],
+                about: {
+                    heroTitle: 'Trusted Production House',
+                    heroSubtitle: 'Est. 2010',
+                    vision: 'To redefine visual storytelling.',
+                    mission: 'Crafting cinematic narratives.',
+                    founderNote: 'We archive emotions.',
+                    founderImage: '',
+                    team: [],
+                    reviews: []
+                }
             });
             await content.save();
         }

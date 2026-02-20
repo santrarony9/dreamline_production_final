@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/logo.png" type="image/png">
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
     <title>Dreamline Admin Dashboard</title>
     <link rel="stylesheet" href="/src/style.css"> <!-- Main styles -->
     <link rel="stylesheet" href="/src/admin/style.css"> <!-- Admin specific styles -->
@@ -32,11 +32,18 @@
         <main class="flex-grow p-6 container mx-auto">
 
             <!-- Tabs -->
-            <div class="flex space-x-4 mb-6 border-b border-gray-300 pb-2">
+            <div class="flex space-x-4 mb-6 border-b border-gray-300 pb-2 overflow-x-auto">
+                <button id="tab-home"
+                    class="px-4 py-2 font-semibold text-gold-500 border-b-2 border-gold-500 whitespace-nowrap">Home
+                    Page</button>
+                <button id="tab-about"
+                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">About</button>
                 <button id="tab-weddings"
-                    class="px-4 py-2 font-semibold text-gold-500 border-b-2 border-gold-500">Weddings</button>
-                <button id="tab-content" class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500">Site
-                    Content</button>
+                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Weddings</button>
+                <button id="tab-commercial"
+                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Commercial</button>
+                <button id="tab-journal"
+                    class="px-4 py-2 font-semibold text-gray-500 hover:text-gold-500 whitespace-nowrap">Journal</button>
             </div>
 
             <!-- Weddings Section -->
@@ -54,12 +61,12 @@
                 </div>
             </div>
 
-            <!-- Content Section -->
-            <div id="section-content" class="hidden">
-                <h2 class="text-2xl font-semibold mb-6">Manage Site Content</h2>
-                <div id="loading-content" class="text-center py-10 hidden">Loading...</div>
+            <!-- Home Page Section -->
+            <div id="section-home">
+                <h2 class="text-2xl font-semibold mb-6">Manage Home Page</h2>
+                <div id="loading-home" class="text-center py-10 hidden">Loading...</div>
 
-                <form id="content-form" class="bg-white p-6 rounded shadow max-w-4xl">
+                <form id="home-form" class="bg-white p-6 rounded shadow max-w-4xl">
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div>
@@ -75,22 +82,18 @@
                             <input type="text" id="hero-subtitle" class="w-full p-2 border rounded">
                         </div>
                         <div class="col-span-2">
-                            <label class="block text-sm font-medium mb-1">Hero Background (Video/Image URL)</label>
+                            <label class="block text-sm font-medium mb-1">Hero Background (Video/Image)</label>
                             <input type="file" id="hero-video-upload" class="mb-2 w-full text-sm">
                             <input type="text" id="hero-video-url" class="w-full p-2 border rounded"
-                                placeholder="Paste URL">
+                                placeholder="Paste URL or Upload">
                         </div>
                     </div>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Marquee Text</h3>
-                    <div id="marquee-container" class="space-y-2 mb-4">
-                        <!-- Marquee inputs injected here -->
-                    </div>
+                    <div id="marquee-container" class="space-y-2 mb-4"></div>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Stats</h3>
-                    <div id="stats-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <!-- Stats inputs injected here -->
-                    </div>
+                    <div id="stats-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Motion Gallery</h3>
                     <div class="mb-4">
@@ -102,24 +105,103 @@
                         <textarea id="gallery-images" class="w-full p-2 border rounded h-24"></textarea>
                     </div>
 
-                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Projects (Commercial/Portfolio)
-                    </h3>
+                    <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 mt-4">Save Home
+                        Content</button>
+                </form>
+            </div>
+
+            <!-- Commercial Section -->
+            <div id="section-commercial" class="hidden">
+                <h2 class="text-2xl font-semibold mb-6">Manage Commercial Projects</h2>
+                <div id="loading-commercial" class="text-center py-10 hidden">Loading...</div>
+
+                <form id="commercial-form" class="bg-white p-6 rounded shadow max-w-4xl">
                     <div id="projects-container" class="space-y-4 mb-4">
                         <!-- Projects injected here -->
                     </div>
                     <button type="button" id="add-project-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
                         Project</button>
-
-                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Updates</h3>
-                    <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save
-                        Content</button>
+                    <div class="mt-4">
+                        <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save
+                            Commercial Projects</button>
+                    </div>
                 </form>
+            </div>
+
+            <!-- About Section -->
+            <div id="section-about" class="hidden">
+                <h2 class="text-2xl font-semibold mb-6">Manage About Page</h2>
+                <div id="loading-about" class="text-center py-10 hidden">Loading...</div>
+
+                <form id="about-form" class="bg-white p-6 rounded shadow max-w-4xl space-y-6">
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Hero Title</label>
+                                <input type="text" id="about-hero-title" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Hero Subtitle</label>
+                                <input type="text" id="about-hero-subtitle" class="w-full p-2 border rounded">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Vision & Mission</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Vision Statement</label>
+                                <textarea id="about-vision" class="w-full p-2 border rounded h-20"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Mission Statement</label>
+                                <textarea id="about-mission" class="w-full p-2 border rounded h-20"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Founder's Note</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Note Content</label>
+                                <textarea id="about-founder-note" class="w-full p-2 border rounded h-32"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-1">Founder Image</label>
+                                <input type="file" id="about-founder-upload" class="mb-2 w-full text-sm">
+                                <input type="text" id="about-founder-img" class="w-full p-2 border rounded"
+                                    placeholder="Image URL">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-black text-white px-6 py-2 rounded hover:bg-gray-800">Save About
+                            Content</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Journal Section -->
+            <div id="section-journal" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold">Manage Journal</h2>
+                    <button id="add-journal-btn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+
+                        New Article</button>
+                </div>
+                <div id="loading-journal" class="text-center py-10 hidden">Loading...</div>
+                <div id="journal-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Journal List -->
+                </div>
             </div>
 
         </main>
     </div>
 
-    <!-- Modal for Editing/Adding -->
+    <!-- Modal for Editing/Adding Wedding -->
     <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
             <button id="close-modal"
@@ -186,6 +268,59 @@
                         class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
                     <button type="submit" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">Save
                         Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing/Adding Journal -->
+    <div id="journal-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button id="close-journal-modal"
+                class="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl">&times;</button>
+            <h2 id="journal-modal-title" class="text-2xl font-bold mb-6">Edit Article</h2>
+
+            <form id="journal-form" class="space-y-4">
+                <input type="hidden" id="journal-id">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Title</label>
+                        <input type="text" id="journal-title" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Publish Date</label>
+                        <input type="text" id="journal-date" class="w-full p-2 border rounded">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Category</label>
+                        <input type="text" id="journal-category" class="w-full p-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Featured Image</label>
+                        <input type="file" id="journal-image-upload" class="mb-2 w-full text-sm">
+                        <input type="text" id="journal-image" class="w-full p-2 border rounded" placeholder="Image URL">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Excerpt</label>
+                    <textarea id="journal-excerpt" class="w-full p-2 border rounded h-24"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Content (HTML)</label>
+                    <textarea id="journal-content" class="w-full p-2 border rounded h-48 font-mono text-xs"></textarea>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" id="cancel-journal-btn"
+                        class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800">Save
+                        Article</button>
                 </div>
             </form>
         </div>

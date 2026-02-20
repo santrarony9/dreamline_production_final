@@ -1,10 +1,12 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const upload = require('./s3-config');
+const path = require('path');
 
-// --- API ENDPOINTS ---
+// --- MIDDLEWARE ---
+app.use(cors());
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../'))); // Serve static files from root
+
 
 // 1. GET ALL WEDDINGS
 app.get('/api/weddings', async (req, res) => {
@@ -62,6 +64,64 @@ app.delete('/api/weddings/:id', async (req, res) => {
     }
 });
 
+// --- JOURNAL ENDPOINTS ---
+
+// GET ALL JOURNALS
+app.get('/api/journals', async (req, res) => {
+    try {
+        const journals = await Journal.find().sort({ createdAt: -1 });
+        res.json(journals);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// GET SINGLE JOURNAL
+app.get('/api/journals/:id', async (req, res) => {
+    try {
+        const journal = await Journal.findOne({ id: req.params.id });
+        if (!journal) return res.status(404).json({ error: 'Journal not found' });
+        res.json(journal);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// CREATE JOURNAL
+app.post('/api/journals', async (req, res) => {
+    try {
+        const newJournal = new Journal(req.body);
+        await newJournal.save();
+        res.json(newJournal);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// UPDATE JOURNAL
+app.put('/api/journals/:id', async (req, res) => {
+    try {
+        const updatedJournal = await Journal.findOneAndUpdate(
+            { id: req.params.id },
+            req.body,
+            { new: true }
+        );
+        res.json(updatedJournal);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// DELETE JOURNAL
+app.delete('/api/journals/:id', async (req, res) => {
+    try {
+        await Journal.findOneAndDelete({ id: req.params.id });
+        res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // --- SITE CONTENT ENDPOINTS ---
 
 // 6. GET SITE CONTENT
@@ -75,7 +135,17 @@ app.get('/api/content', async (req, res) => {
                 marquee: [],
                 stats: [],
                 gallery: { title: 'Motion Archive', images: [] },
-                projects: []
+                projects: [],
+                about: {
+                    heroTitle: 'Trusted Production House',
+                    heroSubtitle: 'Est. 2010',
+                    vision: 'To redefine visual storytelling.',
+                    mission: 'Crafting cinematic narratives.',
+                    founderNote: 'We archive emotions.',
+                    founderImage: '',
+                    team: [],
+                    reviews: []
+                }
             });
             await content.save();
         }
@@ -91,6 +161,9 @@ app.post('/api/content', async (req, res) => {
         // We assume there's only one content document, so we update the first one found or create it
         let content = await Content.findOne();
         if (content) {
+            // Merge existing data with update to prevent overwriting nested objects if partial update (though we usually send full object)
+            // But Mongoose update logic in 'findOne' context needs careful handling or just use findOneAndUpdate
+            // Here simpler:
             Object.assign(content, req.body);
             await content.save();
         } else {

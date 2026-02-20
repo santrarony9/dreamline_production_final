@@ -34,7 +34,26 @@ const ContentSchema = new mongoose.Schema({
         title: String,
         price: String,
         link: String
-    }]
+    }],
+    about: {
+        heroTitle: String,
+        heroSubtitle: String,
+        vision: String,
+        mission: String,
+        founderNote: String,
+        founderImage: String,
+        team: [{
+            name: String,
+            role: String,
+            image: String
+        }],
+        reviews: [{
+            author: String,
+            role: String,
+            text: String,
+            rating: Number
+        }]
+    }
 });
 
 module.exports = mongoose.model('Content', ContentSchema);
