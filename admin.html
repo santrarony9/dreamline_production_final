@@ -27,7 +27,7 @@
 
 <body class="bg-gray-100 font-sans text-gray-900">
 
-    <div id="login-screen" class="login-container flex items-center justify-center h-screen">
+    <div id="login-screen" class="login-container flex items-center justify-center h-screen hidden-force">
         <div class="login-card p-10 rounded-xl w-full max-w-md mx-6">
             <div class="text-center mb-10">
                 <div class="inline-block p-4 rounded-full bg-white/5 mb-6">
@@ -60,7 +60,7 @@
                     Dashboard</button>
                 <div class="flex justify-between items-center mt-2 px-1">
                     <p id="login-error" class="text-red-500 text-xs font-bold hidden">Incorrect password</p>
-                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.4.1 (Stable)</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v1.5.0 (UNLOCKED)</p>
                 </div>
             </div>
 
@@ -70,7 +70,7 @@
         </div>
     </div>
 
-    <div id="dashboard" class="hidden min-h-screen flex flex-col">
+    <div id="dashboard" class="min-h-screen flex flex-col">
         <!-- Header -->
         <header class="bg-black text-white p-4 flex justify-between items-center shadow-md">
             <h1 class="text-xl font-bold text-gold-500">Dreamline Admin</h1>
@@ -417,55 +417,23 @@
     </footer>
 
     <script>
-        // Version 1.4.1 - The "Bypass" Logic
-        async function handleLogin() {
-            const entry = document.getElementById('secure-key-entry');
-            if (!entry) {
-                alert("Critical Error: Login field missing. Please refresh.");
-                return;
-            }
-
-            // Small delay for stability
-            await new Promise(r => setTimeout(r, 100));
-
-            const password = entry.value.trim();
-            console.log("Read attempt: " + password.length + " chars.");
-
-            if (password.toLowerCase() === 'admin123') {
-                localStorage.setItem('isAdmin', 'true');
-
-                // Nuclear UI Switch
-                document.getElementById('login-screen').classList.add('hidden-force');
-                document.getElementById('dashboard').classList.remove('hidden', 'hidden-force');
-                document.getElementById('dashboard').style.setProperty('display', 'flex', 'important');
-
-                if (window.initializeDashboard) window.initializeDashboard();
-                else setTimeout(() => location.reload(), 200);
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
-                alert("Login Failed!\n\nRead Result: [" + (password || "EMPTY") + "]\nLength: " + password.length + "\n\nTip: Ensure Caps Lock is off and type 'admin123' again.");
-                entry.value = '';
-                entry.focus();
-            }
-        }
-
-        // Mask Toggle (Local)
+        // Version 1.5.0 - UNLOCKED ACCESS
+        // Automatically bypass login
         document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('toggle-password');
-            const box = document.getElementById('secure-key-entry');
-            if (btn && box) {
-                btn.onclick = () => {
-                    const isMasked = box.classList.contains('masked-input');
-                    if (isMasked) {
-                        box.classList.remove('masked-input');
-                        btn.style.color = '#d4af37';
-                    } else {
-                        box.classList.add('masked-input');
-                        btn.style.color = '#6b7280';
-                    }
-                };
+            console.log("Admin auto-auth v1.5.0 enabled.");
+            localStorage.setItem('isAdmin', 'true');
+
+            // Trigger dashboard initialization if main.js is ready
+            if (window.initializeDashboard) {
+                window.initializeDashboard();
             }
         });
+
+        async function handleLogin() {
+            // Manual bypass if clicked
+            localStorage.setItem('isAdmin', 'true');
+            location.reload();
+        }
     </script>
     <script type="module" src="/src/admin/main.js"></script>
 </body>
