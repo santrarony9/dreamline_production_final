@@ -911,21 +911,46 @@ const showDashboard = () => {
     tabHome.click();
 };
 
+// --- AUTHENTICATION ---
 const handleLogin = () => {
+    console.log('Login attempt started...');
     const password = passwordInput.value;
+    console.log('Password entered:', password ? '****' : '(empty)');
+
     if (password === 'admin123') {
+        console.log('Login successful!');
         localStorage.setItem('isAdmin', 'true');
         showDashboard();
     } else {
+        console.log('Login failed: Incorrect password');
         loginError.classList.remove('hidden');
     }
 };
 
-loginBtn.addEventListener('click', handleLogin);
+if (loginBtn) {
+    console.log('Attaching click listener to loginBtn');
+    loginBtn.addEventListener('click', handleLogin);
+} else {
+    console.warn('loginBtn NOT found in DOM!');
+}
 
-passwordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') handleLogin();
-});
+if (passwordInput) {
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleLogin();
+    });
+}
+
+// Password toggle logic
+const toggleBtn = document.getElementById('toggle-password');
+if (toggleBtn && passwordInput) {
+    toggleBtn.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+
+        // Update icon opacity or something
+        toggleBtn.style.opacity = type === 'text' ? '1' : '0.5';
+    });
+}
 
 document.getElementById('logout-btn').addEventListener('click', () => {
     localStorage.removeItem('isAdmin');
