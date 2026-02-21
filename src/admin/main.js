@@ -260,17 +260,18 @@ const renderMotionGalleryForm = (images) => {
     const hiddenInput = document.getElementById('gallery-images');
 
     // Update hidden input
-    hiddenInput.value = images.join(',');
+    if (hiddenInput) hiddenInput.value = images.join(',');
 
     container.innerHTML = images.map((img, i) => `
         <div class="glass-card p-2 rounded-xl border-white/5 overflow-hidden group relative aspect-square bg-white/2">
             <img src="${img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
             <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm">
-                <label class="bg-gold text-black text-[10px] font-black px-4 py-2 rounded-full cursor-pointer hover:bg-white transition-all transform hover:scale-105 active:scale-95">
-                    <input type="file" onchange="window.replaceGalleryImage(this, ${i})" class="hidden">
-                    REPLACE
-                </label>
-                <button type="button" class="text-[10px] font-black text-red-400 hover:text-white transition-all uppercase tracking-widest" onclick="window.removeGalleryImage(${i})">REMOVE</button>
+                <button type="button" class="w-8 h-8 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all transform hover:rotate-90" onclick="window.removeGalleryImage(${i})">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <span class="text-[8px] font-bold uppercase tracking-widest text-white/40">Frame ${i + 1}</span>
             </div>
         </div>
     `).join('');
@@ -283,51 +284,36 @@ window.removeGalleryImage = (index) => {
     renderMotionGalleryForm(images);
 };
 
-window.replaceGalleryImage = async (input, index) => {
-    if (input.files[0]) {
-        // Find the image element to show loading state if possible (optional)
+// Gallery Upload Listener (with Multi-Upload Support)
+const galleryUploadInput = document.getElementById('gallery-upload');
+if (galleryUploadInput) {
+    galleryUploadInput.addEventListener('change', async (e) => {
+        const files = Array.from(e.target.files);
         const statusEl = document.getElementById('gallery-upload-status');
-        statusEl.textContent = 'Replacing...';
+        const hiddenInput = document.getElementById('gallery-images');
+        let currentImages = (hiddenInput?.value || '').split(',').filter(s => s);
 
-        const url = await uploadFile(input.files[0]);
-        if (url) {
-            const hiddenInput = document.getElementById('gallery-images');
-            let images = hiddenInput.value.split(',').filter(s => s);
-            images[index] = url;
-            statusEl.textContent = 'Replaced!';
-            renderMotionGalleryForm(images);
-        } else {
-            statusEl.textContent = 'Err replacing';
+        if (files.length === 0) return;
+
+        statusEl.textContent = `OPTIMIZING ${files.length} ITEMS...`;
+        statusEl.className = 'upload-status loading';
+
+        try {
+            for (const file of files) {
+                const url = await uploadFile(file);
+                if (url) currentImages.push(url);
+            }
+            renderMotionGalleryForm(currentImages);
+            statusEl.textContent = 'RESTORED';
+            statusEl.className = 'upload-status success';
+            addSuccessLog(`Batch uploaded ${files.length} frames.`);
+            setTimeout(() => statusEl.textContent = '', 3000);
+        } catch (err) {
+            statusEl.textContent = 'SYNC ERROR';
+            statusEl.className = 'upload-status error';
         }
-    }
-};
-
-// Gallery Upload Listener
-document.getElementById('gallery-upload').addEventListener('change', async (e) => {
-    const files = Array.from(e.target.files);
-    const statusEl = document.getElementById('gallery-upload-status');
-    const hiddenInput = document.getElementById('gallery-images');
-    let currentImages = hiddenInput.value.split(',').filter(s => s);
-
-    if (files.length === 0) return;
-
-    statusEl.textContent = 'Uploading...';
-    statusEl.className = 'upload-status loading';
-
-    try {
-        for (const file of files) {
-            const url = await uploadFile(file);
-            if (url) currentImages.push(url);
-        }
-        renderMotionGalleryForm(currentImages);
-        statusEl.textContent = 'Done!';
-        statusEl.className = 'upload-status success';
-        setTimeout(() => statusEl.textContent = '', 2000);
-    } catch (err) {
-        statusEl.textContent = 'Error';
-        statusEl.className = 'upload-status error';
-    }
-});
+    });
+}
 
 const renderAboutForm = () => {
     if (!siteContent.about) return;
@@ -646,6 +632,78 @@ const saveContent = async (content) => {
 };
 
 // Upload for Content Form
+// --- FILE UPLOAD HELPER (with Compression) ---
+const uploadFile = async (file) => {
+    let fileToUpload = file;
+
+    // Client-side compression for images
+    if (file.type.startsWith('image/') && !file.type.includes('svg')) {
+        try {
+            console.log(`Compressing ${file.name} locally...`);
+            const compressed = await compressImage(file);
+            if (compressed) fileToUpload = compressed;
+        } catch (err) {
+            console.warn('Local compression failed, uploading original:', err);
+        }
+    }
+
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+
+    try {
+        const res = await fetch(UPLOAD_URL, {
+            method: 'POST',
+            body: formData
+        });
+        if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            throw new Error(errData.error || 'Upload failed');
+        }
+        const data = await res.json();
+        return data.url;
+    } catch (err) {
+        console.error(err);
+        alert(`File upload failed: ${err.message}`);
+        return null;
+    }
+};
+
+const compressImage = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Max dimensions
+                let width = img.width;
+                let height = img.height;
+                const MAX_WIDTH = 1600;
+
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob((blob) => {
+                    if (!blob) return reject(new Error('Canvas toBlob failed'));
+                    resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' }));
+                }, 'image/webp', 0.8);
+            };
+            img.onerror = reject;
+            img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
 // Upload for Content Form (Enhanced)
 const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
     const el = document.getElementById(inputId);
@@ -656,7 +714,7 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
         const statusEl = document.getElementById(statusId);
         if (!file) return;
 
-        statusEl.textContent = 'Uploading...';
+        statusEl.textContent = 'OPTIMIZING...';
         statusEl.className = 'upload-status loading';
 
         try {
@@ -666,13 +724,20 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
                 if (urlInp) urlInp.value = url;
                 if (previewId) {
                     const prev = document.getElementById(previewId);
-                    if (prev) prev.src = url;
+                    if (prev) {
+                        prev.src = url;
+                        prev.classList.remove('hidden');
+                    }
                 }
-                statusEl.textContent = 'Success!';
+                statusEl.textContent = 'READY';
                 statusEl.className = 'upload-status success';
+                addSuccessLog(`Uploaded: ${file.name}`);
+            } else {
+                statusEl.textContent = 'FAILED';
+                statusEl.className = 'upload-status error';
             }
         } catch (err) {
-            statusEl.textContent = 'Failed';
+            statusEl.textContent = 'ERROR';
             statusEl.className = 'upload-status error';
         }
     });
@@ -882,14 +947,86 @@ const closeModalFunc = () => {
 const addChapterField = (chapter = { title: '', images: [] }, index) => {
     const container = document.getElementById('chapters-container');
     const div = document.createElement('div');
-    div.className = 'border p-3 rounded bg-gray-50';
+    div.className = 'glass-card p-6 rounded-2xl border-white/5 bg-white/5 space-y-4';
+    div.id = `chapter-card-${index}`;
+
     div.innerHTML = `
-        <h4 class="font-semibold text-sm mb-2">Chapter ${index + 1}</h4>
-        <input type="text" class="w-full p-2 border rounded mb-2 text-sm" placeholder="Chapter Title" value="${chapter.title}" name="chapter_title_${index}">
-        <label class="block text-xs font-medium mb-1">Images (Comma separated URLs for now, or use JSON edit)</label>
-        <textarea class="w-full p-2 border rounded text-xs h-16" name="chapter_images_${index}">${chapter.images.join(', ')}</textarea>
+        <div class="flex justify-between items-center mb-2">
+            <h4 class="text-xs font-black uppercase tracking-[0.2em] text-gold">Chapter ${index + 1}</h4>
+            <button type="button" class="text-[9px] text-red-400 uppercase font-bold hover:text-white" onclick="this.closest('#chapter-card-${index}').remove()">Delete Chapter</button>
+        </div>
+        <input type="text" class="w-full p-4 rounded-xl glass-input text-sm" placeholder="Chapter Name (e.g., The Vows)" value="${chapter.title}" name="chapter_title_${index}">
+        
+        <div class="space-y-3">
+            <label class="block text-[10px] uppercase font-bold text-gray-400">Chapter Frames</label>
+            <div id="chapter-images-grid-${index}" class="grid grid-cols-4 md:grid-cols-6 gap-3">
+                ${(chapter.images || []).map((img, imgIdx) => `
+                    <div class="relative aspect-square rounded-lg overflow-hidden border border-white/5 group">
+                        <img src="${img}" class="w-full h-full object-cover">
+                        <button type="button" class="absolute inset-0 bg-red-500/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white" onclick="window.removeChapterImage(${index}, ${imgIdx})">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                `).join('')}
+                <label class="aspect-square rounded-lg border-2 border-dashed border-white/10 flex flex-col items-center justify-center cursor-pointer hover:border-gold/30 hover:bg-gold/5 transition-all group">
+                    <input type="file" multiple class="hidden" onchange="window.handleChapterUpload(this, ${index})">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500 group-hover:text-gold transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span class="text-[8px] font-bold mt-1 text-gray-500 group-hover:text-gold uppercase tracking-tighter">Add</span>
+                </label>
+            </div>
+            <input type="hidden" id="chapter-images-data-${index}" name="chapter_images_${index}" value="${(chapter.images || []).join(',')}">
+        </div>
     `;
     container.appendChild(div);
+};
+
+window.removeChapterImage = (chapterIndex, imgIdx) => {
+    const dataInput = document.getElementById(`chapter-images-data-${chapterIndex}`);
+    let images = dataInput.value.split(',').filter(s => s);
+    images.splice(imgIdx, 1);
+    dataInput.value = images.join(',');
+
+    // Refresh only the grid
+    refreshChapterGrid(chapterIndex, images);
+};
+
+window.handleChapterUpload = async (input, chapterIndex) => {
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
+
+    const dataInput = document.getElementById(`chapter-images-data-${chapterIndex}`);
+    let images = dataInput.value.split(',').filter(s => s);
+
+    addSuccessLog(`Optimizing ${files.length} chapter frames...`);
+
+    for (const file of files) {
+        const url = await uploadFile(file);
+        if (url) images.push(url);
+    }
+
+    dataInput.value = images.join(',');
+    refreshChapterGrid(chapterIndex, images);
+};
+
+const refreshChapterGrid = (chapterIndex, images) => {
+    const grid = document.getElementById(`chapter-images-grid-${chapterIndex}`);
+    const lastItem = grid.lastElementChild; // The plus button
+
+    grid.innerHTML = images.map((img, imgIdx) => `
+        <div class="relative aspect-square rounded-lg overflow-hidden border border-white/5 group">
+            <img src="${img}" class="w-full h-full object-cover">
+            <button type="button" class="absolute inset-0 bg-red-500/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white" onclick="window.removeChapterImage(${chapterIndex}, ${imgIdx})">
+                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    `).join('');
+    grid.appendChild(lastItem);
 };
 
 // Global handlers for buttons in innerHTML
@@ -946,7 +1083,7 @@ weddingForm.addEventListener('submit', async (e) => {
     const chapterDivs = document.getElementById('chapters-container').children;
     for (let i = 0; i < chapterDivs.length; i++) {
         const title = chapterDivs[i].querySelector(`input[name="chapter_title_${i}"]`).value;
-        const imagesStr = chapterDivs[i].querySelector(`textarea[name="chapter_images_${i}"]`).value;
+        const imagesStr = chapterDivs[i].querySelector(`[name="chapter_images_${i}"]`).value;
         const images = imagesStr.split(',').map(s => s.trim()).filter(s => s);
         newWedding.storyChapters.push({ title, images });
     }
