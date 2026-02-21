@@ -2,15 +2,24 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const upload = require('./s3-config');
+const { s3, upload } = require('./s3-config');
 const mongoose = require('mongoose');
 const path = require('path');
+const axios = require('axios');
+const sharp = require('sharp');
+const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
 
 const Wedding = require('./models/Wedding');
 const Content = require('./models/Content');
 const Journal = require('./models/Journal');
+const Booking = require('./models/Booking');
+const User = require('./models/User');
 
 const app = express();
+const JWT_SECRET = process.env.JWT_SECRET || 'dreamline-secret-key-2026';
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -51,6 +60,47 @@ app.use(async (req, res, next) => {
 // Health Check Endpoint
 app.get('/api', (req, res) => {
     res.json({ status: 'API is running', timestamp: new Date() });
+});
+
+// --- AUTH ENDPOINTS ---
+
+// 1. LOGIN
+app.post('/api/auth/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Auto-create first admin if DB is empty
+        const userCount = await User.countDocuments();
+        if (userCount === 0) {
+            const hashed = await bcrypt.hash('admin123', 10);
+            await new User({ username: 'admin', password: hashed }).save();
+            console.log('Seed: Initial admin created.');
+        }
+
+        const user = await User.findOne({ username });
+        if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
+
+        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+        res.json({ token, username: user.username });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 2. VERIFY TOKEN (Used by frontend)
+app.get('/api/auth/verify', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'No token' });
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        res.json({ valid: true, decoded });
+    } catch (err) {
+        res.status(401).json({ error: 'Invalid token' });
+    }
 });
 
 // --- API ENDPOINTS ---
@@ -170,6 +220,74 @@ app.delete('/api/journals/:id', async (req, res) => {
 });
 
 
+// --- BOOKING ENDPOINTS ---
+
+// 6. CREATE NEW BOOKING INQUIRY
+app.post('/api/bookings', async (req, res) => {
+    try {
+        const { firstName, lastName, phone, email, eventDate, serviceType, vision } = req.body;
+
+        // Save to Database
+        const newBooking = new Booking({
+            firstName,
+            lastName,
+            phone,
+            email,
+            eventDate,
+            serviceType,
+            vision
+        });
+        await newBooking.save();
+
+        // Send WhatsApp Notification to Admin
+        const adminPhone = process.env.WHATSAPP_ADMIN_PHONE || '8240054002';
+        const message = `New Inquiry from ${firstName} ${lastName}! \nPhone: ${phone} \nEvent: ${eventDate} \nService: ${serviceType}`;
+
+        const waUrl = 'http://bhashsms.com/api/sendmsg.php';
+        const waParams = {
+            user: process.env.WHATSAPP_USER || 'Rony_BW',
+            pass: process.env.WHATSAPP_PASS,
+            sender: process.env.WHATSAPP_SENDER || 'BUZWAP',
+            phone: adminPhone,
+            text: message,
+            priority: 'wa',
+            stype: 'normal'
+        };
+
+        if (process.env.WHATSAPP_PASS) {
+            try {
+                await axios.get(waUrl, { params: waParams });
+            } catch (waErr) {
+                console.error('WhatsApp notification failed:', waErr.message);
+            }
+        }
+
+        res.json({ success: true, booking: newBooking });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 7. GET ALL BOOKINGS
+app.get('/api/bookings', async (req, res) => {
+    try {
+        const bookings = await Booking.find().sort({ createdAt: -1 });
+        res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 8. DELETE BOOKING
+app.delete('/api/bookings/:id', async (req, res) => {
+    try {
+        await Booking.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // --- SITE CONTENT ENDPOINTS ---
 
 // 6. GET SITE CONTENT
@@ -222,9 +340,56 @@ app.post('/api/content', async (req, res) => {
 });
 
 // --- UPLOAD ENDPOINT ---
-app.post('/api/upload', upload.single('file'), (req, res) => {
+app.post('/api/upload', upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    res.json({ url: req.file.location }); // AWS S3 returns the absolute URL in 'location'
+
+    try {
+        const file = req.file;
+        const isImage = file.mimetype.startsWith('image/');
+
+        // Generate absolute uniqueness
+        const uniqueSuffix = crypto.randomBytes(12).toString('hex');
+        const cleanName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '_');
+        const fileName = `uploads/${Date.now()}-${uniqueSuffix}-${cleanName}`;
+
+        let uploadBuffer = file.buffer;
+        if (!uploadBuffer || uploadBuffer.length === 0) {
+            throw new Error('Received an empty or corrupted file buffer');
+        }
+        let contentType = file.mimetype;
+        let finalFileName = fileName;
+
+        // 1. Optimize Image if applicable
+        if (isImage && !file.mimetype.includes('svg')) {
+            console.log('Optimizing image:', file.originalname);
+            uploadBuffer = await sharp(file.buffer)
+                .resize({ width: 2000, withoutEnlargement: true }) // Limit max width
+                .webp({ quality: 80 }) // Convert to WebP for best performance
+                .toBuffer();
+            contentType = 'image/webp';
+            finalFileName = fileName.replace(/\.[^.]+$/, '.webp');
+        }
+
+        // 2. Upload to S3
+        const command = new PutObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: finalFileName,
+            Body: uploadBuffer,
+            ContentType: contentType
+        });
+
+        await s3.send(command);
+
+        // 3. Return the URL
+        const url = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${finalFileName}`;
+
+        console.log('Upload successful:', url);
+        res.json({ url });
+
+    } catch (err) {
+        console.error('Upload Error:', err);
+        res.status(500).json({ error: 'Failed to process or upload file: ' + err.message });
+    }
 });
 
 // Global Error Handler

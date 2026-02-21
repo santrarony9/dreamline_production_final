@@ -59,7 +59,12 @@ const ContentSchema = new mongoose.Schema({
             text: String,
             rating: Number
         }]
-    }
+    },
+    partners: [{
+        name: String,
+        letter: String
+    }],
+    splitGallery: [String]
 });
 
 module.exports = mongoose.model('Content', ContentSchema);

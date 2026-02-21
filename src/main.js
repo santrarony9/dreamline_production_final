@@ -60,6 +60,8 @@ const renderAll = () => {
     renderMasterGallery();
     renderAbout();
     renderJournal();
+    renderPartners();
+    renderSplitGallery();
 };
 
 const renderHero = () => {
@@ -137,6 +139,61 @@ const renderMotionGallery = () => {
     container.innerHTML = allImages.map(img => `
         <div class="motion-card"><img src="${img}" loading="lazy"></div>
     `).join('');
+};
+
+const renderPartners = () => {
+    const container = document.querySelector('.brand-track');
+    if (!container || !siteContent.partners) return;
+
+    const items = siteContent.partners.length ? siteContent.partners : [
+        { name: 'ADIDAS', letter: 'A' },
+        { name: 'VOGUE', letter: 'V' },
+        { name: 'RELIANCE', letter: 'R' },
+        { name: 'NETFLIX', letter: 'N' },
+        { name: 'TATA MOTORS', letter: 'T' }
+    ];
+
+    // Duplicate for ticker
+    const allPartners = [...items, ...items, ...items];
+
+    container.innerHTML = allPartners.map(p => `
+        <div class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
+            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">${p.letter}</div>
+            <span class="font-heading text-xl font-bold tracking-tighter">${p.name}</span>
+        </div>
+    `).join('');
+};
+
+const renderSplitGallery = () => {
+    const track1 = document.getElementById('v-track-1');
+    const track2 = document.getElementById('v-track-2');
+    const track3 = document.getElementById('v-track-3');
+
+    if (!track1 || !track2 || !siteContent.splitGallery?.length) return;
+
+    const images = siteContent.splitGallery;
+    const count = images.length;
+
+    // Distribute images into 3 columns
+    const cols = [[], [], []];
+    images.forEach((img, i) => {
+        cols[i % 3].push(img);
+    });
+
+    // Helper to render a track with duplicates for loop
+    const renderTrack = (el, items) => {
+        if (!el || !items.length) return;
+        const allItems = [...items, ...items, ...items]; // Duplicate for scroll
+        el.innerHTML = allItems.map(src => `
+            <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5">
+                <img src="${src}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+            </div>
+        `).join('');
+    };
+
+    renderTrack(track1, cols[0]);
+    renderTrack(track2, cols[1]);
+    renderTrack(track3, cols[2]);
 };
 
 const renderVideoVault = () => {

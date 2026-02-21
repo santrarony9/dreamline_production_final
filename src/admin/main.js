@@ -5,7 +5,29 @@ console.log('Admin Panel v1.5.1 Loaded - Premium Luxury Theme');
 const API_WEDDINGS_URL = '/api/weddings';
 const API_CONTENT_URL = '/api/content';
 const API_JOURNALS_URL = '/api/journals';
+const API_BOOKINGS_URL = '/api/bookings';
+const API_AUTH_LOGIN = '/api/auth/login';
+const API_AUTH_VERIFY = '/api/auth/verify';
 const UPLOAD_URL = '/api/upload';
+
+// --- AUTH HELPER ---
+const getAuthHeaders = () => {
+    const token = localStorage.getItem('adminToken');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+};
+
+const fetchWithAuth = async (url, options = {}) => {
+    const headers = {
+        ...options.headers,
+        ...getAuthHeaders()
+    };
+    const response = await fetch(url, { ...options, headers });
+    if (response.status === 401) {
+        localStorage.removeItem('adminToken');
+        window.location.reload();
+    }
+    return response;
+};
 
 // --- LOGGING SYSTEM ---
 const systemLogs = [];
@@ -52,6 +74,7 @@ window.addSuccessLog = (msg) => addLogEntry('success', msg);
 // State
 let weddings = [];
 let journals = [];
+let bookings = [];
 let siteContent = {};
 
 const renderStatsList = () => {
@@ -83,6 +106,43 @@ window.deleteStat = (index) => {
     siteContent.stats.splice(index, 1);
     renderStatsList();
 };
+
+const renderPartnersList = () => {
+    const container = document.getElementById('partners-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (!siteContent.partners) siteContent.partners = [];
+
+    container.innerHTML = siteContent.partners.map((p, i) => `
+        <div class="glass-card p-4 rounded-xl border-white/5 shadow-xl">
+            <div class="mb-3">
+                <label>Partner Name</label>
+                <input type="text" class="glass-input w-full p-3 rounded-lg text-sm" value="${p.name}" oninput="window.updatePartner(${i}, 'name', this.value)">
+            </div>
+            <div class="mb-3">
+                <label>Logo Letter</label>
+                <input type="text" class="glass-input w-full p-3 rounded-lg text-sm" value="${p.letter}" oninput="window.updatePartner(${i}, 'letter', this.value)">
+            </div>
+            <button type="button" class="w-full mt-2 text-[10px] text-red-400 opacity-50 hover:opacity-100 uppercase tracking-widest font-bold transition-opacity" onclick="window.deletePartner(${i})">Remove Partner</button>
+        </div>
+    `).join('');
+};
+
+window.updatePartner = (index, field, value) => {
+    siteContent.partners[index][field] = value;
+};
+
+window.deletePartner = (index) => {
+    siteContent.partners.splice(index, 1);
+    renderPartnersList();
+};
+
+document.getElementById('add-partner-btn').addEventListener('click', () => {
+    if (!siteContent.partners) siteContent.partners = [];
+    siteContent.partners.push({ name: 'New Partner', letter: 'P' });
+    renderPartnersList();
+});
 
 window.uploadHeroMedia = async (input) => {
     // This function will be replaced by setupFileUpload in init
@@ -128,12 +188,14 @@ const tabWeddings = document.getElementById('tab-weddings');
 const tabMasterGallery = document.getElementById('tab-master-gallery');
 const tabAbout = document.getElementById('tab-about');
 const tabJournal = document.getElementById('tab-journal');
+const tabBookings = document.getElementById('tab-bookings');
 
 const sectionHome = document.getElementById('section-home');
 const sectionWeddings = document.getElementById('section-weddings');
 const sectionMasterGallery = document.getElementById('section-master-gallery');
 const sectionAbout = document.getElementById('section-about');
 const sectionJournal = document.getElementById('section-journal');
+const sectionBookings = document.getElementById('section-bookings');
 
 const homeForm = document.getElementById('home-form');
 const masterGalleryForm = document.getElementById('master-gallery-form');
@@ -145,20 +207,17 @@ tabWeddings.addEventListener('click', () => switchTab('weddings'));
 tabMasterGallery.addEventListener('click', () => switchTab('master-gallery'));
 tabAbout.addEventListener('click', () => switchTab('about'));
 tabJournal.addEventListener('click', () => switchTab('journal'));
+tabBookings.addEventListener('click', () => switchTab('bookings'));
 
 const switchTab = (tab) => {
-    // Hide all sections
-    sectionHome.classList.add('hidden');
-    sectionWeddings.classList.add('hidden');
-    sectionMasterGallery.classList.add('hidden');
-    sectionAbout.classList.add('hidden');
-    sectionJournal.classList.add('hidden');
-
-    // Reset tab styles
-    [tabHome, tabWeddings, tabMasterGallery, tabAbout, tabJournal].forEach(t => {
+    [tabHome, tabWeddings, tabMasterGallery, tabAbout, tabJournal, tabBookings].forEach(t => {
         t.classList.remove('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         t.classList.add('text-gray-500');
     });
+
+    // Hide all sections
+    const sections = [sectionHome, sectionWeddings, sectionMasterGallery, sectionAbout, sectionJournal, sectionBookings];
+    sections.forEach(s => s && s.classList.add('hidden'));
 
     // Show active section & style tab
     if (tab === 'home') {
@@ -186,13 +245,18 @@ const switchTab = (tab) => {
         tabJournal.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         tabJournal.classList.remove('text-gray-500');
         fetchJournals();
+    } else if (tab === 'bookings') {
+        sectionBookings.classList.remove('hidden');
+        tabBookings.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
+        tabBookings.classList.remove('text-gray-500');
+        fetchBookings();
     }
 };
 
 // --- DATA FETCHING (Weddings) ---
 const fetchWeddings = async () => {
     try {
-        const res = await fetch(API_WEDDINGS_URL);
+        const res = await fetchWithAuth(API_WEDDINGS_URL);
         weddings = await res.json();
         renderWeddingList();
     } catch (err) {
@@ -203,7 +267,7 @@ const fetchWeddings = async () => {
 // --- DATA FETCHING (Journals) ---
 const fetchJournals = async () => {
     try {
-        const res = await fetch(API_JOURNALS_URL);
+        const res = await fetchWithAuth(API_JOURNALS_URL);
         journals = await res.json();
         renderJournalList();
     } catch (err) {
@@ -214,11 +278,13 @@ const fetchJournals = async () => {
 // --- DATA FETCHING (Content) ---
 const fetchContent = async () => {
     try {
-        const res = await fetch(API_CONTENT_URL);
+        const res = await fetchWithAuth(API_CONTENT_URL);
         siteContent = await res.json();
         renderHomeForm();
         renderMasterGalleryList();
         renderAboutForm();
+        renderPartnersList();
+        renderSplitGalleryList();
     } catch (err) {
         console.error('Failed to fetch content:', err);
     }
@@ -352,6 +418,70 @@ const renderAboutForm = () => {
     document.getElementById('about-founder-img').value = siteContent.about.founderImage || '';
 };
 
+const fetchBookings = async () => {
+    const loader = document.getElementById('loading-bookings');
+    const container = document.getElementById('bookings-list');
+    if (loader) loader.classList.remove('hidden');
+    if (container) container.innerHTML = '';
+
+    try {
+        const res = await fetchWithAuth(API_BOOKINGS_URL);
+        bookings = await res.json();
+        renderBookingsList();
+    } catch (err) {
+        console.error('Failed to fetch bookings:', err);
+    } finally {
+        if (loader) loader.classList.add('hidden');
+    }
+};
+
+const renderBookingsList = () => {
+    const container = document.getElementById('bookings-list');
+    if (!container) return;
+
+    if (bookings.length === 0) {
+        container.innerHTML = '<div class="text-center py-20 text-gray-500 uppercase tracking-widest text-xs font-bold">No inquiries found.</div>';
+        return;
+    }
+
+    container.innerHTML = bookings.map(b => {
+        const date = new Date(b.createdAt).toLocaleDateString();
+        const eventDate = new Date(b.eventDate).toLocaleDateString();
+        return `
+            <div class="glass-card p-6 rounded-2xl border-white/5 bg-white/2 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-3">
+                        <span class="text-gold font-bold text-sm uppercase">${b.firstName} ${b.lastName}</span>
+                        <span class="text-[9px] bg-white/5 px-2 py-0.5 rounded text-gray-400 font-bold uppercase tracking-widest">${b.status}</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 font-medium">${b.phone} • ${b.email}</p>
+                    <p class="text-[10px] text-gray-500 italic">Received: ${date}</p>
+                </div>
+                <div class="flex flex-col md:items-end gap-1">
+                    <span class="text-[10px] text-gold/80 font-black uppercase tracking-tighter">${b.serviceType}</span>
+                    <span class="text-[10px] text-gray-400">Event: ${eventDate}</span>
+                </div>
+                <div class="flex gap-4">
+                    <button class="text-[10px] font-black text-red-500/50 hover:text-red-500 uppercase tracking-widest transition-colors" onclick="window.deleteBooking('${b._id}')">Delete</button>
+                    <a href="https://wa.me/${b.phone ? b.phone.replace(/\+/g, '') : ''}" target="_blank" class="text-[10px] font-black text-green-500/80 hover:text-green-500 uppercase tracking-widest transition-colors">WhatsApp →</a>
+                </div>
+            </div>
+        `;
+    }).join('');
+};
+
+window.deleteBooking = async (id) => {
+    if (!confirm('Delete this inquiry?')) return;
+    try {
+        await fetchWithAuth(`${API_BOOKINGS_URL}/${id}`, { method: 'DELETE' });
+        fetchBookings();
+    } catch (err) {
+        alert('Error deleting booking');
+    }
+};
+
+document.getElementById('refresh-bookings-btn')?.addEventListener('click', fetchBookings);
+
 const renderMasterGalleryList = () => {
     const container = document.getElementById('master-gallery-container');
     container.innerHTML = '';
@@ -411,6 +541,47 @@ const renderMasterGalleryList = () => {
             <div id="proj-upload-status-${i}" class="absolute top-2 right-2 text-[8px] font-bold text-gold pointer-events-none"></div>
         </div>
     `).join('');
+    renderSplitGalleryList();
+};
+
+const renderSplitGalleryList = () => {
+    const container = document.getElementById('split-gallery-container');
+    if (!container) return;
+
+    if (!siteContent.splitGallery) siteContent.splitGallery = [];
+
+    container.innerHTML = siteContent.splitGallery.map((img, i) => `
+        <div class="relative group aspect-[3/4] rounded-lg overflow-hidden bg-black/40 border border-white/5">
+            <img src="${img}" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <button type="button" onclick="window.deleteSplitImage(${i})" class="text-[10px] font-black text-red-500 uppercase tracking-widest">Delete</button>
+            </div>
+        </div>
+    `).join('');
+};
+
+window.deleteSplitImage = (index) => {
+    if (!confirm('Remove this image from vertical gallery?')) return;
+    siteContent.splitGallery.splice(index, 1);
+    renderSplitGalleryList();
+};
+
+window.handleSplitGalleryUpload = async (input) => {
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
+
+    addSuccessLog(`Split Gallery: Optimizing ${files.length} images...`);
+
+    for (const file of files) {
+        const url = await uploadFile(file);
+        if (url) {
+            if (!siteContent.splitGallery) siteContent.splitGallery = [];
+            siteContent.splitGallery.push(url);
+            renderSplitGalleryList();
+        }
+    }
+
+    addSuccessLog(`Split Gallery: ${files.length} images uploaded.`);
 };
 
 window.toggleEditProject = (index) => {
@@ -712,6 +883,9 @@ homeForm.addEventListener('submit', async (e) => {
     updatedContent.gallery.subtitle = document.getElementById('gallery-subtitle').value;
     updatedContent.gallery.images = document.getElementById('gallery-images').value.split(',').filter(s => s);
 
+    // Update Partners
+    updatedContent.partners = siteContent.partners;
+
     await saveContent(updatedContent);
 });
 
@@ -722,6 +896,7 @@ masterGalleryForm.addEventListener('submit', async (e) => {
 
     // projects are already updated in siteContent state via inputs
     updatedContent.projects = siteContent.projects;
+    updatedContent.splitGallery = siteContent.splitGallery;
 
     await saveContent(updatedContent);
 });
@@ -767,7 +942,7 @@ window.uploadAboutHero = async (input) => {
 
 const saveContent = async (content) => {
     try {
-        const res = await fetch(API_CONTENT_URL, {
+        const res = await fetchWithAuth(API_CONTENT_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(content)
@@ -800,7 +975,7 @@ const uploadFile = async (file) => {
     formData.append('file', fileToUpload);
 
     try {
-        const res = await fetch(UPLOAD_URL, {
+        const res = await fetchWithAuth(UPLOAD_URL, {
             method: 'POST',
             body: formData
         });
@@ -985,7 +1160,7 @@ journalForm.addEventListener('submit', async (e) => {
         const method = existing ? 'PUT' : 'POST';
         const url = existing ? `${API_JOURNALS_URL}/${id}` : API_JOURNALS_URL;
 
-        const res = await fetch(url, {
+        const res = await fetchWithAuth(url, {
             method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newJournal)
@@ -1010,7 +1185,7 @@ window.editJournal = (id) => {
 window.deleteJournal = async (id) => {
     if (!confirm('Delete this article?')) return;
     try {
-        await fetch(`${API_JOURNALS_URL}/${id}`, { method: 'DELETE' });
+        await fetchWithAuth(`${API_JOURNALS_URL}/${id}`, { method: 'DELETE' });
         fetchJournals();
     } catch (err) {
         alert('Error deleting journal');
@@ -1166,7 +1341,7 @@ window.editWedding = (id) => {
 window.deleteWedding = async (id) => {
     if (!confirm('Are you sure you want to delete this wedding?')) return;
     try {
-        await fetch(`${API_WEDDINGS_URL}/${id}`, { method: 'DELETE' });
+        await fetchWithAuth(`${API_WEDDINGS_URL}/${id}`, { method: 'DELETE' });
         fetchWeddings();
     } catch (err) {
         alert('Error deleting wedding');
@@ -1225,7 +1400,7 @@ weddingForm.addEventListener('submit', async (e) => {
         const method = existing ? 'PUT' : 'POST';
         const url = existing ? `${API_WEDDINGS_URL}/${id}` : API_WEDDINGS_URL;
 
-        const res = await fetch(url, {
+        const res = await fetchWithAuth(url, {
             method,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(finalData)
@@ -1243,15 +1418,33 @@ weddingForm.addEventListener('submit', async (e) => {
 
 // Init
 // --- AUTHENTICATION ---
-const checkAuth = () => {
+const checkAuth = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+        showLogin();
+        return;
+    }
+
     try {
-        const isAdmin = localStorage.getItem('isAdmin');
-        if (isAdmin === 'true') {
+        const res = await fetch(API_AUTH_VERIFY, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
             showDashboard();
+        } else {
+            showLogin();
         }
     } catch (err) {
         console.error('Auth check failed:', err);
+        showLogin();
     }
+};
+
+const showLogin = () => {
+    const screen = document.getElementById('login-screen');
+    const dash = document.getElementById('dashboard');
+    if (screen) screen.classList.remove('hidden-force');
+    if (dash) dash.classList.add('hidden-force');
 };
 
 const showDashboard = () => {
@@ -1262,7 +1455,6 @@ const showDashboard = () => {
 
         if (screen) {
             screen.classList.add('hidden-force');
-            screen.style.setProperty('display', 'none', 'important');
         }
         if (dash) {
             dash.classList.remove('hidden', 'hidden-force');
@@ -1270,33 +1462,57 @@ const showDashboard = () => {
         }
 
         fetchWeddings();
+        fetchContent(); // Added to ensure content is loaded on dashboard show
 
         const homeTab = document.getElementById('tab-home');
         if (homeTab) {
             homeTab.click();
-        } else {
-            console.warn('tab-home not found for initial click');
         }
     } catch (err) {
         console.error('showDashboard failed:', err);
-        alert('Dashboard load error: ' + err.message);
     }
 };
 
 const handleLogin = async () => {
-    // Redundant now as admin.html has inline handler, 
-    // but kept as safety for Enter key binding
+    const uInput = document.getElementById('admin-username');
+    const pInput = document.getElementById('admin-password');
+    const errEl = document.getElementById('login-error');
+    const btn = document.getElementById('login-btn');
+
+    if (!uInput || !pInput) return;
+
+    const username = uInput.value.trim();
+    const password = pInput.value.trim();
+
+    if (!username || !password) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Verifying...';
+    errEl.classList.add('hidden');
+
     try {
-        const pInput = document.getElementById('pass-key');
-        if (!pInput) return;
-        await new Promise(r => setTimeout(r, 100)); // Browser delay
-        const pass = pInput.value.trim();
-        if (pass.toLowerCase() === 'admin123') {
-            localStorage.setItem('isAdmin', 'true');
+        const res = await fetch(API_AUTH_LOGIN, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            localStorage.setItem('adminToken', data.token);
             showDashboard();
+        } else {
+            errEl.textContent = data.error || 'Login failed';
+            errEl.classList.remove('hidden');
         }
     } catch (err) {
-        console.error('handleLogin Error:', err);
+        console.error('Login Error:', err);
+        errEl.textContent = 'Server connection error';
+        errEl.classList.remove('hidden');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Login Dashboard';
     }
 };
 
@@ -1305,31 +1521,28 @@ window.initializeDashboard = showDashboard; // Allow inline script to trigger it
 
 // Safe Initialization
 const init = () => {
-    console.log('Initializing Admin UI v1.3.6...');
+    console.log('Initializing Admin UI v2.0.0 (Secure)...');
 
-    // Attach Enter key
-    const pInput = document.getElementById('password-input');
-    if (pInput) {
-        pInput.addEventListener('keypress', (e) => {
+    // Login Button
+    const loginBtn = document.getElementById('login-btn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', handleLogin);
+    }
+
+    // Attach Enter key for login
+    const uInput = document.getElementById('admin-username');
+    const pInput = document.getElementById('admin-password');
+    [uInput, pInput].forEach(el => {
+        if (el) el.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleLogin();
         });
-    }
-
-    // Password toggle
-    const tBtn = document.getElementById('toggle-password');
-    if (tBtn && pInput) {
-        tBtn.addEventListener('click', () => {
-            const type = pInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            pInput.setAttribute('type', type);
-            tBtn.style.opacity = type === 'text' ? '1' : '0.5';
-        });
-    }
+    });
 
     // Logout
     const logout = document.getElementById('logout-btn');
     if (logout) {
         logout.addEventListener('click', () => {
-            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('adminToken');
             location.reload();
         });
     }
@@ -1350,12 +1563,10 @@ const init = () => {
 
     // Forms
     const forms = [
-        { id: 'home-form', handler: (e) => e.preventDefault() }, // Add real handlers later if needed
+        { id: 'home-form', handler: (e) => e.preventDefault() },
         { id: 'master-gallery-form', handler: (e) => e.preventDefault() },
         { id: 'about-form', handler: (e) => e.preventDefault() }
     ];
-    // Note: real handlers are defined elsewhere in the file, 
-    // this is just to ensure they are connected if they weren't before.
 
     checkAuth();
 };
