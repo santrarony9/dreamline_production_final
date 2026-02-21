@@ -187,11 +187,22 @@
                         </div>
                     </div>
 
-                    <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Video Vault</h3>
+                    <div class="flex justify-between items-center mb-6 mt-8 border-b border-white/5 pb-2">
+                        <h3 class="font-bold text-lg text-gold-500">Video Vault</h3>
+                        <div class="flex gap-4">
+                            <label
+                                class="text-[10px] font-bold text-gold cursor-pointer hover:text-white transition-colors bg-gold/5 px-4 py-2 rounded-full border border-gold/20">
+                                <input type="file" multiple class="hidden"
+                                    onchange="window.handleVaultBulkUpload(this)">
+                                + BULK ADD
+                            </label>
+                            <button type="button" id="add-vault-btn"
+                                class="text-[10px] font-bold text-blue-400 hover:text-white uppercase tracking-widest">+
+                                Single Entry</button>
+                        </div>
+                    </div>
                     <div id="video-vault-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
                     </div>
-                    <button type="button" id="add-vault-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
-                        Video Item</button>
 
                     <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Marquee Text</h3>
                     <div id="marquee-container" class="space-y-2 mb-4"></div>
