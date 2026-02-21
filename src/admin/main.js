@@ -302,9 +302,12 @@ if (galleryUploadInput) {
             for (const file of files) {
                 const url = await uploadFile(file);
                 if (url) currentImages.push(url);
+                // Stagger delay for stability
+                await new Promise(r => setTimeout(r, 300));
             }
             renderMotionGalleryForm(currentImages);
             statusEl.textContent = 'RESTORED';
+            input.value = ''; // Reset input
             statusEl.className = 'upload-status success';
             addSuccessLog(`Batch uploaded ${files.length} frames.`);
             setTimeout(() => statusEl.textContent = '', 3000);
@@ -487,7 +490,10 @@ window.handleVaultBulkUpload = async (input) => {
                 videoUrl: ''
             });
         }
+        // Stagger delay
+        await new Promise(r => setTimeout(r, 400));
     }
+    input.value = ''; // Reset
     renderVideoVaultList();
 };
 
