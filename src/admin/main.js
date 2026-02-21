@@ -437,8 +437,8 @@ const renderVideoVaultList = () => {
 
     container.innerHTML = siteContent.videoVault.map((item, i) => `
         <div class="glass-card overflow-hidden group border-white/5 bg-white/2 relative">
-            <div class="relative aspect-[21/9] overflow-hidden">
-                <img src="${item.image || 'https://via.placeholder.com/1920x800?text=No+Thumbnail'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <div class="relative aspect-[21/9] overflow-hidden ${item.isLoading ? 'shimmer' : ''}">
+                <img src="${item.image || 'https://via.placeholder.com/1920x800?text=No+Thumbnail'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${item.isLoading ? 'opacity-0' : ''}">
                 <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
                     <label class="w-8 h-8 rounded-full bg-gold/90 text-black flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
                         <input type="file" class="hidden" onchange="window.uploadVaultMedia(this, ${i}, 'image')">
@@ -489,29 +489,47 @@ window.handleVaultBulkUpload = async (input) => {
 
     let successCount = 0;
     try {
+        // Pre-allocate items with loading state
+        const startIndex = siteContent.videoVault.length;
+        for (const file of files) {
+            siteContent.videoVault.push({
+                title: 'OPTIMIZING...',
+                category: 'ARCHIVE',
+                image: 'https://via.placeholder.com/1920x800?text=Processing...',
+                isLoading: true
+            });
+        }
+        renderVideoVaultList();
+
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            statusEl.textContent = `Processing Frame ${i + 1}/${files.length}...`;
+            const itemIndex = startIndex + i;
+            statusEl.textContent = `Vortex Sync: Frame ${i + 1}/${files.length}`;
 
             try {
                 const url = await uploadFile(file);
                 if (url && typeof url === 'string' && url.startsWith('http')) {
-                    siteContent.videoVault.push({
+                    siteContent.videoVault[itemIndex] = {
                         title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
                         category: 'ARCHIVE',
                         image: url,
-                        videoUrl: ''
-                    });
+                        videoUrl: '',
+                        isLoading: false
+                    };
                     successCount++;
-                    renderVideoVaultList(); // Immediate feedback
+                    renderVideoVaultList(); // Update UI for this specific item
                 } else {
-                    console.error(`Invalid URL returned for ${file.name}:`, url);
+                    // Remove failed item
+                    siteContent.videoVault[itemIndex].title = 'FAILED (RETRY)';
+                    renderVideoVaultList();
                 }
             } catch (err) {
                 console.error(`Failed to upload ${file.name}`, err);
+                siteContent.videoVault[itemIndex].title = 'SYNC ERROR';
+                renderVideoVaultList();
             }
 
-            await new Promise(r => setTimeout(r, 800)); // Staggered delay for stability
+            await new Promise(r => setTimeout(r, 1000)); // Safer delay
         }
     } finally {
         isBulkUploading = false;
