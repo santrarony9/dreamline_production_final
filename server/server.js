@@ -204,7 +204,8 @@ app.post('/api/upload', multerUpload.single('file'), async (req, res) => {
     try {
         const file = req.file;
         const isImage = file.mimetype.startsWith('image/');
-        const fileName = `uploads/${Date.now()}-${file.originalname.replace(/\+/g, '_')}`;
+        const uniqueSuffix = Math.round(Math.random() * 1E9);
+        const fileName = `uploads/${Date.now()}-${uniqueSuffix}-${file.originalname.replace(/\s+/g, '_')}`;
 
         let uploadBuffer = file.buffer;
         let contentType = file.mimetype;
