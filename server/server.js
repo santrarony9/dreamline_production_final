@@ -193,10 +193,55 @@ app.post('/api/content', async (req, res) => {
     }
 });
 
+const { PutObjectCommand } = require('@aws-sdk/client-s3');
+const sharp = require('sharp');
+const { s3, upload: multerUpload } = require('./s3-config');
+
 // --- UPLOAD ENDPOINT ---
-app.post('/api/upload', upload.single('file'), (req, res) => {
+app.post('/api/upload', multerUpload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-    res.json({ url: req.file.location }); // AWS S3 returns the absolute URL in 'location'
+
+    try {
+        const file = req.file;
+        const isImage = file.mimetype.startsWith('image/');
+        const fileName = `uploads/${Date.now()}-${file.originalname.replace(/\+/g, '_')}`;
+
+        let uploadBuffer = file.buffer;
+        let contentType = file.mimetype;
+        let finalFileName = fileName;
+
+        // 1. Optimize Image if applicable
+        if (isImage && !file.mimetype.includes('svg')) {
+            console.log('Optimizing image:', file.originalname);
+            uploadBuffer = await sharp(file.buffer)
+                .resize({ width: 2000, withoutEnlargement: true }) // Limit max width
+                .webp({ quality: 80 }) // Convert to WebP for best performance
+                .toBuffer();
+            contentType = 'image/webp';
+            finalFileName = fileName.replace(/\.[^.]+$/, '.webp');
+        }
+
+        // 2. Upload to S3
+        const command = new PutObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: finalFileName,
+            Body: uploadBuffer,
+            ContentType: contentType
+        });
+
+        await s3.send(command);
+
+        // 3. Return the URL
+        // Construct the URL based on the bucket and region or use a custom domain if configured
+        const url = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${finalFileName}`;
+
+        console.log('Upload successful:', url);
+        res.json({ url });
+
+    } catch (err) {
+        console.error('Upload Error:', err);
+        res.status(500).json({ error: 'Failed to process or upload file: ' + err.message });
+    }
 });
 
 

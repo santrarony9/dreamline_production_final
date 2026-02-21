@@ -11,16 +11,10 @@ const s3 = new S3Client({
 });
 
 const upload = multer({
-    storage: multerS3({
-        s3: s3,
-        bucket: process.env.AWS_BUCKET_NAME,
-        metadata: function (req, file, cb) {
-            cb(null, { fieldName: file.fieldname });
-        },
-        key: function (req, file, cb) {
-            cb(null, 'uploads/' + Date.now().toString() + '-' + file.originalname);
-        }
-    })
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 50 * 1024 * 1024 // 50MB limit
+    }
 });
 
-module.exports = upload;
+module.exports = { s3, upload };
