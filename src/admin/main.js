@@ -888,27 +888,6 @@ const renderWeddingList = () => {
     `).join('');
 };
 
-// --- FILE UPLOAD HELPER ---
-const uploadFile = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    try {
-        const res = await fetch(UPLOAD_URL, {
-            method: 'POST',
-            body: formData
-        });
-        if (!res.ok) {
-            const errData = await res.json().catch(() => ({}));
-            throw new Error(errData.error || 'Upload failed');
-        }
-        const data = await res.json();
-        return data.url; // Relative path from server /uploads/...
-    } catch (err) {
-        console.error(err);
-        alert(`File upload failed: ${err.message}`);
-        return null;
-    }
-};
 
 // --- FORM HANDLING ---
 const openModal = (wedding = null) => {
