@@ -10,6 +10,8 @@ const upload = require('./s3-config');
 const Wedding = require('./models/Wedding');
 const Journal = require('./models/Journal');
 const Content = require('./models/Content');
+const Booking = require('./models/Booking');
+const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -133,6 +135,75 @@ app.put('/api/journals/:id', async (req, res) => {
 app.delete('/api/journals/:id', async (req, res) => {
     try {
         await Journal.findOneAndDelete({ id: req.params.id });
+        res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// --- BOOKING ENDPOINTS ---
+
+// 6. CREATE NEW BOOKING INQUIRY
+app.post('/api/bookings', async (req, res) => {
+    try {
+        const { firstName, lastName, phone, email, eventDate, serviceType, vision } = req.body;
+
+        // Save to Database
+        const newBooking = new Booking({
+            firstName,
+            lastName,
+            phone,
+            email,
+            eventDate,
+            serviceType,
+            vision
+        });
+        await newBooking.save();
+
+        // Send WhatsApp Notification to Admin
+        const adminPhone = process.env.WHATSAPP_ADMIN_PHONE || '8240054002'; // Default to user's number from footer
+        const message = `New Inquiry from ${firstName} ${lastName}! \nPhone: ${phone} \nEvent: ${eventDate} \nService: ${serviceType}`;
+
+        const waUrl = 'http://bhashsms.com/api/sendmsg.php';
+        const waParams = {
+            user: process.env.WHATSAPP_USER || 'Rony_BW',
+            pass: process.env.WHATSAPP_PASS,
+            sender: process.env.WHATSAPP_SENDER || 'BUZWAP',
+            phone: adminPhone,
+            text: message,
+            priority: 'wa',
+            stype: 'normal'
+        };
+
+        if (process.env.WHATSAPP_PASS) {
+            try {
+                await axios.get(waUrl, { params: waParams });
+            } catch (waErr) {
+                console.error('WhatsApp notification failed:', waErr.message);
+                // We don't fail the whole request if WhatsApp fails
+            }
+        }
+
+        res.json({ success: true, booking: newBooking });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 7. GET ALL BOOKINGS
+app.get('/api/bookings', async (req, res) => {
+    try {
+        const bookings = await Booking.find().sort({ createdAt: -1 });
+        res.json(bookings);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 8. DELETE BOOKING
+app.delete('/api/bookings/:id', async (req, res) => {
+    try {
+        await Booking.findByIdAndDelete(req.params.id);
         res.json({ message: 'Deleted successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });

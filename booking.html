@@ -176,27 +176,39 @@
                     <h1 class="font-heading text-5xl md:text-7xl font-black mb-12 leading-none uppercase">Book
                         Your<br><span class="text-[#c5a059]">Experience.</span></h1>
 
-                    <form class="space-y-8">
+                    <form id="bookingForm" class="space-y-8">
                         <div class="grid grid-cols-2 gap-8">
                             <div>
                                 <label
                                     class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">First
                                     Name</label>
-                                <input type="text" placeholder="John" class="placeholder-white/20">
+                                <input type="text" name="firstName" id="firstName" placeholder="John"
+                                    class="placeholder-white/20" required>
                             </div>
                             <div>
                                 <label
                                     class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Last
                                     Name</label>
-                                <input type="text" placeholder="Doe" class="placeholder-white/20">
+                                <input type="text" name="lastName" id="lastName" placeholder="Doe"
+                                    class="placeholder-white/20" required>
                             </div>
                         </div>
 
-                        <div>
-                            <label
-                                class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Email
-                                Address</label>
-                            <input type="email" placeholder="john@example.com" class="placeholder-white/20">
+                        <div class="grid grid-cols-2 gap-8">
+                            <div>
+                                <label
+                                    class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Email
+                                    Address</label>
+                                <input type="email" name="email" id="email" placeholder="john@example.com"
+                                    class="placeholder-white/20" required>
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Mobile
+                                    Number</label>
+                                <input type="tel" name="phone" id="phone" placeholder="8240054002"
+                                    class="placeholder-white/20" required>
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-8">
@@ -204,13 +216,14 @@
                                 <label
                                     class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Event
                                     Date</label>
-                                <input type="date" class="placeholder-white/20">
+                                <input type="date" name="eventDate" id="eventDate" class="placeholder-white/20"
+                                    required>
                             </div>
                             <div>
                                 <label
                                     class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Service
                                     Type</label>
-                                <select class="bg-black">
+                                <select name="serviceType" id="serviceType" class="bg-black">
                                     <option>Luxury Wedding</option>
                                     <option>Commercial Ad</option>
                                     <option>Music Video</option>
@@ -222,7 +235,7 @@
                         <div>
                             <label class="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Tell
                                 us about your vision</label>
-                            <textarea rows="4" placeholder="Describe your cinematic dream..."
+                            <textarea name="vision" id="vision" rows="4" placeholder="Describe your cinematic dream..."
                                 class="placeholder-white/20"></textarea>
                         </div>
 
@@ -339,6 +352,40 @@
                 document.body.style.overflow = "hidden";
             } else {
                 document.body.style.overflow = "auto";
+            }
+        });
+
+        // Booking Form Submission
+        const bookingForm = document.getElementById("bookingForm");
+        bookingForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const submitBtn = bookingForm.querySelector("button[type='submit']");
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "SENDING...";
+            submitBtn.disabled = true;
+
+            const formData = new FormData(bookingForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch("/api/bookings", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("Thank you! Your inquiry has been sent successfully. We will reach out on WhatsApp shortly.");
+                    bookingForm.reset();
+                } else {
+                    const err = await response.json();
+                    alert("Error: " + (err.error || "Failed to send inquiry"));
+                }
+            } catch (err) {
+                alert("Network error. Please try again later.");
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
             }
         });
     </script>

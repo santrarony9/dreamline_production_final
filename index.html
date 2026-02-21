@@ -741,59 +741,14 @@
 
                 <!-- VERTICAL MOTION SPLIT GALLERY -->
                 <section class="h-[80vh] overflow-hidden flex gap-4 px-6 md:px-12 mb-32">
-                    <div class="flex-1 v-track-up flex flex-col gap-4">
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1520854221256-17451cc35953?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <!-- clones -->
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
+                    <div id="v-track-1" class="flex-1 v-track-up flex flex-col gap-4">
+                        <!-- Dynamic Content -->
                     </div>
-                    <div class="flex-1 v-track-down flex flex-col gap-4 pt-20">
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"></div>
-                        <!-- clones -->
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"></div>
+                    <div id="v-track-2" class="flex-1 v-track-down flex flex-col gap-4 pt-20">
+                        <!-- Dynamic Content -->
                     </div>
-                    <div class="hidden md:flex flex-1 v-track-up flex flex-col gap-4">
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1510276021144-9bde36ce0fd3?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <!-- clones -->
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1510276021144-9bde36ce0fd3?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-zinc-900"><img
-                                src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800"
-                                class="w-full h-full object-cover grayscale"></div>
+                    <div id="v-track-3" class="hidden md:flex flex-1 v-track-up flex flex-col gap-4">
+                        <!-- Dynamic Content -->
                     </div>
                 </section>
 
@@ -883,50 +838,7 @@
         <!-- PARTNERS/COMPANIES WORKED FOR -->
         <section class="py-20 border-y border-white/5 bg-zinc-900/20 overflow-hidden">
             <div class="brand-track">
-                <!-- Brand Items (Using text-based logos for clean UI) -->
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        A</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">ADIDAS</span>
-                </div>
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        V</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">VOGUE</span>
-                </div>
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        R</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">RELIANCE</span>
-                </div>
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        T</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">TATA MOTORS</span>
-                </div>
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        N</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">NETFLIX</span>
-                </div>
-                <!-- Clones for loop -->
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        A</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">ADIDAS</span>
-                </div>
-                <div
-                    class="flex items-center gap-4 opacity-40 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-black font-black">
-                        V</div>
-                    <span class="font-heading text-xl font-bold tracking-tighter">VOGUE</span>
-                </div>
+                <!-- Dynamic Content from main.js -->
             </div>
         </section>
 
