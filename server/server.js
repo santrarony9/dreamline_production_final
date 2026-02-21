@@ -197,6 +197,8 @@ const { PutObjectCommand } = require('@aws-sdk/client-s3');
 const sharp = require('sharp');
 const { s3, upload: multerUpload } = require('./s3-config');
 
+const crypto = require('crypto');
+
 // --- UPLOAD ENDPOINT ---
 app.post('/api/upload', multerUpload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
@@ -204,8 +206,11 @@ app.post('/api/upload', multerUpload.single('file'), async (req, res) => {
     try {
         const file = req.file;
         const isImage = file.mimetype.startsWith('image/');
-        const uniqueSuffix = Math.round(Math.random() * 1E9);
-        const fileName = `uploads/${Date.now()}-${uniqueSuffix}-${file.originalname.replace(/\s+/g, '_')}`;
+
+        // Use hash of the original name + timestamp for absolute uniqueness
+        const hash = crypto.createHash('md5').update(file.originalname + Date.now()).digest('hex').substring(0, 8);
+        const cleanName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '_');
+        const fileName = `uploads/${Date.now()}-${hash}-${cleanName}`;
 
         let uploadBuffer = file.buffer;
         let contentType = file.mimetype;
