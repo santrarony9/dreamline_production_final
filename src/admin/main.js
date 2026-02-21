@@ -430,67 +430,65 @@ document.getElementById('add-project-btn').addEventListener('click', () => {
 const renderVideoVaultList = () => {
     const container = document.getElementById('video-vault-container');
     container.innerHTML = '';
-
     if (!siteContent.videoVault) siteContent.videoVault = [];
 
     container.innerHTML = siteContent.videoVault.map((item, i) => `
-         <div class="glass-card overflow-hidden group border-white/5 bg-white/2">
-            <div class="relative h-40 overflow-hidden">
-                <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                <div class="absolute bottom-3 left-4">
-                    <span class="block text-gold font-black text-xs tracking-widest uppercase">${item.category || 'Cinema'}</span>
-                </div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
-                    <div class="w-10 h-10 rounded-full bg-gold flex items-center justify-center text-black">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                </div>
-            </div>
-            <div class="p-5">
-                <span class="block text-white font-bold text-sm tracking-tight mb-4 truncate">${item.title || 'Untitled'}</span>
-                <div class="flex gap-3">
-                    <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-black py-2.5 rounded-full hover:bg-gold hover:text-black transition-all uppercase tracking-widest" onclick="window.toggleEditVault(${i})">Edit Content</button>
-                    <button type="button" class="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black px-4 py-2.5 rounded-full hover:bg-red-500 hover:text-white transition-all uppercase tracking-widest" onclick="window.deleteVault(${i})">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        <div class="glass-card overflow-hidden group border-white/5 bg-white/2 relative">
+            <div class="relative aspect-[21/9] overflow-hidden">
+                <img src="${item.image || 'https://via.placeholder.com/1920x800?text=No+Thumbnail'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                    <label class="w-8 h-8 rounded-full bg-gold/90 text-black flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
+                        <input type="file" class="hidden" onchange="window.uploadVaultMedia(this, ${i}, 'image')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                    </label>
+                    <button type="button" class="w-8 h-8 rounded-full bg-red-500/90 text-white flex items-center justify-center hover:scale-110 transition-transform" onclick="window.deleteVault(${i})">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
+                <div class="absolute bottom-2 left-3">
+                     <span class="text-[8px] font-black uppercase tracking-widest text-gold/80">${item.category || 'CINEMA'}</span>
+                </div>
             </div>
-            
-            <!-- Edit Form -->
-             <div id="edit-vault-${i}" class="admin-card-edit hidden">
-                <div class="grid grid-cols-2 gap-2 mb-2">
-                    <input type="text" class="w-full p-1 border rounded text-xs" value="${item.title}" placeholder="Title" oninput="window.updateVault(${i}, 'title', this.value)">
-                    <input type="text" class="w-full p-1 border rounded text-xs" value="${item.category}" placeholder="Category" oninput="window.updateVault(${i}, 'category', this.value)">
+            <div class="p-4 space-y-3">
+                <input type="text" class="w-full glass-input text-xs p-2" value="${item.title || ''}" placeholder="Video Title" oninput="window.updateVault(${i}, 'title', this.value)">
+                <div class="flex items-center gap-2">
+                    <input type="text" class="flex-1 glass-input text-[10px] p-2" value="${item.videoUrl || ''}" placeholder="Video URL (S3/MP4)" oninput="window.updateVault(${i}, 'videoUrl', this.value)">
+                    <label class="cursor-pointer text-gold hover:text-white transition-colors">
+                        <input type="file" class="hidden" onchange="window.uploadVaultMedia(this, ${i}, 'videoUrl')">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                    </label>
                 </div>
-                <div class="mb-2">
-                     <label class="block text-xs font-bold mb-1">Thumbnail</label>
-                      <div class="upload-group mb-1">
-                        <label class="btn-upload py-1 px-2 text-xs">
-                            <input type="file" onchange="window.uploadVaultMedia(this, ${i}, 'image')">
-                            <span>Replace Thumb</span>
-                        </label>
-                        <span id="vault-img-status-${i}" class="upload-status"></span>
-                    </div>
-                     <input type="text" class="w-full p-1 border rounded text-xs" value="${item.image}" oninput="window.updateVault(${i}, 'image', this.value)">
-                </div>
-                <div>
-                     <label class="block text-xs font-bold mb-1">Video URL</label>
-                      <div class="upload-group mb-1">
-                         <label class="btn-upload py-1 px-2 text-xs">
-                            <input type="file" onchange="window.uploadVaultMedia(this, ${i}, 'videoUrl')">
-                            <span>Upload Video</span>
-                        </label>
-                         <span id="vault-vid-status-${i}" class="upload-status"></span>
-                     </div>
-                     <input type="text" class="w-full p-1 border rounded text-xs" value="${item.videoUrl}" oninput="window.updateVault(${i}, 'videoUrl', this.value)">
-                </div>
-                <button type="button" class="mt-2 text-xs text-blue-600 underline" onclick="window.toggleEditVault(${i})">Done</button>
             </div>
+             <div id="vault-img-status-${i}" class="absolute top-2 right-2 text-[8px] font-bold text-gold pointer-events-none"></div>
+             <div id="vault-vid-status-${i}" class="absolute top-2 right-12 text-[8px] font-bold text-gray-500 pointer-events-none"></div>
         </div>
     `).join('');
+};
+
+window.handleVaultBulkUpload = async (input) => {
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
+
+    addSuccessLog(`Optimizing ${files.length} vault frames...`);
+
+    for (const file of files) {
+        const url = await uploadFile(file);
+        if (url) {
+            siteContent.videoVault.push({
+                title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
+                category: 'ARCHIVE',
+                image: url,
+                videoUrl: ''
+            });
+        }
+    }
+    renderVideoVaultList();
 };
 
 window.toggleEditVault = (index) => {
