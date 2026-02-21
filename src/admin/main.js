@@ -262,9 +262,13 @@ const renderMotionGalleryForm = (images) => {
     // Update hidden input
     if (hiddenInput) hiddenInput.value = images.join(',');
 
-    container.innerHTML = images.map((img, i) => `
-        <div class="glass-card p-2 rounded-xl border-white/5 overflow-hidden group relative aspect-square bg-white/2">
-            <img src="${img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+    container.innerHTML = images.map((img, i) => {
+        const isSyncing = img && typeof img === 'string' && img.startsWith('SYNCING:');
+        const displayUrl = isSyncing ? 'https://via.placeholder.com/800x800?text=Syncing...' : img;
+
+        return `
+        <div class="glass-card p-2 rounded-xl border-white/5 overflow-hidden group relative aspect-square bg-white/2 ${isSyncing ? 'shimmer' : ''}">
+            <img src="${displayUrl}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${isSyncing ? 'opacity-0' : ''}">
             <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm">
                 <button type="button" class="w-8 h-8 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all transform hover:rotate-90" onclick="window.removeGalleryImage(${i})">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -274,7 +278,7 @@ const renderMotionGalleryForm = (images) => {
                 <span class="text-[8px] font-bold uppercase tracking-widest text-white/40">Frame ${i + 1}</span>
             </div>
         </div>
-    `).join('');
+    `}).join('');
 };
 
 window.removeGalleryImage = (index) => {
@@ -299,15 +303,34 @@ if (galleryUploadInput) {
         statusEl.className = 'upload-status loading';
 
         try {
+            const startIndex = currentImages.length;
+            // Pre-allocate
             for (const file of files) {
-                const url = await uploadFile(file);
-                if (url) currentImages.push(url);
-                // Stagger delay for stability
-                await new Promise(r => setTimeout(r, 300));
+                currentImages.push(`SYNCING:${file.name}`);
             }
             renderMotionGalleryForm(currentImages);
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const itemIndex = startIndex + i;
+
+                try {
+                    const url = await uploadFile(file);
+                    if (url) {
+                        currentImages[itemIndex] = url;
+                        renderMotionGalleryForm(currentImages);
+                    } else {
+                        // Keep marker or remove? Let's remove failed items to keep state clean
+                        currentImages.splice(itemIndex, 1);
+                        renderMotionGalleryForm(currentImages);
+                    }
+                } catch (err) {
+                    console.error(`Gallery upload error: ${file.name}`, err);
+                }
+                await new Promise(r => setTimeout(r, 400));
+            }
             statusEl.textContent = 'RESTORED';
-            input.value = ''; // Reset input
+            e.target.value = ''; // Reset input via event target
             statusEl.className = 'upload-status success';
             addSuccessLog(`Batch uploaded ${files.length} frames.`);
             setTimeout(() => statusEl.textContent = '', 3000);
@@ -336,19 +359,19 @@ const renderMasterGalleryList = () => {
     if (!siteContent.projects) siteContent.projects = [];
 
     container.innerHTML = siteContent.projects.map((proj, i) => `
-        <div class="glass-card overflow-hidden group border-white/5 bg-white/2">
-            <div class="relative h-40 overflow-hidden">
-                <img src="${proj.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+        <div class="glass-card overflow-hidden group border-white/5 bg-white/2 relative">
+            <div class="relative h-40 overflow-hidden ${proj.isLoading ? 'shimmer' : ''}">
+                <img src="${proj.img || 'https://via.placeholder.com/800x600?text=No+Preview'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${proj.isLoading ? 'opacity-0' : ''}">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 <div class="absolute bottom-3 left-4">
                     <span class="block text-gold font-black text-xs tracking-widest uppercase">${proj.type || 'Commercial'}</span>
                 </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 ${proj.isLoading ? 'shimmer opacity-40' : ''}">
                 <span class="block text-white font-bold text-sm tracking-tight mb-4 truncate">${proj.title || 'Untitled'}</span>
                 <div class="flex gap-3">
-                    <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-black py-2.5 rounded-full hover:bg-gold hover:text-black transition-all uppercase tracking-widest" onclick="window.toggleEditProject(${i})">Edit Details</button>
-                    <button type="button" class="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black px-4 py-2.5 rounded-full hover:bg-red-500 hover:text-white transition-all uppercase tracking-widest" onclick="window.deleteProject(${i})">
+                    <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-black py-2.5 rounded-full hover:bg-gold hover:text-black transition-all uppercase tracking-widest" onclick="window.toggleEditProject(${i})" ${proj.isLoading ? 'disabled' : ''}>Edit Details</button>
+                    <button type="button" class="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black px-4 py-2.5 rounded-full hover:bg-red-500 hover:text-white transition-all uppercase tracking-widest" onclick="window.deleteProject(${i})" ${proj.isLoading ? 'disabled' : ''}>
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -385,6 +408,7 @@ const renderMasterGalleryList = () => {
                 </div>
                 <button type="button" class="w-full text-[10px] font-bold text-gold uppercase tracking-widest text-center py-2 bg-gold/5 rounded-lg border border-gold/10" onclick="window.toggleEditProject(${i})">DONE</button>
             </div>
+            <div id="proj-upload-status-${i}" class="absolute top-2 right-2 text-[8px] font-bold text-gold pointer-events-none"></div>
         </div>
     `).join('');
 };
@@ -413,12 +437,20 @@ window.uploadProjectImage = async (input, index) => {
     if (input.files[0]) {
         const statusEl = document.getElementById(`proj-status-${index}`);
         statusEl.textContent = '...';
+
+        // Use visual loading state
+        siteContent.projects[index].isLoading = true;
+        renderMasterGalleryList();
+
         const url = await uploadFile(input.files[0]);
+        siteContent.projects[index].isLoading = false;
+
         if (url) {
             siteContent.projects[index].img = url;
-            renderMasterGalleryList(); // Re-render to show new image
+            renderMasterGalleryList();
         } else {
             statusEl.textContent = 'Err';
+            renderMasterGalleryList();
         }
     }
 };
@@ -429,6 +461,65 @@ document.getElementById('add-project-btn').addEventListener('click', () => {
     // Open edit for the new item
     window.toggleEditProject(siteContent.projects.length - 1);
 });
+
+window.handleProjectBulkUpload = async (input) => {
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
+
+    addSuccessLog(`Project Sync: Optimizing ${files.length} cinematic works...`);
+    const statusEl = document.createElement('div');
+    statusEl.className = 'fixed bottom-10 left-10 bg-blue-600 text-white p-6 rounded-2xl shadow-2xl z-[1000] font-black uppercase tracking-tighter animate-bounce';
+    statusEl.id = 'bulk-proj-status';
+    document.body.appendChild(statusEl);
+
+    let successCount = 0;
+    try {
+        const startIndex = siteContent.projects.length;
+        for (const file of files) {
+            siteContent.projects.push({
+                title: 'OPTIMIZING...',
+                type: 'commercial',
+                img: 'https://via.placeholder.com/800x600?text=Syncing...',
+                isLoading: true
+            });
+        }
+        renderMasterGalleryList();
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const itemIndex = startIndex + i;
+            statusEl.textContent = `Vortex Project Sync: ${i + 1}/${files.length}`;
+
+            try {
+                const url = await uploadFile(file);
+                if (url && typeof url === 'string' && url.startsWith('http')) {
+                    siteContent.projects[itemIndex] = {
+                        title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
+                        type: 'commercial',
+                        img: url,
+                        isLoading: false
+                    };
+                    successCount++;
+                    renderMasterGalleryList();
+                } else {
+                    siteContent.projects[itemIndex].title = 'SYNC FAILED';
+                    renderMasterGalleryList();
+                }
+            } catch (err) {
+                console.error(`Project Upload Error: ${file.name}`, err);
+            }
+            await new Promise(r => setTimeout(r, 600));
+        }
+    } finally {
+        statusEl.textContent = `SYNC COMPLETE: ${successCount} PROJECTS`;
+        setTimeout(() => statusEl.remove(), 3000);
+        if (successCount > 0) {
+            const masterGalleryForm = document.getElementById('master-gallery-form');
+            if (masterGalleryForm) masterGalleryForm.dispatchEvent(new Event('submit'));
+        }
+        input.value = '';
+    }
+};
 
 const renderVideoVaultList = () => {
     const container = document.getElementById('video-vault-container');
@@ -456,12 +547,12 @@ const renderVideoVaultList = () => {
                      <span class="text-[8px] font-black uppercase tracking-widest text-gold/80">${item.category || 'CINEMA'}</span>
                 </div>
             </div>
-            <div class="p-4 space-y-3">
-                <input type="text" class="w-full glass-input text-xs p-2" value="${item.title || ''}" placeholder="Video Title" oninput="window.updateVault(${i}, 'title', this.value)">
+            <div class="p-4 space-y-3 ${item.isLoading ? 'shimmer opacity-40 pointer-events-none' : ''}">
+                <input type="text" class="w-full glass-input text-xs p-2" value="${item.title || ''}" placeholder="Video Title" oninput="window.updateVault(${i}, 'title', this.value)" ${item.isLoading ? 'disabled' : ''}>
                 <div class="flex items-center gap-2">
-                    <input type="text" class="flex-1 glass-input text-[10px] p-2" value="${item.videoUrl || ''}" placeholder="Video URL (S3/MP4)" oninput="window.updateVault(${i}, 'videoUrl', this.value)">
+                    <input type="text" class="flex-1 glass-input text-[10px] p-2" value="${item.videoUrl || ''}" placeholder="Video URL (S3/MP4)" oninput="window.updateVault(${i}, 'videoUrl', this.value)" ${item.isLoading ? 'disabled' : ''}>
                     <label class="cursor-pointer text-gold hover:text-white transition-colors">
-                        <input type="file" class="hidden" onchange="window.uploadVaultMedia(this, ${i}, 'videoUrl')">
+                        <input type="file" class="hidden" onchange="window.uploadVaultMedia(this, ${i}, 'videoUrl')" ${item.isLoading ? 'disabled' : ''}>
                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                         </svg>
@@ -564,19 +655,25 @@ window.uploadVaultMedia = async (input, index, field) => {
         const typeStr = field === 'image' ? 'img' : 'vid';
         const statusEl = document.getElementById(`vault-${typeStr}-status-${index}`);
         statusEl.textContent = '...';
+
+        if (field === 'image') {
+            siteContent.videoVault[index].isLoading = true;
+            renderVideoVaultList();
+        }
+
         const url = await uploadFile(input.files[0]);
+
+        if (field === 'image') {
+            siteContent.videoVault[index].isLoading = false;
+        }
+
         if (url) {
             siteContent.videoVault[index][field] = url;
-            if (field === 'image') renderVideoVaultList(); // Re-render for thumb
-            else {
-                // Just update text input if video
-                statusEl.textContent = 'Done';
-                // Force re-render not needed for video url text, but consistent state is key.
-                // Actually re-rendering is safer to update the inputs value attribute
-                renderVideoVaultList();
-            }
+            statusEl.textContent = 'Done';
+            renderVideoVaultList();
         } else {
             statusEl.textContent = 'Err';
+            renderVideoVaultList();
         }
     }
 }
