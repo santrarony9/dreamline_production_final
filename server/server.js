@@ -207,12 +207,15 @@ app.post('/api/upload', multerUpload.single('file'), async (req, res) => {
         const file = req.file;
         const isImage = file.mimetype.startsWith('image/');
 
-        // Use hash of the original name + timestamp for absolute uniqueness
-        const hash = crypto.createHash('md5').update(file.originalname + Date.now()).digest('hex').substring(0, 8);
+        // Generate absolute uniqueness
+        const uniqueSuffix = crypto.randomBytes(12).toString('hex');
         const cleanName = file.originalname.replace(/[^a-zA-Z0-9.]/g, '_');
-        const fileName = `uploads/${Date.now()}-${hash}-${cleanName}`;
+        const fileName = `uploads/${Date.now()}-${uniqueSuffix}-${cleanName}`;
 
         let uploadBuffer = file.buffer;
+        if (!uploadBuffer || uploadBuffer.length === 0) {
+            throw new Error('Received an empty or corrupted file buffer');
+        }
         let contentType = file.mimetype;
         let finalFileName = fileName;
 
