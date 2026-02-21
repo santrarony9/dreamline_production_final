@@ -478,23 +478,46 @@ window.handleVaultBulkUpload = async (input) => {
     const files = Array.from(input.files);
     if (files.length === 0) return;
 
-    addSuccessLog(`Optimizing ${files.length} vault frames...`);
+    addSuccessLog(`Starting bulk upload of ${files.length} cinematic frames...`);
+    const statusEl = document.createElement('div');
+    statusEl.className = 'fixed bottom-10 right-10 bg-gold text-black p-6 rounded-2xl shadow-2xl z-[1000] font-black uppercase tracking-tighter animate-bounce';
+    statusEl.id = 'bulk-status-popup';
+    document.body.appendChild(statusEl);
 
-    for (const file of files) {
-        const url = await uploadFile(file);
-        if (url) {
-            siteContent.videoVault.push({
-                title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
-                category: 'ARCHIVE',
-                image: url,
-                videoUrl: ''
-            });
+    let successCount = 0;
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        statusEl.textContent = `Processing Frame ${i + 1}/${files.length}...`;
+
+        try {
+            const url = await uploadFile(file);
+            if (url) {
+                siteContent.videoVault.push({
+                    title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
+                    category: 'ARCHIVE',
+                    image: url,
+                    videoUrl: ''
+                });
+                successCount++;
+                renderVideoVaultList(); // Immediate feedback
+            }
+        } catch (err) {
+            console.error(`Failed to upload ${file.name}`, err);
         }
-        // Stagger delay
-        await new Promise(r => setTimeout(r, 400));
+
+        await new Promise(r => setTimeout(r, 600)); // Increased delay for stability
     }
-    input.value = ''; // Reset
-    renderVideoVaultList();
+
+    statusEl.textContent = `UPLOAD COMPLETE: ${successCount} SAVED`;
+    setTimeout(() => statusEl.remove(), 3000);
+
+    if (successCount > 0) {
+        addSuccessLog(`Successfully added ${successCount} items. Auto-saving site state...`);
+        // Trigger the home form save automatically to persist these changes
+        const homeForm = document.getElementById('home-form');
+        if (homeForm) homeForm.dispatchEvent(new Event('submit'));
+    }
+    input.value = '';
 };
 
 window.toggleEditVault = (index) => {
