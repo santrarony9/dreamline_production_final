@@ -474,10 +474,13 @@ const renderVideoVaultList = () => {
     `).join('');
 };
 
+let isBulkUploading = false;
 window.handleVaultBulkUpload = async (input) => {
+    if (isBulkUploading) return;
     const files = Array.from(input.files);
     if (files.length === 0) return;
 
+    isBulkUploading = true;
     addSuccessLog(`Starting bulk upload of ${files.length} cinematic frames...`);
     const statusEl = document.createElement('div');
     statusEl.className = 'fixed bottom-10 right-10 bg-gold text-black p-6 rounded-2xl shadow-2xl z-[1000] font-black uppercase tracking-tighter animate-bounce';
@@ -485,39 +488,43 @@ window.handleVaultBulkUpload = async (input) => {
     document.body.appendChild(statusEl);
 
     let successCount = 0;
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        statusEl.textContent = `Processing Frame ${i + 1}/${files.length}...`;
+    try {
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            statusEl.textContent = `Processing Frame ${i + 1}/${files.length}...`;
 
-        try {
-            const url = await uploadFile(file);
-            if (url) {
-                siteContent.videoVault.push({
-                    title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
-                    category: 'ARCHIVE',
-                    image: url,
-                    videoUrl: ''
-                });
-                successCount++;
-                renderVideoVaultList(); // Immediate feedback
+            try {
+                const url = await uploadFile(file);
+                if (url && typeof url === 'string' && url.startsWith('http')) {
+                    siteContent.videoVault.push({
+                        title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
+                        category: 'ARCHIVE',
+                        image: url,
+                        videoUrl: ''
+                    });
+                    successCount++;
+                    renderVideoVaultList(); // Immediate feedback
+                } else {
+                    console.error(`Invalid URL returned for ${file.name}:`, url);
+                }
+            } catch (err) {
+                console.error(`Failed to upload ${file.name}`, err);
             }
-        } catch (err) {
-            console.error(`Failed to upload ${file.name}`, err);
+
+            await new Promise(r => setTimeout(r, 800)); // Staggered delay for stability
         }
+    } finally {
+        isBulkUploading = false;
+        statusEl.textContent = `UPLOAD COMPLETE: ${successCount} SAVED`;
+        setTimeout(() => statusEl.remove(), 3000);
 
-        await new Promise(r => setTimeout(r, 600)); // Increased delay for stability
+        if (successCount > 0) {
+            addSuccessLog(`Successfully added ${successCount} items. Auto-saving site state...`);
+            const homeForm = document.getElementById('home-form');
+            if (homeForm) homeForm.dispatchEvent(new Event('submit'));
+        }
+        input.value = '';
     }
-
-    statusEl.textContent = `UPLOAD COMPLETE: ${successCount} SAVED`;
-    setTimeout(() => statusEl.remove(), 3000);
-
-    if (successCount > 0) {
-        addSuccessLog(`Successfully added ${successCount} items. Auto-saving site state...`);
-        // Trigger the home form save automatically to persist these changes
-        const homeForm = document.getElementById('home-form');
-        if (homeForm) homeForm.dispatchEvent(new Event('submit'));
-    }
-    input.value = '';
 };
 
 window.toggleEditVault = (index) => {
