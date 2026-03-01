@@ -23,6 +23,12 @@ const WeddingSchema = new mongoose.Schema({
         name: String,
         link: String
     }],
+    order: { type: Number, default: 0 },
+    seo: {
+        title: { type: String, default: "" },
+        description: { type: String, default: "" },
+        keywords: { type: String, default: "" }
+    },
     createdAt: { type: Date, default: Date.now }
 });
 

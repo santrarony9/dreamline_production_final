@@ -7,7 +7,14 @@ const JournalSchema = new mongoose.Schema({
     category: String,
     image: String,
     excerpt: String,
-    content: String // HTML content
+    content: String, // HTML content
+    order: { type: Number, default: 0 },
+    seo: {
+        title: { type: String, default: "" },
+        description: { type: String, default: "" },
+        keywords: { type: String, default: "" }
+    },
+    createdAt: { type: Date, default: Date.now }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Journal', JournalSchema);

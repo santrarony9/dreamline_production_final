@@ -9,6 +9,7 @@ const API_BOOKINGS_URL = '/api/bookings';
 const API_AUTH_LOGIN = '/api/auth/login';
 const API_AUTH_VERIFY = '/api/auth/verify';
 const UPLOAD_URL = '/api/upload';
+const API_ANALYTICS_URL = '/api/tracking/stats';
 
 // --- AUTH HELPER ---
 const getAuthHeaders = () => {
@@ -237,6 +238,7 @@ const switchTab = (tab) => {
     } else if (tab === 'home') {
         activateTab(tabHome, sectionHome);
         fetchContent();
+        fetchAnalytics();
     } else if (tab === 'luxury') {
         activateTab(tabLuxury, sectionLuxury);
         fetchContent();
@@ -300,6 +302,53 @@ const fetchContent = async () => {
     }
 };
 
+let analyticsData = [];
+const fetchAnalytics = async () => {
+    try {
+        const res = await fetchWithAuth(API_ANALYTICS_URL);
+        analyticsData = await res.json();
+        renderAnalytics();
+    } catch (err) {
+        console.error('Failed to fetch analytics:', err);
+    }
+};
+
+const renderAnalytics = () => {
+    const totalEl = document.getElementById('analytics-total');
+    const listEl = document.getElementById('analytics-top-pages');
+
+    if (!analyticsData || analyticsData.length === 0) {
+        if (totalEl) totalEl.textContent = '0';
+        if (listEl) listEl.innerHTML = '<div class="text-gray-500 italic text-[10px]">No recent data.</div>';
+        return;
+    }
+
+    // Aggregate views by path
+    const pageStats = {};
+    let totalViews = 0;
+
+    analyticsData.forEach(entry => {
+        totalViews += entry.views;
+        pageStats[entry.path] = (pageStats[entry.path] || 0) + entry.views;
+    });
+
+    if (totalEl) totalEl.textContent = totalViews.toLocaleString();
+
+    // Sort top pages
+    const sortedPages = Object.entries(pageStats)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10); // top 10
+
+    if (listEl) {
+        listEl.innerHTML = sortedPages.map(([path, qty], i) => `
+            <div class="flex justify-between items-center py-2 border-b border-white/5 last:border-0 ${i < 3 ? 'text-gold' : 'text-gray-400'}">
+                <span class="truncate pr-4">${path}</span>
+                <span class="font-bold bg-white/5 px-2 py-1 rounded text-[10px]">${qty.toLocaleString()}</span>
+            </div>
+        `).join('');
+    }
+};
+
 const renderGlobalForm = () => {
     if (!siteContent.global) return;
     document.getElementById('global-address').value = siteContent.global.contact?.address || '';
@@ -308,6 +357,10 @@ const renderGlobalForm = () => {
     document.getElementById('global-instagram').value = siteContent.global.social?.instagram || '';
     document.getElementById('global-facebook').value = siteContent.global.social?.facebook || '';
     document.getElementById('global-youtube').value = siteContent.global.social?.youtube || '';
+    document.getElementById('global-seo-title').value = siteContent.global.seo?.title || '';
+    document.getElementById('global-seo-image').value = siteContent.global.seo?.ogImage || '';
+    document.getElementById('global-seo-desc').value = siteContent.global.seo?.description || '';
+    document.getElementById('global-seo-keywords').value = siteContent.global.seo?.keywords || '';
 };
 
 const renderLuxuryForm = () => {
@@ -909,6 +962,12 @@ if (globalForm) {
         updatedContent.global.social.facebook = document.getElementById('global-facebook').value;
         updatedContent.global.social.youtube = document.getElementById('global-youtube').value;
 
+        if (!updatedContent.global.seo) updatedContent.global.seo = {};
+        updatedContent.global.seo.title = document.getElementById('global-seo-title').value;
+        updatedContent.global.seo.ogImage = document.getElementById('global-seo-image').value;
+        updatedContent.global.seo.description = document.getElementById('global-seo-desc').value;
+        updatedContent.global.seo.keywords = document.getElementById('global-seo-keywords').value;
+
         await saveContent(updatedContent);
     });
 }
@@ -1185,6 +1244,8 @@ setupFileUpload('about-founder-upload', 'about-founder-status', 'about-founder-i
 setupFileUpload('gallery-upload', 'gallery-upload-status', 'gallery-images');
 setupFileUpload('luxury-test-upload', 'luxury-test-upload-status', 'luxury-test-img');
 
+// Global Quill Instance
+let journalQuill;
 
 // --- JOURNAL FUNCTIONS ---
 const renderJournalList = () => {
@@ -1197,7 +1258,7 @@ const renderJournalList = () => {
     }
 
     container.innerHTML = journals.map(j => `
-        <div class="glass-card overflow-hidden group border-white/5 bg-white/2">
+        <div data-id="${j._id || j.id}" class="glass-card overflow-hidden group border-white/5 bg-white/2 cursor-move">
             <div class="relative h-48 overflow-hidden">
                 <img src="${j.image || 'https://via.placeholder.com/600x400?text=No+Cover'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 <div class="absolute bottom-2 left-3 bg-black/60 px-2 py-1 rounded text-[8px] font-black uppercase text-gold">${j.category || 'ARTICLE'}</div>
@@ -1242,12 +1303,19 @@ const openJournalModal = (journal = null) => {
         document.getElementById('journal-category').value = journal.category || '';
         document.getElementById('journal-image').value = journal.image || '';
         document.getElementById('journal-excerpt').value = journal.excerpt || '';
-        document.getElementById('journal-content').value = journal.content || '';
+        document.getElementById('journal-seo-title').value = journal.seo?.title || '';
+        document.getElementById('journal-seo-desc').value = journal.seo?.description || '';
+        document.getElementById('journal-seo-keywords').value = journal.seo?.keywords || '';
+        if (journalQuill) journalQuill.root.innerHTML = journal.content || '';
     } else {
         document.getElementById('journal-modal-title').textContent = 'New Article';
         const jf = document.getElementById('journal-form');
         if (jf) jf.reset();
         document.getElementById('journal-id').value = '';
+        document.getElementById('journal-seo-title').value = '';
+        document.getElementById('journal-seo-desc').value = '';
+        document.getElementById('journal-seo-keywords').value = '';
+        if (journalQuill) journalQuill.root.innerHTML = '';
     }
 };
 
@@ -1273,7 +1341,12 @@ const setupJournalForm = () => {
             category: document.getElementById('journal-category').value,
             image: document.getElementById('journal-image').value,
             excerpt: document.getElementById('journal-excerpt').value,
-            content: document.getElementById('journal-content').value,
+            content: journalQuill ? journalQuill.root.innerHTML : '',
+            seo: {
+                title: document.getElementById('journal-seo-title').value,
+                description: document.getElementById('journal-seo-desc').value,
+                keywords: document.getElementById('journal-seo-keywords').value
+            }
         };
 
         try {
@@ -1312,7 +1385,7 @@ if (cancelJBtn) cancelJBtn.addEventListener('click', closeJournalModalFunc);
 // --- RENDERING ---
 const renderWeddingList = () => {
     weddingList.innerHTML = weddings.map(w => `
-        <div class="glass-card p-6 rounded-2xl flex flex-col justify-between border-white/5">
+        <div data-id="${w.id}" class="glass-card p-6 rounded-2xl flex flex-col justify-between border-white/5 cursor-move">
             <div>
                 <div class="relative overflow-hidden rounded-xl mb-5">
                     <img src="${w.coverImage}" alt="${w.title}" class="w-full h-52 object-cover transition-transform duration-700 hover:scale-105">
@@ -1348,6 +1421,9 @@ const openModal = (wedding = null) => {
         document.getElementById('hover-video-url').value = wedding.hoverVideo || '';
         document.getElementById('youtube-url').value = wedding.videoUrl || '';
         document.getElementById('album-url').value = wedding.albumUrl || '';
+        document.getElementById('wedding-seo-title').value = wedding.seo?.title || '';
+        document.getElementById('wedding-seo-desc').value = wedding.seo?.description || '';
+        document.getElementById('wedding-seo-keywords').value = wedding.seo?.keywords || '';
 
         // Render Chapters (Simplified for MVP)
         if (wedding.storyChapters) {
@@ -1357,6 +1433,9 @@ const openModal = (wedding = null) => {
         document.getElementById('modal-title').textContent = 'Add New Wedding';
         document.getElementById('wedding-id').value = '';
         document.getElementById('preview-cover').src = '';
+        document.getElementById('wedding-seo-title').value = '';
+        document.getElementById('wedding-seo-desc').value = '';
+        document.getElementById('wedding-seo-keywords').value = '';
     }
 };
 
@@ -1494,6 +1573,11 @@ weddingForm.addEventListener('submit', async (e) => {
         hoverVideo: document.getElementById('hover-video-url').value,
         videoUrl: document.getElementById('youtube-url').value,
         albumUrl: document.getElementById('album-url').value,
+        seo: {
+            title: document.getElementById('wedding-seo-title').value,
+            description: document.getElementById('wedding-seo-desc').value,
+            keywords: document.getElementById('wedding-seo-keywords').value
+        },
         reviews: [], // Preserve existing or empty
         storyChapters: [], // Collect below
         vendors: [] // Preserve for now
@@ -1638,9 +1722,49 @@ const handleLogin = async () => {
 // Export to window
 window.initializeDashboard = showDashboard; // Allow inline script to trigger it
 
+const initSortable = (containerId, saveRoute) => {
+    const el = document.getElementById(containerId);
+    if (!el || typeof Sortable === 'undefined') return;
+    new Sortable(el, {
+        animation: 150,
+        ghostClass: 'opacity-50',
+        onEnd: async function () {
+            const items = Array.from(el.children);
+            const orderedIds = items.map(item => item.dataset.id).filter(id => id);
+            try {
+                const res = await fetchWithAuth(saveRoute, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ orderedIds })
+                });
+                if (!res.ok) throw new Error("Sort update failed");
+                addSuccessLog(`Order updated for ${containerId}`);
+            } catch (err) {
+                console.error(err);
+                alert('Failed to save arrangement order');
+            }
+        }
+    });
+};
+
 // Safe Initialization
 const init = () => {
     console.log('Initializing Admin UI v2.0.0 (Secure)...');
+
+    if (typeof Quill !== 'undefined' && document.getElementById('journal-editor-container')) {
+        journalQuill = new Quill('#journal-editor-container', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+    }
 
     // Login Button
     const loginBtn = document.getElementById('login-btn');
@@ -1716,6 +1840,17 @@ const init = () => {
         { id: 'master-gallery-form', handler: (e) => e.preventDefault() },
         { id: 'about-form', handler: (e) => e.preventDefault() }
     ];
+
+    // Initialize Sortable Grid Capabilities
+    initSortable('wedding-list', `${API_WEDDINGS_URL}/reorder/bulk`);
+    initSortable('journal-list', `${API_JOURNALS_URL}/reorder/bulk`);
+
+    const refreshTrackingBtn = document.getElementById('refresh-analytics-btn');
+    if (refreshTrackingBtn) {
+        refreshTrackingBtn.addEventListener('click', () => {
+            fetchAnalytics();
+        });
+    }
 
     checkAuth();
 };

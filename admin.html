@@ -8,6 +8,8 @@
     <title>Dreamline Admin Dashboard</title>
     <link rel="stylesheet" href="/src/style.css"> <!-- Main styles -->
     <link rel="stylesheet" href="/src/admin/style.css"> <!-- Admin specific styles -->
+    <!-- Quill Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
         /* Hyper-Stable Visibility Rule */
         .hidden-force {
@@ -264,6 +266,21 @@
                             <div><label>YouTube URL</label><input type="text" id="global-youtube"
                                     class="w-full glass-input p-4 rounded-xl"></div>
                         </div>
+
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2 mt-8">SEO Metadata</h3>
+                        <p class="help-text mb-4">These appear in Google searches and when sharing links on
+                            WhatsApp/Facebook.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-1"><label>Global SEO Title</label><input type="text"
+                                    id="global-seo-title" class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-1"><label>Meta Image (OG Image)</label><input type="text"
+                                    id="global-seo-image" class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-2"><label>Meta Description</label><textarea id="global-seo-desc"
+                                    class="w-full glass-input p-4 rounded-xl h-24"></textarea></div>
+                            <div class="col-span-2"><label>Keywords (Comma separated)</label><textarea
+                                    id="global-seo-keywords" class="w-full glass-input p-4 rounded-xl h-24"></textarea>
+                            </div>
+                        </div>
                         <button type="submit"
                             class="btn-gold px-10 py-4 rounded-full shadow-2xl mt-10 mx-auto block">SAVE
                             GLOBAL SETTINGS</button>
@@ -328,7 +345,42 @@
 
                 <!-- Home Page Section -->
                 <div id="section-home" class="hidden">
-                    <h2 class="gold-gradient-text">Manage Home Page</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="gold-gradient-text">Overview & Tracking</h2>
+                        <button id="refresh-analytics-btn"
+                            class="bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-gold px-4 py-2 rounded-full hover:bg-white/10 transition-all">Refresh</button>
+                    </div>
+
+                    <div
+                        class="mb-10 p-6 glass-card rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent relative overflow-hidden">
+                        <div
+                            class="absolute -right-20 -top-20 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none">
+                        </div>
+                        <h3 class="font-bold text-sm text-white mb-6 tracking-widest uppercase flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gold-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            Traffic Insights
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="analytics-overview-container">
+                            <div class="text-left p-4 bg-black/20 rounded-xl border border-white/5">
+                                <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-1">Total Views</p>
+                                <p class="text-3xl font-black text-white" id="analytics-total">0</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 border-t border-white/5 pt-4">
+                            <h4 class="text-[9px] uppercase text-gray-500 tracking-widest mb-3 font-bold">Top Performing
+                                Pages</h4>
+                            <div id="analytics-top-pages"
+                                class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300">
+                                <div class="text-gray-500 italic text-[10px]">Loading traffic data...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="gold-gradient-text mt-12 mb-6">Manage Home Page</h2>
                     <div id="loading-home" class="text-center py-10 hidden">Loading...</div>
 
                     <form id="home-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8">
@@ -663,11 +715,33 @@
                 <button type="button" id="add-chapter-btn" class="text-sm text-blue-600 hover:underline">+ Add
                     Chapter</button>
 
+                <div class="mt-8 border-t border-white/5 pt-6">
+                    <h3 class="text-lg font-bold text-gold-500 mb-4">SEO Override</h3>
+                    <p class="help-text mb-4">Customize how this wedding appears on Google search and social media
+                        sharing.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label>Meta Title</label>
+                            <input type="text" id="wedding-seo-title" class="w-full glass-input"
+                                placeholder="e.g. Priyanshu & Riya | Luxury Destination Wedding in Jaipur">
+                        </div>
+                        <div>
+                            <label>Meta Description</label>
+                            <textarea id="wedding-seo-desc" class="w-full glass-input h-20"
+                                placeholder="A breathtaking visually stunning wedding documentary..."></textarea>
+                        </div>
+                        <div>
+                            <label>Keywords (comma separated)</label>
+                            <input type="text" id="wedding-seo-keywords" class="w-full glass-input"
+                                placeholder="jaipur wedding, luxury cinematic video, marwari wedding">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="mt-6 flex justify-end gap-3">
                     <button type="button" id="cancel-btn"
                         class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save
-                        Changes</button>
+                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save Wedding</button>
                 </div>
             </form>
         </div>
@@ -715,15 +789,38 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium mb-1">Content (HTML)</label>
-                    <textarea id="journal-content" class="w-full p-2 border rounded h-48 font-mono text-xs"></textarea>
+                    <label class="block text-sm font-medium mb-1">Content (Rich Text)</label>
+                    <div class="bg-white text-black rounded">
+                        <div id="journal-editor-container" style="height: 300px;"></div>
+                    </div>
+                </div>
+
+                <div class="mt-8 border-t border-white/5 pt-6">
+                    <h3 class="text-lg font-bold text-gold-500 mb-4">SEO Override</h3>
+                    <p class="help-text mb-4">Customize how this article appears on Google and social shares.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label>Meta Title</label>
+                            <input type="text" id="journal-seo-title" class="w-full glass-input"
+                                placeholder="e.g. 5 Trends for Luxury Weddings 2024">
+                        </div>
+                        <div>
+                            <label>Meta Description</label>
+                            <textarea id="journal-seo-desc" class="w-full glass-input h-20"
+                                placeholder="Discover the upcoming trends..."></textarea>
+                        </div>
+                        <div>
+                            <label>Keywords (comma separated)</label>
+                            <input type="text" id="journal-seo-keywords" class="w-full glass-input"
+                                placeholder="wedding trends, 2024 weddings, bridal style">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-6 flex justify-end gap-3">
                     <button type="button" id="cancel-journal-btn"
                         class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
-                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save
-                        Article</button>
+                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save Article</button>
                 </div>
             </form>
         </div>
@@ -756,8 +853,11 @@
     </div>
     <p>&copy; 2025 Dreamline. All rights reserved.</p>
     <p class="text-xs text-gray-500 mt-1">Admin Panel v1.3 (Premium UI)</p>
-    </footer>
 
+    <!-- SortableJS for Drag and Drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- QuillJS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script type="module" src="/src/admin/main.js"></script>
 </body>
 

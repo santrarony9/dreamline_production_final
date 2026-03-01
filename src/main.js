@@ -13,15 +13,18 @@ let weddings = [];
 // Init
 window.addEventListener('DOMContentLoaded', async () => {
     console.log('Dreamline Vite Initializing...');
+    initThemeToggle();
+    trackPageView();
     await Promise.all([fetchContent(), fetchWeddings()]);
 
     // Create unified portfolio for Master Gallery
     siteContent.masterPortfolio = [
         ...(siteContent.projects || []).map(p => ({ ...p, category: 'commercial' })),
         ...(weddings || []).map(w => ({
-            id: w.id,
+            id: w._id,
             title: w.title,
             img: w.coverImage,
+            hoverVideo: w.hoverVideo,
             type: 'wedding',
             category: 'wedding',
             isWedding: true
@@ -38,6 +41,21 @@ const fetchContent = async () => {
         siteContent = await res.json();
     } catch (err) {
         console.error(err);
+    }
+};
+
+const trackPageView = async () => {
+    try {
+        const path = window.location.pathname === '/' ? '/index.html' : window.location.pathname;
+        await fetch('/api/tracking/view', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ path }),
+            // Keepalive to ensure the request is sent even if the user navigates away fast
+            keepalive: true
+        });
+    } catch (err) {
+        console.warn('Analytics tracking failed:', err);
     }
 };
 
@@ -65,6 +83,35 @@ const renderAll = () => {
     renderSplitGallery();
     renderLuxuryPage();
     renderCommercialPage();
+    applyGlobalSEO();
+};
+
+const applyGlobalSEO = () => {
+    if (!siteContent.global?.seo) return;
+    const seo = siteContent.global.seo;
+
+    // Only set title if it appears to be the default
+    if (!document.title || document.title.includes('Vite App') || document.title === 'Dreamline Production') {
+        if (seo.title) document.title = seo.title;
+    }
+
+    const setMeta = (name, content) => {
+        if (!content) return;
+        let meta = document.querySelector(`meta[name="${name}"]`) || document.querySelector(`meta[property="${name}"]`);
+        if (!meta) {
+            meta = document.createElement('meta');
+            if (name.startsWith('og:')) meta.setAttribute('property', name);
+            else meta.setAttribute('name', name);
+            document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+    };
+
+    setMeta('description', seo.description);
+    setMeta('keywords', seo.keywords);
+    setMeta('og:title', seo.title);
+    setMeta('og:description', seo.description);
+    setMeta('og:image', seo.ogImage);
 };
 
 const renderGlobal = () => {
@@ -290,15 +337,31 @@ const renderMasterGallery = (filter = 'all') => {
     }
 
     container.innerHTML = items.map(proj => `
-        <a href="${proj.isWedding ? `wedding-details.html?id=${proj.id}` : '#'}" class="aspect-[4/5] bg-gray-900 overflow-hidden relative group block">
-            <img src="${proj.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-8 flex flex-col justify-end">
+        <a href="${proj.isWedding ? `wedding-details.html?id=${proj.id}` : '#'}" class="wedding-card aspect-[4/5] bg-gray-900 overflow-hidden relative group block">
+            <img src="${proj.img}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+            ${proj.hoverVideo ? `
+                <video src="${proj.hoverVideo}" preload="metadata" muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none hover-video" style="transform: scale(1.05)"></video>
+            ` : ''}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-8 flex flex-col justify-end z-10">
                 <p class="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2">${proj.category || proj.type}</p>
                 <h3 class="text-white font-heading text-xl font-black uppercase leading-tight">${proj.title}</h3>
                 ${proj.isWedding ? '<span class="text-[9px] text-white/50 uppercase font-bold mt-4 tracking-tighter">View Story →</span>' : ''}
             </div>
         </a>
     `).join('');
+
+    // Attach video hover listeners
+    const cards = container.querySelectorAll('.wedding-card');
+    cards.forEach(card => {
+        const video = card.querySelector('.hover-video');
+        if (video) {
+            card.addEventListener('mouseenter', () => video.play().catch(() => { }));
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+        }
+    });
 };
 
 const renderAbout = () => {
@@ -378,20 +441,55 @@ backToTopBtn.innerHTML = `
 `;
 document.body.appendChild(backToTopBtn);
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 500) {
-        backToTopBtn.classList.add('visible');
-    } else {
-        backToTopBtn.classList.remove('visible');
+document.addEventListener('DOMContentLoaded', () => {
+    // Setup back to top
+    const btt = document.getElementById('back-to-top');
+    if (btt) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) btt.classList.add('visible');
+            else btt.classList.remove('visible');
+        });
+        btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
+
+    initThemeToggle(); // Call the theme toggle initialization
 });
 
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+// --- THEME TOGGLE LOGIC ---
+const initThemeToggle = () => {
+    const themeToggles = document.querySelectorAll('.theme-toggle');
+    const htmlEl = document.documentElement;
+
+    const applyTheme = (theme) => {
+        if (theme === 'light') {
+            htmlEl.setAttribute('data-theme', 'light');
+            themeToggles.forEach(btn => {
+                btn.querySelector('.sun-icon')?.classList.add('hidden');
+                btn.querySelector('.moon-icon')?.classList.remove('hidden');
+            });
+        } else {
+            htmlEl.removeAttribute('data-theme');
+            themeToggles.forEach(btn => {
+                btn.querySelector('.moon-icon')?.classList.add('hidden');
+                btn.querySelector('.sun-icon')?.classList.remove('hidden');
+            });
+        }
+    };
+
+    // Load from memory
+    const savedTheme = localStorage.getItem('dreamline_theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // Bind clicks
+    themeToggles.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const currentTheme = htmlEl.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('dreamline_theme', newTheme);
+            applyTheme(newTheme);
+        });
     });
-});
+};
 
 // Review Slider Logic
 const reviewTrack = document.querySelector('.review-track');
