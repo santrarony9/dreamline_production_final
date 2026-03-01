@@ -183,72 +183,80 @@ const cancelJournalBtn = document.getElementById('cancel-journal-btn');
 const addJournalBtn = document.getElementById('add-journal-btn');
 
 // Tabs
+const tabGlobal = document.getElementById('tab-global');
 const tabHome = document.getElementById('tab-home');
+const tabLuxury = document.getElementById('tab-luxury');
+const tabCommercial = document.getElementById('tab-commercial');
 const tabWeddings = document.getElementById('tab-weddings');
 const tabMasterGallery = document.getElementById('tab-master-gallery');
 const tabAbout = document.getElementById('tab-about');
 const tabJournal = document.getElementById('tab-journal');
 const tabBookings = document.getElementById('tab-bookings');
 
+const sectionGlobal = document.getElementById('section-global');
 const sectionHome = document.getElementById('section-home');
+const sectionLuxury = document.getElementById('section-luxury');
+const sectionCommercial = document.getElementById('section-commercial');
 const sectionWeddings = document.getElementById('section-weddings');
 const sectionMasterGallery = document.getElementById('section-master-gallery');
 const sectionAbout = document.getElementById('section-about');
 const sectionJournal = document.getElementById('section-journal');
 const sectionBookings = document.getElementById('section-bookings');
 
+const globalForm = document.getElementById('global-form');
 const homeForm = document.getElementById('home-form');
+const luxuryForm = document.getElementById('luxury-form');
+const commercialForm = document.getElementById('commercial-form');
 const masterGalleryForm = document.getElementById('master-gallery-form');
 const aboutForm = document.getElementById('about-form');
 
 // --- TABS ---
-tabHome.addEventListener('click', () => switchTab('home'));
-tabWeddings.addEventListener('click', () => switchTab('weddings'));
-tabMasterGallery.addEventListener('click', () => switchTab('master-gallery'));
-tabAbout.addEventListener('click', () => switchTab('about'));
-tabJournal.addEventListener('click', () => switchTab('journal'));
-tabBookings.addEventListener('click', () => switchTab('bookings'));
-
 const switchTab = (tab) => {
-    [tabHome, tabWeddings, tabMasterGallery, tabAbout, tabJournal, tabBookings].forEach(t => {
+    [tabGlobal, tabHome, tabLuxury, tabCommercial, tabWeddings, tabMasterGallery, tabAbout, tabJournal, tabBookings].forEach(t => {
+        if (!t) return;
         t.classList.remove('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
         t.classList.add('text-gray-500');
     });
 
     // Hide all sections
-    const sections = [sectionHome, sectionWeddings, sectionMasterGallery, sectionAbout, sectionJournal, sectionBookings];
+    const sections = [sectionGlobal, sectionHome, sectionLuxury, sectionCommercial, sectionWeddings, sectionMasterGallery, sectionAbout, sectionJournal, sectionBookings];
     sections.forEach(s => s && s.classList.add('hidden'));
 
-    // Show active section & style tab
-    if (tab === 'home') {
-        sectionHome.classList.remove('hidden');
-        tabHome.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
-        tabHome.classList.remove('text-gray-500');
+    // Helper to style active tab
+    const activateTab = (tabEl, sectionEl) => {
+        if (sectionEl) sectionEl.classList.remove('hidden');
+        if (tabEl) {
+            tabEl.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
+            tabEl.classList.remove('text-gray-500');
+        }
+    };
+
+    if (tab === 'global') {
+        activateTab(tabGlobal, sectionGlobal);
+        fetchContent();
+    } else if (tab === 'home') {
+        activateTab(tabHome, sectionHome);
+        fetchContent();
+    } else if (tab === 'luxury') {
+        activateTab(tabLuxury, sectionLuxury);
+        fetchContent();
+    } else if (tab === 'commercial') {
+        activateTab(tabCommercial, sectionCommercial);
         fetchContent();
     } else if (tab === 'weddings') {
-        sectionWeddings.classList.remove('hidden');
-        tabWeddings.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
-        tabWeddings.classList.remove('text-gray-500');
+        activateTab(tabWeddings, sectionWeddings);
         fetchWeddings();
     } else if (tab === 'master-gallery') {
-        sectionMasterGallery.classList.remove('hidden');
-        tabMasterGallery.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
-        tabMasterGallery.classList.remove('text-gray-500');
+        activateTab(tabMasterGallery, sectionMasterGallery);
         fetchContent();
     } else if (tab === 'about') {
-        sectionAbout.classList.remove('hidden');
-        tabAbout.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
-        tabAbout.classList.remove('text-gray-500');
+        activateTab(tabAbout, sectionAbout);
         fetchContent();
     } else if (tab === 'journal') {
-        sectionJournal.classList.remove('hidden');
-        tabJournal.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
-        tabJournal.classList.remove('text-gray-500');
+        activateTab(tabJournal, sectionJournal);
         fetchJournals();
     } else if (tab === 'bookings') {
-        sectionBookings.classList.remove('hidden');
-        tabBookings.classList.add('gold-gradient-text', 'border-b-2', 'border-gold-500', 'active-tab');
-        tabBookings.classList.remove('text-gray-500');
+        activateTab(tabBookings, sectionBookings);
         fetchBookings();
     }
 };
@@ -275,12 +283,14 @@ const fetchJournals = async () => {
     }
 };
 
-// --- DATA FETCHING (Content) ---
 const fetchContent = async () => {
     try {
         const res = await fetchWithAuth(API_CONTENT_URL);
         siteContent = await res.json();
+        renderGlobalForm();
         renderHomeForm();
+        renderLuxuryForm();
+        renderCommercialForm();
         renderMasterGalleryList();
         renderAboutForm();
         renderPartnersList();
@@ -288,6 +298,34 @@ const fetchContent = async () => {
     } catch (err) {
         console.error('Failed to fetch content:', err);
     }
+};
+
+const renderGlobalForm = () => {
+    if (!siteContent.global) return;
+    document.getElementById('global-address').value = siteContent.global.contact?.address || '';
+    document.getElementById('global-phone').value = siteContent.global.contact?.phone || '';
+    document.getElementById('global-email').value = siteContent.global.contact?.email || '';
+    document.getElementById('global-instagram').value = siteContent.global.social?.instagram || '';
+    document.getElementById('global-facebook').value = siteContent.global.social?.facebook || '';
+    document.getElementById('global-youtube').value = siteContent.global.social?.youtube || '';
+};
+
+const renderLuxuryForm = () => {
+    if (!siteContent.luxury) return;
+    document.getElementById('luxury-hero-title1').value = siteContent.luxury.hero?.titleLine1 || '';
+    document.getElementById('luxury-hero-title2').value = siteContent.luxury.hero?.titleLine2 || '';
+    document.getElementById('luxury-hero-desc').value = siteContent.luxury.hero?.description || '';
+    document.getElementById('luxury-test-quote').value = siteContent.luxury.testimonial?.quote || '';
+    document.getElementById('luxury-test-author').value = siteContent.luxury.testimonial?.author || '';
+    document.getElementById('luxury-test-role').value = siteContent.luxury.testimonial?.role || '';
+    document.getElementById('luxury-test-img').value = siteContent.luxury.testimonial?.image || '';
+};
+
+const renderCommercialForm = () => {
+    if (!siteContent.commercial) return;
+    document.getElementById('comm-hero-title1').value = siteContent.commercial.hero?.titleLine1 || '';
+    document.getElementById('comm-hero-title2').value = siteContent.commercial.hero?.titleLine2 || '';
+    document.getElementById('comm-hero-desc').value = siteContent.commercial.hero?.description || '';
 };
 
 const renderHomeForm = () => {
@@ -856,6 +894,58 @@ document.getElementById('add-vault-btn').addEventListener('click', () => {
 });
 
 
+// Global Form Submit
+if (globalForm) {
+    globalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updatedContent = { ...siteContent };
+        if (!updatedContent.global) { updatedContent.global = { contact: {}, social: {}, company: {} }; }
+
+        updatedContent.global.contact.address = document.getElementById('global-address').value;
+        updatedContent.global.contact.phone = document.getElementById('global-phone').value;
+        updatedContent.global.contact.email = document.getElementById('global-email').value;
+        updatedContent.global.social.instagram = document.getElementById('global-instagram').value;
+        updatedContent.global.social.facebook = document.getElementById('global-facebook').value;
+        updatedContent.global.social.youtube = document.getElementById('global-youtube').value;
+
+        await saveContent(updatedContent);
+    });
+}
+
+// Luxury Form Submit
+if (luxuryForm) {
+    luxuryForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updatedContent = { ...siteContent };
+        if (!updatedContent.luxury) { updatedContent.luxury = { hero: {}, testimonial: {} }; }
+
+        updatedContent.luxury.hero.titleLine1 = document.getElementById('luxury-hero-title1').value;
+        updatedContent.luxury.hero.titleLine2 = document.getElementById('luxury-hero-title2').value;
+        updatedContent.luxury.hero.description = document.getElementById('luxury-hero-desc').value;
+        updatedContent.luxury.testimonial.quote = document.getElementById('luxury-test-quote').value;
+        updatedContent.luxury.testimonial.author = document.getElementById('luxury-test-author').value;
+        updatedContent.luxury.testimonial.role = document.getElementById('luxury-test-role').value;
+        updatedContent.luxury.testimonial.image = document.getElementById('luxury-test-img').value;
+
+        await saveContent(updatedContent);
+    });
+}
+
+// Commercial Form Submit
+if (commercialForm) {
+    commercialForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updatedContent = { ...siteContent };
+        if (!updatedContent.commercial) { updatedContent.commercial = { hero: {} }; }
+
+        updatedContent.commercial.hero.titleLine1 = document.getElementById('comm-hero-title1').value;
+        updatedContent.commercial.hero.titleLine2 = document.getElementById('comm-hero-title2').value;
+        updatedContent.commercial.hero.description = document.getElementById('comm-hero-desc').value;
+
+        await saveContent(updatedContent);
+    });
+}
+
 // Home Form Submit
 homeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1071,6 +1161,7 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
 setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url');
 setupFileUpload('about-founder-upload', 'about-founder-status', 'about-founder-img');
 setupFileUpload('gallery-upload', 'gallery-upload-status', 'gallery-images');
+setupFileUpload('luxury-test-upload', 'luxury-test-upload-status', 'luxury-test-img');
 
 
 // --- JOURNAL FUNCTIONS ---

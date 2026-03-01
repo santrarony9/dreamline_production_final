@@ -295,24 +295,8 @@ app.get('/api/content', async (req, res) => {
     try {
         let content = await Content.findOne();
         if (!content) {
-            // Create default if not exists
-            content = new Content({
-                hero: { title: { line1: 'Visionary', line2: 'Cinema.' }, subtitle: 'Est. 2010', cta: [] },
-                marquee: [],
-                stats: [],
-                gallery: { title: 'Motion Archive', images: [] },
-                projects: [],
-                about: {
-                    heroTitle: 'Trusted Production House',
-                    heroSubtitle: 'Est. 2010',
-                    vision: 'To redefine visual storytelling.',
-                    mission: 'Crafting cinematic narratives.',
-                    founderNote: 'We archive emotions.',
-                    founderImage: '',
-                    team: [],
-                    reviews: []
-                }
-            });
+            // Create default from schema if not exists
+            content = new Content({});
             await content.save();
         }
         res.json(content);
@@ -324,16 +308,32 @@ app.get('/api/content', async (req, res) => {
 // 7. UPDATE SITE CONTENT
 app.post('/api/content', async (req, res) => {
     try {
-        // We assume there's only one content document, so we update the first one found or create it
-        let content = await Content.findOne();
-        if (content) {
-            Object.assign(content, req.body);
-            await content.save();
-        } else {
-            content = new Content(req.body);
-            await content.save();
-        }
-        res.json(content);
+        // Flatten object to allow partial updates of nested fields without overwriting siblings
+        const flattenObject = (ob) => {
+            let toReturn = {};
+            for (let i in ob) {
+                if (!ob.hasOwnProperty(i)) continue;
+                if (typeof ob[i] === 'object' && ob[i] !== null && !Array.isArray(ob[i])) {
+                    let flatObject = flattenObject(ob[i]);
+                    for (let x in flatObject) {
+                        if (!flatObject.hasOwnProperty(x)) continue;
+                        toReturn[i + '.' + x] = flatObject[x];
+                    }
+                } else {
+                    toReturn[i] = ob[i];
+                }
+            }
+            return toReturn;
+        };
+
+        const updateData = flattenObject(req.body);
+
+        const updatedContent = await Content.findOneAndUpdate(
+            {},
+            { $set: updateData },
+            { new: true, upsert: true }
+        );
+        res.json(updatedContent);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
