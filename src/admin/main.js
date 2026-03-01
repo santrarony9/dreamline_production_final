@@ -1668,17 +1668,47 @@ const init = () => {
 
     // Tabs
     const tabs = [
+        { id: 'tab-global', key: 'global' },
         { id: 'tab-home', key: 'home' },
+        { id: 'tab-luxury', key: 'luxury' },
+        { id: 'tab-commercial', key: 'commercial' },
         { id: 'tab-about', key: 'about' },
         { id: 'tab-weddings', key: 'weddings' },
         { id: 'tab-master-gallery', key: 'master-gallery' },
-        { id: 'tab-journal', key: 'journal' }
+        { id: 'tab-journal', key: 'journal' },
+        { id: 'tab-bookings', key: 'bookings' }
     ];
 
     tabs.forEach(t => {
         const el = document.getElementById(t.id);
-        if (el) el.addEventListener('click', () => switchTab(t.key));
+        if (el) el.addEventListener('click', () => {
+            if (typeof switchTab === 'function') switchTab(t.key);
+            // Auto close mobile sidebar
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar')?.classList.add('-translate-x-full');
+                document.getElementById('sidebar-overlay')?.classList.add('hidden');
+            }
+        });
     });
+
+    // Mobile Sidebar Toggle
+    const openMenuBtn = document.getElementById('open-mobile-menu');
+    const closeMenuBtn = document.getElementById('close-mobile-menu');
+    const sidebarEl = document.getElementById('sidebar');
+    const overlayEl = document.getElementById('sidebar-overlay');
+
+    if (openMenuBtn && sidebarEl && overlayEl) {
+        openMenuBtn.addEventListener('click', () => {
+            sidebarEl.classList.remove('-translate-x-full');
+            overlayEl.classList.remove('hidden');
+        });
+    }
+    const closeSidebar = () => {
+        sidebarEl.classList.add('-translate-x-full');
+        overlayEl.classList.add('hidden');
+    };
+    if (closeMenuBtn) closeMenuBtn.addEventListener('click', closeSidebar);
+    if (overlayEl) overlayEl.addEventListener('click', closeSidebar);
 
     // Forms
     const forms = [
