@@ -1,18 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./index.html",
-    "./commercial.html",
-    "./luxury.html",
-    "./journal.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./*.html",
+    "./src/**/*.{js,ts,jsx,tsx,html}",
   ],
   theme: {
     extend: {
       colors: {
-        gold: '#c5a059',
-        black: '#050505',
-        'deep-gray': '#121212',
+        gold: {
+          DEFAULT: '#c5a059',
+          500: '#c5a059'
+        },
+        black: 'rgb(var(--color-bg-rgb) / <alpha-value>)',
+        white: 'rgb(var(--color-text-rgb) / <alpha-value>)',
+        'deep-gray': 'rgb(var(--color-surface-rgb) / <alpha-value>)',
         'text-gray': '#a1a1aa',
       },
       fontFamily: {

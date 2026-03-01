@@ -16,6 +16,7 @@ const Wedding = require('./models/Wedding');
 const Content = require('./models/Content');
 const Journal = require('./models/Journal');
 const Booking = require('./models/Booking');
+const Analytics = require('./models/Analytics');
 const User = require('./models/User');
 
 const app = express();
@@ -108,7 +109,7 @@ app.get('/api/auth/verify', async (req, res) => {
 // 1. GET ALL WEDDINGS
 app.get('/api/weddings', async (req, res) => {
     try {
-        const weddings = await Wedding.find().sort({ createdAt: -1 });
+        const weddings = await Wedding.find().sort({ order: 1, createdAt: -1 });
         res.json(weddings);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -161,12 +162,28 @@ app.delete('/api/weddings/:id', async (req, res) => {
     }
 });
 
+// BULK REORDER WEDDINGS
+app.put('/api/weddings/reorder/bulk', async (req, res) => {
+    try {
+        const { orderedIds } = req.body;
+        if (!orderedIds || !Array.isArray(orderedIds)) {
+            return res.status(400).json({ error: 'Invalid orderedIds array' });
+        }
+        for (let i = 0; i < orderedIds.length; i++) {
+            await Wedding.findOneAndUpdate({ id: orderedIds[i] }, { order: i });
+        }
+        res.json({ message: 'Reordered successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // --- JOURNAL ENDPOINTS ---
 
 // GET ALL JOURNALS
 app.get('/api/journals', async (req, res) => {
     try {
-        const journals = await Journal.find().sort({ createdAt: -1 });
+        const journals = await Journal.find().sort({ order: 1, createdAt: -1 });
         res.json(journals);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -219,6 +236,22 @@ app.delete('/api/journals/:id', async (req, res) => {
     }
 });
 
+// BULK REORDER JOURNALS
+app.put('/api/journals/reorder/bulk', async (req, res) => {
+    try {
+        const { orderedIds } = req.body;
+        if (!orderedIds || !Array.isArray(orderedIds)) {
+            return res.status(400).json({ error: 'Invalid orderedIds array' });
+        }
+        for (let i = 0; i < orderedIds.length; i++) {
+            await Journal.findOneAndUpdate({ id: orderedIds[i] }, { order: i });
+        }
+        res.json({ message: 'Reordered successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 
 // --- BOOKING ENDPOINTS ---
 
@@ -250,7 +283,7 @@ app.post('/api/bookings', async (req, res) => {
             sender: process.env.WHATSAPP_SENDER || 'BUZWAP',
             phone: adminPhone,
             text: message,
-            priority: 'wa',
+            priority: 'ndnd',
             stype: 'normal'
         };
 
@@ -262,9 +295,10 @@ app.post('/api/bookings', async (req, res) => {
             }
         }
 
-        res.json({ success: true, booking: newBooking });
+        res.status(201).json({ message: 'Booking inquiry received!' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('Booking Error:', err);
+        res.status(500).json({ error: 'Failed to submit booking' });
     }
 });
 

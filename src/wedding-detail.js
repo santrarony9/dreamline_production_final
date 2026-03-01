@@ -6,6 +6,20 @@ const API_WEDDINGS_URL = '/api/weddings';
 // State
 let weddingData = null;
 
+// Tracking function
+const trackPageView = async (path) => {
+    try {
+        await fetch('/api/tracking/view', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ path }),
+            keepalive: true
+        });
+    } catch (e) {
+        console.error('Failed to track page view:', e);
+    }
+};
+
 // Init
 window.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,6 +29,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         window.location.href = 'luxury.html';
         return;
     }
+
+    // Track page view for wedding details
+    await trackPageView(`/wedding.html?id=${id}`);
 
     await fetchWedding(id);
     if (weddingData) {
@@ -39,7 +56,28 @@ const renderWedding = () => {
     const { title, subtitle, description, coverImage, hoverVideo, videoUrl, albumUrl, storyChapters, date } = weddingData;
 
     // Nav & Meta
-    document.title = `${title} | Dreamline Story`;
+    document.title = (weddingData.seo && weddingData.seo.title) ? weddingData.seo.title : `${title} | Dreamline Story`;
+
+    const setMeta = (name, content) => {
+        if (!content) return;
+        let meta = document.querySelector(`meta[name="${name}"]`) || document.querySelector(`meta[property="${name}"]`);
+        if (!meta) {
+            meta = document.createElement('meta');
+            if (name.startsWith('og:')) meta.setAttribute('property', name);
+            else meta.setAttribute('name', name);
+            document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+    };
+
+    if (weddingData.seo) {
+        setMeta('description', weddingData.seo.description || description);
+        setMeta('og:description', weddingData.seo.description || description);
+        setMeta('keywords', weddingData.seo.keywords);
+        setMeta('og:title', weddingData.seo.title || title);
+    }
+    setMeta('og:image', coverImage);
+
     document.getElementById('couple-names-nav').textContent = title;
 
     // Hero

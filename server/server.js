@@ -11,6 +11,7 @@ const Wedding = require('./models/Wedding');
 const Journal = require('./models/Journal');
 const Content = require('./models/Content');
 const Booking = require('./models/Booking');
+const Analytics = require('./models/Analytics');
 const axios = require('axios');
 
 const app = express();
@@ -26,11 +27,25 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../'))); // Serve static files from root
 
+// Authentication Middleware for admin routes
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+
+    if (token == null) return res.sendStatus(401); // No token
+
+    if (token === process.env.BEARER_TOKEN) { // Compare with environment variable
+        next();
+    } else {
+        res.sendStatus(403); // Invalid token
+    }
+};
+
 
 // 1. GET ALL WEDDINGS
 app.get('/api/weddings', async (req, res) => {
     try {
-        const weddings = await Wedding.find().sort({ createdAt: -1 });
+        const weddings = await Wedding.find().sort({ order: 1, createdAt: -1 });
         res.json(weddings);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -83,12 +98,28 @@ app.delete('/api/weddings/:id', async (req, res) => {
     }
 });
 
+// BULK REORDER WEDDINGS
+app.put('/api/weddings/reorder/bulk', async (req, res) => {
+    try {
+        const { orderedIds } = req.body;
+        if (!orderedIds || !Array.isArray(orderedIds)) {
+            return res.status(400).json({ error: 'Invalid orderedIds array' });
+        }
+        for (let i = 0; i < orderedIds.length; i++) {
+            await Wedding.findOneAndUpdate({ id: orderedIds[i] }, { order: i });
+        }
+        res.json({ message: 'Reordered successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // --- JOURNAL ENDPOINTS ---
 
 // GET ALL JOURNALS
 app.get('/api/journals', async (req, res) => {
     try {
-        const journals = await Journal.find().sort({ createdAt: -1 });
+        const journals = await Journal.find().sort({ order: 1, createdAt: -1 });
         res.json(journals);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -136,6 +167,22 @@ app.delete('/api/journals/:id', async (req, res) => {
     try {
         await Journal.findOneAndDelete({ id: req.params.id });
         res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// BULK REORDER JOURNALS
+app.put('/api/journals/reorder/bulk', async (req, res) => {
+    try {
+        const { orderedIds } = req.body;
+        if (!orderedIds || !Array.isArray(orderedIds)) {
+            return res.status(400).json({ error: 'Invalid orderedIds array' });
+        }
+        for (let i = 0; i < orderedIds.length; i++) {
+            await Journal.findOneAndUpdate({ id: orderedIds[i] }, { order: i });
+        }
+        res.json({ message: 'Reordered successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -318,6 +365,34 @@ app.post('/api/upload', multerUpload.single('file'), async (req, res) => {
     } catch (err) {
         console.error('Upload Error:', err);
         res.status(500).json({ error: 'Failed to process or upload file: ' + err.message });
+    }
+});
+
+// --- ANALYTICS ENDPOINTS ---
+app.post('/api/tracking/view', async (req, res) => {
+    try {
+        const { path } = req.body;
+        if (!path) return res.status(400).json({ error: 'Path required' });
+
+        const date = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        await Analytics.findOneAndUpdate(
+            { path, date },
+            { $inc: { views: 1 } },
+            { upsert: true, new: true }
+        );
+        res.status(200).send('Tracked');
+    } catch (err) {
+        console.error('Tracking Error:', err);
+        res.status(500).send('Tracking Failed');
+    }
+});
+
+app.get('/api/tracking/stats', authenticateToken, async (req, res) => {
+    try {
+        const stats = await Analytics.find().sort({ date: -1 }).limit(100);
+        res.json(stats);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 
