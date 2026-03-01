@@ -11,9 +11,9 @@ module.exports = {
           DEFAULT: '#c5a059',
           500: '#c5a059'
         },
-        black: 'rgb(var(--color-bg-rgb) / <alpha-value>)',
-        white: 'rgb(var(--color-text-rgb) / <alpha-value>)',
-        'deep-gray': 'rgb(var(--color-surface-rgb) / <alpha-value>)',
+        black: 'var(--color-bg)',
+        white: 'var(--color-text)',
+        'deep-gray': 'var(--color-surface)',
         'text-gray': '#a1a1aa',
       },
       fontFamily: {
