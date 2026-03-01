@@ -448,12 +448,13 @@ if (galleryUploadInput) {
 const renderAboutForm = () => {
     if (!siteContent.about) return;
 
-    document.getElementById('about-hero-title').value = siteContent.about.heroTitle || '';
-    document.getElementById('about-hero-subtitle').value = siteContent.about.heroSubtitle || '';
-    document.getElementById('about-vision').value = siteContent.about.vision || '';
-    document.getElementById('about-mission').value = siteContent.about.mission || '';
-    document.getElementById('about-founder-note').value = siteContent.about.founderNote || '';
-    document.getElementById('about-founder-img').value = siteContent.about.founderImage || '';
+    if (!siteContent.about) siteContent.about = { hero: {}, details: {}, founder: {} };
+    document.getElementById('about-hero-title').value = siteContent.about.hero?.titleLine1 || '';
+    document.getElementById('about-hero-subtitle').value = siteContent.about.hero?.subtitle || '';
+    document.getElementById('about-vision').value = siteContent.about.details?.vision || '';
+    document.getElementById('about-mission').value = siteContent.about.details?.mission || '';
+    document.getElementById('about-founder-note').value = siteContent.about.founder?.note || '';
+    document.getElementById('about-founder-img').value = siteContent.about.founder?.image || '';
 };
 
 const fetchBookings = async () => {
@@ -946,6 +947,27 @@ if (commercialForm) {
     });
 }
 
+// About Form Submit
+if (aboutForm) {
+    aboutForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updatedContent = { ...siteContent };
+        if (!updatedContent.about) updatedContent.about = {};
+        if (!updatedContent.about.hero) updatedContent.about.hero = {};
+        if (!updatedContent.about.details) updatedContent.about.details = {};
+        if (!updatedContent.about.founder) updatedContent.about.founder = {};
+
+        updatedContent.about.hero.titleLine1 = document.getElementById('about-hero-title').value;
+        updatedContent.about.hero.subtitle = document.getElementById('about-hero-subtitle').value;
+        updatedContent.about.details.vision = document.getElementById('about-vision').value;
+        updatedContent.about.details.mission = document.getElementById('about-mission').value;
+        updatedContent.about.founder.note = document.getElementById('about-founder-note').value;
+        updatedContent.about.founder.image = document.getElementById('about-founder-img').value;
+
+        await saveContent(updatedContent);
+    });
+}
+
 // Home Form Submit
 homeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1165,112 +1187,31 @@ setupFileUpload('luxury-test-upload', 'luxury-test-upload-status', 'luxury-test-
 
 
 // --- JOURNAL FUNCTIONS ---
-
 const renderJournalList = () => {
-    const list = document.getElementById('journal-list');
-    list.innerHTML = journals.map(j => `
-        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between border-white/5 transition-all">
-            <div class="relative group overflow-hidden rounded-xl mb-4">
-                 <img src="${j.image}" alt="${j.title}" class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110">
-                 <div class="absolute top-3 left-3 flex gap-2">
-                    <span class="bg-black/60 backdrop-blur-md text-[9px] text-white px-3 py-1 rounded-full uppercase tracking-widest font-bold">${j.date || ''}</span>
-                    <span class="bg-gold/80 backdrop-blur-md text-[9px] text-black px-3 py-1 rounded-full uppercase tracking-widest font-bold">${j.category || ''}</span>
-                 </div>
+    const container = document.getElementById('journal-list');
+    if (!container) return;
+
+    if (!journals || journals.length === 0) {
+        container.innerHTML = '<div class="text-center py-20 text-gray-500 uppercase tracking-widest text-xs font-bold col-span-3">No articles found.</div>';
+        return;
+    }
+
+    container.innerHTML = journals.map(j => `
+        <div class="glass-card overflow-hidden group border-white/5 bg-white/2">
+            <div class="relative h-48 overflow-hidden">
+                <img src="${j.image || 'https://via.placeholder.com/600x400?text=No+Cover'}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="absolute bottom-2 left-3 bg-black/60 px-2 py-1 rounded text-[8px] font-black uppercase text-gold">${j.category || 'ARTICLE'}</div>
             </div>
-            <div>
-                <h3 class="font-bold text-lg text-white leading-tight mb-3 line-clamp-2">${j.title}</h3>
-                <p class="text-gray-500 text-xs line-clamp-3 leading-relaxed mb-6">${j.excerpt || ''}</p>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="window.editJournal('${j.id}')" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-bold py-3 rounded-xl hover:bg-gold hover:text-black transition-all uppercase tracking-widest">EDIT</button>
-                <button onclick="window.deleteJournal('${j.id}')" class="bg-red-900/20 text-red-500 text-[10px] font-bold px-4 py-3 rounded-xl hover:bg-red-600 hover:text-white transition-all uppercase tracking-widest">DEL</button>
+            <div class="p-5">
+                <h3 class="font-bold text-lg mb-2 text-white truncate">${j.title}</h3>
+                <p class="text-xs text-gray-400 mb-4 line-clamp-2">${j.excerpt || ''}</p>
+                <div class="flex gap-3">
+                    <button type="button" class="flex-1 bg-white/5 border border-white/10 text-[10px] font-black py-2 rounded-full hover:bg-gold hover:text-black transition-all uppercase tracking-widest" onclick="window.editJournal('${j._id || j.id}')">Edit</button>
+                    <button type="button" class="bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black px-4 py-2 rounded-full hover:bg-red-500 hover:text-white transition-all uppercase tracking-widest" onclick="window.deleteJournal('${j._id || j.id}')">Delete</button>
+                </div>
             </div>
         </div>
     `).join('');
-};
-
-
-const openJournalModal = (journal = null) => {
-    journalModal.classList.remove('hidden');
-    journalForm.reset();
-
-    if (journal) {
-        document.getElementById('journal-modal-title').textContent = 'Edit Article';
-        document.getElementById('journal-id').value = journal.id;
-        document.getElementById('journal-title').value = journal.title;
-        document.getElementById('journal-date').value = journal.date;
-        document.getElementById('journal-category').value = journal.category;
-        document.getElementById('journal-image').value = journal.image;
-        document.getElementById('journal-excerpt').value = journal.excerpt;
-        document.getElementById('journal-content').value = journal.content || '';
-    } else {
-        document.getElementById('journal-modal-title').textContent = 'New Article';
-        document.getElementById('journal-id').value = '';
-    }
-};
-
-const closeJournalModalFunc = () => {
-    journalModal.classList.add('hidden');
-};
-
-// Journal Events
-addJournalBtn.addEventListener('click', () => openJournalModal());
-closeJournalModal.addEventListener('click', closeJournalModalFunc);
-cancelJournalBtn.addEventListener('click', closeJournalModalFunc);
-
-document.getElementById('journal-image-upload').addEventListener('change', async (e) => {
-    if (e.target.files[0]) {
-        const url = await uploadFile(e.target.files[0]);
-        if (url) {
-            document.getElementById('journal-image').value = url;
-        }
-    }
-});
-
-journalForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const id = document.getElementById('journal-id').value || `journal-${Date.now()}`;
-    const newJournal = {
-        id,
-        title: document.getElementById('journal-title').value,
-        date: document.getElementById('journal-date').value,
-        category: document.getElementById('journal-category').value,
-        image: document.getElementById('journal-image').value,
-        excerpt: document.getElementById('journal-excerpt').value,
-        content: document.getElementById('journal-content').value
-    };
-
-    const existing = journals.find(j => j.id === id);
-    // If Updating, merge
-    if (existing) {
-        Object.assign(newJournal, { createdAt: existing.createdAt }); // Keep meta
-    }
-
-    try {
-        const method = existing ? 'PUT' : 'POST';
-        const url = existing ? `${API_JOURNALS_URL}/${id}` : API_JOURNALS_URL;
-
-        const res = await fetchWithAuth(url, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newJournal)
-        });
-
-        if (!res.ok) throw new Error('Save failed');
-
-        closeJournalModalFunc();
-        fetchJournals();
-    } catch (err) {
-        console.error(err);
-        alert('Error saving journal');
-    }
-});
-
-// Global Journal Handlers
-window.editJournal = (id) => {
-    const journal = journals.find(j => j.id === id);
-    openJournalModal(journal);
 };
 
 window.deleteJournal = async (id) => {
@@ -1282,6 +1223,91 @@ window.deleteJournal = async (id) => {
         alert('Error deleting journal');
     }
 };
+
+window.editJournal = (id) => {
+    const journal = journals.find(j => (j._id === id || j.id === id));
+    openJournalModal(journal);
+};
+
+const openJournalModal = (journal = null) => {
+    const modal = document.getElementById('journal-modal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+
+    if (journal) {
+        document.getElementById('journal-modal-title').textContent = 'Edit Article';
+        document.getElementById('journal-id').value = journal._id || journal.id;
+        document.getElementById('journal-title').value = journal.title || '';
+        document.getElementById('journal-date').value = journal.date || '';
+        document.getElementById('journal-category').value = journal.category || '';
+        document.getElementById('journal-image').value = journal.image || '';
+        document.getElementById('journal-excerpt').value = journal.excerpt || '';
+        document.getElementById('journal-content').value = journal.content || '';
+    } else {
+        document.getElementById('journal-modal-title').textContent = 'New Article';
+        const jf = document.getElementById('journal-form');
+        if (jf) jf.reset();
+        document.getElementById('journal-id').value = '';
+    }
+};
+
+const closeJournalModalFunc = () => {
+    document.getElementById('journal-modal')?.classList.add('hidden');
+};
+
+const setupJournalForm = () => {
+    const jForm = document.getElementById('journal-form');
+    if (!jForm) return;
+
+    // Replace with clone to clear existing listeners
+    const newForm = jForm.cloneNode(true);
+    jForm.parentNode.replaceChild(newForm, jForm);
+
+    newForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById('journal-id').value;
+        const payload = {
+            title: document.getElementById('journal-title').value,
+            date: document.getElementById('journal-date').value,
+            category: document.getElementById('journal-category').value,
+            image: document.getElementById('journal-image').value,
+            excerpt: document.getElementById('journal-excerpt').value,
+            content: document.getElementById('journal-content').value,
+        };
+
+        try {
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `${API_JOURNALS_URL}/${id}` : API_JOURNALS_URL;
+            const res = await fetchWithAuth(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error('Failed to save journal');
+            closeJournalModalFunc();
+            fetchJournals();
+        } catch (err) {
+            console.error(err);
+            alert('Error saving journal');
+        }
+    });
+};
+setupJournalForm();
+
+const addJBtn = document.getElementById('add-journal-btn');
+if (addJBtn) {
+    const newJBtn = addJBtn.cloneNode(true);
+    addJBtn.parentNode.replaceChild(newJBtn, addJBtn);
+    newJBtn.addEventListener('click', () => openJournalModal());
+}
+
+const closeJBtn = document.getElementById('close-journal-modal');
+if (closeJBtn) closeJBtn.addEventListener('click', closeJournalModalFunc);
+
+const cancelJBtn = document.getElementById('cancel-journal-btn');
+if (cancelJBtn) cancelJBtn.addEventListener('click', closeJournalModalFunc);
 
 // --- RENDERING ---
 const renderWeddingList = () => {
@@ -1506,6 +1532,8 @@ weddingForm.addEventListener('submit', async (e) => {
         alert('Error saving wedding');
     }
 });
+
+
 
 // Init
 // --- AUTHENTICATION ---
