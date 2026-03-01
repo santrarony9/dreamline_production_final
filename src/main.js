@@ -52,6 +52,7 @@ const fetchWeddings = async () => {
 };
 
 const renderAll = () => {
+    renderGlobal();
     renderHero();
     renderMarquee();
     renderStats();
@@ -62,6 +63,57 @@ const renderAll = () => {
     renderJournal();
     renderPartners();
     renderSplitGallery();
+    renderLuxuryPage();
+    renderCommercialPage();
+};
+
+const renderGlobal = () => {
+    if (!siteContent.global) return;
+    // Footer updates if IDs exist
+    const fAddress = document.getElementById('footer-address');
+    const fPhone = document.getElementById('footer-phone');
+    const fEmail = document.getElementById('footer-email');
+    if (fAddress && siteContent.global.contact?.address) fAddress.textContent = siteContent.global.contact.address;
+    if (fPhone && siteContent.global.contact?.phone) {
+        fPhone.textContent = siteContent.global.contact.phone;
+        fPhone.href = `tel:${siteContent.global.contact.phone.replace(/[^0-9+]/g, '')}`;
+    }
+    if (fEmail && siteContent.global.contact?.email) {
+        fEmail.textContent = siteContent.global.contact.email;
+        fEmail.href = `mailto:${siteContent.global.contact.email}`;
+    }
+};
+
+const renderLuxuryPage = () => {
+    if (!siteContent.luxury) return;
+    const h1 = document.getElementById('luxury-page-title1');
+    const h2 = document.getElementById('luxury-page-title2');
+    const desc = document.getElementById('luxury-page-desc');
+
+    if (h1 && siteContent.luxury.hero?.titleLine1) h1.textContent = siteContent.luxury.hero.titleLine1;
+    if (h2 && siteContent.luxury.hero?.titleLine2) h2.textContent = siteContent.luxury.hero.titleLine2;
+    if (desc && siteContent.luxury.hero?.description) desc.textContent = siteContent.luxury.hero.description;
+
+    const tQuote = document.getElementById('luxury-test-quote-el');
+    const tAuthor = document.getElementById('luxury-test-author-el');
+    const tRole = document.getElementById('luxury-test-role-el');
+    const tImg = document.getElementById('luxury-test-img-el');
+
+    if (tQuote && siteContent.luxury.testimonial?.quote) tQuote.textContent = `"${siteContent.luxury.testimonial.quote}"`;
+    if (tAuthor && siteContent.luxury.testimonial?.author) tAuthor.textContent = siteContent.luxury.testimonial.author;
+    if (tRole && siteContent.luxury.testimonial?.role) tRole.textContent = siteContent.luxury.testimonial.role;
+    if (tImg && siteContent.luxury.testimonial?.image) tImg.src = siteContent.luxury.testimonial.image;
+};
+
+const renderCommercialPage = () => {
+    if (!siteContent.commercial) return;
+    const h1 = document.getElementById('comm-page-title1');
+    const h2 = document.getElementById('comm-page-title2');
+    const desc = document.getElementById('comm-page-desc');
+
+    if (h1 && siteContent.commercial.hero?.titleLine1) h1.textContent = siteContent.commercial.hero.titleLine1;
+    if (h2 && siteContent.commercial.hero?.titleLine2) h2.textContent = siteContent.commercial.hero.titleLine2;
+    if (desc && siteContent.commercial.hero?.description) desc.textContent = siteContent.commercial.hero.description;
 };
 
 const renderHero = () => {
