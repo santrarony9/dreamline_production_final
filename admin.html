@@ -399,10 +399,24 @@
                                 <input type="text" id="hero-subtitle" class="w-full p-4 rounded-xl glass-input">
                             </div>
                             <div class="col-span-2 glass-card p-6 rounded-2xl border-white/5 bg-white/5">
-                                <label>Hero Background Media</label>
-                                <p class="help-text mb-4">Upload a cinematic video or high-res image for the main
-                                    landing
-                                    section.</p>
+                                <label
+                                    class="block mb-2 text-gold-500 uppercase tracking-widest text-[10px] font-bold">Hero
+                                    Background Media</label>
+
+                                <div id="hero-media-preview-container"
+                                    class="mb-6 w-full max-w-xl aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black/40 flex items-center justify-center relative group"
+                                    style="display: none;">
+                                    <img id="hero-media-preview-img" class="w-full h-full object-cover hidden">
+                                    <video id="hero-media-preview-video" class="w-full h-full object-cover hidden" muted
+                                        loop autoplay></video>
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span
+                                            class="text-[10px] font-black uppercase tracking-widest text-white/60">Live
+                                            Preview</span>
+                                    </div>
+                                </div>
+
                                 <div class="flex flex-wrap items-center gap-6 mb-4">
                                     <label class="btn-upload">
                                         <input type="file" id="hero-media-upload">
@@ -413,9 +427,9 @@
                                         </svg>
                                         UPLOAD MEDIA
                                     </label>
-                                    <span id="hero-media-status" class="upload-status">Ready</span>
+                                    <span id="hero-media-status" class="upload-status text-[10px]">READY</span>
                                 </div>
-                                <input type="text" id="hero-media-url" class="w-full glass-input"
+                                <input type="text" id="hero-media-url" class="w-full glass-input text-xs"
                                     placeholder="Paste direct URL or use the upload button above">
                             </div>
                         </div>

@@ -145,6 +145,49 @@ document.getElementById('add-partner-btn').addEventListener('click', () => {
     renderPartnersList();
 });
 
+const renderHeroPreview = (url) => {
+    const container = document.getElementById('hero-media-preview-container');
+    const imgPreview = document.getElementById('hero-media-preview-img');
+    const videoPreview = document.getElementById('hero-media-preview-video');
+
+    if (!container) return;
+
+    if (!url || typeof url !== 'string' || url.trim() === '') {
+        container.style.display = 'none';
+        return;
+    }
+
+    container.style.display = 'flex';
+    const isVideo = url.match(/\.(mp4|webm|ogg|mov)$/i) || url.includes('/video/upload/');
+
+    if (isVideo) {
+        imgPreview.classList.add('hidden');
+        imgPreview.style.display = 'none';
+        videoPreview.classList.remove('hidden');
+        videoPreview.style.display = 'block';
+        if (videoPreview.src !== url) videoPreview.src = url;
+    } else {
+        videoPreview.classList.add('hidden');
+        videoPreview.style.display = 'none';
+        imgPreview.classList.remove('hidden');
+        imgPreview.style.display = 'block';
+        if (imgPreview.src !== url) imgPreview.src = url;
+    }
+};
+
+const setupHeroMediaUploader = () => {
+    const urlInput = document.getElementById('hero-media-url');
+    if (urlInput) {
+        urlInput.addEventListener('input', (e) => renderHeroPreview(e.target.value));
+    }
+
+    // Existing setup for upload
+    setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url', 'hero-media-preview-container');
+
+    // Initial render
+    renderHeroPreview(urlInput?.value);
+};
+
 window.uploadHeroMedia = async (input) => {
     // This function will be replaced by setupFileUpload in init
 };
@@ -391,7 +434,7 @@ const renderHomeForm = () => {
     document.getElementById('hero-media-url').value = siteContent.hero.videoUrl || '';
 
     // Setup Hero Media Upload
-    setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url');
+    setupHeroMediaUploader();
 
     // Video Vault
     renderVideoVaultList();
@@ -617,18 +660,43 @@ const renderMasterGalleryList = () => {
                         </select>
                     </div>
                 </div>
-                <div>
-                     <label>Image URL</label>
-                     <div class="flex items-center gap-2 mb-2">
-                        <label class="bg-gold/10 text-gold border border-gold/30 px-3 py-1 rounded text-[10px] font-bold cursor-pointer hover:bg-gold hover:text-black transition-all">
-                            <input type="file" onchange="window.uploadProjectImage(this, ${i})" class="hidden">
-                            UPLOAD
-                        </label>
-                        <span id="proj-status-${i}" class="text-[9px] uppercase opacity-50"></span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Thumbnail Image</label>
+                        <div class="flex items-center gap-2 mb-2">
+                            <label class="bg-gold/10 text-gold border border-gold/30 px-3 py-1 rounded text-[10px] font-bold cursor-pointer hover:bg-gold hover:text-black transition-all">
+                                <input type="file" onchange="window.uploadProjectImage(this, ${i})" class="hidden">
+                                UPLOAD
+                            </label>
+                            <span id="proj-status-${i}" class="text-[9px] uppercase opacity-50"></span>
+                        </div>
+                        <input type="text" class="glass-input w-full p-2 rounded-lg text-xs" value="${proj.img || ''}" placeholder="Image URL" oninput="window.updateProject(${i}, 'img', this.value)">
                     </div>
-                     <input type="text" class="glass-input w-full p-2 rounded-lg text-xs" value="${proj.img}" oninput="window.updateProject(${i}, 'img', this.value)">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Hover Preview Video</label>
+                         <div class="flex items-center gap-2 mb-2">
+                            <label class="bg-blue-500/10 text-blue-400 border border-blue-500/30 px-3 py-1 rounded text-[10px] font-bold cursor-pointer hover:bg-blue-500 hover:text-white transition-all">
+                                <input type="file" onchange="window.uploadProjectHoverVideo(this, ${i})" class="hidden">
+                                UPLOAD
+                            </label>
+                            <span id="proj-hover-status-${i}" class="text-[9px] uppercase opacity-50"></span>
+                        </div>
+                        <input type="text" class="glass-input w-full p-2 rounded-lg text-xs" value="${proj.hoverVideo || ''}" placeholder="Hover Video URL (.mp4)" oninput="window.updateProject(${i}, 'hoverVideo', this.value)">
+                    </div>
                 </div>
-                <button type="button" class="w-full text-[10px] font-bold text-gold uppercase tracking-widest text-center py-2 bg-gold/5 rounded-lg border border-gold/10" onclick="window.toggleEditProject(${i})">DONE</button>
+                <div class="pt-2 border-t border-white/5">
+                    <label class="block text-[10px] uppercase font-black text-gold mb-2 tracking-widest">Master Film (Main Video)</label>
+                    <div class="flex items-center gap-3 mb-3">
+                        <label class="bg-gold text-black px-4 py-2 rounded-lg text-[10px] font-black cursor-pointer hover:bg-white transition-all uppercase tracking-tighter">
+                            <input type="file" onchange="window.uploadProjectMainVideo(this, ${i})" class="hidden">
+                            UPLOAD VIDEO
+                        </label>
+                        <span id="proj-main-status-${i}" class="text-[9px] uppercase font-bold text-gray-400"></span>
+                        <div class="h-px flex-1 bg-white/5"></div>
+                    </div>
+                    <input type="text" class="glass-input w-full p-3 rounded-xl text-xs border-gold/20" value="${proj.videoUrl || ''}" placeholder="...or paste YouTube/Vimeo/Direct Link" oninput="window.updateProject(${i}, 'videoUrl', this.value)">
+                </div>
+                <button type="button" class="w-full text-[10px] font-black text-gold uppercase tracking-[0.2em] text-center py-4 bg-gold/5 rounded-xl border border-gold/10 hover:bg-gold hover:text-black transition-all" onclick="window.toggleEditProject(${i})">SAVE PROJECT DETAILS</button>
             </div>
             <div id="proj-upload-status-${i}" class="absolute top-2 right-2 text-[8px] font-bold text-gold pointer-events-none"></div>
         </div>
@@ -696,6 +764,48 @@ window.deleteProject = (index) => {
     renderMasterGalleryList();
 };
 
+window.uploadProjectMainVideo = async (input, index) => {
+    if (input.files[0]) {
+        const file = input.files[0];
+        const statusEl = document.getElementById(`proj-main-status-${index}`);
+        statusEl.textContent = 'Uploading Big File...';
+
+        try {
+            const url = await uploadFile(file);
+            if (url) {
+                siteContent.projects[index].videoUrl = url;
+                statusEl.textContent = 'VIDEO READY';
+                renderMasterGalleryList();
+            } else {
+                statusEl.textContent = 'UPLOAD FAILED';
+            }
+        } catch (err) {
+            statusEl.textContent = 'ERROR';
+        }
+    }
+};
+
+window.uploadProjectHoverVideo = async (input, index) => {
+    if (input.files[0]) {
+        const file = input.files[0];
+        const statusEl = document.getElementById(`proj-hover-status-${index}`);
+        statusEl.textContent = '...';
+
+        try {
+            const url = await uploadFile(file);
+            if (url) {
+                siteContent.projects[index].hoverVideo = url;
+                statusEl.textContent = 'DONE';
+                renderMasterGalleryList();
+            } else {
+                statusEl.textContent = 'ERR';
+            }
+        } catch (err) {
+            statusEl.textContent = 'ERR';
+        }
+    }
+};
+
 window.uploadProjectImage = async (input, index) => {
     if (input.files[0]) {
         const statusEl = document.getElementById(`proj-status-${index}`);
@@ -719,7 +829,7 @@ window.uploadProjectImage = async (input, index) => {
 };
 
 document.getElementById('add-project-btn').addEventListener('click', () => {
-    siteContent.projects.push({ title: 'New Project', type: 'commercial', img: '' });
+    siteContent.projects.push({ title: 'New Project', type: 'commercial', img: '', hoverVideo: '', videoUrl: '' });
     renderMasterGalleryList();
     // Open edit for the new item
     window.toggleEditProject(siteContent.projects.length - 1);
@@ -760,6 +870,8 @@ window.handleProjectBulkUpload = async (input) => {
                         title: file.name.replace(/\.[^/.]+$/, "").toUpperCase(),
                         type: 'commercial',
                         img: url,
+                        hoverVideo: '',
+                        videoUrl: '',
                         isLoading: false
                     };
                     successCount++;
@@ -1216,8 +1328,14 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
             const url = await uploadFile(file);
             if (url) {
                 const urlInp = document.getElementById(urlInputId);
-                if (urlInp) urlInp.value = url;
-                if (previewId) {
+                if (urlInp) {
+                    urlInp.value = url;
+                    // Trigger input event if manual change listener exists
+                    urlInp.dispatchEvent(new Event('input'));
+                }
+
+                // Fallback for simple previews if needed (legacy)
+                if (previewId && previewId !== 'hero-media-preview-container') {
                     const prev = document.getElementById(previewId);
                     if (prev) {
                         prev.src = url;
@@ -1239,7 +1357,7 @@ const setupFileUpload = (inputId, statusId, urlInputId, previewId = null) => {
 };
 
 // Init Uploaders
-setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url');
+// setupFileUpload('hero-media-upload', 'hero-media-status', 'hero-media-url'); // Removed redundant call - handled by setupHeroMediaUploader in renderHomeForm
 setupFileUpload('about-founder-upload', 'about-founder-status', 'about-founder-img');
 setupFileUpload('gallery-upload', 'gallery-upload-status', 'gallery-images');
 setupFileUpload('luxury-test-upload', 'luxury-test-upload-status', 'luxury-test-img');

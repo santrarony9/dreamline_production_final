@@ -26,10 +26,6 @@
         href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
         rel="stylesheet">
     <style>
-        
-
-        
-
         .font-heading {
             font-family: 'Unbounded', sans-serif;
         }
@@ -449,22 +445,21 @@
             <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
             <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
             <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
-            
-            <a href="journal.html" class="hover:text-white transition-colors interactive">JOURNAL</a>
-            
-
+            <a href="index.html#footer" class="hover:text-white transition-colors interactive">CONTACT</a>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
-            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors" aria-label="Toggle Theme">
-                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
             </button>
-            <a href="tel:+918240054002"
-                class="bg-[#c5a059] text-black px-4 md:px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hidden md:block">Inquire</a>
         </div>
 
         <!-- MOBILE HAMBURGER -->
@@ -476,75 +471,120 @@
     </nav>
 
     <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
-
         <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
-            <a href="index.html" class="interactive">Home</a>
-            <a href="about.html" class="interactive">History</a>
-
+            <a onclick="closeMenu()" href="index.html" class="interactive">Home</a>
+            <a onclick="closeMenu()" href="about.html" class="interactive">History</a>
             <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
                 Luxury Weddings
             </a>
-
-            
-
-            <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
-
-            
-
             <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
                 Commercial
             </a>
-
-            <a onclick="closeMenu()" href="tel:+918240054002"
-                class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">
-                Inquire Now
-            </a>
-
+            <a onclick="closeMenu()" href="index.html#footer" class="interactive">Contact</a>
         </div>
-
     </div>
 
+    <!-- Main Content -->
+    <main class="pt-32">
+        }
+        }
 
+        .dot-ring::after {
+        content: '';
+        position: absolute;
+        top: -100%;
+        left: -100%;
+        width: 300%;
+        height: 300%;
+        border-radius: 50%;
+        border: 2px solid var(--gold);
+        animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        </style>
+        </head>
 
-    <main id="content-host">
-        <!-- VIEW: HOME -->
-        <div id="view-home" class="page-view">
-
-
-            <!-- Blog / Journal Section (Enhanced SEO) -->
-            <section id="blog" class="py-32 bg-[#080808]">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-20">
-                        <h2 class="font-heading text-5xl font-black">BLOGS</h2>
+        <body>
+            <!-- Loader -->
+            <div id="loader">
+                <div class="text-center">
+                    <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+                    <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                        <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
                     </div>
-
-                    <div id="journal-grid" class="grid lg:grid-cols-3 gap-10">
-                        <!-- Dynamic Content -->
-                    </div>
+                    <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
                 </div>
-            </section>
-        </div>
+            </div>
 
-        <script type="module">
-            async function fetchJournals() {
-                try {
-                    const res = await fetch('/api/journals');
-                    if (!res.ok) throw new Error('Failed to fetch journals');
-                    const journals = await res.json();
-                    renderJournals(journals);
-                } catch (err) {
-                    console.error(err);
-                    document.getElementById('journal-grid').innerHTML = '<p class="text-white text-center col-span-full">Loading insights...</p>';
-                }
-            }
+            <!-- Navigation -->
+            <nav
+                class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+                <div class="font-heading font-black text-lg tracking-tighter">
+                    <a href="index.html" class="interactive flex items-center gap-2">
+                        <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+                    </a>
+                </div>
+                <div
+                    class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+                    <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+                    <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
+                    <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+                    <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+                    <a href="index.html#footer" class="hover:text-white transition-colors interactive">CONTACT</a>
+                </div>
+                <div class="flex items-center gap-2 md:gap-4">
+                    <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                        aria-label="Toggle Theme">
+                        <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+                <main id="content-host">
+                    <!-- VIEW: HOME -->
+                    <div id="view-home" class="page-view">
 
-            function renderJournals(journals) {
-                const grid = document.getElementById('journal-grid');
-                if (grid) {
-                    if (journals.length === 0) {
-                        grid.innerHTML = '<p class="text-gray-500 text-center col-span-full py-10">No journal entries found.</p>';
-                    } else {
-                        grid.innerHTML = journals.map(post => `
+
+                        <!-- Blog / Journal Section (Enhanced SEO) -->
+                        <section id="blog" class="py-32 bg-[#080808]">
+                            <div class="container mx-auto px-6">
+                                <div class="text-center mb-20">
+                                    <h2 class="font-heading text-5xl font-black">BLOGS</h2>
+                                </div>
+
+                                <div id="journal-grid" class="grid lg:grid-cols-3 gap-10">
+                                    <!-- Dynamic Content -->
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <script type="module">
+                        async function fetchJournals() {
+                            try {
+                                const res = await fetch('/api/journals');
+                                if (!res.ok) throw new Error('Failed to fetch journals');
+                                const journals = await res.json();
+                                renderJournals(journals);
+                            } catch (err) {
+                                console.error(err);
+                                document.getElementById('journal-grid').innerHTML = '<p class="text-white text-center col-span-full">Loading insights...</p>';
+                            }
+                        }
+
+                        function renderJournals(journals) {
+                            const grid = document.getElementById('journal-grid');
+                            if (grid) {
+                                if (journals.length === 0) {
+                                    grid.innerHTML = '<p class="text-gray-500 text-center col-span-full py-10">No journal entries found.</p>';
+                                } else {
+                                    grid.innerHTML = journals.map(post => `
                             <article class="blog-card rounded-3xl group">
                                 <div class="h-64 overflow-hidden">
                                     <img src="${post.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="${post.title}">
@@ -560,158 +600,160 @@
                                 </div>
                             </article>
                         `).join('');
-                    }
-                }
-            }
+                                }
+                            }
+                        }
 
-            window.addEventListener('DOMContentLoaded', fetchJournals);
-        </script>
-        </div>
-        </section>
-
-
-
-
-
-
-        </div>
-
-        <div id="views-container" class="pt-24">
+                        window.addEventListener('DOMContentLoaded', fetchJournals);
+                    </script>
+                    </div>
+                    </section>
 
 
 
 
 
 
+                    </div>
 
-
-        </div>
-
-
-        </div>
-
-
-        <!-- Global Footer -->
-        <footer class="py-20 border-t border-white/5 text-center">
-            <div class="container mx-auto px-6">
-                <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span
-                        class="text-[#c5a059]">PRODUCTION</span></h2>
-
-                <div
-                    class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-[10px] text-gray-500 tracking-widest uppercase font-bold">
-                    <a id="footer-address" href="https://maps.google.com/?q=85,Tilottama+Plaza,Kolkata" target="_blank"
-                        class="hover:text-[#c5a059] transition-colors">
-                        85, Tilottama Plaza, Kolkata 700082
-                    </a>
-                    <span class="hidden md:block text-[#c5a059]">•</span>
-                    <a id="footer-phone" href="tel:+918240054002" class="hover:text-[#c5a059] transition-colors">+91
-                        82400 54002</a>
-                    <span class="hidden md:block text-[#c5a059]">•</span>
-                    <a id="footer-email" href="mailto:santrarony9@gmail.com"
-                        class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
-                </div>
-
-                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
-                <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
-                <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
-                    &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
-                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX
-                </p>
-            </div>
-        </footer>
+                    <div id="views-container" class="pt-24">
 
 
 
-    </main>
-
-
-    <script>
-
-        // Data & Assets
-        const artworks = [
-            { id: 1, type: 'wedding', title: 'The Zamindar Soul', img: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800' },
-            { id: 2, type: 'wedding', title: 'Benarasi Dreams', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800' },
-            { id: 3, type: 'commercial', title: 'E-Commerce Luxe', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800' },
-            { id: 4, type: 'music', title: 'Neon Pulse', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800' },
-            { id: 5, type: 'commercial', title: 'Corporate Identity', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800' },
-            { id: 6, type: 'wedding', title: 'Sabyasachi Aesthetic', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800' },
-            { id: 7, type: 'music', title: 'The Unplugged Session', img: 'https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=800' },
-            { id: 8, type: 'commercial', title: 'Textile Narrative', img: 'https://images.unsplash.com/photo-1445205170230-053b830c6050?auto=format&fit=crop&w=800' }
-        ];
-
-        // Custom Loader Progress
-        window.addEventListener('load', () => {
-            const prog = document.getElementById('loader-progress');
-            const loader = document.getElementById('loader');
-
-            prog.style.width = '100%';
-
-            setTimeout(() => {
-                loader.style.transform = 'translateY(-100%)';
-                document.body.style.overflow = 'auto';
-            }, 800);
-        });
 
 
 
-        // Custom Cursor
-        const dot = document.getElementById('cursor-dot');
-        const outline = document.getElementById('cursor-outline');
 
-        document.addEventListener('mousemove', (e) => {
-            dot.style.left = `${e.clientX}px`;
-            dot.style.top = `${e.clientY}px`;
 
-            outline.animate({
-                left: `${e.clientX - 22}px`,
-                top: `${e.clientY - 22}px`
-            }, { duration: 500, fill: "forwards" });
-        });
+                    </div>
 
-        // Kinetic Text Animation on Scroll
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const kinetics = document.querySelectorAll('.kinetic-bg');
-            kinetics.forEach((el, i) => {
-                const speed = 0.5 + (i * 0.2);
-                el.style.transform = `translateX(${(scrolled * speed) - 200}px)`;
-            });
 
-            // Reveal animations on scroll
-            document.querySelectorAll('.reveal-text').forEach(section => {
-                const top = section.getBoundingClientRect().top;
-                if (top < window.innerHeight * 0.8) {
-                    section.classList.add('active-reveal');
-                }
-            });
-        });
+                    </div>
 
-        // Hover Effects
-        document.querySelectorAll('.interactive').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                outline.style.transform = 'scale(2)';
-                outline.style.backgroundColor = 'rgba(255,255,255,0.05)';
-            });
-            el.addEventListener('mouseleave', () => {
-                outline.style.transform = 'scale(1)';
-                outline.style.backgroundColor = 'transparent';
-            });
-        });
 
-        // Start
-        window.onload = () => {
-            document.getElementById('page-loader').style.transform = 'translateY(-100%)';
-            setTimeout(() => {
-                document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('active-reveal'));
-            }, 300);
-        };
+                    <!-- Global Footer -->
+                    <footer class="py-20 border-t border-white/5 text-center">
+                        <div class="container mx-auto px-6">
+                            <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span
+                                    class="text-[#c5a059]">PRODUCTION</span></h2>
 
-        // Render Functions
-        function renderContent() {
-            document.querySelectorAll('#wedding-grid').forEach(weddingGrid => {
-                weddingGrid.innerHTML = artworks
-                    .filter(a => a.type === 'wedding')
-                    .map(item => `
+                            <div
+                                class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-[10px] text-gray-500 tracking-widest uppercase font-bold">
+                                <a id="footer-address" href="https://maps.google.com/?q=85,Tilottama+Plaza,Kolkata"
+                                    target="_blank" class="hover:text-[#c5a059] transition-colors">
+                                    85, Tilottama Plaza, Kolkata 700082
+                                </a>
+                                <span class="hidden md:block text-[#c5a059]">•</span>
+                                <a id="footer-phone" href="tel:+918240054002"
+                                    class="hover:text-[#c5a059] transition-colors">+91
+                                    82400 54002</a>
+                                <span class="hidden md:block text-[#c5a059]">•</span>
+                                <a id="footer-email" href="mailto:santrarony9@gmail.com"
+                                    class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
+                            </div>
+
+                            <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since
+                                2010</p>
+                            <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+                            <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                                &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                                GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+                            </p>
+                        </div>
+                    </footer>
+
+
+
+                </main>
+
+
+                <script>
+
+                    // Data & Assets
+                    const artworks = [
+                        { id: 1, type: 'wedding', title: 'The Zamindar Soul', img: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800' },
+                        { id: 2, type: 'wedding', title: 'Benarasi Dreams', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800' },
+                        { id: 3, type: 'commercial', title: 'E-Commerce Luxe', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800' },
+                        { id: 4, type: 'music', title: 'Neon Pulse', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800' },
+                        { id: 5, type: 'commercial', title: 'Corporate Identity', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800' },
+                        { id: 6, type: 'wedding', title: 'Sabyasachi Aesthetic', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800' },
+                        { id: 7, type: 'music', title: 'The Unplugged Session', img: 'https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=800' },
+                        { id: 8, type: 'commercial', title: 'Textile Narrative', img: 'https://images.unsplash.com/photo-1445205170230-053b830c6050?auto=format&fit=crop&w=800' }
+                    ];
+
+                    // Custom Loader Progress
+                    window.addEventListener('load', () => {
+                        const prog = document.getElementById('loader-progress');
+                        const loader = document.getElementById('loader');
+
+                        prog.style.width = '100%';
+
+                        setTimeout(() => {
+                            loader.style.transform = 'translateY(-100%)';
+                            document.body.style.overflow = 'auto';
+                        }, 800);
+                    });
+
+
+
+                    // Custom Cursor
+                    const dot = document.getElementById('cursor-dot');
+                    const outline = document.getElementById('cursor-outline');
+
+                    document.addEventListener('mousemove', (e) => {
+                        dot.style.left = `${e.clientX}px`;
+                        dot.style.top = `${e.clientY}px`;
+
+                        outline.animate({
+                            left: `${e.clientX - 22}px`,
+                            top: `${e.clientY - 22}px`
+                        }, { duration: 500, fill: "forwards" });
+                    });
+
+                    // Kinetic Text Animation on Scroll
+                    window.addEventListener('scroll', () => {
+                        const scrolled = window.scrollY;
+                        const kinetics = document.querySelectorAll('.kinetic-bg');
+                        kinetics.forEach((el, i) => {
+                            const speed = 0.5 + (i * 0.2);
+                            el.style.transform = `translateX(${(scrolled * speed) - 200}px)`;
+                        });
+
+                        // Reveal animations on scroll
+                        document.querySelectorAll('.reveal-text').forEach(section => {
+                            const top = section.getBoundingClientRect().top;
+                            if (top < window.innerHeight * 0.8) {
+                                section.classList.add('active-reveal');
+                            }
+                        });
+                    });
+
+                    // Hover Effects
+                    document.querySelectorAll('.interactive').forEach(el => {
+                        el.addEventListener('mouseenter', () => {
+                            outline.style.transform = 'scale(2)';
+                            outline.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                        });
+                        el.addEventListener('mouseleave', () => {
+                            outline.style.transform = 'scale(1)';
+                            outline.style.backgroundColor = 'transparent';
+                        });
+                    });
+
+                    // Start
+                    window.onload = () => {
+                        document.getElementById('page-loader').style.transform = 'translateY(-100%)';
+                        setTimeout(() => {
+                            document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('active-reveal'));
+                        }, 300);
+                    };
+
+                    // Render Functions
+                    function renderContent() {
+                        document.querySelectorAll('#wedding-grid').forEach(weddingGrid => {
+                            weddingGrid.innerHTML = artworks
+                                .filter(a => a.type === 'wedding')
+                                .map(item => `
         <div class="premium-card aspect-[3/4] interactive">
           <img src="${item.img}" class="w-full h-full object-cover">
           <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-80"></div>
@@ -721,27 +763,27 @@
           </div>
         </div>
       `).join('');
-            });
-        }
-        renderContent();
+                        });
+                    }
+                    renderContent();
 
 
 
 
 
 
-        // Gallery Filtering Logic
+                    // Gallery Filtering Logic
 
-        function filterGallery(type, el = null) {
-            if (el) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                el.classList.add('active');
-            }
-            const grid = document.getElementById('master-grid');
-            if (!grid) return;
+                    function filterGallery(type, el = null) {
+                        if (el) {
+                            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                            el.classList.add('active');
+                        }
+                        const grid = document.getElementById('master-grid');
+                        if (!grid) return;
 
-            const items = type === 'all' ? artworks : artworks.filter(a => a.type === type);
-            grid.innerHTML = items.map(item => `
+                        const items = type === 'all' ? artworks : artworks.filter(a => a.type === type);
+                        grid.innerHTML = items.map(item => `
                 <div class="premium-card aspect-square group interactive">
                     <img src="${item.img}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -752,88 +794,88 @@
                     </div>
                 </div>
             `).join('');
-        }
-        // Initial Load
-        filterGallery('all');
+                    }
+                    // Initial Load
+                    filterGallery('all');
 
-        // Smooth Scroll Logic
-        function scrollToSec(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
+                    // Smooth Scroll Logic
+                    function scrollToSec(id) {
+                        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                    }
 
-        // Scroll reveal animation logic (Native Intersection Observer)
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                }
-            });
-        }, observerOptions);
+                    // Scroll reveal animation logic (Native Intersection Observer)
+                    const observerOptions = { threshold: 0.1 };
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                            }
+                        });
+                    }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-
-        const menuBtn = document.getElementById("menu-btn");
-        const mobileMenu = document.getElementById("mobile-menu");
-
-        menuBtn.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-        });
-
-        function closeMenu() {
-            mobileMenu.classList.add("hidden");
-        }
+                    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 
-        // Navigation Logic
-        function navigateTo(pageId) {
-            const loader = document.getElementById('loader');
-            loader.style.opacity = '1';
-            loader.style.pointerEvents = 'auto';
+                    const menuBtn = document.getElementById("menu-btn");
+                    const mobileMenu = document.getElementById("mobile-menu");
 
-            setTimeout(() => {
-                document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
-                document.getElementById('page-' + pageId).classList.add('active-view');
-                window.scrollTo(0, 0);
-                loader.style.opacity = '0';
-                loader.style.pointerEvents = 'none';
-                renderContent(pageId);
-            }, 800);
-        }
+                    menuBtn.addEventListener("click", () => {
+                        mobileMenu.classList.toggle("hidden");
+                    });
+
+                    function closeMenu() {
+                        mobileMenu.classList.add("hidden");
+                    }
 
 
+                    // Navigation Logic
+                    function navigateTo(pageId) {
+                        const loader = document.getElementById('loader');
+                        loader.style.opacity = '1';
+                        loader.style.pointerEvents = 'auto';
 
-    </script>
-    <style>
-        .filter-btn {
-            padding: 10px 25px;
-            border-radius: 100px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-        }
+                        setTimeout(() => {
+                            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
+                            document.getElementById('page-' + pageId).classList.add('active-view');
+                            window.scrollTo(0, 0);
+                            loader.style.opacity = '0';
+                            loader.style.pointerEvents = 'none';
+                            renderContent(pageId);
+                        }, 800);
+                    }
 
-        .filter-btn.active {
-            background: #c5a059;
-            color: black;
-            border-color: #c5a059;
-            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
-        }
 
-        @keyframes loading {
-            0% {
-                transform: translateX(-100%);
-            }
 
-            100% {
-                transform: translateX(100%);
-            }
-        }
-    </style>
-</body>
+                </script>
+                <style>
+                    .filter-btn {
+                        padding: 10px 25px;
+                        border-radius: 100px;
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        font-size: 10px;
+                        font-weight: 900;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        transition: all 0.3s ease;
+                    }
+
+                    .filter-btn.active {
+                        background: #c5a059;
+                        color: black;
+                        border-color: #c5a059;
+                        box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+                    }
+
+                    @keyframes loading {
+                        0% {
+                            transform: translateX(-100%);
+                        }
+
+                        100% {
+                            transform: translateX(100%);
+                        }
+                    }
+                </style>
+        </body>
 
 </html>

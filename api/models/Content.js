@@ -167,7 +167,8 @@ const ContentSchema = new mongoose.Schema({
         title: String,
         type: String, // 'commercial', 'wedding', 'music'
         img: String,
-        hoverVideo: String // Added for video hover support
+        hoverVideo: String, // Added for video hover support
+        videoUrl: String // Full video URL for the player
     }],
     partners: [{
         name: String,
