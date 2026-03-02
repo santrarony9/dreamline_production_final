@@ -10,7 +10,7 @@ export default defineConfig({
                 luxury: resolve(__dirname, 'luxury.html'),
                 journal: resolve(__dirname, 'journal.html'),
                 about: resolve(__dirname, 'about.html'),
-                booking: resolve(__dirname, 'booking.html'),
+                contact: resolve(__dirname, 'contact.html'),
                 weddingDetails: resolve(__dirname, 'wedding-details.html'),
                 admin: resolve(__dirname, 'admin.html'),
             },
