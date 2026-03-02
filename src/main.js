@@ -32,6 +32,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     ];
 
     renderAll();
+    initVideoModal();
 });
 
 const fetchContent = async () => {
@@ -336,19 +337,49 @@ const renderMasterGallery = (filter = 'all') => {
         return;
     }
 
-    container.innerHTML = items.map(proj => `
-        <a href="${proj.isWedding ? `wedding-details.html?id=${proj.id}` : '#'}" class="wedding-card aspect-[4/5] bg-gray-900 overflow-hidden relative group block">
-            <img src="${proj.img}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100">
-            ${proj.hoverVideo ? `
-                <video src="${proj.hoverVideo}" preload="metadata" muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none hover-video" style="transform: scale(1.05)"></video>
-            ` : ''}
-            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-8 flex flex-col justify-end z-10">
-                <p class="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2">${proj.category || proj.type}</p>
-                <h3 class="text-white font-heading text-xl font-black uppercase leading-tight">${proj.title}</h3>
-                ${proj.isWedding ? '<span class="text-[9px] text-white/50 uppercase font-bold mt-4 tracking-tighter">View Story →</span>' : ''}
+    // Branded Placeholder for broken images
+    const placeholder = 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=20';
+
+    container.innerHTML = items.map(proj => {
+        const isWedding = proj.isWedding || proj.type === 'wedding';
+        const typeLabel = proj.type || (isWedding ? 'wedding' : 'commercial');
+        const displayImg = proj.img || placeholder;
+
+        return `
+            <div class="wedding-card aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden relative group block cursor-pointer" 
+                 onclick="window.openVideoPlayer('${proj.videoUrl || ''}', '${proj.title}')">
+                <img src="${displayImg}" 
+                     onerror="this.src='${placeholder}'"
+                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60 group-hover:opacity-100">
+                
+                ${proj.hoverVideo ? `
+                    <video src="${proj.hoverVideo}" preload="metadata" muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none hover-video" style="transform: scale(1.05)"></video>
+                ` : ''}
+
+                <!-- Content Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity p-8 flex flex-col justify-end z-10">
+                    <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <p class="text-[#c5a059] text-[9px] font-black uppercase tracking-[0.3em] mb-3">${typeLabel}</p>
+                        <h3 class="text-white font-heading text-xl font-black uppercase leading-tight tracking-tighter mb-4">${proj.title}</h3>
+                        
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 group-hover:bg-gold group-hover:text-black transition-all">
+                                <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                            </div>
+                            <span class="text-[9px] text-white/50 uppercase font-black tracking-widest group-hover:text-white transition-colors">
+                                ${proj.videoUrl ? 'Watch Film' : (isWedding ? 'View Story' : 'View Project')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subtle Border Glow -->
+                <div class="absolute inset-0 border border-white/0 group-hover:border-white/10 transition-colors pointer-events-none rounded-sm"></div>
             </div>
-        </a>
-    `).join('');
+        `;
+    }).join('');
 
     // Attach video hover listeners
     const cards = container.querySelectorAll('.wedding-card');
@@ -363,6 +394,90 @@ const renderMasterGallery = (filter = 'all') => {
         }
     });
 };
+
+// --- VIDEO PLAYER MODAL LOGIC ---
+window.openVideoPlayer = (url, title) => {
+    if (!url) return;
+
+    const modal = document.getElementById('video-modal');
+    const iframe = document.getElementById('modal-iframe');
+    const videoTag = document.getElementById('modal-video');
+    const loader = document.getElementById('video-loader');
+
+    if (!modal) return;
+
+    // Determine player type
+    const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+    const isVimeo = url.includes('vimeo.com');
+    const isDirect = url.match(/\.(mp4|webm|ogg|mov)$/i);
+
+    loader.style.display = 'flex';
+    modal.classList.remove('pointer-events-none');
+    modal.classList.add('opacity-100');
+
+    if (isYouTube || isVimeo) {
+        let embedUrl = url;
+        if (isYouTube) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length == 11) {
+                embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+            }
+        } else if (isVimeo) {
+            const match = url.match(/vimeo.com\/(\d+)/);
+            if (match) {
+                embedUrl = `https://player.vimeo.com/video/${match[1]}?autoplay=1`;
+            }
+        }
+
+        videoTag.classList.add('hidden');
+        iframe.classList.remove('hidden');
+        iframe.src = embedUrl;
+        iframe.onload = () => {
+            loader.style.display = 'none';
+            iframe.style.opacity = '1';
+        };
+    } else {
+        // Direct Video
+        iframe.classList.add('hidden');
+        videoTag.classList.remove('hidden');
+        videoTag.src = url;
+        videoTag.oncanplay = () => {
+            loader.style.display = 'none';
+        };
+    }
+};
+
+const initVideoModal = () => {
+    const modal = document.getElementById('video-modal');
+    const closeBtn = document.getElementById('close-video');
+    const iframe = document.getElementById('modal-iframe');
+    const videoTag = document.getElementById('modal-video');
+
+    if (!modal || !closeBtn) return;
+
+    const closeModal = () => {
+        modal.classList.add('pointer-events-none');
+        modal.classList.remove('opacity-100');
+        iframe.src = '';
+        iframe.style.opacity = '0';
+        videoTag.pause();
+        videoTag.src = '';
+    };
+
+    closeBtn.onclick = closeModal;
+    modal.onclick = (e) => {
+        if (e.target === modal) closeModal();
+    };
+
+    // ESC key support
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+};
+
+// Add to init
+// initVideoModal(); // Moved to DOMContentLoaded
 
 const renderAbout = () => {
     if (!siteContent.about) return;

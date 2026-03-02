@@ -26,10 +26,6 @@
         href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
         rel="stylesheet">
     <style>
-        
-
-        
-
         .font-heading {
             font-family: 'Unbounded', sans-serif;
         }
@@ -447,24 +443,23 @@
         <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
             <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
             <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
-            <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="luxury.html" class="text-[#c5a059] transition-colors interactive">LUXURY WEDDINGS </a>
             <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
-            
-            <a href="journal.html" class="hover:text-white transition-colors interactive">JOURNAL</a>
-            
-
+            <a href="index.html#footer" class="hover:text-white transition-colors interactive">CONTACT</a>
         </div>
         <div class="flex items-center gap-2 md:gap-4">
-            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors" aria-label="Toggle Theme">
-                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                 </svg>
             </button>
-            <a href="tel:+918240054002"
-                class="bg-[#c5a059] text-black px-4 md:px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hidden md:block">Inquire</a>
         </div>
 
         <!-- MOBILE HAMBURGER -->
@@ -476,168 +471,227 @@
     </nav>
 
     <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
-
         <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
-            <a href="index.html" class="interactive">Home</a>
-            <a href="about.html" class="interactive">History</a>
-
+            <a onclick="closeMenu()" href="index.html" class="interactive">Home</a>
+            <a onclick="closeMenu()" href="about.html" class="interactive">History</a>
             <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
                 Luxury Weddings
             </a>
-
-            
-
-            <a onclick="closeMenu()" href="journal.html" class="interactive">Journal</a>
-
-            
-
             <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
                 Commercial
             </a>
-
-            <a onclick="closeMenu()" href="tel:+918240054002"
-                class="mt-6 bg-[#c5a059] text-black px-6 py-3 rounded-full w-fit">
-                Inquire Now
-            </a>
-
+            <a onclick="closeMenu()" href="index.html#footer" class="interactive">Contact</a>
         </div>
-
     </div>
-
-
 
     <main id="content-host">
         <!-- VIEW: HOME -->
         <div id="view-home" class="page-view">
+            }
+            }
 
+            .dot-ring::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+            }
+            </style>
+            </head>
 
-
-
-
-
-
-
-
-
-
-            <!-- VIEW: LUXURY WEDDINGS -->
-            <div id="page-wedding" class="page-view">
-                <section class="pt-20 px-8 md:px-16">
-                    <div class="max-w-4xl mb-24">
-                        <h2 class="font-heading text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase"><span
-                                id="luxury-page-title1">The Heritage</span> <br><span id="luxury-page-title2"
-                                class="text-[#c5a059]">Collection.</span></h2>
-                        <p id="luxury-page-desc" class="text-white/60 text-lg leading-relaxed">We don't just photograph;
-                            we archive emotions. Specializing in luxury Bengali weddings and destination cinematic films
-                            across India.</p>
-                    </div>
-                    <div id="wedding-grid" class="grid md:grid-cols-3 gap-8">
-                        <!-- Dynamic Content -->
-                    </div>
-                </section>
-            </div>
-
-
-            <!-- Blog / Journal Section (Enhanced SEO) -->
-            <section id="blog" class="py-32 bg-[#080808]">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-20">
-                        <h2 class="font-heading text-5xl font-black">BLOGS</h2>
-                    </div>
-
-                    <div class="grid lg:grid-cols-3 gap-10">
-                        <!-- Post 1 -->
-                        <article class="blog-card rounded-3xl group">
-                            <div class="h-64 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Wedding Photography Kolkata Tips">
-                            </div>
-                            <div class="p-8">
-                                <div
-                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                                    <span>Mar 24, 2024</span>
-                                    <span class="text-[#c5a059]">Wedding Guide</span>
-                                </div>
-                                <h3
-                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
-                                    Navigating the Best Wedding Venues in North Kolkata</h3>
-                                <p class="text-sm text-gray-400 mb-6 font-light">From historical rajbaris to modern
-                                    luxury halls, we break down the most photogenic spots...</p>
-                                <a href="#"
-                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
-                                    Insight</a>
-                            </div>
-                        </article>
-
-                        <!-- Post 2 -->
-                        <article class="blog-card rounded-3xl group">
-                            <div class="h-64 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Video Marketing Strategy">
-                            </div>
-                            <div class="p-8">
-                                <div
-                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                                    <span>Feb 12, 2024</span>
-                                    <span class="text-[#c5a059]">Commercial</span>
-                                </div>
-                                <h3
-                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
-                                    Why Professional Video Content is Mandatory for Kolkata Brands</h3>
-                                <p class="text-sm text-gray-400 mb-6 font-light">The digital landscape of Bengal is
-                                    changing. Here is how video production scales ROI...</p>
-                                <a href="#"
-                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
-                                    Insight</a>
-                            </div>
-                        </article>
-
-                        <!-- Post 3 -->
-                        <article class="blog-card rounded-3xl group">
-                            <div class="h-64 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                    alt="Technical Photography Blog">
-                            </div>
-                            <div class="p-8">
-                                <div
-                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
-                                    <span>Jan 05, 2024</span>
-                                    <span class="text-[#c5a059]">Technical</span>
-                                </div>
-                                <h3
-                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
-                                    Mastering Low Light Photography: Tilottama Plaza Studio Secrets</h3>
-                                <p class="text-sm text-gray-400 mb-6 font-light">A technical breakdown of our signature
-                                    lighting style that defines Dreamline Production...</p>
-                                <a href="#"
-                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
-                                    Insight</a>
-                            </div>
-                        </article>
+            <body>
+                <!-- Loader -->
+                <div id="loader">
+                    <div class="text-center">
+                        <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+                        <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                            <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+                        </div>
+                        <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
                     </div>
                 </div>
-            </section>
+
+                <!-- Navigation -->
+                <nav
+                    class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+                    <div class="font-heading font-black text-lg tracking-tighter">
+                        <a href="index.html" class="interactive flex items-center gap-2">
+                            <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+                        </a>
+                    </div>
+                    <div
+                        class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+                        <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+                        <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
+                        <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS
+                        </a>
+                        <a href="commercial.html"
+                            class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+                        <a href="index.html#footer" class="hover:text-white transition-colors interactive">CONTACT</a>
+                    </div>
+                    <div class="flex items-center gap-2 md:gap-4">
+                        <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                            aria-label="Toggle Theme">
+                            <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                            <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <main id="content-host">
+                        <!-- VIEW: HOME -->
+                        <div id="view-home" class="page-view">
 
 
 
 
 
 
-        </div>
-
-        <div id="views-container" class="pt-24">
 
 
 
 
 
+                            <!-- VIEW: LUXURY WEDDINGS -->
+                            <div id="page-wedding" class="page-view">
+                                <section class="pt-20 px-8 md:px-16">
+                                    <div class="max-w-4xl mb-24">
+                                        <h2
+                                            class="font-heading text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase">
+                                            <span id="luxury-page-title1">The Heritage</span> <br><span
+                                                id="luxury-page-title2" class="text-[#c5a059]">Collection.</span>
+                                        </h2>
+                                        <p id="luxury-page-desc" class="text-white/60 text-lg leading-relaxed">We don't
+                                            just
+                                            photograph;
+                                            we archive emotions. Specializing in luxury Bengali weddings and destination
+                                            cinematic films
+                                            across India.</p>
+                                    </div>
+                                    <div id="wedding-grid" class="grid md:grid-cols-3 gap-8">
+                                        <!-- Dynamic Content -->
+                                    </div>
+                                </section>
+                            </div>
+
+
+                            <!-- Blog / Journal Section (Enhanced SEO) -->
+                            <section id="blog" class="py-32 bg-[#080808]">
+                                <div class="container mx-auto px-6">
+                                    <div class="text-center mb-20">
+                                        <h2 class="font-heading text-5xl font-black">BLOGS</h2>
+                                    </div>
+
+                                    <div class="grid lg:grid-cols-3 gap-10">
+                                        <!-- Post 1 -->
+                                        <article class="blog-card rounded-3xl group">
+                                            <div class="h-64 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    alt="Wedding Photography Kolkata Tips">
+                                            </div>
+                                            <div class="p-8">
+                                                <div
+                                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                                    <span>Mar 24, 2024</span>
+                                                    <span class="text-[#c5a059]">Wedding Guide</span>
+                                                </div>
+                                                <h3
+                                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                                    Navigating the Best Wedding Venues in North Kolkata</h3>
+                                                <p class="text-sm text-gray-400 mb-6 font-light">From historical
+                                                    rajbaris to
+                                                    modern
+                                                    luxury halls, we break down the most photogenic spots...</p>
+                                                <a href="#"
+                                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                                    Insight</a>
+                                            </div>
+                                        </article>
+
+                                        <!-- Post 2 -->
+                                        <article class="blog-card rounded-3xl group">
+                                            <div class="h-64 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    alt="Video Marketing Strategy">
+                                            </div>
+                                            <div class="p-8">
+                                                <div
+                                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                                    <span>Feb 12, 2024</span>
+                                                    <span class="text-[#c5a059]">Commercial</span>
+                                                </div>
+                                                <h3
+                                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                                    Why Professional Video Content is Mandatory for Kolkata Brands</h3>
+                                                <p class="text-sm text-gray-400 mb-6 font-light">The digital landscape
+                                                    of
+                                                    Bengal is
+                                                    changing. Here is how video production scales ROI...</p>
+                                                <a href="#"
+                                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                                    Insight</a>
+                                            </div>
+                                        </article>
+
+                                        <!-- Post 3 -->
+                                        <article class="blog-card rounded-3xl group">
+                                            <div class="h-64 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    alt="Technical Photography Blog">
+                                            </div>
+                                            <div class="p-8">
+                                                <div
+                                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                                    <span>Jan 05, 2024</span>
+                                                    <span class="text-[#c5a059]">Technical</span>
+                                                </div>
+                                                <h3
+                                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                                    Mastering Low Light Photography: Tilottama Plaza Studio Secrets</h3>
+                                                <p class="text-sm text-gray-400 mb-6 font-light">A technical breakdown
+                                                    of
+                                                    our signature
+                                                    lighting style that defines Dreamline Production...</p>
+                                                <a href="#"
+                                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                                    Insight</a>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </section>
 
 
 
-        </div>
+
+
+
+                        </div>
+
+                        <div id="views-container" class="pt-24">
+
+
+
+
+
+
+
+
+                        </div>
 
 
         </div>
@@ -663,7 +717,8 @@
                         class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
                 </div>
 
-                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
+                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since
+                    2010</p>
                 <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
                 <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
                     &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>

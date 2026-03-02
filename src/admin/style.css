@@ -10,7 +10,11 @@
     --white: #ffffff;
 }
 
-/* Premium Login Styles */
+/* Hero Preview Fix */
+#hero-media-preview-container:not(.hidden) {
+    display: block !important;
+}
+
 .login-container {
     background: #0a0a0a;
     color: white;
