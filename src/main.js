@@ -554,9 +554,9 @@ backToTopBtn.innerHTML = `
   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
 </svg>
 `;
-document.body.appendChild(backToTopBtn);
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.body.appendChild(backToTopBtn);
     // Setup back to top
     const btt = document.getElementById('back-to-top');
     if (btt) {
