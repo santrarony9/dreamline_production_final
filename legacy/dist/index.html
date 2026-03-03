@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
+    <title>Dreamline Production | Cinematic Visual House</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17805539120');
+    </script>
+
+    <!-- JSON-LD Structured Data for AI & Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Dreamline Production",
+      "image": "https://dreamlineproduction.com/logo.png",
+      "description": "Dreamline Production is a premier cinematic visual house in Kolkata, specializing in wedding photography, corporate films, and commercial storytelling.",
+      "@id": "https://dreamlineproduction.com",
+      "url": "https://dreamlineproduction.com",
+      "telephone": "+919886679945",
+      "email": "santrarony9@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Haridevpur",
+        "addressLocality": "Kolkata",
+        "addressRegion": "West Bengal",
+        "postalCode": "700082",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 22.498,
+        "longitude": 88.357
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        "https://www.facebook.com/dreamlineproduction",
+        "https://www.instagram.com/dreamlineproduction",
+        "https://www.youtube.com/dreamlineproduction"
+      ],
+      "priceRange": "$$"
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+
+        @media (max-width: 768px) {
+
+            nav {
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                transform: none !important;
+                border-radius: 0 !important;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                border-radius: 18px !important;
+            }
+        }
+
+
+
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Creative Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Cinematic Masking */
+        .mask-text {
+            background: linear-gradient(to right, #fff 50%, #444 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-position 1s ease;
+        }
+
+        .reveal:hover .mask-text {
+            background-position: 0 0;
+        }
+
+        /* Parallax Backgrounds */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+
+
+        /* Magnetic Button Effect */
+        .magnetic-wrap {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Loader */
+
+        /* Kinetic Typography Scroll */
+        .kinetic-bg {
+            position: absolute;
+            font-size: 25vw;
+            font-family: 'Unbounded';
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            text-transform: uppercase;
+        }
+
+        /* Motion Gallery */
+        .motion-track {
+            display: flex;
+            gap: 2rem;
+            width: -moz-fit-content;
+            width: fit-content;
+            animation: glide 40s linear infinite;
+        }
+
+        @keyframes glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+               object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+        /* Floating Text Effects */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
+
+        /* Custom Hover Glow */
+        .interactive:hover {
+            color: var(--gold);
+        }
+
+
+
+        /* Review Card Glow */
+        .review-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        /* Floating Text Effects */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
+
+        /* Brand Ticker */
+        .brand-track {
+            display: flex;
+            gap: 4rem;
+            width: -moz-fit-content;
+            width: fit-content;
+            animation: brand-glide 30s linear infinite;
+            align-items: center;
+        }
+
+        @keyframes brand-glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        /* Marquee Animation */
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            gap: 4rem;
+            padding: 2rem 0;
+        }
+
+        .marquee-inner {
+            display: flex;
+            gap: 4rem;
+            animation: scroll 40s linear infinite;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Vertical Gallery Motion */
+        .v-track-up {
+            animation: glide-up 30s linear infinite;
+        }
+
+        .v-track-down {
+            animation: glide-down 30s linear infinite;
+        }
+
+        @keyframes glide-up {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes glide-down {
+            from {
+                transform: translateY(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+               object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+
+        /* Text Stroke Effect */
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+            transition: all 0.5s ease;
+        }
+
+        .text-outline:hover {
+            -webkit-text-stroke: 1px var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            * {
+                cursor: auto !important;
+            }
+
+            #cursor-dot,
+            #cursor-outline {
+                display: none !important;
+            }
+        }
+
+        /* Premium Card Effects */
+        .premium-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: var(--slate);
+        }
+
+        .premium-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .premium-card img {
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .premium-card:hover img {
+            transform: scale(1.08);
+            filter: brightness(0.7);
+        }
+
+        /* Blog Card Shine */
+        .blog-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--deep-gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .blog-card:hover::before {
+            left: 100%;
+        }
+
+        /* Timeline Dots */
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(.33);
+                opacity: 1;
+            }
+
+            80%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .dot-ring::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/main-iRsyxo4F.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-CHWbPICF.js">
+  <link rel="modulepreload" crossorigin href="/assets/main-CkTA6UUp.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Bc249OEn.css">
+</head>
+
+<body>
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+            </div>
+            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Preparing Experience</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.svg" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
+        <div
+            class="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-gray-400 whitespace-nowrap">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+            <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
+            <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+            <a href="contact.html" class="hover:text-white transition-colors interactive">CONTACT</a>
+        </div>
+        <div class="flex items-center gap-2 md:gap-4">
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- MOBILE HAMBURGER -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 w-screen h-screen bg-black/95 z-[999] hidden overflow-y-auto">
+
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+            <a onclick="closeMenu()" href="index.html" class="interactive">Home</a>
+            <a onclick="closeMenu()" href="about.html" class="interactive">History</a>
+            <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
+                Luxury Weddings
+            </a>
+            <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
+                Commercial
+            </a>
+            <a onclick="closeMenu()" href="contact.html" class="interactive">Contact</a>
+        </div>
+
+    </div>
+
+
+    <main id="content-host">
+        <!-- VIEW: HOME -->
+        <div id="view-home" class="page-view">
+            <!-- Hero with Motion Text -->
+            <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+                <div class="kinetic-bg" style="top: 10%; left: -5%;">CINEMATIC</div>
+                <div class="kinetic-bg" style="bottom: 10%; right: -5%;">PRODUCTION</div>
+
+                <!-- Fake Video Background Placeholder -->
+                <div class="absolute inset-0 -z-20 bg-black">
+                    <img id="hero-bg-img"
+                        src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80"
+                        class="w-full h-full object-cover opacity-30 scale-110 animate-[pulse_8s_infinite]">
+                </div>
+
+                <div class="text-center px-6">
+                    <p class="text-[#c5a059] text-[10px] font-black uppercase tracking-[1em] mb-8 reveal-text">
+                        <span id="hero-subtitle" class="block reveal-inner">Loading...</span>
+                    </p>
+                    <h1
+                        class="font-heading text-6xl md:text-[9vw] font-black leading-[0.8] tracking-tighter uppercase mb-12 reveal-text">
+                        <span id="hero-title-1" class="block reveal-inner"></span>
+                        <span id="hero-title-2" class="block reveal-inner text-[#c5a059]"></span>
+                    </h1>
+                    <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+                        <a href="luxury.html" class="group flex items-center gap-4 interactive">
+                            <span
+                                class="w-12 h-[1px] bg-white group-hover:w-20 group-hover:bg-[#c5a059] transition-all"></span>
+                            <span class="text-xs font-black uppercase tracking-widest">Explore Weddings</span>
+                        </a>
+                        <a href="commercial.html" class="group flex items-center gap-4 interactive">
+                            <span
+                                class="w-12 h-[1px] bg-white group-hover:w-20 group-hover:bg-[#c5a059] transition-all"></span>
+                            <span class="text-xs font-black uppercase tracking-widest">Commercial Works</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: HOME (The Luxury Entry) -->
+            <div id="page-home" class="page-view active-view">
+                <!-- Industry Validation Marquee -->
+                <div class="bg-[#080808] border-y border-white/5 marquee py-4">
+                    <div id="marquee-content" class="marquee-inner">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+
+                <!-- Dynamic Stats -->
+                <section id="stats-container" class="py-32 px-8 md:px-16 grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Dynamic Content -->
+                </section>
+            </div>
+
+            <!-- THE MOTION GALLERY (Continuous Glide) -->
+            <section id="page-gallery" class="py-32 bg-[#080808] overflow-hidden">
+                <div class="px-12 mb-16 flex justify-between items-end">
+                    <h2 class="font-heading text-4xl md:text-6xl font-black tracking-tighter uppercase">
+                        <span id="gallery-title">The Motion</span>
+                        <br><span class="text-white/20" id="gallery-subtitle">Archive.</span>
+                    </h2>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-[#c5a059] mb-4">15+ Years of Frames
+                    </p>
+                </div>
+
+                <div class="motion-track" id="motion-gallery-track">
+                    <!-- Dynamic Content -->
+                </div>
+            </section>
+
+            <!-- Vertical Filmstrip / Categories -->
+            <section id="services" class="py-32 bg-black text-white">
+                <div class="container mx-auto px-6">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-24 gap-6">
+                        <h2 class="font-heading text-5xl md:text-7xl font-black">SERVICES<br><span
+                                class="text-[#c5a059]">CATEGORIES</span></h2>
+                        <p class="max-w-xs text-gray-500 text-sm uppercase tracking-widest leading-loose">Specialized
+                            divisions catering to elite clientele across Bengal and beyond.</p>
+                    </div>
+
+                    <!-- Detailed Grid -->
+                    <div class="space-y-4">
+                        <!-- 01 Wedding -->
+                        <div
+                            class="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
+                            <div class="flex items-center gap-10">
+                                <span class="text-gray-600 font-heading text-xl">01</span>
+                                <h3
+                                    class="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">
+                                    WEDDING CINEMA</h3>
+                            </div>
+                            <div class="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p class="text-xs text-[#c5a059] uppercase font-bold">Premium Packages Start at ₹85,000
+                                </p>
+                            </div>
+                        </div>
+                        <!-- 02 Commercial -->
+                        <div
+                            class="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
+                            <div class="flex items-center gap-10">
+                                <span class="text-gray-600 font-heading text-xl">02</span>
+                                <h3
+                                    class="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">
+                                    COMMERCIAL ADS</h3>
+                            </div>
+                            <div class="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity text-right">
+                                <p class="text-xs text-[#c5a059] uppercase font-bold">Full Production & Scripting</p>
+                            </div>
+                        </div>
+                        <!-- 03 Events -->
+                        <div
+                            class="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
+                            <div class="flex items-center gap-10">
+                                <span class="text-gray-600 font-heading text-xl">03</span>
+                                <h3
+                                    class="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">
+                                    CORPORATE EVENTS</h3>
+                            </div>
+                            <div class="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p class="text-xs text-[#c5a059] uppercase font-bold">Summits • Expos • Launches</p>
+                            </div>
+                        </div>
+                        <!-- 04 Music Album -->
+                        <div
+                            class="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
+                            <div class="flex items-center gap-10">
+                                <span class="text-gray-600 font-heading text-xl">04</span>
+                                <h3
+                                    class="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">
+                                    MUSIC VIDEOS</h3>
+                            </div>
+                            <div class="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p class="text-xs text-[#c5a059] uppercase font-bold">4K Narrative Visualization</p>
+                            </div>
+                        </div>
+                        <!-- 05 Social -->
+                        <div
+                            class="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
+                            <div class="flex items-center gap-10">
+                                <span class="text-gray-600 font-heading text-xl">05</span>
+                                <h3
+                                    class="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">
+                                    SOCIAL MEDIA</h3>
+                            </div>
+                            <div class="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p class="text-xs text-[#c5a059] uppercase font-bold">Reels • Portfolios • Branding</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+            <!-- VIEW: GALLERY (NEW PAGE) -->
+            <div id="view-gallery" class="page-view">
+                <section class="pt-40 pb-20 px-6 md:px-12">
+                    <h1 class="font-heading text-5xl md:text-8xl font-black uppercase tracking-tighter mb-4">Master
+                        <br><span class="text-[#c5a059]">Gallery.</span>
+                    </h1>
+                    <p class="text-white/40 max-w-xl text-lg mb-12 uppercase tracking-widest text-xs font-bold">A
+                        multi-dimensional archive of emotion, light, and motion.</p>
+                </section>
+
+                <!-- VERTICAL MOTION SPLIT GALLERY -->
+                <section class="h-[80vh] overflow-hidden flex gap-4 px-6 md:px-12 mb-32">
+                    <div id="v-track-1" class="flex-1 v-track-up flex flex-col gap-4">
+                        <!-- Dynamic Content -->
+                    </div>
+                    <div id="v-track-2" class="flex-1 v-track-down flex flex-col gap-4 pt-20">
+                        <!-- Dynamic Content -->
+                    </div>
+                    <div id="v-track-3" class="hidden md:flex flex-1 v-track-up flex flex-col gap-4">
+                        <!-- Dynamic Content -->
+                    </div>
+                </section>
+
+                <!-- CINEMATIC VIDEO VAULT -->
+                <section class="py-32 px-6 md:px-12 bg-[#0a0a0a]">
+                    <div class="mb-20">
+                        <span class="text-[#c5a059] text-[10px] font-black uppercase tracking-[1em]">Motion
+                            Archive</span>
+                        <h2 class="font-heading text-4xl md:text-6xl font-black mt-4 uppercase">Video Vault.</h2>
+                    </div>
+
+                    <div id="video-vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Dynamic Content -->
+                    </div>
+                </section>
+            </div>
+
+            <div id="views-container" class="pt-24">
+
+
+
+
+                <!-- VIEW: MASTER GALLERY -->
+                <div id="page-gallery" class="page-view">
+                    <section class="pt-20 px-8 md:px-16 text-center">
+                        <h2 class="font-heading text-4xl md:text-6xl font-black tracking-tighter uppercase mb-12">
+                            Cinematic Masterpieces</h2>
+                        <div class="flex flex-wrap justify-center gap-4 mb-20">
+                            <button class="filter-btn active interactive" onclick="filterGallery('all', this)">All
+                                Works</button>
+                            <button class="filter-btn interactive"
+                                onclick="filterGallery('wedding', this)">Weddings</button>
+                            <button class="filter-btn interactive"
+                                onclick="filterGallery('commercial', this)">Commercials</button>
+                            <button class="filter-btn interactive" onclick="filterGallery('music', this)">Music
+                                Videos</button>
+                        </div>
+                        <div id="master-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </section>
+                </div>
+
+
+
+            </div>
+
+            <!-- Cinematic Expertise Grid -->
+            <section class="py-32 px-6 md:px-12 grid md:grid-cols-2 gap-24 items-center">
+                <div class="relative group interactive">
+                    <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800"
+                        class="rounded-3xl grayscale hover:grayscale-0 transition-all duration-700">
+                    <div class="absolute -bottom-10 -right-10 bg-[#c5a059] text-black p-12 rounded-3xl hidden lg:block">
+                        <div class="font-heading text-6xl font-black">15</div>
+                        <p class="text-[10px] font-black uppercase tracking-widest">Solid Years</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[#c5a059] font-black uppercase tracking-widest text-xs mb-6">Expertise Focus</p>
+                    <h2 class="font-heading text-5xl font-black uppercase tracking-tighter mb-8 leading-none">Luxury
+                        <br>Emotion <br>Storytelling.
+                    </h2>
+                    <p class="text-white/40 text-lg leading-relaxed mb-10 max-w-md">Dreamline Production moves away from
+                        "standard shots." We build cinematic experiences that preserve the soul of the event, treated
+                        with high-end color grading and sound design.</p>
+                    <div class="space-y-6">
+                        <div class="flex justify-between border-b border-white/10 pb-4 interactive">
+                            <span class="font-bold text-sm">Cinematic Wedding Films</span>
+                            <span class="text-[#c5a059] text-xs">01</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-4 interactive">
+                            <span class="font-bold text-sm">Music Video Production</span>
+                            <span class="text-[#c5a059] text-xs">02</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-4 interactive">
+                            <span class="font-bold text-sm">Commercial Advertisements</span>
+                            <span class="text-[#c5a059] text-xs">03</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+
+
+
+        <!-- PARTNERS/COMPANIES WORKED FOR -->
+        <section class="py-20 border-y border-white/5 bg-zinc-900/20 overflow-hidden">
+            <div class="brand-track">
+                <!-- Dynamic Content from main.js -->
+            </div>
+        </section>
+
+        <!-- GOOGLE REVIEWS SECTION -->
+        <section class="py-32 px-6 md:px-12 bg-[#080808]">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                <div class="reveal-text">
+                    <span class="text-[#c5a059] text-[10px] font-black uppercase tracking-[1em] block reveal-inner">The
+                        Reputation</span>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black mt-4 uppercase reveal-inner">Google
+                        <br>Reviews.
+                    </h2>
+                </div>
+                <div class="mt-8 md:mt-0 text-right">
+                    <div class="flex gap-1 text-[#c5a059] mb-2 justify-end">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                            <path
+                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-widest text-white/40"><span
+                            class="text-3xl text-[#c5a059] font-black mr-2">4.9</span> Average Rating (150+
+                        Reviews)</p>
+                </div>
+            </div>
+
+            <div class="review-slider-container overflow-hidden relative w-full">
+                <div class="review-track flex gap-6 w-max animate-scroll">
+                    <!-- Review 1 -->
+                    <div
+                        class="w-[300px] md:w-[350px] review-card p-8 rounded-2xl flex flex-col justify-between h-full bg-white/5 border border-white/5 hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                        <div>
+                            <div class="flex gap-1 mb-4">
+                                <span class="text-[#c5a059] text-lg">★★★★★</span>
+                            </div>
+                            <p class="text-white/70 italic leading-relaxed mb-8">"Dreamline captured our wedding like a
+                                high-budget film. Their attention to detail is unparalleled."</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                R</div>
+                            <div>
+                                <h4 class="text-xs font-black uppercase tracking-widest">Rahul Mukerji</h4>
+                                <p class="text-[9px] text-white/30 uppercase">Local Guide</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 2 -->
+                    <div
+                        class="w-[300px] md:w-[350px] review-card p-8 rounded-2xl flex flex-col justify-between h-full bg-white/5 border border-white/5 hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                        <div>
+                            <div class="flex gap-1 mb-4">
+                                <span class="text-[#c5a059] text-lg">★★★★★</span>
+                            </div>
+                            <p class="text-white/70 italic leading-relaxed mb-8">"Professionalism at its peak. We've
+                                worked with them for three campaigns and results exceeded expectations."</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                S</div>
+                            <div>
+                                <h4 class="text-xs font-black uppercase tracking-widest">Sanya Kapoor</h4>
+                                <p class="text-[9px] text-white/30 uppercase">Creative Director</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 3 -->
+                    <div
+                        class="w-[300px] md:w-[350px] review-card p-8 rounded-2xl flex flex-col justify-between h-full bg-white/5 border border-white/5 hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                        <div>
+                            <div class="flex gap-1 mb-4">
+                                <span class="text-[#c5a059] text-lg">★★★★★</span>
+                            </div>
+                            <p class="text-white/70 italic leading-relaxed mb-8">"I was skeptical about finding a team
+                                that understood cinematic storytelling. Dreamline is the gold standard."</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                A</div>
+                            <div>
+                                <h4 class="text-xs font-black uppercase tracking-widest">Amitav Roy</h4>
+                                <p class="text-[9px] text-white/30 uppercase">Entrepreneur</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 4 -->
+                    <div
+                        class="w-[300px] md:w-[350px] review-card p-8 rounded-2xl flex flex-col justify-between h-full bg-white/5 border border-white/5 hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                        <div>
+                            <div class="flex gap-1 mb-4">
+                                <span class="text-[#c5a059] text-lg">★★★★★</span>
+                            </div>
+                            <p class="text-white/70 italic leading-relaxed mb-8">"The team made us feel so comfortable.
+                                The pre-wedding shoot was magical and the film is cherished."</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                P</div>
+                            <div>
+                                <h4 class="text-xs font-black uppercase tracking-widest">Priya & Anirban</h4>
+                                <p class="text-[9px] text-white/30 uppercase">Wedding Couple</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 5 -->
+                    <div
+                        class="w-[300px] md:w-[350px] review-card p-8 rounded-2xl flex flex-col justify-between h-full bg-white/5 border border-white/5 hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                        <div>
+                            <div class="flex gap-1 mb-4">
+                                <span class="text-[#c5a059] text-lg">★★★★★</span>
+                            </div>
+                            <p class="text-white/70 italic leading-relaxed mb-8">"We hired Dreamline for our product
+                                launch. Timeline management and delivery speed were impressive."</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                R</div>
+                            <div>
+                                <h4 class="text-xs font-black uppercase tracking-widest">Rajesh Gupta</h4>
+                                <p class="text-[9px] text-white/30 uppercase">CEO, TechSolutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 6 -->
+                    <div
+                        class="w-[300px] md:w-[350px] review-card p-8 rounded-2xl flex flex-col justify-between h-full bg-white/5 border border-white/5 hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                        <div>
+                            <div class="flex gap-1 mb-4">
+                                <span class="text-[#c5a059] text-lg">★★★★★</span>
+                            </div>
+                            <p class="text-white/70 italic leading-relaxed mb-8">"My portfolio shoot with Dreamline gave
+                                me the break I needed. The lighting and angles were just perfect."</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                S</div>
+                            <div>
+                                <h4 class="text-xs font-black uppercase tracking-widest">Sneha Das</h4>
+                                <p class="text-[9px] text-white/30 uppercase">Model</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-20">
+                <a href="https://www.google.com/search?q=Dreamline+Production+Kolkata+Reviews" target="_blank"
+                    class="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all group">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.38 0 9.25-3.67 9.25-9.51 0-.48-.05-1.1-.15-1.39z" />
+                    </svg>
+                    <span>Read 150+ Reviews</span>
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- TESTIMONIAL HERO SLIDER (Simulated) -->
+        <section class="py-32 px-6 md:px-12 bg-white text-black">
+            <div class="max-w-6xl mx-auto">
+                <span class="text-black/30 text-[10px] font-black uppercase tracking-[1em]">Direct Testimony</span>
+                <div class="mt-12">
+                    <h3 class="font-heading text-3xl md:text-5xl font-black uppercase leading-tight">
+                        "THEY DON'T JUST RECORD EVENTS; THEY <span class="text-[#c5a059]">CRAFT MEMORIES</span>. WORKING
+                        WITH DREAMLINE WAS THE BEST DECISION FOR OUR BRAND IDENTITY."
+                    </h3>
+                    <div class="mt-12 flex items-center gap-6">
+                        <div class="w-16 h-16 bg-zinc-200 rounded-full"></div>
+                        <div>
+                            <p class="font-heading text-lg font-black uppercase tracking-tighter">Priyanka Sen</p>
+                            <p class="text-xs font-bold text-black/40 uppercase tracking-widest">Marketing Head, Kolkata
+                                Retailers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <!-- Global Footer -->
+        <footer id="footer" class="py-20 border-t border-white/5 text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span
+                        class="text-[#c5a059]">PRODUCTION</span></h2>
+
+                <div
+                    class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-[10px] text-gray-500 tracking-widest uppercase font-bold">
+                    <a id="footer-address" href="https://maps.google.com/?q=85,Tilottama+Plaza,Kolkata" target="_blank"
+                        class="hover:text-[#c5a059] transition-colors">
+                        85, Tilottama Plaza, Kolkata 700082
+                    </a>
+                    <span class="hidden md:block text-[#c5a059]">•</span>
+                    <a id="footer-phone" href="tel:+918240054002" class="hover:text-[#c5a059] transition-colors">+91
+                        82400 54002</a>
+                    <span class="hidden md:block text-[#c5a059]">•</span>
+                    <a id="footer-email" href="mailto:santrarony9@gmail.com"
+                        class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
+                </div>
+
+                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
+                <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+                <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                    &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX <br>
+                    <a href="/admin.html"
+                        class="text-[9px] text-gray-800 hover:text-gray-600 transition-colors mt-2 inline-block">Admin
+                        Login</a>
+                </p>
+            </div>
+        </footer>
+
+
+
+    </main>
+
+
+    <script>
+
+        // Data & Assets
+        // Master Gallery Rendering
+        function renderMasterGallery() {
+            const grid = document.getElementById('master-grid');
+            if (!grid) return;
+
+            // Combine Weddings and Commercial Projects into a single "Artworks" list
+            // Normalize data structure: { id, type, title, img }
+            const weddingItems = (window.weddings || []).map(w => ({
+                id: w.id,
+                type: 'wedding',
+                title: w.title,
+                img: w.coverImage
+            }));
+
+            const projectItems = (window.siteContent?.projects || []).map(p => ({
+                id: p.id,
+                type: p.type || 'commercial', // default to commercial if undefined
+                title: p.title,
+                img: p.img
+            }));
+
+            // Expose globally for filtering
+            window.allArtworks = [...weddingItems, ...projectItems];
+
+            // Initial render
+            filterGallery('all');
+        }
+
+        // Expose render function for main.js to call
+        window.renderMasterGallery = renderMasterGallery;
+
+        function filterGallery(type, el = null) {
+            if (el) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+            }
+            const grid = document.getElementById('master-grid');
+            if (!grid) return;
+
+            const items = type === 'all' ? (window.allArtworks || []) : (window.allArtworks || []).filter(a => a.type === type);
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p class="text-white/40 text-xs uppercase tracking-widest col-span-full text-center py-10">No projects found in this category.</p>';
+                return;
+            }
+
+            grid.innerHTML = items.map(item => `
+                <div class="premium-card aspect-square group interactive">
+                    <img src="${item.img}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="text-center">
+                            <p class="text-[#c5a059] text-[8px] font-black uppercase tracking-[0.4em] mb-2">${item.type}</p>
+                            <h4 class="font-heading text-[10px] uppercase px-4">${item.title}</h4>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+
+
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+
+            if (!mobileMenu.classList.contains("hidden")) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "auto";
+            }
+        });
+
+        function closeMenu() {
+            mobileMenu.classList.add("hidden");
+            document.body.style.overflow = "auto";
+        }
+
+
+
+
+
+
+
+        // Gallery Filtering Logic
+
+
+
+        // Smooth Scroll Logic
+        function scrollToSec(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Scroll reveal animation logic (Native Intersection Observer)
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Kinetic Text Animation on Scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const kinetics = document.querySelectorAll('.kinetic-bg');
+            kinetics.forEach((el, i) => {
+                const speed = 0.5 + (i * 0.2);
+                el.style.transform = `translateX(${(scrolled * speed) - 200}px)`;
+            });
+
+            // Reveal animations on scroll
+            document.querySelectorAll('.reveal-text').forEach(section => {
+                const top = section.getBoundingClientRect().top;
+                if (top < window.innerHeight * 0.8) {
+                    section.classList.add('active-reveal');
+                }
+            });
+        });
+
+        // Initial Trigger
+        window.addEventListener('load', () => {
+            window.dispatchEvent(new Event('scroll'));
+        });
+
+        // Navigation Logic
+        function navigateTo(pageId) {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '1';
+            loader.style.pointerEvents = 'auto';
+
+            setTimeout(() => {
+                document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
+                document.getElementById('page-' + pageId).classList.add('active-view');
+                window.scrollTo(0, 0);
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                renderContent(pageId);
+            }, 800);
+        }
+
+
+
+    </script>
+    <style>
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #c5a059;
+            color: black;
+            border-color: #c5a059;
+            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+    <!-- VIDEO PLAYER MODAL -->
+    <div id="video-modal"
+        class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-500">
+        <button id="close-video"
+            class="absolute top-10 right-10 text-white/50 hover:text-white transition-colors z-[2100]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <div class="w-full max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl mx-6 relative">
+            <div id="video-loader" class="absolute inset-0 flex items-center justify-center bg-zinc-900 z-10">
+                <div class="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin"></div>
+            </div>
+            <iframe id="modal-iframe" class="w-full h-full opacity-0 transition-opacity duration-700" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            <video id="modal-video" class="w-full h-full hidden object-contain" controls autoplay></video>
+        </div>
+    </div>
+</body>
+
+</html>

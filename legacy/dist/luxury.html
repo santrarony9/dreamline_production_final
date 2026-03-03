@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <title>Dreamline Production | Luxury Weddings</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17805539120');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Creative Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Cinematic Masking */
+        .mask-text {
+            background: linear-gradient(to right, #fff 50%, #444 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-position 1s ease;
+        }
+
+        .reveal:hover .mask-text {
+            background-position: 0 0;
+        }
+
+        /* Parallax Backgrounds */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+
+
+        /* Magnetic Button Effect */
+        .magnetic-wrap {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Custom Cursor */
+        #cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #cursor-outline {
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--gold);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease-out;
+        }
+
+        /* Kinetic Typography Scroll */
+        .kinetic-bg {
+            position: absolute;
+            font-size: 25vw;
+            font-family: 'Unbounded';
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            text-transform: uppercase;
+        }
+
+        /* Motion Gallery */
+        .motion-track {
+            display: flex;
+            gap: 2rem;
+            width: -moz-fit-content;
+            width: fit-content;
+            animation: glide 40s linear infinite;
+        }
+
+        @keyframes glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+               object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+        /* Floating Text Effects */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
+
+        /* Custom Hover Glow */
+        .interactive:hover {
+            color: var(--gold);
+        }
+
+
+
+        /* Review Card Glow */
+        .review-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        /* Floating Text Effects */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
+
+        /* Brand Ticker */
+        .brand-track {
+            display: flex;
+            gap: 4rem;
+            width: -moz-fit-content;
+            width: fit-content;
+            animation: brand-glide 30s linear infinite;
+            align-items: center;
+        }
+
+        @keyframes brand-glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        /* Marquee Animation */
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            gap: 4rem;
+            padding: 2rem 0;
+        }
+
+        .marquee-inner {
+            display: flex;
+            gap: 4rem;
+            animation: scroll 40s linear infinite;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Vertical Gallery Motion */
+        .v-track-up {
+            animation: glide-up 30s linear infinite;
+        }
+
+        .v-track-down {
+            animation: glide-down 30s linear infinite;
+        }
+
+        @keyframes glide-up {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes glide-down {
+            from {
+                transform: translateY(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+               object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+
+        /* Text Stroke Effect */
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+            transition: all 0.5s ease;
+        }
+
+        .text-outline:hover {
+            -webkit-text-stroke: 1px var(--gold);
+        }
+
+        /* Premium Card Effects */
+        .premium-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: var(--slate);
+        }
+
+        .premium-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .premium-card img {
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .premium-card:hover img {
+            transform: scale(1.08);
+            filter: brightness(0.7);
+        }
+
+        /* Blog Card Shine */
+        .blog-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--deep-gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .blog-card:hover::before {
+            left: 100%;
+        }
+
+        /* Timeline Dots */
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(.33);
+                opacity: 1;
+            }
+
+            80%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .dot-ring::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/style-CHWbPICF.js"></script>
+  <script type="module" crossorigin src="/assets/main-CkTA6UUp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/style-Bc249OEn.css">
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+            </div>
+            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+            <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
+            <a href="luxury.html" class="text-[#c5a059] transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+            <a href="contact.html" class="hover:text-white transition-colors interactive">CONTACT</a>
+        </div>
+        <div class="flex items-center gap-2 md:gap-4">
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- MOBILE HAMBURGER -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+            <a onclick="closeMenu()" href="index.html" class="interactive">Home</a>
+            <a onclick="closeMenu()" href="about.html" class="interactive">History</a>
+            <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
+                Luxury Weddings
+            </a>
+            <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
+                Commercial
+            </a>
+            <a onclick="closeMenu()" href="contact.html" class="interactive">Contact</a>
+        </div>
+    </div>
+
+    <main id="content-host">
+        <!-- VIEW: LUXURY WEDDINGS -->
+                            <div id="page-wedding">
+                                <section class="pt-20 px-8 md:px-16">
+                                    <div class="max-w-4xl mb-24">
+                                        <h2
+                                            class="font-heading text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase">
+                                            <span id="luxury-page-title1">The Heritage</span> <br><span
+                                                id="luxury-page-title2" class="text-[#c5a059]">Collection.</span>
+                                        </h2>
+                                        <p id="luxury-page-desc" class="text-white/60 text-lg leading-relaxed">We don't
+                                            just
+                                            photograph;
+                                            we archive emotions. Specializing in luxury Bengali weddings and destination
+                                            cinematic films
+                                            across India.</p>
+                                    </div>
+                                    <div id="wedding-grid" class="grid md:grid-cols-3 gap-8">
+                                        <!-- Dynamic Content -->
+                                    </div>
+                                </section>
+                            </div>
+
+
+                            <!-- Blog / Journal Section (Enhanced SEO) -->
+                            <section id="blog" class="py-32 bg-[#080808]">
+                                <div class="container mx-auto px-6">
+                                    <div class="text-center mb-20">
+                                        <h2 class="font-heading text-5xl font-black">BLOGS</h2>
+                                    </div>
+
+                                    <div class="grid lg:grid-cols-3 gap-10">
+                                        <!-- Post 1 -->
+                                        <article class="blog-card rounded-3xl group">
+                                            <div class="h-64 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    alt="Wedding Photography Kolkata Tips">
+                                            </div>
+                                            <div class="p-8">
+                                                <div
+                                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                                    <span>Mar 24, 2024</span>
+                                                    <span class="text-[#c5a059]">Wedding Guide</span>
+                                                </div>
+                                                <h3
+                                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                                    Navigating the Best Wedding Venues in North Kolkata</h3>
+                                                <p class="text-sm text-gray-400 mb-6 font-light">From historical
+                                                    rajbaris to
+                                                    modern
+                                                    luxury halls, we break down the most photogenic spots...</p>
+                                                <a href="#"
+                                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                                    Insight</a>
+                                            </div>
+                                        </article>
+
+                                        <!-- Post 2 -->
+                                        <article class="blog-card rounded-3xl group">
+                                            <div class="h-64 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    alt="Video Marketing Strategy">
+                                            </div>
+                                            <div class="p-8">
+                                                <div
+                                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                                    <span>Feb 12, 2024</span>
+                                                    <span class="text-[#c5a059]">Commercial</span>
+                                                </div>
+                                                <h3
+                                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                                    Why Professional Video Content is Mandatory for Kolkata Brands</h3>
+                                                <p class="text-sm text-gray-400 mb-6 font-light">The digital landscape
+                                                    of
+                                                    Bengal is
+                                                    changing. Here is how video production scales ROI...</p>
+                                                <a href="#"
+                                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                                    Insight</a>
+                                            </div>
+                                        </article>
+
+                                        <!-- Post 3 -->
+                                        <article class="blog-card rounded-3xl group">
+                                            <div class="h-64 overflow-hidden">
+                                                <img src="https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    alt="Technical Photography Blog">
+                                            </div>
+                                            <div class="p-8">
+                                                <div
+                                                    class="flex gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                                                    <span>Jan 05, 2024</span>
+                                                    <span class="text-[#c5a059]">Technical</span>
+                                                </div>
+                                                <h3
+                                                    class="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight">
+                                                    Mastering Low Light Photography: Tilottama Plaza Studio Secrets</h3>
+                                                <p class="text-sm text-gray-400 mb-6 font-light">A technical breakdown
+                                                    of
+                                                    our signature
+                                                    lighting style that defines Dreamline Production...</p>
+                                                <a href="#"
+                                                    class="text-xs font-black uppercase tracking-widest border-b-2 border-[#c5a059] pb-1">Read
+                                                    Insight</a>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </div>
+                            </section>
+
+
+
+
+
+
+                        </div>
+
+                        
+
+
+        </div>
+
+
+        <!-- Global Footer -->
+        <footer class="py-20 border-t border-white/5 text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span
+                        class="text-[#c5a059]">PRODUCTION</span></h2>
+
+                <div
+                    class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-[10px] text-gray-500 tracking-widest uppercase font-bold">
+                    <a id="footer-address" href="https://maps.google.com/?q=85,Tilottama+Plaza,Kolkata" target="_blank"
+                        class="hover:text-[#c5a059] transition-colors">
+                        85, Tilottama Plaza, Kolkata 700082
+                    </a>
+                    <span class="hidden md:block text-[#c5a059]">•</span>
+                    <a id="footer-phone" href="tel:+918240054002" class="hover:text-[#c5a059] transition-colors">+91
+                        82400 54002</a>
+                    <span class="hidden md:block text-[#c5a059]">•</span>
+                    <a id="footer-email" href="mailto:santrarony9@gmail.com"
+                        class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
+                </div>
+
+                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since
+                    2010</p>
+                <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+                <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                    &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+                </p>
+            </div>
+        </footer>
+
+
+
+    </main>
+
+
+    <script>
+
+        // Data & Assets
+        const artworks = [
+            { id: 1, type: 'wedding', title: 'The Zamindar Soul', img: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800' },
+            { id: 2, type: 'wedding', title: 'Benarasi Dreams', img: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800' },
+            { id: 3, type: 'commercial', title: 'E-Commerce Luxe', img: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800' },
+            { id: 4, type: 'music', title: 'Neon Pulse', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800' },
+            { id: 5, type: 'commercial', title: 'Corporate Identity', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800' },
+            { id: 6, type: 'wedding', title: 'Sabyasachi Aesthetic', img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800' },
+            { id: 7, type: 'music', title: 'The Unplugged Session', img: 'https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=800' },
+            { id: 8, type: 'commercial', title: 'Textile Narrative', img: 'https://images.unsplash.com/photo-1445205170230-053b830c6050?auto=format&fit=crop&w=800' }
+        ];
+
+        // Custom Loader Progress
+        window.addEventListener('load', () => {
+            const prog = document.getElementById('loader-progress');
+            const loader = document.getElementById('loader');
+
+            prog.style.width = '100%';
+
+            setTimeout(() => {
+                loader.style.transform = 'translateY(-100%)';
+                document.body.style.overflow = 'auto';
+            }, 800);
+        });
+
+
+
+        // Custom Cursor
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+
+        document.addEventListener('mousemove', (e) => {
+            dot.style.left = `${e.clientX}px`;
+            dot.style.top = `${e.clientY}px`;
+
+            outline.animate({
+                left: `${e.clientX - 22}px`,
+                top: `${e.clientY - 22}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Kinetic Text Animation on Scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const kinetics = document.querySelectorAll('.kinetic-bg');
+            kinetics.forEach((el, i) => {
+                const speed = 0.5 + (i * 0.2);
+                el.style.transform = `translateX(${(scrolled * speed) - 200}px)`;
+            });
+
+            // Reveal animations on scroll
+            document.querySelectorAll('.reveal-text').forEach(section => {
+                const top = section.getBoundingClientRect().top;
+                if (top < window.innerHeight * 0.8) {
+                    section.classList.add('active-reveal');
+                }
+            });
+        });
+
+        // Hover Effects
+        document.querySelectorAll('.interactive').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                outline.style.transform = 'scale(2)';
+                outline.style.backgroundColor = 'rgba(255,255,255,0.05)';
+            });
+            el.addEventListener('mouseleave', () => {
+                outline.style.transform = 'scale(1)';
+                outline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Start
+        window.onload = () => {
+            document.getElementById('page-loader').style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-text').forEach(el => el.classList.add('active-reveal'));
+            }, 300);
+        };
+
+        // Render Functions
+        async function renderContent() {
+            try {
+                const res = await fetch('/api/weddings');
+                const weddings = await res.json();
+
+                document.querySelectorAll('#wedding-grid').forEach(weddingGrid => {
+                    weddingGrid.innerHTML = weddings
+                        .map(item => `
+        <a href="wedding-details.html?id=${item.id}" class="block group">
+            <div class="premium-card aspect-[3/4] interactive cursor-pointer relative">
+                <!-- Image (Default) -->
+                <img src="${item.img}" class="w-full h-full object-cover z-10 relative group-hover:opacity-0 transition-opacity duration-700">
+                
+                <!-- Video (Hover) -->
+                <video src="${item.hoverVideo}" loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" onmouseover="this.play()" onmouseout="this.pause()"></video>
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-80 z-20 pointer-events-none"></div>
+                <div class="absolute bottom-8 left-8 z-30 pointer-events-none">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-[#c5a059] mb-2">Heritage Selection</p>
+                    <h3 class="font-heading text-xl font-black uppercase text-white group-hover:text-[#c5a059] transition-colors">${item.title}</h3>
+                    <div class="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-white/60 group-hover:text-white transition-colors">
+                        <span>View Cinematic Story</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </div>
+        </a>
+      `).join('');
+                });
+            } catch (err) {
+                console.error('Failed to fetch weddings:', err);
+            }
+        }
+        renderContent();
+
+
+
+
+
+
+        // Gallery Filtering Logic
+
+        function filterGallery(type, el = null) {
+            if (el) {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                el.classList.add('active');
+            }
+            const grid = document.getElementById('master-grid');
+            if (!grid) return;
+
+            const items = type === 'all' ? artworks : artworks.filter(a => a.type === type);
+            grid.innerHTML = items.map(item => `
+                <div class="premium-card aspect-square group interactive">
+                    <img src="${item.img}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="text-center">
+                            <p class="text-[#c5a059] text-[8px] font-black uppercase tracking-[0.4em] mb-2">${item.type}</p>
+                            <h4 class="font-heading text-[10px] uppercase px-4">${item.title}</h4>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        // Initial Load
+        filterGallery('all');
+
+        // Smooth Scroll Logic
+        function scrollToSec(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Scroll reveal animation logic (Native Intersection Observer)
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Navigation Logic
+        function navigateTo(pageId) {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '1';
+            loader.style.pointerEvents = 'auto';
+
+            setTimeout(() => {
+                document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active-view'));
+                document.getElementById('page-' + pageId).classList.add('active-view');
+                window.scrollTo(0, 0);
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                renderContent(pageId);
+            }, 800);
+        }
+
+
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+
+        function closeMenu() {
+            mobileMenu.classList.add("hidden");
+        }
+
+
+
+
+    </script>
+    <style>
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #c5a059;
+            color: black;
+            border-color: #c5a059;
+            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <title>Dreamline Production | Cinematic Visual House</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17805539120');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+
+
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .interactive:hover {
+            color: var(--gold);
+        }
+
+        /* Text Gradients */
+        .text-gold {
+            color: var(--gold);
+        }
+
+        /* Grid Layouts */
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/style-CHWbPICF.js"></script>
+  <script type="module" crossorigin src="/assets/main-CkTA6UUp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/style-Bc249OEn.css">
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+            </div>
+            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+            <a href="about.html" class="text-[#c5a059] transition-colors interactive">HISTORY</a>
+            <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+            <a href="contact.html" class="hover:text-white transition-colors interactive">CONTACT</a>
+        </div>
+        <div class="flex items-center gap-2 md:gap-4">
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- MOBILE HAMBURGER -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 w-screen h-screen bg-black/95 z-[999] hidden overflow-y-auto">
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+            <a href="index.html" class="interactive">Home</a>
+            <a href="about.html" class="interactive text-[#c5a059]">History</a>
+            <a href="luxury.html" class="interactive text-[#c5a059]">Luxury Weddings</a>
+            <a href="commercial.html" class="interactive text-[#c5a059]">Commercial</a>
+            <a href="contact.html" class="interactive">Contact</a>
+        </div>
+    </div>
+
+    <main class="pt-32">
+        <!-- Hero Section -->
+        <section class="container mx-auto px-6 mb-20">
+            <span id="about-hero-subtitle"
+                class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Est. 2010 • Govt.
+                Registered</span>
+            <h1 id="about-hero-title"
+                class="font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-12 leading-none">
+                TRUSTED PRODUCTION<br>
+                <span class="text-white/20">HOUSE IN KOLKATA.</span>
+            </h1>
+            <p class="max-w-3xl text-lg text-gray-400 leading-relaxed mb-12">
+                Dreamline Production is a leading production house in Kolkata delivering cinematic video production,
+                photography, and digital content solutions for brands, businesses, and individuals. Known for
+                creativity, professionalism, and storytelling excellence, we transform ideas into visually powerful
+                content that creates emotional impact and brand value.
+            </p>
+            <div class="h-[1px] w-full bg-white/10 mb-20"></div>
+
+            <!-- About & Vision -->
+            <div class="grid md:grid-cols-2 gap-16 mb-24">
+                <div>
+                    <h2 class="font-heading text-3xl font-black mb-6 uppercase">About Us</h2>
+                    <p class="text-gray-400 leading-relaxed mb-8">
+                        Dreamline Production is a Kolkata-based creative production company dedicated to producing
+                        high-quality visual content with strong storytelling and cinematic aesthetics. We combine
+                        creative direction, modern equipment, and industry experience to deliver professional
+                        results
+                        across multiple industries.
+                    </p>
+                    <p class="text-gray-400 leading-relaxed">
+                        We work with corporate brands, startups, agencies, influencers, and families who want
+                        premium
+                        visuals that communicate authenticity and excellence.
+                    </p>
+                </div>
+                <div class="space-y-12">
+                    <div class="service-card">
+                        <h3 class="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR VISION</h3>
+                        <p id="about-vision" class="text-sm text-gray-400">To become one of the most trusted and
+                            innovative production
+                            houses in Kolkata recognized for cinematic storytelling and professional execution.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR MISSION</h3>
+                        <p id="about-mission" class="text-sm text-gray-400">To help brands and individuals
+                            communicate
+                            their stories
+                            through powerful visuals, strategic content, and high-quality production.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Founder's Note -->
+            <div class="mt-32 max-w-5xl mx-auto">
+                <div
+                    class="grid md:grid-cols-2 gap-12 items-center bg-zinc-900/50 p-8 md:p-12 rounded-[2rem] border border-white/5">
+                    <div class="relative order-2 md:order-1">
+                        <!-- Placeholder for Founder Image -->
+                        <div
+                            class="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+                            <img id="about-founder-img"
+                                src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800"
+                                class="w-full h-full object-cover" alt="Rony - Founder">
+                        </div>
+                        <div
+                            class="absolute -bottom-6 -right-6 w-32 h-32 bg-[#c5a059] rounded-full flex items-center justify-center -z-10">
+                        </div>
+                    </div>
+                    <div class="order-1 md:order-2">
+                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">The
+                            Visionary</span>
+                        <h2 class="font-heading text-3xl md:text-4xl font-black mb-8 uppercase leading-tight">
+                            Capturing
+                            <br>The Unseen.
+                        </h2>
+                        <p id="about-founder-note" class="text-gray-400 leading-relaxed mb-8 italic">
+                            "At Dreamline, we don't just record events; we archive feelings. My journey began with a
+                            simple belief: that every brand and every couple has a story that deserves to be told
+                            with
+                            cinematic grandeur. Over the last decade, we've refined our craft to ensure that when
+                            you
+                            look back at our work 20 years from now, you don't just see what happened — you feel
+                            it."
+                        </p>
+                        <div class="flex items-end gap-4">
+                            <div class="h-[1px] w-12 bg-[#c5a059] mb-4"></div>
+                            <div>
+                                <h4 class="font-heading text-xl font-bold text-white">Rony</h4>
+                                <p class="text-xs text-gray-500 uppercase tracking-widest">Founder & Creative
+                                    Director
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Timeline Section -->
+        <section class="py-20 bg-black overflow-hidden relative">
+            <div class="container mx-auto px-6">
+                <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Our
+                    Journey</span>
+                <h2 class="font-heading text-4xl md:text-5xl font-black mb-16 uppercase">Milestones & Memories
+                </h2>
+
+                <div class="relative border-l border-white/10 ml-4 md:ml-10 py-10 space-y-20">
+                    <!-- 2010 -->
+                    <div class="relative pl-12 md:pl-20 group reveal">
+                        <div
+                            class="absolute -left-[5px] top-2 w-3 h-3 bg-[#c5a059] rounded-full shadow-[0_0_15px_#c5a059]">
+                        </div>
+                        <span
+                            class="text-6xl md:text-8xl font-black text-white/5 absolute -top-10 left-10 md:left-16 select-none z-0 group-hover:text-white/10 transition-colors">2010</span>
+                        <div class="relative z-10">
+                            <h3 class="font-heading text-2xl font-bold text-[#c5a059] mb-2">The Inception</h3>
+                            <p class="text-gray-400 text-sm max-w-md">Founded in Kolkata with a single camera
+                                and a
+                                vision to redefine visual storytelling. What started as a passion project
+                                quickly gained
+                                traction.</p>
+                        </div>
+                    </div>
+
+                    <!-- 2013 -->
+                    <div class="relative pl-12 md:pl-20 group reveal">
+                        <div
+                            class="absolute -left-[5px] top-2 w-3 h-3 bg-white/20 rounded-full group-hover:bg-[#c5a059] transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_15px_#c5a059]">
+                        </div>
+                        <span
+                            class="text-6xl md:text-8xl font-black text-white/5 absolute -top-10 left-10 md:left-16 select-none z-0 group-hover:text-white/10 transition-colors">2013</span>
+                        <div class="relative z-10">
+                            <h3
+                                class="font-heading text-2xl font-bold text-white group-hover:text-[#c5a059] transition-colors mb-2">
+                                Going Global</h3>
+                            <p class="text-gray-400 text-sm max-w-md">Documented our first international
+                                destination
+                                wedding. This marked our entry into the luxury travel wedding market.</p>
+                        </div>
+                    </div>
+
+                    <!-- 2016 -->
+                    <div class="relative pl-12 md:pl-20 group reveal">
+                        <div
+                            class="absolute -left-[5px] top-2 w-3 h-3 bg-white/20 rounded-full group-hover:bg-[#c5a059] transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_15px_#c5a059]">
+                        </div>
+                        <span
+                            class="text-6xl md:text-8xl font-black text-white/5 absolute -top-10 left-10 md:left-16 select-none z-0 group-hover:text-white/10 transition-colors">2016</span>
+                        <div class="relative z-10">
+                            <h3
+                                class="font-heading text-2xl font-bold text-white group-hover:text-[#c5a059] transition-colors mb-2">
+                                Commercial Expansion</h3>
+                            <p class="text-gray-400 text-sm max-w-md">Expanded our services to include high-end
+                                commercial ad films for leading brands nationwide.</p>
+                        </div>
+                    </div>
+
+                    <!-- 2020 -->
+                    <div class="relative pl-12 md:pl-20 group reveal">
+                        <div
+                            class="absolute -left-[5px] top-2 w-3 h-3 bg-white/20 rounded-full group-hover:bg-[#c5a059] transition-colors shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_15px_#c5a059]">
+                        </div>
+                        <span
+                            class="text-6xl md:text-8xl font-black text-white/5 absolute -top-10 left-10 md:left-16 select-none z-0 group-hover:text-white/10 transition-colors">2020</span>
+                        <div class="relative z-10">
+                            <h3
+                                class="font-heading text-2xl font-bold text-white group-hover:text-[#c5a059] transition-colors mb-2">
+                                The Heritage Collection</h3>
+                            <p class="text-gray-400 text-sm max-w-md">Launched our signature "Heritage
+                                Collection"
+                                specifically curated for luxury Bengali weddings, blending tradition with
+                                cinematic art.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        </section>
+
+        <!-- Team Section -->
+        <section class="py-20 bg-zinc-900 border-y border-white/5">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16">
+                    <div>
+                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">The
+                            Creators</span>
+                        <h2 class="font-heading text-4xl md:text-5xl font-black uppercase">Meet The <br>Team.
+                        </h2>
+                    </div>
+                    <div class="mt-8 md:mt-0">
+                        <p class="text-gray-400 text-sm max-w-md text-right">A collective of cinematographers,
+                            editors,
+                            and creative directors united by a passion for visual perfection.</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Team Member 1 -->
+                    <div class="group relative overflow-hidden rounded-xl aspect-[3/4] cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=800"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                            alt="Team Member">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <h3 class="font-heading text-xl font-bold text-white mb-1">Arjun Das</h3>
+                            <p class="text-[#c5a059] text-[10px] font-bold uppercase tracking-widest">Lead
+                                Cinematographer</p>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 2 -->
+                    <div class="group relative overflow-hidden rounded-xl aspect-[3/4] cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                            alt="Team Member">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <h3 class="font-heading text-xl font-bold text-white mb-1">Esha Gupta</h3>
+                            <p class="text-[#c5a059] text-[10px] font-bold uppercase tracking-widest">Creative
+                                Director
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Team Member 3 -->
+                    <div class="group relative overflow-hidden rounded-xl aspect-[3/4] cursor-pointer">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                            alt="Team Member">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <h3 class="font-heading text-xl font-bold text-white mb-1">Vikram Roy</h3>
+                            <p class="text-[#c5a059] text-[10px] font-bold uppercase tracking-widest">Senior
+                                Editor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats & BTS Section -->
+        <section class="py-24 bg-black relative">
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="grid md:grid-cols-2 gap-20 items-center">
+                    <div>
+                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">By
+                            The
+                            Numbers</span>
+                        <h2 class="font-heading text-4xl md:text-6xl font-black mb-12 uppercase leading-none">
+                            Proven
+                            <br>Excellence.
+                        </h2>
+
+                        <div class="grid grid-cols-2 gap-12 reveal counter-box">
+                            <div>
+                                <h3 class="text-5xl md:text-6xl font-black text-white mb-2">15<span
+                                        class="text-[#c5a059]">+</span></h3>
+                                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Years
+                                    Experience
+                                </p>
+                            </div>
+                            <div>
+                                <h3 class="text-5xl md:text-6xl font-black text-white mb-2">500<span
+                                        class="text-[#c5a059]">+</span></h3>
+                                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Weddings
+                                    Filmed</p>
+                            </div>
+                            <div>
+                                <h3 class="text-5xl md:text-6xl font-black text-white mb-2">100<span
+                                        class="text-[#c5a059]">+</span></h3>
+                                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Brands
+                                    Trust Us</p>
+                            </div>
+                            <div>
+                                <h3 class="text-5xl md:text-6xl font-black text-white mb-2">4.9</h3>
+                                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Average
+                                    Rating</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div
+                            class="aspect-video bg-zinc-800 rounded-2xl overflow-hidden border border-white/10 relative group">
+                            <!-- BTS Video Placeholder -->
+                            <img src="https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1600"
+                                class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                                alt="Behind the Scenes">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div
+                                    class="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform cursor-pointer border border-white/20">
+                                    <svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="absolute bottom-6 left-6">
+                                <span
+                                    class="bg-[#c5a059] text-black text-[10px] font-black uppercase px-3 py-1 rounded-full">Behind
+                                    The Scenes</span>
+                            </div>
+                        </div>
+                        <!-- Decorative Elements -->
+                        <div
+                            class="absolute -top-6 -right-6 w-24 h-24 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="py-20 bg-zinc-950">
+            <div class="container mx-auto px-6">
+                <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">What We
+                    Do</span>
+                <h2 class="font-heading text-4xl md:text-5xl font-black mb-16 uppercase">Production Services
+                </h2>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Corporate Video Production</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Professional brand films, company
+                            profile
+                            videos, training videos, and promotional content designed to build trust and
+                            strengthen
+                            brand identity.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Wedding Cinematography</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Emotion-driven cinematic wedding films
+                            capturing real moments, celebrations, and memories with artistic storytelling.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Commercial Shoots</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">High-impact advertisement films,
+                            product
+                            promotions, and marketing videos crafted to increase engagement and conversions.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Photography Services</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Corporate photography, product
+                            photography,
+                            event coverage, and creative photoshoots that enhance visual branding.</p>
+                    </div>
+                    <div class="service-card">
+                        <h3 class="font-heading text-lg font-bold mb-4">Social Media Content</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">Reels, YouTube content, short-form
+                            videos, and
+                            branded creatives optimized for maximum reach and audience engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GOOGLE REVIEWS SECTION -->
+        <section class="py-32 px-6 md:px-12 bg-zinc-900 border-y border-white/5">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                    <div>
+                        <span class="text-[#c5a059] text-[10px] font-black uppercase tracking-[1em] block">The
+                            Reputation</span>
+                        <h2 class="font-heading text-4xl md:text-6xl font-black mt-4 uppercase">Google
+                            <br>Reviews.
+                        </h2>
+                    </div>
+                    <div class="mt-8 md:mt-0 text-right">
+                        <div class="flex gap-1 text-[#c5a059] mb-2 justify-end">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                        </div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-white/40"><span
+                                class="text-3xl text-[#c5a059] font-black mr-2">4.9</span> Average Rating (150+
+                            Reviews on Google & Justdial)</p>
+                    </div>
+                </div>
+
+                <div class="review-slider-container overflow-hidden relative w-full">
+                    <div class="review-track flex gap-6 w-max animate-scroll">
+                        <!-- Review 1 -->
+                        <div
+                            class="w-[300px] md:w-[350px] bg-white/5 border border-white/5 p-8 rounded-2xl flex flex-col justify-between h-full hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                            <div>
+                                <div class="flex gap-1 mb-4">
+                                    <span class="text-[#c5a059]">★★★★★</span>
+                                </div>
+                                <p class="text-white/70 italic leading-relaxed mb-8">"Dreamline captured our
+                                    wedding
+                                    like a
+                                    high-budget film. Their attention to detail and the way they play with light
+                                    is
+                                    unparalleled in Kolkata."</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                    R</div>
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-widest">Rahul Mukerji</h4>
+                                    <p class="text-[9px] text-white/30 uppercase">Local Guide</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Review 2 -->
+                        <div
+                            class="w-[300px] md:w-[350px] bg-white/5 border border-white/5 p-8 rounded-2xl flex flex-col justify-between h-full hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                            <div>
+                                <div class="flex gap-1 mb-4">
+                                    <span class="text-[#c5a059]">★★★★★</span>
+                                </div>
+                                <p class="text-white/70 italic leading-relaxed mb-8">"Professionalism at its
+                                    peak. We've
+                                    worked with them for three commercial ad campaigns and the results exceeded
+                                    our
+                                    expectations every time."</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                    S</div>
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-widest">Sanya Kapoor</h4>
+                                    <p class="text-[9px] text-white/30 uppercase">Creative Director</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Review 3 -->
+                        <div
+                            class="w-[300px] md:w-[350px] bg-white/5 border border-white/5 p-8 rounded-2xl flex flex-col justify-between h-full hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                            <div>
+                                <div class="flex gap-1 mb-4">
+                                    <span class="text-[#c5a059]">★★★★★</span>
+                                </div>
+                                <p class="text-white/70 italic leading-relaxed mb-8">"I was skeptical about
+                                    finding a
+                                    team
+                                    that understood cinematic storytelling. Dreamline Production is the gold
+                                    standard
+                                    for
+                                    visual arts."</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                    A</div>
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-widest">Amitav Roy</h4>
+                                    <p class="text-[9px] text-white/30 uppercase">Entrepreneur</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Review 4 -->
+                        <div
+                            class="w-[300px] md:w-[350px] bg-white/5 border border-white/5 p-8 rounded-2xl flex flex-col justify-between h-full hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                            <div>
+                                <div class="flex gap-1 mb-4">
+                                    <span class="text-[#c5a059]">★★★★★</span>
+                                </div>
+                                <p class="text-white/70 italic leading-relaxed mb-8">"The team made us feel so
+                                    comfortable. The pre-wedding shoot was magical and the final wedding film is
+                                    something we cherish every day."</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                    P</div>
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-widest">Priya & Anirban
+                                    </h4>
+                                    <p class="text-[9px] text-white/30 uppercase">Wedding Couple</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Review 5 -->
+                        <div
+                            class="w-[300px] md:w-[350px] bg-white/5 border border-white/5 p-8 rounded-2xl flex flex-col justify-between h-full hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                            <div>
+                                <div class="flex gap-1 mb-4">
+                                    <span class="text-[#c5a059]">★★★★★</span>
+                                </div>
+                                <p class="text-white/70 italic leading-relaxed mb-8">"We hired Dreamline for our
+                                    product
+                                    launch coverage. Their timeline management and delivery speed were
+                                    impressive.
+                                    Highly recommended."</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                    R</div>
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-widest">Rajesh Gupta</h4>
+                                    <p class="text-[9px] text-white/30 uppercase">CEO, TechSolutions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Review 6 -->
+                        <div
+                            class="w-[350px] bg-white/5 border border-white/5 p-8 rounded-2xl flex flex-col justify-between h-full hover:border-[#c5a059] transition-colors duration-300 flex-shrink-0">
+                            <div>
+                                <div class="flex gap-1 mb-4">
+                                    <span class="text-[#c5a059]">★★★★★</span>
+                                </div>
+                                <p class="text-white/70 italic leading-relaxed mb-8">"My portfolio shoot with
+                                    Dreamline
+                                    gave me the break I needed. The lighting and angles were just perfect. They
+                                    truly
+                                    know how to present a subject."</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-[#c5a059] font-bold">
+                                    S</div>
+                                <div>
+                                    <h4 class="text-xs font-black uppercase tracking-widest">Sneha Das</h4>
+                                    <p class="text-[9px] text-white/30 uppercase">Model</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-20">
+                    <a href="https://www.google.com/search?q=Dreamline+Production+Kolkata+Reviews" target="_blank"
+                        class="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all group">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.38 0 9.25-3.67 9.25-9.51 0-.48-.05-1.1-.15-1.39z" />
+                        </svg>
+                        <span>Read 150+ Reviews</span>
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <span class="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Why
+                            Us</span>
+                        <h2 class="font-heading text-4xl md:text-5xl font-black mb-10 leading-none">THE
+                            DREAMLINE<br>DIFFERENCE.</h2>
+                        <p class="text-gray-400 mb-8">We don't just record events; we craft stories that
+                            emotionally
+                            connect with audiences.</p>
+
+                        <ul class="space-y-6">
+                            <li class="flex items-start gap-4">
+                                <span class="text-[#c5a059] font-bold">01.</span>
+                                <div>
+                                    <h4 class="font-bold uppercase text-sm mb-1">Creative Storytelling</h4>
+                                    <p class="text-xs text-gray-500">Narratives that resonate and engaging
+                                        visuals.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="text-[#c5a059] font-bold">02.</span>
+                                <div>
+                                    <h4 class="font-bold uppercase text-sm mb-1">Professional Equipment</h4>
+                                    <p class="text-xs text-gray-500">Cinema-line cameras and expert lighting.
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="text-[#c5a059] font-bold">03.</span>
+                                <div>
+                                    <h4 class="font-bold uppercase text-sm mb-1">End-to-End Production</h4>
+                                    <p class="text-xs text-gray-500">From concept to final edit, we handle it
+                                        all.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-zinc-900 rounded-[2rem] p-10 border border-white/5">
+                        <h3 class="font-heading text-2xl font-bold mb-8 uppercase text-center">Our Process</h3>
+                        <div class="space-y-8">
+                            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                                <h4 class="font-bold text-sm">Concept & Planning</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 1</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                                <h4 class="font-bold text-sm">Shooting & Direction</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 2</span>
+                            </div>
+                            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                                <h4 class="font-bold text-sm">Post Production</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 3</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm">Delivery & Optimization</h4>
+                                <span class="text-xs text-[#c5a059]">STEP 4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20 text-center">
+            <h2 class="font-heading text-3xl md:text-5xl font-black mb-8 uppercase">Let's Create Something <span
+                    class="text-[#c5a059]">Extraordinary.</span></h2>
+            <p class="text-gray-400 mb-10 max-w-xl mx-auto">Whether you need a corporate film, advertisement
+                video,
+                wedding cinematography, or digital content, Dreamline Production is ready to bring your vision
+                to life.
+            </p>
+            <a href="contact.html"
+                class="inline-block bg-[#c5a059] text-black px-8 py-3 rounded-full font-bold uppercase tracking-widest hover:bg-white transition-colors">Contact
+                Us</a>
+        </section>
+    </main>
+
+    <!-- Global Footer -->
+    <footer id="footer" class="py-20 border-t border-white/5 text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span class="text-[#c5a059]">PRODUCTION</span>
+            </h2>
+
+            <div
+                class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-[10px] text-gray-500 tracking-widest uppercase font-bold">
+                <a href="https://maps.google.com/?q=85,Tilottama+Plaza,Kolkata" target="_blank"
+                    class="hover:text-[#c5a059] transition-colors">
+                    85, Tilottama Plaza, Kolkata 700082
+                </a>
+                <span class="hidden md:block text-[#c5a059]">•</span>
+                <a href="tel:+918240054002" class="hover:text-[#c5a059] transition-colors">+91 82400
+                    54002</a>
+                <span class="hidden md:block text-[#c5a059]">•</span>
+                <a href="mailto:santrarony9@gmail.com"
+                    class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
+            </div>
+
+            <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since
+                2010</p>
+            <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+            <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+
+            if (!mobileMenu.classList.contains("hidden")) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "auto";
+            }
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active-reveal');
+                    if (entry.target.classList.contains('counter-box')) {
+                        // startCounter(entry.target); // Optional: re-enable if needed
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Fetch and Render About Content Logic
+        async function fetchAboutContent() {
+            try {
+                const res = await fetch('/api/content');
+                if (!res.ok) return;
+                const data = await res.json();
+                const about = data.about;
+
+                if (about) {
+                    if (about.heroTitle) document.getElementById('about-hero-title').innerHTML = about.heroTitle.replace(/\n/g, '<br>');
+                    if (about.heroSubtitle) document.getElementById('about-hero-subtitle').innerText = about.heroSubtitle;
+                    if (about.vision) document.getElementById('about-vision').innerText = about.vision;
+                    if (about.mission) document.getElementById('about-mission').innerText = about.mission;
+                    if (about.founderNote) document.getElementById('about-founder-note').innerText = `"${about.founderNote}"`;
+                    if (about.founderImage) document.getElementById('about-founder-img').src = about.founderImage;
+                }
+
+            } catch (err) {
+                console.error("Failed to fetch about content", err);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchAboutContent);
+
+    </script>
+</body>
+
+</html>

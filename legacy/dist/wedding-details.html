@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
+    <title>Wedding Story | Dreamline Production</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Cinematic Hero */
+        .hero-zoom {
+            animation: slow-zoom 20s infinite alternate;
+        }
+
+        @keyframes slow-zoom {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Glass Panels */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Gallery Grid */
+        .gallery-card {
+            aspect-ratio: 4/5;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Gold Gradient Text */
+        .gold-text {
+            background: linear-gradient(135deg, #c5a059 0%, #f9e3aa 50%, #c5a059 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/weddingDetails-CzkqQvKh.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-CHWbPICF.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Bc249OEn.css">
+</head>
+
+<body class="opacity-0 transition-opacity duration-1000">
+    <!-- Navbar -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full glass-panel py-4 px-8 flex justify-between items-center">
+        <a href="luxury.html"
+            class="text-white/50 hover:text-white transition-colors flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Collection
+        </a>
+        <div class="h-8 w-px bg-white/10 mx-4"></div>
+        <div id="couple-names-nav" class="font-heading font-black text-sm tracking-tighter gold-text uppercase">Loading
+            Story...</div>
+        <div class="flex items-center gap-2 md:gap-4">
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="wedding-content">
+        <!-- Hero Section -->
+        <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+            <div id="hero-media-container" class="absolute inset-0 z-0">
+                <!-- Video or Image injected here -->
+                <div class="w-full h-full bg-zinc-900 loading-shimmer"></div>
+            </div>
+            <div class="absolute inset-0 bg-black/40 z-10"></div>
+
+            <div class="relative z-20 text-center px-6">
+                <p id="wedding-date"
+                    class="text-white/60 text-[10px] font-black uppercase tracking-[0.6em] mb-4 reveal-text">MARCH 2024
+                </p>
+                <h1 id="wedding-title"
+                    class="font-heading text-6xl md:text-[10vw] font-black leading-none uppercase gold-text drop-shadow-2xl">
+                    THE STORY</h1>
+                <p id="wedding-subtitle"
+                    class="text-white/80 text-xs md:text-sm uppercase tracking-[0.5em] mt-8 max-w-2xl mx-auto opacity-70">
+                    A Cinematic Legacy by Dreamline</p>
+            </div>
+        </section>
+
+        <!-- Story Content -->
+        <section class="py-32 px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-20 items-start">
+                <div>
+                    <h2 class="font-heading text-3xl md:text-5xl font-black mb-8 uppercase leading-tight">THE HARMONY OF
+                        <br><span class="gold-text">TWO SOULS.</span>
+                    </h2>
+                    <p id="wedding-description" class="text-white/50 text-lg leading-relaxed font-light mb-12">
+                        Capturing the essence of tradition and the sparkle of new beginnings...
+                    </p>
+
+                    <!-- Canvera Button -->
+                    <div id="album-container" class="hidden">
+                        <a id="album-link" href="#" target="_blank"
+                            class="glass-panel px-10 py-5 rounded-2xl inline-flex items-center gap-6 group hover:border-[#c5a059] transition-all">
+                            <div class="w-12 h-12 bg-[#c5a059] rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                                </svg>
+                            </div>
+                            <div class="text-left">
+                                <span
+                                    class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Exclusive
+                                    Digital Access</span>
+                                <span class="block text-sm font-black uppercase tracking-tighter">View Full Canvera
+                                    Album</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="chapters-grid" class="space-y-12">
+                    <!-- Chapters injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Film Section -->
+        <section id="film-section" class="py-32 bg-[#080808] border-y border-white/5 hidden">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <p class="text-[#c5a059] text-[10px] font-black uppercase tracking-widest mb-4">The Cinematic
+                        Masterpiece</p>
+                    <h2 class="font-heading text-4xl md:text-6xl font-black uppercase">Watch The <span
+                            class="gold-text">Film</span></h2>
+                </div>
+                <div class="aspect-video w-full max-w-6xl mx-auto rounded-3xl overflow-hidden glass-panel shadow-2xl">
+                    <iframe id="video-iframe" class="w-full h-full" src="" frameborder="0" allow="autoplay; fullscreen"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Large Floating Moments -->
+        <section class="py-32 px-6 overflow-hidden">
+            <div id="large-gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Large vertical photos injected here -->
+            </div>
+        </section>
+
+        <!-- Next Story Footer -->
+        <footer id="footer" class="py-40 text-center border-t border-white/5 bg-black">
+            <p class="text-white/40 text-[10px] font-black uppercase tracking-widest mb-10">End of Chapter</p>
+            <a href="luxury.html"
+                class="font-heading text-3xl md:text-5xl font-black uppercase hover:gold-text transition-all">VIEW ALL
+                <br>STORIES</a>
+            <div class="mt-20">
+                <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                    &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED.
+                </p>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>
