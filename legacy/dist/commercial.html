@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.png" type="image/png">
+    <title>Dreamline Production | Cinematic Visual House</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'AW-17805539120');
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;600;900&family=Instrument+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .font-heading {
+            font-family: 'Unbounded', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* Creative Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+
+        /* Cinematic Masking */
+        .mask-text {
+            background: linear-gradient(to right, #fff 50%, #444 50%);
+            background-size: 200% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background-position 1s ease;
+        }
+
+        .reveal:hover .mask-text {
+            background-position: 0 0;
+        }
+
+        /* Parallax Backgrounds */
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+
+
+        /* Magnetic Button Effect */
+        .magnetic-wrap {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        /* Floating Nav */
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Custom Cursor */
+        #cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        #cursor-outline {
+            width: 45px;
+            height: 45px;
+            border: 1px solid var(--gold);
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.15s ease-out;
+        }
+
+        /* Kinetic Typography Scroll */
+        .kinetic-bg {
+            position: absolute;
+            font-size: 25vw;
+            font-family: 'Unbounded';
+            font-weight: 900;
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.03);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: -1;
+            text-transform: uppercase;
+        }
+
+        /* Motion Gallery */
+        .motion-track {
+            display: flex;
+            gap: 2rem;
+            width: -moz-fit-content;
+            width: fit-content;
+            animation: glide 40s linear infinite;
+        }
+
+        @keyframes glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+               object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+        /* Floating Text Effects */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
+
+        /* Custom Hover Glow */
+        .interactive:hover {
+            color: var(--gold);
+        }
+
+
+
+        /* Review Card Glow */
+        .review-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .review-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-10px);
+        }
+
+        /* Floating Text Effects */
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .reveal-inner {
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .active-reveal .reveal-inner {
+            transform: translateY(0);
+        }
+
+        /* Brand Ticker */
+        .brand-track {
+            display: flex;
+            gap: 4rem;
+            width: -moz-fit-content;
+            width: fit-content;
+            animation: brand-glide 30s linear infinite;
+            align-items: center;
+        }
+
+        @keyframes brand-glide {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+
+        /* Marquee Animation */
+        .marquee {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            gap: 4rem;
+            padding: 2rem 0;
+        }
+
+        .marquee-inner {
+            display: flex;
+            gap: 4rem;
+            animation: scroll 40s linear infinite;
+        }
+
+        @keyframes scroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Vertical Gallery Motion */
+        .v-track-up {
+            animation: glide-up 30s linear infinite;
+        }
+
+        .v-track-down {
+            animation: glide-down 30s linear infinite;
+        }
+
+        @keyframes glide-up {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-50%);
+            }
+        }
+
+        @keyframes glide-down {
+            from {
+                transform: translateY(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .motion-card {
+            width: 350px;
+            height: 500px;
+            border-radius: 1rem;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .motion-card:hover {
+            transform: scale(1.05) translateY(-20px);
+            z-index: 10;
+        }
+
+        .motion-card img {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+               object-fit: cover;
+            filter: grayscale(1) brightness(0.7);
+            transition: all 0.5s ease;
+        }
+
+        .motion-card:hover img {
+            filter: grayscale(0) brightness(1);
+        }
+
+
+        /* Text Stroke Effect */
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+            transition: all 0.5s ease;
+        }
+
+        .text-outline:hover {
+            -webkit-text-stroke: 1px var(--gold);
+        }
+
+        /* Premium Card Effects */
+        .premium-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: var(--slate);
+        }
+
+        .premium-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .premium-card img {
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .premium-card:hover img {
+            transform: scale(1.08);
+            filter: brightness(0.7);
+        }
+
+        /* Blog Card Shine */
+        .blog-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--deep-gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .blog-card:hover::before {
+            left: 100%;
+        }
+
+        /* Timeline Dots */
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--gold);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px var(--gold);
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(.33);
+                opacity: 1;
+            }
+
+            80%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .dot-ring::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/style-CHWbPICF.js"></script>
+  <script type="module" crossorigin src="/assets/main-CkTA6UUp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/style-Bc249OEn.css">
+</head>
+
+<body>
+    <!-- Loader -->
+    <div id="loader">
+        <div class="text-center">
+            <h2 class="font-heading font-black text-4xl mb-2">DREAMLINE</h2>
+            <div class="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
+                <div id="loader-progress" class="w-0 h-full bg-[#c5a059] transition-all duration-500"></div>
+            </div>
+            <p class="text-[10px] tracking-[0.5em] mt-4 uppercase text-gray-500">Loading Experience</p>
+        </div>
+    </div>
+
+
+    <!-- Navigation -->
+    <nav
+        class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center">
+        <div class="font-heading font-black text-lg tracking-tighter">
+            <a href="index.html" class="interactive flex items-center gap-2">
+                <img src="/logo.png" alt="Dreamline Logo" class="h-8 w-auto filter invert grayscale">
+            </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="index.html" class="hover:text-white transition-colors interactive">HOME</a>
+            <a href="about.html" class="hover:text-white transition-colors interactive">HISTORY</a>
+            <a href="luxury.html" class="hover:text-white transition-colors interactive">LUXURY WEDDINGS </a>
+            <a href="commercial.html" class="hover:text-[#c5a059] transition-colors interactive">COMMERCIAL</a>
+
+            <a href="contact.html" class="hover:text-white transition-colors interactive">CONTACT</a>
+        </div>
+        <div class="flex items-center gap-2 md:gap-4">
+            <button class="theme-toggle interactive p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Toggle Theme">
+                <svg class="sun-icon hidden w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <svg class="moon-icon w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- MOBILE HAMBURGER -->
+        <button id="menu-btn" class="md:hidden flex flex-col gap-1.5 interactive">
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+            <span class="w-6 h-[2px] bg-white block"></span>
+        </button>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-[40] hidden">
+
+        <div class="p-10 flex flex-col gap-6 text-[12px] font-black uppercase tracking-widest">
+            <a onclick="closeMenu()" href="index.html" class="interactive">Home</a>
+            <a onclick="closeMenu()" href="about.html" class="interactive">History</a>
+
+            <a onclick="closeMenu()" href="luxury.html" class="interactive text-[#c5a059]">
+                Luxury Weddings
+            </a>
+
+
+
+            <a onclick="closeMenu()" href="commercial.html" class="interactive text-[#c5a059]">
+                Commercial
+            </a>
+
+            <a onclick="closeMenu()" href="contact.html" class="interactive">Contact</a>
+
+        </div>
+
+    </div>
+
+
+
+    <main id="content-host">
+        <!-- VIEW: HOME -->
+        <div id="page-commercial" class="page-view active-view">
+            <section class="pt-20 px-8 md:px-16">
+                <div class="max-w-4xl mb-24">
+                    <h2 class="font-heading text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase"><span
+                            id="comm-page-title1">Commercial</span>
+                        <br><span id="comm-page-title2" class="text-[#c5a059]">Stories.</span>
+                    </h2>
+                    <p id="comm-page-desc" class="text-white/60 text-lg leading-relaxed">Elevating brands through
+                        cinematic narratives. From
+                        high-fashion edits to corporate documentaries, we craft visuals that sell.</p>
+                </div>
+                <div id="commercial-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamic Content -->
+                </div>
+            </section>
+        </div>
+
+        </div>
+
+
+        <!-- Global Footer -->
+        <footer id="footer" class="py-20 border-t border-white/5 text-center">
+            <div class="container mx-auto px-6">
+                <h2 class="font-heading text-2xl font-black mb-4">DREAMLINE <span
+                        class="text-[#c5a059]">PRODUCTION</span></h2>
+
+                <div
+                    class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 mb-10 text-[10px] text-gray-500 tracking-widest uppercase font-bold">
+                    <a id="footer-address" href="https://maps.google.com/?q=85,Tilottama+Plaza,Kolkata" target="_blank"
+                        class="hover:text-[#c5a059] transition-colors">
+                        85, Tilottama Plaza, Kolkata 700082
+                    </a>
+                    <span class="hidden md:block text-[#c5a059]">•</span>
+                    <a id="footer-phone" href="tel:+918240054002" class="hover:text-[#c5a059] transition-colors">+91
+                        82400 54002</a>
+                    <span class="hidden md:block text-[#c5a059]">•</span>
+                    <a id="footer-email" href="mailto:santrarony9@gmail.com"
+                        class="hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
+                </div>
+
+                <p class="text-[10px] text-gray-600 uppercase tracking-[0.6em] mb-10">Kolkata's Finest Since 2010</p>
+                <div class="h-[1px] w-20 bg-[#c5a059] mx-auto mb-10"></div>
+                <p class="text-[9px] text-gray-700 uppercase tracking-[0.3em]">
+                    &copy; 2025 DREAMLINE PRODUCTION. ALL RIGHTS RESERVED. <br>
+                    GOVT. REGISTRATION NO: WB-PR-00XXXXXX
+                </p>
+            </div>
+        </footer>
+
+
+
+    </main>
+
+    <script>
+        let artworks = [];
+        let siteContent = {};
+
+        async function fetchArtworks() {
+            try {
+                const res = await fetch('/api/content/site');
+                siteContent = await res.json();
+                artworks = siteContent.projects || [];
+                renderContent();
+                filterGallery('all');
+            } catch (err) {
+                console.error('Failed to fetch artworks:', err);
+                artworks = [];
+            }
+        }
+        fetchArtworks();
+
+        // Custom Loader Progress
+        window.addEventListener('load', () => {
+            const prog = document.getElementById('loader-progress');
+            const loader = document.getElementById('loader');
+            if (prog) prog.style.width = '100%';
+            setTimeout(() => {
+                if (loader) loader.style.transform = 'translateY(-100%)';
+                document.body.style.overflow = 'auto';
+            }, 800);
+        });
+
+        // Custom Cursor
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+        document.addEventListener('mousemove', (e) => {
+            dot.style.left = `${e.clientX}px`;
+            dot.style.top = `${e.clientY}px`;
+            outline.animate({
+                left: `${e.clientX - 22}px`,
+                top: `${e.clientY - 22}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Render Functions
+        function renderContent() {
+            const commercialGrid = document.getElementById('commercial-grid');
+            if (commercialGrid) {
+                const items = artworks.filter(a => a.type === 'commercial' || a.category === 'commercial');
+                if (items.length === 0) {
+                    commercialGrid.innerHTML = '<p class="text-gray-500 col-span-full text-center py-20 uppercase tracking-widest text-[10px] font-bold">No commercial films found.</p>';
+                    return;
+                }
+                commercialGrid.innerHTML = items.map(item => `
+                    <div class="premium-card aspect-[16/9] interactive group cursor-pointer" onclick="window.openVideoPlayer('${item.videoUrl || ''}', '${item.title}')">
+                        <img src="${item.img || 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=20'}" 
+                             onerror="this.src='https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=20'"
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors"></div>
+                        <div class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black/90 to-transparent">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-[#c5a059] mb-2">${item.type || 'Commercial'}</p>
+                            <h3 class="font-heading text-2xl font-black uppercase leading-none text-white">${item.title}</h3>
+                        </div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border border-white/20 rounded-full flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                            <svg class="w-6 h-6 text-white fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function filterGallery(type) {
+            const grid = document.getElementById('master-grid');
+            if (!grid) return;
+            const items = type === 'all' ? artworks : artworks.filter(a => a.type === type || a.category === type);
+            grid.innerHTML = items.map(item => `
+                <div class="premium-card aspect-square group interactive cursor-pointer" onclick="window.openVideoPlayer('${item.videoUrl || ''}', '${item.title}')">
+                    <img src="${item.img || 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=20'}" 
+                         onerror="this.src='https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=20'"
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="text-center">
+                            <p class="text-[#c5a059] text-[8px] font-black uppercase tracking-[0.4em] mb-2">${item.type || 'FILM'}</p>
+                            <h4 class="font-heading text-[12px] uppercase px-4 text-white">${item.title}</h4>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- VIDEO PLAYER MODAL ---
+        window.openVideoPlayer = (url, title) => {
+            if (!url) return;
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('modal-iframe');
+            const videoTag = document.getElementById('modal-video');
+            const loader = document.getElementById('video-loader');
+            if (!modal) return;
+
+            const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+            const isVimeo = url.includes('vimeo.com');
+
+            loader.style.display = 'flex';
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+
+            if (isYouTube || isVimeo) {
+                let embedUrl = url;
+                if (isYouTube) {
+                    const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
+                    if (match && match[2].length == 11) embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+                } else if (isVimeo) {
+                    const match = url.match(/vimeo.com\/(\d+)/);
+                    if (match) embedUrl = `https://player.vimeo.com/video/${match[1]}?autoplay=1`;
+                }
+                videoTag.classList.add('hidden');
+                iframe.classList.remove('hidden');
+                iframe.src = embedUrl;
+                iframe.onload = () => { loader.style.display = 'none'; iframe.style.opacity = '1'; };
+            } else {
+                iframe.classList.add('hidden');
+                videoTag.classList.remove('hidden');
+                videoTag.src = url;
+                videoTag.oncanplay = () => { loader.style.display = 'none'; };
+            }
+        };
+
+        function initVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const closeBtn = document.getElementById('close-video');
+            const iframe = document.getElementById('modal-iframe');
+            const videoTag = document.getElementById('modal-video');
+            if (!modal || !closeBtn) return;
+            const closeModal = () => {
+                modal.classList.add('pointer-events-none');
+                modal.classList.add('opacity-0');
+                modal.classList.remove('opacity-100');
+                iframe.src = '';
+                iframe.style.opacity = '0';
+                videoTag.pause();
+                videoTag.src = '';
+            };
+            closeBtn.onclick = closeModal;
+            modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        }
+        initVideoModal();
+
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        menuBtn?.addEventListener("click", () => mobileMenu.classList.toggle("hidden"));
+
+        // Reveal animations on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+    <style>
+        .filter-btn {
+            padding: 10px 25px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #c5a059;
+            color: black;
+            border-color: #c5a059;
+            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.2);
+        }
+
+        @keyframes loading {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+    <!-- VIDEO PLAYER MODAL -->
+    <div id="video-modal"
+        class="fixed inset-0 z-[2000] flex items-center justify-center bg-black/95 opacity-0 pointer-events-none transition-opacity duration-500">
+        <button id="close-video"
+            class="absolute top-10 right-10 text-white/50 hover:text-white transition-colors z-[2100]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <div class="w-full max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl mx-6 relative">
+            <div id="video-loader" class="absolute inset-0 flex items-center justify-center bg-zinc-900 z-10">
+                <div class="w-12 h-12 border-2 border-gold/20 border-t-gold rounded-full animate-spin"></div>
+            </div>
+            <iframe id="modal-iframe" class="w-full h-full opacity-0 transition-opacity duration-700" frameborder="0"
+                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            <video id="modal-video" class="w-full h-full hidden object-contain" controls autoplay></video>
+        </div>
+    </div>
+</body>
+
+</html>

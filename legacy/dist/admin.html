@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/logo.svg" type="image/svg+xml">
+    <title>Dreamline Admin Dashboard</title> <!-- Main styles --> <!-- Admin specific styles -->
+    <!-- Quill Rich Text Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        /* Hyper-Stable Visibility Rule */
+        .hidden-force {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* Premium Shimmer for Loading States */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, #1a1a1a 8%, #222 18%, #1a1a1a 33%);
+            background-size: 2000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/admin-BILF0Df2.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/style-CHWbPICF.js">
+  <link rel="stylesheet" crossorigin href="/assets/style-Bc249OEn.css">
+  <link rel="stylesheet" crossorigin href="/assets/admin-DhTVhkQW.css">
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-900">
+
+    <div id="login-screen" class="login-container flex items-center justify-center h-screen hidden-force">
+        <div class="glass-panel p-10 rounded-2xl w-full max-w-md mx-6 border-gold-glass">
+            <div class="text-center mb-10">
+                <div class="inline-block p-4 rounded-full bg-white/5 mb-6 glass-panel">
+                    <img src="/logo.svg" alt="Dreamline" class="w-12 h-12">
+                </div>
+                <h2 class="text-3xl font-bold login-title">Admin Access</h2>
+                <p class="text-gray-500 text-sm mt-2">Enter credentials to manage your cinema</p>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest text-gold-500 font-bold mb-2">Username</label>
+                    <input type="text" id="admin-username" placeholder="Username"
+                        class="login-input w-full p-4 rounded-lg bg-white/5 border border-white/10 text-white focus:border-gold-500 outline-none transition-all">
+                </div>
+                <div class="relative">
+                    <label class="block text-xs uppercase tracking-widest text-gold-500 font-bold mb-2">Password</label>
+                    <div class="relative">
+                        <input type="password" id="admin-password" placeholder="••••••••"
+                            class="login-input w-full p-4 pr-12 rounded-lg bg-white/5 border border-white/10 text-white focus:border-gold-500 outline-none transition-all">
+                        <button type="button"
+                            onclick="const p = document.getElementById('admin-password'); p.type = p.type === 'password' ? 'text' : 'password';"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gold-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button id="login-btn" class="btn-gold w-full p-4 rounded-lg shadow-lg">Login
+                    Dashboard</button>
+                <div class="flex justify-between items-center mt-2 px-1">
+                    <p id="login-error" class="text-red-500 text-xs font-bold hidden">Invalid credentials</p>
+                    <p class="text-[9px] text-gray-700 ml-auto pt-1">UI v2.0.0 (SECURE)</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <p class="text-[10px] text-gray-600 uppercase tracking-widest">Authorized Personnel Only</p>
+                <p class="text-[9px] text-gray-500 mt-2">First time? Use <b>admin</b> / <b>admin123</b> to setup.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard" class="min-h-screen flex bg-[#050505] overflow-hidden">
+
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar"
+            class="w-64 flex-shrink-0 bg-[#0a0a0a] border-r border-white/5 flex flex-col h-screen fixed md:sticky top-0 z-50 shadow-2xl transition-transform duration-300 ease-in-out transform -translate-x-full md:translate-x-0">
+            <div class="p-8 border-b border-white/5 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img src="/logo.svg" alt="Dreamline" class="w-8 h-8 opacity-80">
+                    <div>
+                        <h1 class="text-lg font-black gold-gradient-text tracking-tighter">DREAMLINE</h1>
+                        <p class="text-[8px] text-gray-500 uppercase tracking-widest mt-1">Admin Portal</p>
+                    </div>
+                </div>
+                <button id="close-mobile-menu" class="md:hidden text-gray-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex-1 p-6 space-y-2 overflow-y-auto" id="sidebar-nav">
+                <p class="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-4 pl-2">System Config</p>
+                <button id="tab-global"
+                    class="admin-tab active-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Global
+                    Settings</button>
+                <button id="tab-home"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Home
+                    Page</button>
+                <button id="tab-about"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">About
+                    Us</button>
+
+                <p class="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-4 pl-2 mt-8">Portfolios</p>
+                <button id="tab-luxury"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Luxury
+                    Weddings</button>
+                <button id="tab-commercial"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Commercial</button>
+                <button id="tab-master-gallery"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Master
+                    Gallery</button>
+
+                <p class="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-4 pl-2 mt-8">Data & Logs</p>
+                <button id="tab-weddings"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Wedding
+                    Films</button>
+                <button id="tab-journal"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Journal</button>
+                <button id="tab-bookings"
+                    class="admin-tab w-full text-left px-4 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition-all text-gray-400 hover:bg-white/5 hover:text-white">Bookings</button>
+            </nav>
+
+            <div class="p-6 border-t border-white/5">
+                <button id="logout-btn"
+                    class="w-full text-left flex items-center gap-3 text-xs text-red-500/70 hover:text-red-500 font-bold uppercase tracking-widest px-4 py-3 rounded-xl hover:bg-red-500/10 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    Logout Securely
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col max-w-full md:max-w-[calc(100vw-16rem)] h-screen overflow-hidden relative">
+
+            <!-- Mobile Header & Top Utilities -->
+            <header
+                class="glass-panel p-4 md:p-6 flex justify-between items-center z-40 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5 shadow-sm sticky top-0">
+                <div class="flex items-center gap-4">
+                    <button id="open-mobile-menu" class="md:hidden text-gray-400 hover:text-white p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <h2 class="text-sm font-bold text-white tracking-widest uppercase md:hidden gold-gradient-text">
+                        DREAMLINE</h2>
+                    <h2 class="hidden md:block text-xs font-bold text-gray-500 tracking-widest uppercase px-2">Dashboard
+                        Workspace</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="view-logs-btn"
+                        class="text-[9px] bg-white/5 border border-white/10 text-gray-300 px-4 py-2 rounded-full hover:bg-white/10 hover:text-white transition-all font-bold uppercase tracking-widest flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-gold" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        System Logs
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-grow p-4 md:p-10 lg:p-12 overflow-y-auto w-full max-w-7xl mx-auto">
+
+                <!-- Sidebar overlay for mobile mobile -->
+                <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden md:hidden">
+                </div>
+
+                <!-- Cinematic Guidelines Panel -->
+                <section
+                    class="mb-12 glass-panel p-6 rounded-2xl border-gold/20 flex flex-col md:flex-row gap-8 items-center">
+                    <div class="flex-1">
+                        <h3 class="gold-gradient-text text-lg font-bold mb-2 uppercase tracking-widest">📽️ Cinematic
+                            Guidelines</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed max-w-2xl">To maintain a premium experience,
+                            follow
+                            these export settings for all media uploads. The server will automatically optimize images
+                            for
+                            web performance.</p>
+                    </div>
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full lg:w-auto">
+                        <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+                            <p class="text-[9px] text-gold font-bold uppercase mb-1">Hero Backdrop</p>
+                            <p class="text-[10px] text-white">1920x1080 • H.264 MP4</p>
+                            <p class="text-[8px] text-gray-500 mt-1">Target: &lt; 10MB</p>
+                        </div>
+                        <div class="bg-white/5 p-3 rounded-xl border border-white/10">
+                            <p class="text-[9px] text-gold font-bold uppercase mb-1">Luxury Photos</p>
+                            <p class="text-[10px] text-white">2000px Max • JPG/WebP</p>
+                            <p class="text-[8px] text-gray-500 mt-1">Target: &lt; 500KB</p>
+                        </div>
+                        <div class="bg-white/5 p-3 rounded-xl border border-white/10 col-span-2 lg:col-span-1">
+                            <p class="text-[9px] text-gold font-bold uppercase mb-1">Video Format</p>
+                            <p class="text-[10px] text-white">4K Supported • MP4/MOV</p>
+                            <p class="text-[8px] text-gray-500 mt-1">Web-optimized preferred</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Weddings Section -->
+                <div id="section-weddings">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="gold-gradient-text">Manage Weddings</h2>
+                        <button id="add-wedding-btn"
+                            class="bg-gold/10 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all font-bold">+
+                            ADD NEW WEDDING</button>
+                    </div>
+
+                    <div id="loading-weddings" class="text-center py-10 hidden">Loading...</div>
+
+                    <div id="wedding-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Wedding Cards will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Global Settings Section -->
+                <div id="section-global">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="gold-gradient-text">Manage Global Settings</h2>
+                    </div>
+                    <div id="loading-global" class="text-center py-10 hidden">Loading...</div>
+                    <form id="global-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8">
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2">Contact Info</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div><label>Address</label><input type="text" id="global-address"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>Phone</label><input type="text" id="global-phone"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>Email</label><input type="text" id="global-email"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                        </div>
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2 mt-8">Social Links</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div><label>Instagram URL</label><input type="text" id="global-instagram"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>Facebook URL</label><input type="text" id="global-facebook"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>YouTube URL</label><input type="text" id="global-youtube"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                        </div>
+
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2 mt-8">SEO Metadata</h3>
+                        <p class="help-text mb-4">These appear in Google searches and when sharing links on
+                            WhatsApp/Facebook.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-1"><label>Global SEO Title</label><input type="text"
+                                    id="global-seo-title" class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-1"><label>Meta Image (OG Image)</label><input type="text"
+                                    id="global-seo-image" class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-2"><label>Meta Description</label><textarea id="global-seo-desc"
+                                    class="w-full glass-input p-4 rounded-xl h-24"></textarea></div>
+                            <div class="col-span-2"><label>Keywords (Comma separated)</label><textarea
+                                    id="global-seo-keywords" class="w-full glass-input p-4 rounded-xl h-24"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="btn-gold px-10 py-4 rounded-full shadow-2xl mt-10 mx-auto block">SAVE
+                            GLOBAL SETTINGS</button>
+                    </form>
+                </div>
+
+                <!-- Luxury Page Section -->
+                <div id="section-luxury" class="hidden">
+                    <h2 class="gold-gradient-text">Manage Luxury Highlights</h2>
+                    <div id="loading-luxury" class="text-center py-10 hidden">Loading...</div>
+                    <form id="luxury-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8 mt-6">
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2">Hero Settings</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label>Title Line 1</label><input type="text" id="luxury-hero-title1"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>Title Line 2</label><input type="text" id="luxury-hero-title2"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-2"><label>Description</label><textarea id="luxury-hero-desc"
+                                    class="w-full glass-input p-4 rounded-xl h-24"></textarea></div>
+                        </div>
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2 mt-8">Testimonial</h3>
+                        <div
+                            class="glass-card p-6 rounded-2xl border-white/5 bg-white/5 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-2"><label>Quote Message</label><textarea id="luxury-test-quote"
+                                    class="w-full glass-input p-4 rounded-xl"></textarea></div>
+                            <div><label>Author</label><input type="text" id="luxury-test-author"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>Role</label><input type="text" id="luxury-test-role"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-2">
+                                <label>Author Image URL</label>
+                                <input type="text" id="luxury-test-img" class="w-full glass-input p-4 rounded-xl"
+                                    placeholder="https://...">
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="btn-gold px-10 py-4 rounded-full shadow-2xl mt-10 mx-auto block">SAVE
+                            LUXURY PAGE</button>
+                    </form>
+                </div>
+
+                <!-- Commercial Page Section -->
+                <div id="section-commercial" class="hidden">
+                    <h2 class="gold-gradient-text">Manage Commercial Works</h2>
+                    <div id="loading-commercial" class="text-center py-10 hidden">Loading...</div>
+                    <form id="commercial-form"
+                        class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8 mt-6">
+                        <h3 class="font-bold text-lg text-gold-500 border-b pb-2">Hero Settings</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div><label>Title Line 1</label><input type="text" id="comm-hero-title1"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div><label>Title Line 2</label><input type="text" id="comm-hero-title2"
+                                    class="w-full glass-input p-4 rounded-xl"></div>
+                            <div class="col-span-2"><label>Description</label><textarea id="comm-hero-desc"
+                                    class="w-full glass-input p-4 rounded-xl h-24"></textarea></div>
+                        </div>
+                        <button type="submit"
+                            class="btn-gold px-10 py-4 rounded-full shadow-2xl mt-10 mx-auto block">SAVE
+                            COMMERCIAL PAGE</button>
+                    </form>
+                </div>
+
+                <!-- Home Page Section -->
+                <div id="section-home" class="hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="gold-gradient-text">Overview & Tracking</h2>
+                        <button id="refresh-analytics-btn"
+                            class="bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-widest text-gold px-4 py-2 rounded-full hover:bg-white/10 transition-all">Refresh</button>
+                    </div>
+
+                    <div
+                        class="mb-10 p-6 glass-card rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent relative overflow-hidden">
+                        <div
+                            class="absolute -right-20 -top-20 w-64 h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none">
+                        </div>
+                        <h3 class="font-bold text-sm text-white mb-6 tracking-widest uppercase flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gold-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                            Traffic Insights
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="analytics-overview-container">
+                            <div class="text-left p-4 bg-black/20 rounded-xl border border-white/5">
+                                <p class="text-[9px] text-gray-400 uppercase tracking-widest mb-1">Total Views</p>
+                                <p class="text-3xl font-black text-white" id="analytics-total">0</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 border-t border-white/5 pt-4">
+                            <h4 class="text-[9px] uppercase text-gray-500 tracking-widest mb-3 font-bold">Top Performing
+                                Pages</h4>
+                            <div id="analytics-top-pages"
+                                class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300">
+                                <div class="text-gray-500 italic text-[10px]">Loading traffic data...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="gold-gradient-text mt-12 mb-6">Manage Home Page</h2>
+                    <div id="loading-home" class="text-center py-10 hidden">Loading...</div>
+
+                    <form id="home-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8">
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Hero Section</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                            <div>
+                                <label>Title Line 1</label>
+                                <input type="text" id="hero-title-line1" class="w-full p-4 rounded-xl glass-input">
+                            </div>
+                            <div>
+                                <label>Title Line 2</label>
+                                <input type="text" id="hero-title-line2" class="w-full p-4 rounded-xl glass-input">
+                            </div>
+                            <div class="col-span-2">
+                                <label>Subtitle</label>
+                                <input type="text" id="hero-subtitle" class="w-full p-4 rounded-xl glass-input">
+                            </div>
+                            <div class="col-span-2 glass-card p-6 rounded-2xl border-white/5 bg-white/5">
+                                <label
+                                    class="block mb-2 text-gold-500 uppercase tracking-widest text-[10px] font-bold">Hero
+                                    Background Media</label>
+
+                                <div id="hero-media-preview-container"
+                                    class="mb-6 w-full max-w-xl aspect-video rounded-2xl overflow-hidden border border-white/10 bg-black/40 flex items-center justify-center relative group"
+                                    style="display: none;">
+                                    <img id="hero-media-preview-img" class="w-full h-full object-cover hidden">
+                                    <video id="hero-media-preview-video" class="w-full h-full object-cover hidden" muted
+                                        loop autoplay></video>
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span
+                                            class="text-[10px] font-black uppercase tracking-widest text-white/60">Live
+                                            Preview</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-wrap items-center gap-6 mb-4">
+                                    <label class="btn-upload">
+                                        <input type="file" id="hero-media-upload">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        </svg>
+                                        UPLOAD MEDIA
+                                    </label>
+                                    <span id="hero-media-status" class="upload-status text-[10px]">READY</span>
+                                </div>
+                                <input type="text" id="hero-media-url" class="w-full glass-input text-xs"
+                                    placeholder="Paste direct URL or use the upload button above">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-6 mt-8 border-b border-white/5 pb-2">
+                            <h3 class="font-bold text-lg text-gold-500">Video Vault</h3>
+                            <div class="flex gap-4">
+                                <label
+                                    class="text-[10px] font-bold text-gold cursor-pointer hover:text-white transition-colors bg-gold/5 px-4 py-2 rounded-full border border-gold/20">
+                                    <input type="file" multiple class="hidden"
+                                        onchange="window.handleVaultBulkUpload(this)">
+                                    + BULK ADD
+                                </label>
+                                <button type="button" id="add-vault-btn"
+                                    class="text-[10px] font-bold text-blue-400 hover:text-white uppercase tracking-widest">+
+                                    Single Entry</button>
+                            </div>
+                        </div>
+                        <div id="video-vault-container"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Marquee Text</h3>
+                        <div id="marquee-container" class="space-y-2 mb-4"></div>
+
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Stats Cards</h3>
+                        <div id="stats-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        </div>
+                        <button type="button" id="add-stat-btn" class="text-sm text-blue-600 hover:underline mb-4">+ Add
+                            Stat</button>
+
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Motion Gallery</h3>
+                        <div class="glass-card p-6 rounded-2xl border-white/5 bg-white/5 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label>Gallery Title</label>
+                                    <input type="text" id="gallery-title" class="w-full glass-input">
+                                </div>
+                                <div>
+                                    <label>Gallery Subtitle</label>
+                                    <input type="text" id="gallery-subtitle" class="w-full glass-input">
+                                </div>
+                            </div>
+
+                            <label>Gallery Images</label>
+                            <p class="help-text mb-6">Manage the flowing archive of cinematic moments.</p>
+
+                            <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"></div>
+
+                            <div class="upload-group p-4 rounded-xl border border-white/5 bg-white/5">
+                                <label class="btn-upload">
+                                    <input type="file" id="gallery-upload" multiple>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 4v16m8-8H4" />
+                                    </svg>
+                                    <span>Bulk Add Images</span>
+                                </label>
+                                <span id="gallery-upload-status" class="upload-status ml-4">Waiting...</span>
+                            </div>
+                            <textarea id="gallery-images" class="hidden"></textarea> <!-- Hidden backing field -->
+                        </div>
+
+                        <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2 mt-8">Dynamic Partners</h3>
+                        <p class="help-text mb-4">Manage the brand logos displayed in the scrolling ticker.</p>
+                        <div id="partners-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                        </div>
+                        <button type="button" id="add-partner-btn" class="text-sm text-blue-600 hover:underline mb-4">+
+                            Add
+                            Partner</button>
+
+                        <button type="submit"
+                            class="btn-gold px-10 py-4 rounded-full shadow-2xl mt-10 mx-auto block">SAVE
+                            CHANGES</button>
+                    </form>
+                </div>
+
+                <!-- Master Gallery Section -->
+                <div id="section-master-gallery" class="hidden">
+                    <h2 class="gold-gradient-text">Manage Master Gallery</h2>
+                    <div id="loading-master-gallery" class="text-center py-10 hidden">Loading...</div>
+
+                    <form id="master-gallery-form"
+                        class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-8">
+                        <div id="master-gallery-container"
+                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+                            <!-- Projects injected here -->
+                        </div>
+                        <div class="flex items-center gap-4 mb-8">
+                            <label
+                                class="bg-gold/10 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all font-bold cursor-pointer text-sm">
+                                <input type="file" multiple class="hidden"
+                                    onchange="window.handleProjectBulkUpload(this)">
+                                + BULK SYNC PROJECTS
+                            </label>
+                            <button type="button" id="add-project-btn"
+                                class="text-xs font-bold text-gray-500 hover:text-gold uppercase tracking-widest transition-colors">+
+                                Single Project</button>
+                        </div>
+
+                        <!-- Split Gallery Management -->
+                        <div class="border-t border-white/5 pt-10">
+                            <h3 class="font-bold text-lg mb-4 text-gold-500 uppercase tracking-widest">Vertical Split
+                                Gallery</h3>
+                            <p class="help-text mb-6">Manage the images specifically for the 3-column vertical scrolling
+                                section on the home page.</p>
+                            <div id="split-gallery-container"
+                                class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-6">
+                                <!-- Split gallery items injected here -->
+                            </div>
+                            <label
+                                class="bg-white/5 text-xs font-black uppercase tracking-widest px-6 py-3 rounded-full border border-white/10 hover:bg-gold hover:text-black hover:border-gold transition-all cursor-pointer inline-block">
+                                <input type="file" multiple class="hidden"
+                                    onchange="window.handleSplitGalleryUpload(this)">
+                                + Upload to Vertical Gallery
+                            </label>
+                        </div>
+
+                        <div class="mt-4 pt-8 border-t border-white/5">
+                            <button type="submit" class="btn-gold px-10 py-4 rounded-full shadow-2xl mx-auto block">SAVE
+                                FULL GALLERY DATA</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- About Section -->
+                <div id="section-about" class="hidden">
+                    <h2 class="gold-gradient-text">Manage About Page</h2>
+                    <div id="loading-about" class="text-center py-10 hidden">Loading...</div>
+
+                    <form id="about-form" class="glass-panel p-8 rounded-2xl max-w-5xl border-white/5 space-y-10">
+                        <div class="glass-card p-6 rounded-2xl border-white/5 bg-white/5">
+                            <h3 class="font-bold text-lg mb-6 text-gold-500 border-b pb-2">Hero Section</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label>Hero Title</label>
+                                    <input type="text" id="about-hero-title" class="w-full glass-input">
+                                </div>
+                                <div>
+                                    <label>Hero Subtitle</label>
+                                    <input type="text" id="about-hero-subtitle" class="w-full glass-input">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label>Hero Media (Image or Video)</label>
+                                <p class="help-text mb-4">The main background for your About story. Paste a link or
+                                    upload a
+                                    file.</p>
+                                <div class="flex items-center gap-4 mb-4">
+                                    <label class="btn-upload">
+                                        <input type="file" id="about-hero-upload"
+                                            onchange="window.uploadAboutHero(this)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        </svg>
+                                        UPLOAD
+                                    </label>
+                                    <span id="hero-upload-status" class="upload-status">Ready</span>
+                                </div>
+                                <input type="text" id="hero-bg" class="w-full glass-input" placeholder="https://...">
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Vision & Mission</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Vision Statement</label>
+                                    <textarea id="about-vision" class="w-full p-2 border rounded h-20"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Mission Statement</label>
+                                    <textarea id="about-mission" class="w-full p-2 border rounded h-20"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-lg mb-4 text-gold-500 border-b pb-2">Founder's Note</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Note Content</label>
+                                    <textarea id="about-founder-note" class="w-full p-2 border rounded h-32"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Founder Image</label>
+                                    <input type="file" id="about-founder-upload" class="mb-2 w-full text-sm">
+                                    <input type="text" id="about-founder-img" class="w-full p-2 border rounded"
+                                        placeholder="Image URL">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn-gold px-10 py-4 rounded-full shadow-2xl">SAVE ABOUT
+                                CONTENT</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Journal Section -->
+                <div id="section-journal" class="hidden">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="gold-gradient-text">Manage Journal</h2>
+                        <button id="add-journal-btn"
+                            class="bg-gold/10 text-gold border border-gold/30 px-6 py-2 rounded-full hover:bg-gold hover:text-black transition-all font-bold">+
+                            NEW ARTICLE</button>
+                    </div>
+                    <div id="loading-journal" class="text-center py-10 hidden">Loading...</div>
+                    <div id="journal-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Journal List -->
+                    </div>
+                </div>
+
+                <!-- Bookings Section -->
+                <div id="section-bookings" class="hidden">
+                    <div class="flex justify-between items-center mb-10">
+                        <h2 class="gold-gradient-text">Booking Inquiries</h2>
+                        <button id="refresh-bookings-btn"
+                            class="text-[10px] font-bold text-gold cursor-pointer hover:text-white transition-colors bg-gold/5 px-4 py-2 rounded-full border border-gold/20">
+                            REFRESH LIST
+                        </button>
+                    </div>
+                    <div id="loading-bookings" class="text-center py-10 hidden">Loading inquiries...</div>
+                    <div id="bookings-list" class="grid grid-cols-1 gap-4">
+                        <!-- Bookings injected here -->
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for Editing/Adding Wedding -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button id="close-modal"
+                class="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl">&times;</button>
+            <h2 id="modal-title" class="text-2xl font-bold mb-6">Edit Wedding</h2>
+
+            <form id="wedding-form" class="space-y-4">
+                <input type="hidden" id="wedding-id">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label>Title</label>
+                        <input type="text" id="title" class="w-full glass-input" required>
+                    </div>
+                    <div>
+                        <label>Subtitle</label>
+                        <input type="text" id="subtitle" class="w-full glass-input">
+                    </div>
+                </div>
+
+                <div>
+                    <label>Description</label>
+                    <textarea id="description" class="w-full glass-input h-32"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Cover Image</label>
+                        <input type="file" id="cover-image-upload" class="mb-2 w-full text-sm">
+                        <input type="text" id="cover-image-url" class="w-full p-2 border rounded"
+                            placeholder="Or paste URL">
+                        <img id="preview-cover" src="" class="mt-2 h-32 object-cover w-full bg-gray-100 rounded">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Hover Video (URL/Upload)</label>
+                        <input type="file" id="hover-video-upload" class="mb-2 w-full text-sm">
+                        <input type="text" id="hover-video-url" class="w-full p-2 border rounded"
+                            placeholder="Paste URL">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label>YouTube Video URL</label>
+                        <input type="text" id="youtube-url" class="w-full glass-input"
+                            placeholder="https://www.youtube.com/embed/...">
+                    </div>
+                    <div>
+                        <label>Album URL</label>
+                        <input type="text" id="album-url" class="w-full glass-input"
+                            placeholder="Canvera or Digital Album Link">
+                    </div>
+                </div>
+
+                <hr class="my-4">
+                <h3 class="text-lg font-semibold">Story Chapters</h3>
+                <div id="chapters-container" class="space-y-4">
+                    <!-- Chapters injected via JS -->
+                </div>
+                <button type="button" id="add-chapter-btn" class="text-sm text-blue-600 hover:underline">+ Add
+                    Chapter</button>
+
+                <div class="mt-8 border-t border-white/5 pt-6">
+                    <h3 class="text-lg font-bold text-gold-500 mb-4">SEO Override</h3>
+                    <p class="help-text mb-4">Customize how this wedding appears on Google search and social media
+                        sharing.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label>Meta Title</label>
+                            <input type="text" id="wedding-seo-title" class="w-full glass-input"
+                                placeholder="e.g. Priyanshu & Riya | Luxury Destination Wedding in Jaipur">
+                        </div>
+                        <div>
+                            <label>Meta Description</label>
+                            <textarea id="wedding-seo-desc" class="w-full glass-input h-20"
+                                placeholder="A breathtaking visually stunning wedding documentary..."></textarea>
+                        </div>
+                        <div>
+                            <label>Keywords (comma separated)</label>
+                            <input type="text" id="wedding-seo-keywords" class="w-full glass-input"
+                                placeholder="jaipur wedding, luxury cinematic video, marwari wedding">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" id="cancel-btn"
+                        class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save Wedding</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing/Adding Journal -->
+    <div id="journal-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button id="close-journal-modal"
+                class="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl">&times;</button>
+            <h2 id="journal-modal-title" class="text-2xl font-bold mb-6">Edit Article</h2>
+
+            <form id="journal-form" class="space-y-4">
+                <input type="hidden" id="journal-id">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label>Title</label>
+                        <input type="text" id="journal-title" class="w-full glass-input" required>
+                    </div>
+                    <div>
+                        <label>Publish Date</label>
+                        <input type="text" id="journal-date" class="w-full glass-input">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label>Category</label>
+                        <input type="text" id="journal-category" class="w-full glass-input"
+                            placeholder="e.g. INSIGHT, WEDDING">
+                    </div>
+                    <div>
+                        <label>Featured Image</label>
+                        <p class="help-text mb-2">Paste a URL or upload a header image for this post.</p>
+                        <input type="file" id="journal-image-upload" class="mb-2 w-full text-xs text-gray-400">
+                        <input type="text" id="journal-image" class="w-full glass-input" placeholder="Image URL">
+                    </div>
+                </div>
+
+                <div>
+                    <label>Excerpt</label>
+                    <p class="help-text mb-2">A short summary that appears in the feed.</p>
+                    <textarea id="journal-excerpt" class="w-full glass-input h-24"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Content (Rich Text)</label>
+                    <div class="bg-white text-black rounded">
+                        <div id="journal-editor-container" style="height: 300px;"></div>
+                    </div>
+                </div>
+
+                <div class="mt-8 border-t border-white/5 pt-6">
+                    <h3 class="text-lg font-bold text-gold-500 mb-4">SEO Override</h3>
+                    <p class="help-text mb-4">Customize how this article appears on Google and social shares.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label>Meta Title</label>
+                            <input type="text" id="journal-seo-title" class="w-full glass-input"
+                                placeholder="e.g. 5 Trends for Luxury Weddings 2024">
+                        </div>
+                        <div>
+                            <label>Meta Description</label>
+                            <textarea id="journal-seo-desc" class="w-full glass-input h-20"
+                                placeholder="Discover the upcoming trends..."></textarea>
+                        </div>
+                        <div>
+                            <label>Keywords (comma separated)</label>
+                            <input type="text" id="journal-seo-keywords" class="w-full glass-input"
+                                placeholder="wedding trends, 2024 weddings, bridal style">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button type="button" id="cancel-journal-btn"
+                        class="px-4 py-2 border rounded hover:bg-gray-100">Cancel</button>
+                    <button type="submit" class="btn-black px-6 py-2 rounded-lg">Save Article</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- System Log Modal -->
+    <div id="log-modal"
+        class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center hidden z-[100]">
+        <div class="glass-panel p-8 rounded-3xl w-full max-w-4xl border-white/10 shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold gold-gradient-text">SYSTEM ACTIVITY LOG</h2>
+                <div class="flex gap-4">
+                    <button id="copy-logs-btn" class="btn-gold px-4 py-1 text-[10px] rounded-full">COPY TO
+                        CLIPBOARD</button>
+                    <button id="close-log-modal" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                </div>
+            </div>
+            <div id="log-console"
+                class="bg-black/50 p-6 rounded-2xl h-[50vh] overflow-y-auto font-mono text-[11px] leading-relaxed border border-white/5 space-y-2">
+                <!-- Logs injected here -->
+                <p class="text-gray-600 italic">// Waiting for activity...</p>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <p class="text-[9px] text-gray-500 uppercase tracking-widest">Console v1.0.0 (Debug Hook Active)</p>
+                <button id="clear-logs-btn"
+                    class="text-gray-600 hover:text-red-400 text-[9px] font-bold uppercase tracking-widest">Clear
+                    Log</button>
+            </div>
+        </div>
+    </div>
+    <p>&copy; 2025 Dreamline. All rights reserved.</p>
+    <p class="text-xs text-gray-500 mt-1">Admin Panel v1.3 (Premium UI)</p>
+
+    <!-- SortableJS for Drag and Drop -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- QuillJS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+</body>
+
+</html>
