@@ -4,7 +4,7 @@ export default function Footer() {
     return (
         <footer className="py-20 border-t border-white/5 bg-[#050505]" id="footer">
             <div className="container mx-auto px-6">
-                <div className="grid md:grid-cols-4 gap-16 mb-20">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-20">
                     <div className="col-span-2">
                         <h2 className="font-heading text-3xl font-black mb-6">
                             DREAMLINE <span className="text-[#c5a059]">PRODUCTION</span>

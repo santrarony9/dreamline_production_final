@@ -19,7 +19,7 @@ export default function Navbar() {
     return (
         <>
             <nav
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-8 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl" : "top-6"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-4 md:px-8 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl" : "top-6"
                     }`}
             >
                 <div className="font-heading font-black text-lg tracking-tighter">
@@ -44,7 +44,7 @@ export default function Navbar() {
                     <Link href="/luxury" className="hover:text-white transition-colors interactive">
                         LUXURY WEDDINGS
                     </Link>
-                    <Link href="/commercial" className="hover:text-[#c5a059] transition-colors interactive">
+                    <Link href="/commercial" className="hover:text-white transition-colors interactive">
                         COMMERCIAL
                     </Link>
                     <Link href="/contact" className="hover:text-white transition-colors interactive">
@@ -114,7 +114,7 @@ export default function Navbar() {
                     <Link
                         onClick={() => setIsMenuOpen(false)}
                         href="/commercial"
-                        className="interactive text-[#c5a059]"
+                        className="interactive"
                     >
                         Commercial
                     </Link>

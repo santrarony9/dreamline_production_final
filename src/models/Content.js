@@ -27,7 +27,7 @@ const ContentSchema = new mongoose.Schema({
         hero: {
             titleLine1: { type: String, default: "Visionary" },
             titleLine2: { type: String, default: "Cinema." },
-            subtitle: { type: String, default: "Loading Experience" },
+            subtitle: { type: String, default: "EST. 2010 • DREAMLINE PRODUCTION" },
             backgroundImage: { type: String, default: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80" },
             cta1Text: { type: String, default: "Explore Weddings" },
             cta1Link: { type: String, default: "luxury.html" },

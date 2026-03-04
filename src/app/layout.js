@@ -32,12 +32,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <head>
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
       </head>
       <body
-        className={`${instrumentSans.variable} ${unbounded.variable} antialiased`}
+        className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}
       >
         <AuthProvider>
           <ThemeProvider>

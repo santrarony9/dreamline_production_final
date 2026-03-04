@@ -14,9 +14,9 @@ export default function Expertise({ expertise }) {
                             />
                         </div>
                         {/* Experience Badge */}
-                        <div className="absolute -bottom-10 -right-10 bg-[#c5a059] p-10 rounded-3xl shadow-2xl">
-                            <div className="font-heading text-6xl font-black text-black">15</div>
-                            <div className="text-[10px] font-black uppercase tracking-widest text-black/60">
+                        <div className="absolute -bottom-6 -right-6 md:-bottom-10 md:-right-10 bg-[#c5a059] p-6 md:p-10 rounded-3xl shadow-2xl z-10">
+                            <div className="font-heading text-4xl md:text-6xl font-black text-black">15</div>
+                            <div className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-black/60">
                                 Years of Storytelling
                             </div>
                         </div>
@@ -28,7 +28,7 @@ export default function Expertise({ expertise }) {
                                 OUR PHILOSOPHY
                             </p>
                             <h2
-                                className="font-heading text-5xl md:text-7xl font-black text-white leading-[1.1] mb-8"
+                                className="font-heading text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.1] mb-8 uppercase"
                                 dangerouslySetInnerHTML={{ __html: heading || "LUXURY<br/>EMOTION<br/>STORYTELLING." }}
                             />
                             <p className="text-gray-500 text-lg max-w-xl leading-relaxed">
