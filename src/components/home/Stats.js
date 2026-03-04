@@ -11,7 +11,7 @@ export default function Stats({ stats }) {
     return (
         <section className="py-24 bg-[#050505]">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     {displayStats.map((stat, index) => (
                         <div key={index} className="border-l border-white/10 pl-8 py-4 group">
                             <div className="text-[#c5a059] font-heading text-5xl font-black mb-2 group-hover:scale-110 transition-transform origin-left">

@@ -9,13 +9,13 @@ export default async function AboutPage() {
     const aboutData = siteContent?.about || {};
 
     return (
-        <main className="bg-black pt-32">
+        <main className="bg-black pt-24 md:pt-32">
             {/* Hero Section */}
             <section className="container mx-auto px-6 mb-20">
                 <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                     {aboutData.hero?.subtitle || "Est. 2010 • Govt. Registered"}
                 </span>
-                <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-12 leading-none text-white">
+                <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-black mb-12 leading-none text-white uppercase">
                     {aboutData.hero?.titleLine1 || "TRUSTED PRODUCTION"}<br />
                     <span className="text-white/20">{aboutData.hero?.titleLine2 || "HOUSE IN KOLKATA."}</span>
                 </h1>
@@ -52,8 +52,8 @@ export default async function AboutPage() {
                 </div>
 
                 {/* Founder's Note */}
-                <div className="mt-32 max-w-5xl mx-auto">
-                    <div className="grid md:grid-cols-2 gap-12 items-center bg-[#151515] p-8 md:p-12 rounded-[2rem] border border-white/5">
+                <div className="mt-20 md:mt-32 max-w-5xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-12 items-center bg-[#151515] p-6 md:p-12 rounded-[2rem] border border-white/5">
                         <div className="relative order-2 md:order-1">
                             <div className="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                                 <img
@@ -85,7 +85,7 @@ export default async function AboutPage() {
             </section>
 
             {/* History Timeline */}
-            <section className="py-32 bg-black overflow-hidden relative border-t border-white/5">
+            <section className="py-20 md:py-32 bg-black overflow-hidden relative border-t border-white/5">
                 <div className="container mx-auto px-6">
                     <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Our Journey</span>
                     <h2 className="font-heading text-4xl md:text-5xl font-black mb-16 uppercase text-white">Milestones & Memories</h2>

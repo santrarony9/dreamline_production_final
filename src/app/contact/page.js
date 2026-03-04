@@ -65,7 +65,7 @@ export default function ContactPage() {
                         </h1>
 
                         <form onSubmit={handleSubmit} className="space-y-8">
-                            <div className="grid grid-cols-2 gap-8">
+                            <div className="grid sm:grid-cols-2 gap-8">
                                 <div>
                                     <label className="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">First Name</label>
                                     <input
@@ -92,7 +92,7 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-8">
+                            <div className="grid sm:grid-cols-2 gap-8">
                                 <div>
                                     <label className="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Email Address</label>
                                     <input
@@ -119,7 +119,7 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-8">
+                            <div className="grid sm:grid-cols-2 gap-8">
                                 <div>
                                     <label className="text-[10px] uppercase font-bold text-gray-500 tracking-widest block mb-2">Event Date</label>
                                     <input
@@ -208,7 +208,7 @@ export default function ContactPage() {
                             </a>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-8 text-white">
+                        <div className="grid sm:grid-cols-2 gap-8 text-white">
                             <div>
                                 <h5 className="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Studio Location</h5>
                                 <address className="not-italic text-lg font-bold leading-relaxed">

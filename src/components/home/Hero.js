@@ -20,7 +20,7 @@ export default function Hero({ content }) {
                     </p>
                 </div>
 
-                <h1 className="font-heading text-6xl md:text-9xl font-black text-white leading-tight tracking-tighter mb-12">
+                <h1 className="font-heading text-4xl sm:text-6xl md:text-9xl font-black text-white leading-tight tracking-tighter mb-12 uppercase">
                     <span className="block reveal-text">
                         <span className="reveal-inner inline-block">{titleLine1 || "VISIONARY"}</span>
                     </span>

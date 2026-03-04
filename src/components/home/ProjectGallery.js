@@ -19,7 +19,7 @@ export default function ProjectGallery({ initialProjects }) {
         <section className="py-32 bg-[#050505]">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
-                    <h2 className="font-heading text-5xl font-black text-white uppercase italic">
+                    <h2 className="font-heading text-4xl sm:text-5xl font-black text-white uppercase italic">
                         Portfolio.
                     </h2>
                     <div className="flex gap-4 p-1 bg-[#151515] rounded-full border border-white/5">

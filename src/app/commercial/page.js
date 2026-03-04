@@ -26,10 +26,10 @@ export default async function CommercialPage() {
     }));
 
     return (
-        <main className="bg-black pt-32">
+        <main className="bg-black pt-24 md:pt-32">
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
-                    <h1 className="font-heading text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
+                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
                         {commercialData.title1} <br />
                         <span className="text-[#c5a059]">{commercialData.title2}</span>
                     </h1>

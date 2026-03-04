@@ -15,7 +15,7 @@ export default function MotionGallery({ images }) {
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c5a059] mb-4">
                     THE MOTION
                 </p>
-                <h2 className="font-heading text-6xl font-black text-white uppercase italic tracking-tighter">
+                <h2 className="font-heading text-4xl sm:text-6xl font-black text-white uppercase italic tracking-tighter">
                     Archive.
                 </h2>
             </div>
@@ -25,7 +25,7 @@ export default function MotionGallery({ images }) {
                     {scrollingImages.map((src, index) => (
                         <div
                             key={index}
-                            className="w-[450px] flex-shrink-0 aspect-[16/10] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 border border-white/10"
+                            className="w-[85vw] md:w-[450px] flex-shrink-0 aspect-[16/10] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 border border-white/10"
                         >
                             <img
                                 src={src}
