@@ -17,8 +17,14 @@ export default async function Home() {
   // Fetch site content for the home page
   const siteContent = await Content.findOne().lean();
   const weddings = await Wedding.find().sort({ order: 1 }).limit(6).lean();
+  const homeData = JSON.parse(JSON.stringify(siteContent?.home || {}));
 
-  const homeData = siteContent?.home || {};
+  // Serialize data for client components
+  const serializedWeddings = weddings.map(w => ({
+    ...JSON.parse(JSON.stringify(w)),
+    id: w._id.toString(),
+    type: "wedding"
+  }));
 
   return (
     <main className="bg-black">
@@ -27,7 +33,7 @@ export default async function Home() {
       <Stats stats={homeData.stats} />
       <Expertise expertise={homeData.expertise} />
       <MotionGallery images={homeData.motionArchive?.images} />
-      <ProjectGallery initialProjects={weddings} />
+      <ProjectGallery initialProjects={serializedWeddings} />
       <ReviewSlider reviews={homeData.reviews?.list} />
 
       {/* Journal/Blog Section Placeholder - Implement if needed */}
