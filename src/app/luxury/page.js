@@ -11,11 +11,17 @@ export default async function LuxuryPage() {
     const weddings = await Wedding.find().sort({ order: 1 }).lean();
     const siteContent = await Content.findOne().lean();
 
-    const luxuryData = siteContent?.luxury || {
+    const luxuryData = JSON.parse(JSON.stringify(siteContent?.luxury || {
         title1: "The Heritage",
         title2: "Collection.",
         description: "We don't just photograph; we archive emotions. Specializing in luxury Bengali weddings and destination cinematic films across India."
-    };
+    }));
+
+    const serializedWeddings = weddings.map(w => ({
+        ...JSON.parse(JSON.stringify(w)),
+        id: w._id.toString(),
+        type: "wedding"
+    }));
 
     return (
         <main className="bg-black pt-32">
@@ -32,7 +38,7 @@ export default async function LuxuryPage() {
             </section>
 
             {/* Reusing ProjectGallery but with pre-filtered wedding data */}
-            <ProjectGallery initialProjects={weddings} />
+            <ProjectGallery initialProjects={serializedWeddings} />
 
             {/* Additional Luxury specific CTA */}
             <section className="py-24 bg-[#050505] border-t border-white/5 text-center">

@@ -13,11 +13,17 @@ export default async function CommercialPage() {
     const commercialProjects = (siteContent?.projects || [])
         .filter(p => p.type === "commercial" || p.category === "commercial");
 
-    const commercialData = siteContent?.commercial || {
+    const commercialData = JSON.parse(JSON.stringify(siteContent?.commercial || {
         title1: "Commercial",
         title2: "Stories.",
         description: "Elevating brands through cinematic narratives. From high-fashion edits to corporate documentaries, we craft visuals that sell."
-    };
+    }));
+
+    const serializedProjects = commercialProjects.map(p => ({
+        ...JSON.parse(JSON.stringify(p)),
+        id: p._id?.toString() || Math.random().toString(),
+        type: "commercial"
+    }));
 
     return (
         <main className="bg-black pt-32">
@@ -33,7 +39,7 @@ export default async function CommercialPage() {
                 </div>
             </section>
 
-            <ProjectGallery initialProjects={commercialProjects} />
+            <ProjectGallery initialProjects={serializedProjects} />
 
             <section className="py-24 bg-[#050505] border-t border-white/5 text-center">
                 <h2 className="font-heading text-3xl font-black text-white uppercase italic mb-8">
