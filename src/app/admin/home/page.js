@@ -23,7 +23,8 @@ export default function HomeEditor() {
                 stats: data.stats || [],
                 marquee: data.marquee || [],
                 expertise: data.expertise || {},
-                motionArchive: data.motionArchive || {},
+                motionArchive: data.motionArchive || { images: [] },
+                videoVault: data.videoVault || [],
                 reviews: data.reviews || { list: [] },
             });
         } catch (err) {
@@ -41,7 +42,7 @@ export default function HomeEditor() {
             // Need to wrap in 'home' object so it matches backend structure if we use atomic updates
             // But flattening in backend means we just send top-level keys like `home.hero.titleLine1` 
             // Better to structure it as { home: content } to match Content schema
-            await axios.post("/api/content", { home: content });
+            await axios.post("/api/content", { home: content, videoVault: content.videoVault });
             setMessage("Home page content updated!");
             setTimeout(() => setMessage(""), 3000);
         } catch (err) {
@@ -422,15 +423,117 @@ export default function HomeEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
                             />
                         </div>
-                        <div className="space-y-2 md:col-span-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Description</label>
-                            <input
-                                type="text"
-                                value={content.motionArchive.description || ""}
-                                onChange={(e) => updateSection("motionArchive", "description", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
-                            />
+                        <div className="space-y-4 md:col-span-2 pt-4 border-t border-white/5">
+                            <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Archive Assets (Images)</label>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+                                {(content.motionArchive.images || []).map((img, i) => (
+                                    <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
+                                        <img src={img} className="w-full h-full object-cover" />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const newImgs = content.motionArchive.images.filter((_, idx) => idx !== i);
+                                                updateSection("motionArchive", "images", newImgs);
+                                            }}
+                                            className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            <span className="text-[10px] font-black uppercase text-white">Remove</span>
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const url = prompt("Enter Image URL:");
+                                        if (url) {
+                                            const newImgs = [...(content.motionArchive.images || []), url];
+                                            updateSection("motionArchive", "images", newImgs);
+                                        }
+                                    }}
+                                    className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-square"
+                                >
+                                    <span>+ Add</span>
+                                    <span>Image</span>
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                {/* VIDEO VAULT */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Video Vault (Cinematic Grid)</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {(content.videoVault || []).map((v, i) => (
+                            <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <input
+                                        type="text"
+                                        value={v.title || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.videoVault];
+                                            newList[i] = { ...newList[i], title: e.target.value };
+                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                        }}
+                                        placeholder="Video Title"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={v.category || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.videoVault];
+                                            newList[i] = { ...newList[i], category: e.target.value };
+                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                        }}
+                                        placeholder="Category"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                    />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={v.videoUrl || ""}
+                                    onChange={(e) => {
+                                        const newList = [...content.videoVault];
+                                        newList[i] = { ...newList[i], videoUrl: e.target.value };
+                                        setContent(prev => ({ ...prev, videoVault: newList }));
+                                    }}
+                                    placeholder="Embed URL (YouTube/Vimeo)"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                />
+                                <input
+                                    type="text"
+                                    value={v.image || ""}
+                                    onChange={(e) => {
+                                        const newList = [...content.videoVault];
+                                        newList[i] = { ...newList[i], image: e.target.value };
+                                        setContent(prev => ({ ...prev, videoVault: newList }));
+                                    }}
+                                    placeholder="Thumbnail URL"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newList = content.videoVault.filter((_, idx) => idx !== i);
+                                        setContent(prev => ({ ...prev, videoVault: newList }));
+                                    }}
+                                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const newList = [...(content.videoVault || []), { title: "", category: "", videoUrl: "", image: "" }];
+                                setContent(prev => ({ ...prev, videoVault: newList }));
+                            }}
+                            className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-2xl text-[10px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-video"
+                        >
+                            + Add Reel to Vault
+                        </button>
                     </div>
                 </div>
 

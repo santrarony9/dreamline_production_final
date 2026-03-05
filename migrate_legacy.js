@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const MONGODB_URI = "mongodb+srv://santrarony9_db_user:Dreamline2026@cluster0.e880jks.mongodb.net/dreamline?retryWrites=true&w=majority&appName=Cluster0";
 
-// Schemas (Minimal for migration)
+// Schemas
 const WeddingSchema = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
     title: { type: String, required: true },
@@ -30,8 +30,14 @@ const JournalSchema = new mongoose.Schema({
     order: { type: Number, default: 0 }
 });
 
+const ContentSchema = new mongoose.Schema({
+    videoVault: [{ title: String, category: String, image: String, videoUrl: String }],
+    splitGallery: [String]
+}, { strict: false });
+
 const Wedding = mongoose.models.Wedding || mongoose.model('Wedding', WeddingSchema);
 const Journal = mongoose.models.Journal || mongoose.model('Journal', JournalSchema);
+const Content = mongoose.models.Content || mongoose.model('Content', ContentSchema);
 
 const legacyWeddings = [
     {
@@ -44,62 +50,28 @@ const legacyWeddings = [
         videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4',
         albumUrl: 'https://www.canvera.com/e-photobook',
         reviews: [
-            { author: "Priya & Rahul", text: "Dreamline made us feel like royalty. The Zamindar theme was captured perfectly!", rating: 5 },
-            { author: "Anjali S.", text: "The attention to detail in the rituals was breathtaking.", rating: 5 }
+            { author: "Priya & Rahul", text: "Dreamline made us feel like royalty. The Zamindar theme was captured perfectly!", rating: 5 }
         ],
         storyChapters: [
-            { title: "Chapter 1: The Expectation", images: Array(4).fill('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600') },
-            { title: "Chapter 2: The Rituals", images: Array(4).fill('https://images.unsplash.com/photo-1623192070105-89689871e44f?auto=format&fit=crop&w=600') },
-            { title: "Chapter 3: The Celebration", images: Array(4).fill('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600') }
+            { title: "Chapter 1", images: Array(4).fill('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600') }
         ],
-        vendors: [
-            { category: "Venue", name: "Itc Royal Bengal" },
-            { category: "Makeup", name: "Aniruddha Chakladar" },
-            { category: "Decor", name: "Ferns & Petals" },
-            { category: "Outfit", name: "Sabyasachi Mukherjee" }
-        ]
+        vendors: [{ category: "Venue", name: "Itc Royal Bengal" }]
     },
     {
         id: 'benarasi-dreams',
         title: 'Benarasi Dreams',
         subtitle: 'Heritage Selection',
-        description: 'The vibrant colors of Varanasi woven into a love story. A visual symphony of red and gold.',
+        description: 'The vibrant colors of Varanasi woven into a love story.',
         coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920',
-        hoverVideo: 'https://res.cloudinary.com/demo/video/upload/q_auto,vc_auto/dog.mp4',
-        videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-        albumUrl: 'https://www.canvera.com/e-photobook',
-        reviews: [
-            { author: "Sneha & Amit", text: "Our Benarasi wedding looked like a movie scene. Thank you Rony!", rating: 5 }
-        ],
-        storyChapters: [
-            { title: "Chapter 1: Golden Hour", images: Array(6).fill('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600') },
-            { title: "Chapter 2: The Vows", images: Array(6).fill('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600') }
-        ],
-        vendors: [
-            { category: "Venue", name: "Raajkutir Swabhumi" },
-            { category: "Makeup", name: "Abhijit Chanda" }
-        ]
+        videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4'
     },
     {
         id: 'sabyasachi-aesthetic',
         title: 'Sabyasachi Aesthetic',
         subtitle: 'Heritage Selection',
-        description: 'Inspired by the master couturier, this wedding was a masterclass in elegance and subtle luxury.',
+        description: 'Inspired by the master couturier.',
         coverImage: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920',
-        hoverVideo: 'https://res.cloudinary.com/demo/video/upload/q_auto,vc_auto/dog.mp4',
-        videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4',
-        albumUrl: 'https://www.canvera.com/e-photobook',
-        reviews: [
-            { author: "Meera & Arjun", text: "Elegant, timeless, and classic. Exactly what we wanted.", rating: 5 }
-        ],
-        storyChapters: [
-            { title: "Chapter 1: The First Look", images: Array(4).fill('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600') },
-            { title: "Chapter 2: The Ceremony", images: Array(8).fill('https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600') }
-        ],
-        vendors: [
-            { category: "Venue", name: "Taj Bengal" },
-            { category: "Photography", name: "Dreamline Production" }
-        ]
+        videoUrl: 'https://www.youtube.com/embed/ScMzIvxBSi4'
     }
 ];
 
@@ -111,14 +83,7 @@ const legacyJournals = [
         category: "Wedding Guide",
         image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
         excerpt: "From historical rajbaris to modern luxury halls, we break down the most photogenic spots.",
-        content: `
-            <p>North Kolkata is a treasure trove of heritage and culture, offering some of the most stunning backdrops for wedding photography. In this guide, we explore the top venues that blend tradition with luxury.</p>
-            <h3>1. The Heritage Rajbaris</h3>
-            <p>Nothing screams royalty like a wedding in a restored Rajbari. The intricate architecture, sprawling courtyards, and vintage charm provide a cinematic setting that is hard to replicate.</p>
-            <h3>2. Modern Luxury Banquets</h3>
-            <p>For those who prefer a contemporary touch, several new luxury banquet halls have opened up along VIP Road and New Town, offering world-class amenities and lighting systems perfect for high-definition video coverage.</p>
-            <p>At Dreamline Production, we have extensive experience shooting in all these locations, ensuring your memories are captured in the best light possible.</p>
-        `
+        content: "<p>North Kolkata is a treasure trove of heritage...</p>"
     },
     {
         id: "journal-2",
@@ -126,30 +91,45 @@ const legacyJournals = [
         date: "Feb 12, 2024",
         category: "Commercial",
         image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800",
-        excerpt: "The digital landscape of Bengal is changing. Here is how video production scales ROI.",
-        content: `
-            <p>In the age of Instagram Reels and YouTube Shorts, static images are no longer enough to capture audience attention. Brands in Kolkata are rapidly shifting towards video-first marketing strategies.</p>
-            <h3>Engagement is Key</h3>
-            <p>Video content generates 1200% more shares than text and images combined. For local brands, this means a massive opportunity to reach new customers through organic sharing.</p>
-            <h3>Storytelling Builds Trust</h3>
-            <p>A well-produced commercial doesn't just sell a product; it tells a story. Whether it's a heritage jewelry brand or a modern tech startup, your narrative is what connects you with your audience.</p>
-        `
+        excerpt: "The digital landscape of Bengal is changing.",
+        content: "<p>In the age of Instagram Reels...</p>"
+    }
+];
+
+const legacyVideoVault = [
+    {
+        title: "The Heritage Soul",
+        category: "Wedding Cinema",
+        image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
     },
     {
-        id: "journal-3",
-        title: "Mastering Low Light Photography: Tilottama Plaza Studio Secrets",
-        date: "Jan 05, 2024",
-        category: "Technical",
-        image: "https://images.unsplash.com/photo-1459749411177-042180ce673c?auto=format&fit=crop&w=800",
-        excerpt: "A technical breakdown of our signature lighting style that defines Dreamline Production.",
-        content: `
-            <p>Low light photography is often the most challenging yet rewarding aspect of cinematic visuals. At our studio in Tilottama Plaza, we experiment with various techniques to master this art.</p>
-            <h3>The Equipment</h3>
-            <p>We rely on prime lenses with wide apertures (f/1.2 or f/1.4) to let in maximum light without compromising on shutter speed. This allows us to capture sharp images even in dimly lit reception halls.</p>
-            <h3>Creative Lighting</h3>
-            <p>It's not just about the camera; it's about how you shape the light. We use RGB stick lights and softboxes to create separation and depth, giving our subjects a three-dimensional pop against dark backgrounds.</p>
-        `
+        title: "Commercial Luxe",
+        category: "Brand Film",
+        image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=800",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+        title: "Neon Pulse",
+        category: "Music Video",
+        image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
+    },
+    {
+        title: "Eternal Vows",
+        category: "Wedding Film",
+        image: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
+        videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
     }
+];
+
+const legacySplitGallery = [
+    "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
+    "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
+    "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800",
+    "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800",
+    "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800",
+    "https://images.unsplash.com/photo-1514525253344-f814d074e015?auto=format&fit=crop&w=800"
 ];
 
 async function migrate() {
@@ -157,20 +137,30 @@ async function migrate() {
         await mongoose.connect(MONGODB_URI);
         console.log("Connected to MongoDB for migration");
 
-        // Migrate Weddings
         for (const w of legacyWeddings) {
             await Wedding.findOneAndUpdate({ id: w.id }, w, { upsert: true, new: true });
             console.log(`Migrated Wedding: ${w.title}`);
         }
 
-        // Migrate Journals
         for (const j of legacyJournals) {
             await Journal.findOneAndUpdate({ id: j.id }, j, { upsert: true, new: true });
             console.log(`Migrated Journal: ${j.title}`);
         }
 
+        await Content.findOneAndUpdate(
+            {},
+            {
+                $set: {
+                    videoVault: legacyVideoVault,
+                    splitGallery: legacySplitGallery
+                }
+            },
+            { upsert: true }
+        );
+        console.log("Migrated Video Vault and Master Gallery assets");
+
         console.log("Migration completed successfully!");
-        await mongoose.disconnect();
+        process.exit(0);
     } catch (err) {
         console.error("Migration failed:", err);
         process.exit(1);
