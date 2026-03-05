@@ -152,7 +152,7 @@ export default function GalleryAdmin() {
                 ))}
             </div>
 
-            <div className="fixed bottom-12 right-12 z-[100] flex items-center gap-6 bg-black/80 backdrop-blur-xl border border-[#c5a059]/30 p-4 rounded-full shadow-2xl">
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-12 md:right-12 md:left-auto md:translate-x-0 z-[100] flex items-center gap-4 md:gap-6 bg-black/80 backdrop-blur-xl border border-[#c5a059]/30 p-3 md:p-4 rounded-full shadow-2xl w-[90%] md:w-auto justify-center md:justify-start">
                 {message && <p className={`text-[10px] font-black uppercase tracking-widest px-4 ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
                 <button
                     onClick={handleSave}

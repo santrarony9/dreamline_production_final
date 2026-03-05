@@ -29,7 +29,7 @@ export default function ReviewSlider({ reviews }) {
     return (
         <section className="py-32 bg-[#050505] border-t border-white/5">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
                             TESTIMONIALS
@@ -51,7 +51,7 @@ export default function ReviewSlider({ reviews }) {
                         {loopReviews.map((review, index) => (
                             <div
                                 key={index}
-                                className="w-[450px] flex-shrink-0 p-12 bg-[#151515] border border-white/5 rounded-3xl relative interactive group"
+                                className="w-[85vw] md:w-[450px] flex-shrink-0 p-8 md:p-12 bg-[#151515] border border-white/5 rounded-3xl relative interactive group"
                             >
                                 <div className="text-[#c5a059] text-6xl font-serif absolute top-8 right-12 opacity-10 group-hover:opacity-100 transition-opacity">
                                     &quot;

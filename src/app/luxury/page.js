@@ -4,6 +4,17 @@ import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
 import ProjectGallery from "@/components/home/ProjectGallery";
 
+export async function generateMetadata() {
+    await dbConnect();
+    const siteContent = await Content.findOne().lean();
+    const globalSeo = siteContent?.global?.seo || {};
+
+    return {
+        title: `Luxury Weddings | ${globalSeo.title || "Dreamline Production"}`,
+        description: siteContent?.luxury?.hero?.description || "Specializing in luxury Bengali weddings and destination cinematic films across India.",
+    };
+}
+
 export default async function LuxuryPage() {
     await dbConnect();
 
@@ -28,11 +39,11 @@ export default async function LuxuryPage() {
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
-                        {luxuryData.title1} <br />
-                        <span className="text-[#c5a059]">{luxuryData.title2}</span>
+                        {luxuryData.hero?.titleLine1 || "The Heritage"} <br />
+                        <span className="text-[#c5a059]">{luxuryData.hero?.titleLine2 || "Collection."}</span>
                     </h1>
                     <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
-                        {luxuryData.description}
+                        {luxuryData.hero?.description || "We don't just photograph; we archive emotions. Specializing in luxury Bengali weddings and destination cinematic films across India."}
                     </p>
                 </div>
             </section>

@@ -3,6 +3,17 @@ import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ReviewSlider from "@/components/home/ReviewSlider";
 
+export async function generateMetadata() {
+    await dbConnect();
+    const siteContent = await Content.findOne().lean();
+    const globalSeo = siteContent?.global?.seo || {};
+
+    return {
+        title: `About Us | ${globalSeo.title || "Dreamline Production"}`,
+        description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
+    };
+}
+
 export default async function AboutPage() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
@@ -56,11 +67,13 @@ export default async function AboutPage() {
                     <div className="grid md:grid-cols-2 gap-12 items-center bg-[#151515] p-6 md:p-12 rounded-[2rem] border border-white/5">
                         <div className="relative order-2 md:order-1">
                             <div className="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
-                                <img
-                                    src={aboutData.founder?.image || "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800"}
-                                    className="w-full h-full object-cover"
-                                    alt="Founder"
-                                />
+                                {aboutData.founder?.image ? (
+                                    <img
+                                        src={aboutData.founder.image}
+                                        className="w-full h-full object-cover"
+                                        alt="Founder"
+                                    />
+                                ) : null}
                             </div>
                             <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#c5a059] rounded-full flex items-center justify-center -z-10"></div>
                         </div>
