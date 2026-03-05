@@ -6,12 +6,16 @@ import { openVideo } from "@/components/VideoModal";
 export default function ProjectGallery({ initialProjects }) {
     const [filter, setFilter] = useState("all");
 
-    const projects = initialProjects || [
-        { id: 1, title: "Rohan & Sneha", type: "wedding", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800", videoUrl: "#" },
-        { id: 2, title: "Vogue India Edit", type: "commercial", img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800", videoUrl: "#" },
-        { id: 3, title: "The Royal Bengal", type: "wedding", img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800", videoUrl: "#" },
-        { id: 4, title: "Adidas Originals", type: "commercial", img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=800", videoUrl: "#" }
+    const defaultProjects = [
+        { id: "default-1", title: "Rohan & Sneha", type: "wedding", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800", videoUrl: "#" },
+        { id: "default-2", title: "Vogue India Edit", type: "commercial", img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800", videoUrl: "#" },
+        { id: "default-3", title: "The Royal Bengal", type: "wedding", img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800", videoUrl: "#" },
+        { id: "default-4", title: "Adidas Originals", type: "commercial", img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=800", videoUrl: "#" }
     ];
+
+    const projects = initialProjects && initialProjects.length > 0
+        ? [...initialProjects, ...defaultProjects.slice(initialProjects.length).filter(dp => !initialProjects.some(p => p.title === dp.title))]
+        : defaultProjects;
 
     const filteredProjects = filter === "all" ? projects : projects.filter(p => p.type === filter);
 
@@ -22,12 +26,12 @@ export default function ProjectGallery({ initialProjects }) {
                     <h2 className="font-heading text-4xl sm:text-5xl font-black text-white uppercase italic">
                         Portfolio.
                     </h2>
-                    <div className="flex gap-4 p-1 bg-[#151515] rounded-full border border-white/5">
+                    <div className="flex flex-wrap justify-center gap-2 md:gap-4 p-1 bg-[#151515] rounded-3xl md:rounded-full border border-white/5 max-w-full">
                         {["all", "wedding", "commercial"].map((f) => (
                             <button
                                 key={f}
                                 onClick={() => setFilter(f)}
-                                className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${filter === f
+                                className={`px-5 py-2 md:px-8 md:py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === f
                                     ? "bg-[#c5a059] text-black"
                                     : "text-white/40 hover:text-white"
                                     }`}

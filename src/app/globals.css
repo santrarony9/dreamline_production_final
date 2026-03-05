@@ -156,8 +156,14 @@
 
 .marquee-inner {
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
   animation: scroll 40s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .marquee-inner {
+    gap: 4rem;
+  }
 }
 
 @keyframes scroll {
@@ -185,13 +191,14 @@
   }
 
   to {
-    transform: translateY(-50%);
+    transform: translateY(calc(-33.33% - 0.33rem));
+    /* Offset for 3x array */
   }
 }
 
 @keyframes glide-down {
   from {
-    transform: translateY(-50%);
+    transform: translateY(calc(-33.33% - 0.33rem));
   }
 
   to {

@@ -4,6 +4,39 @@ import Journal from "@/models/Journal";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
+export async function generateMetadata({ params }) {
+    await dbConnect();
+    const { id } = params;
+
+    try {
+        const post = await Journal.findById(id).lean();
+        if (!post) return {};
+
+        // Extract a short description from the HTML content if no plain description exists
+        const plainTextDesc = post.content ? post.content.replace(/<[^>]+>/g, '').substring(0, 150) + '...' : 'Read our latest insights on film and photography.';
+
+        return {
+            title: `${post.title} | Journal`,
+            description: plainTextDesc,
+            openGraph: {
+                title: post.title,
+                description: plainTextDesc,
+                images: post.image ? [{ url: post.image, width: 1200, height: 630 }] : [],
+                type: "article",
+                publishedTime: post.date,
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: post.title,
+                description: plainTextDesc,
+                images: post.image ? [post.image] : [],
+            }
+        };
+    } catch (e) {
+        return {};
+    }
+}
+
 export default async function JournalDetailPage({ params }) {
     const { id } = params;
     await dbConnect();

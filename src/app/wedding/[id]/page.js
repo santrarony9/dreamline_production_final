@@ -5,6 +5,35 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import VideoModal from "@/components/VideoModal";
 
+export async function generateMetadata({ params }) {
+    await dbConnect();
+    const { id } = params;
+
+    try {
+        const wedding = await Wedding.findById(id).lean();
+        if (!wedding) return {};
+
+        return {
+            title: `${wedding.title} | Luxury Wedding Film`,
+            description: wedding.description || `Cinematic wedding film from ${wedding.location || 'Dreamline Production'}`,
+            openGraph: {
+                title: `${wedding.title} | Cinematic Wedding Film`,
+                description: wedding.description || "A breathtaking luxury wedding documented by Dreamline Production.",
+                images: wedding.img ? [{ url: wedding.img, width: 1200, height: 630 }] : [],
+                type: "video.movie",
+            },
+            twitter: {
+                card: "summary_large_image",
+                title: `${wedding.title} | Cinematic Wedding Film`,
+                description: wedding.description || "A breathtaking luxury wedding documented by Dreamline Production.",
+                images: wedding.img ? [wedding.img] : [],
+            }
+        };
+    } catch (e) {
+        return {};
+    }
+}
+
 export default async function WeddingDetailPage({ params }) {
     const { id } = params;
     await dbConnect();

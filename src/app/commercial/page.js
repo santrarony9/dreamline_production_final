@@ -3,6 +3,17 @@ import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ProjectGallery from "@/components/home/ProjectGallery";
 
+export async function generateMetadata() {
+    await dbConnect();
+    const siteContent = await Content.findOne().lean();
+    const globalSeo = siteContent?.global?.seo || {};
+
+    return {
+        title: `Commercial Works | ${globalSeo.title || "Dreamline Production"}`,
+        description: siteContent?.commercial?.hero?.description || "Elevating brands through cinematic narratives, high-fashion edits, and corporate documentaries.",
+    };
+}
+
 export default async function CommercialPage() {
     await dbConnect();
 
@@ -30,11 +41,11 @@ export default async function CommercialPage() {
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
-                        {commercialData.title1} <br />
-                        <span className="text-[#c5a059]">{commercialData.title2}</span>
+                        {commercialData.hero?.titleLine1 || "Commercial"} <br />
+                        <span className="text-[#c5a059]">{commercialData.hero?.titleLine2 || "Stories."}</span>
                     </h1>
                     <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
-                        {commercialData.description}
+                        {commercialData.hero?.description || "Elevating brands through cinematic narratives. From high-fashion edits to corporate documentaries, we craft visuals that sell."}
                     </p>
                 </div>
             </section>

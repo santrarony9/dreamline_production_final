@@ -147,6 +147,15 @@ export default function GlobalSettings() {
                             />
                         </div>
                         <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Keywords (comma separated)</label>
+                            <input
+                                type="text"
+                                value={content.seo?.keywords || ""}
+                                onChange={(e) => updateNested("seo", "keywords", e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                            />
+                        </div>
+                        <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">OG Image URL (1200x630)</label>
                             <input
                                 type="text"
@@ -158,12 +167,12 @@ export default function GlobalSettings() {
                     </div>
                 </section>
 
-                <div className="pt-8 flex items-center justify-between">
-                    {message && <p className={`text-[10px] font-black uppercase tracking-widest ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
+                <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                    {message && <p className={`text-[10px] font-black uppercase tracking-widest text-center md:text-left ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
                     <button
                         type="submit"
                         disabled={saving}
-                        className="ml-auto bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform active:scale-95 disabled:opacity-50"
+                        className="w-full md:w-auto bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform active:scale-95 disabled:opacity-50"
                     >
                         {saving ? "Encrypting Data..." : "Deploy Config"}
                     </button>

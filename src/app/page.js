@@ -10,6 +10,10 @@ import Expertise from "@/components/home/Expertise";
 import MotionGallery from "@/components/home/MotionGallery";
 import ProjectGallery from "@/components/home/ProjectGallery";
 import ReviewSlider from "@/components/home/ReviewSlider";
+import ServicesCategories from "@/components/home/ServicesCategories";
+import QuoteSection from "@/components/home/QuoteSection";
+import MasterGallery from "@/components/home/MasterGallery";
+import LetsCreate from "@/components/home/LetsCreate";
 
 export default async function Home() {
   await dbConnect();
@@ -31,10 +35,14 @@ export default async function Home() {
       <Hero content={homeData.hero} />
       <Marquee items={homeData.marquee} />
       <Stats stats={homeData.stats} />
+      <QuoteSection />
       <Expertise expertise={homeData.expertise} />
+      <ServicesCategories />
       <MotionGallery images={homeData.motionArchive?.images} />
+      <MasterGallery images={siteContent?.splitGallery} />
       <ProjectGallery initialProjects={serializedWeddings} />
       <ReviewSlider reviews={homeData.reviews?.list} />
+      <LetsCreate />
 
       {/* Journal/Blog Section Placeholder - Implement if needed */}
       <section className="py-32 bg-[#050505] border-t border-white/5">

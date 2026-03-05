@@ -2,15 +2,26 @@ export default function Hero({ content }) {
     const { titleLine1, titleLine2, subtitle, backgroundImage } = content || {};
 
     return (
-        <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <section className="relative h-[100dvh] w-full flex items-center justify-center overflow-hidden">
             {/* Background Media */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-black/50 z-10" />
-                <img
-                    src={backgroundImage || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80"}
-                    alt="Hero Background"
-                    className="h-full w-full object-cover scale-110"
-                />
+                {backgroundImage && backgroundImage.endsWith('.mp4') ? (
+                    <video
+                        src={backgroundImage}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="h-full w-full object-cover scale-110"
+                    />
+                ) : backgroundImage ? (
+                    <img
+                        src={backgroundImage}
+                        alt="Hero Background"
+                        className="h-full w-full object-cover scale-110"
+                    />
+                ) : null}
             </div>
 
             <div className="container mx-auto px-6 relative z-20 text-center">
