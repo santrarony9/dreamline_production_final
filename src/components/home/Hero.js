@@ -5,7 +5,20 @@ export default function Hero({ content }) {
         <section className="relative h-[100dvh] w-full flex items-center justify-center overflow-hidden">
             {/* Background Media */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-black/50 z-10" />
+                <div className="absolute inset-0 bg-black/60 z-10" />
+
+                {/* Kinetic Scrolling Text */}
+                <div className="absolute top-1/2 left-0 w-[200%] -translate-y-1/2 overflow-hidden pointer-events-none z-0 opacity-10 select-none">
+                    <div className="flex whitespace-nowrap animate-scroll-left">
+                        {[1, 2, 3, 4].map((_, i) => (
+                            <div key={i} className="flex items-center">
+                                <span className="font-heading text-[20vw] font-black text-outline-thin mx-20">CINEMATIC</span>
+                                <span className="font-heading text-[20vw] font-black text-outline-thin mx-20">PRODUCTION</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
                 {backgroundImage && backgroundImage.endsWith('.mp4') ? (
                     <video
                         src={backgroundImage}
@@ -23,6 +36,7 @@ export default function Hero({ content }) {
                     />
                 ) : null}
             </div>
+
 
             <div className="container mx-auto px-6 relative z-20 text-center">
                 <div className="overflow-hidden mb-4">

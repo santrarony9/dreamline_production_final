@@ -145,6 +145,44 @@
   }
 }
 
+/* Kinetic Scrolling Text */
+@keyframes scrollLeft {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scrollLeft 60s linear infinite;
+}
+
+.text-outline-thin {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
+  color: transparent;
+}
+
+.reveal-text {
+  overflow: hidden;
+}
+
+.reveal-inner {
+  animation: reveal-up 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes reveal-up {
+  0% {
+    transform: translateY(100%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
 /* Marquee Animation */
 .marquee {
   white-space: nowrap;

@@ -22,6 +22,8 @@ async function checkData() {
         console.log("Content document present:", !!content);
 
         if (content) {
+            console.log(`VideoVault count: ${content.videoVault?.length || 0}`);
+            console.log(`Master Gallery (Split) count: ${content.splitGallery?.length || 0}`);
             console.log("Content Structure Keys:", Object.keys(content.toObject()));
             if (content.home) {
                 console.log("Home Section Keys:", Object.keys(content.home));

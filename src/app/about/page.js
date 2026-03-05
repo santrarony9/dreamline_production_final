@@ -38,29 +38,32 @@ export default async function AboutPage() {
                 {/* About & Vision */}
                 <div className="grid md:grid-cols-2 gap-16 mb-24">
                     <div>
-                        <h2 className="font-heading text-3xl font-black mb-6 uppercase text-white">About Us</h2>
+                        <h2 className="font-heading text-3xl font-black mb-6 uppercase text-white">
+                            {aboutData.details?.heading || "About Us"}
+                        </h2>
                         <p className="text-gray-400 leading-relaxed mb-8">
-                            {aboutData.main?.description1 || "Dreamline Production is a Kolkata-based creative production company..."}
+                            {aboutData.details?.text1 || "Dreamline Production is a Kolkata-based creative production company..."}
                         </p>
                         <p className="text-gray-400 leading-relaxed">
-                            {aboutData.main?.description2 || "We work with corporate brands, startups, agencies..."}
+                            {aboutData.details?.text2 || "We work with corporate brands, startups, agencies..."}
                         </p>
                     </div>
                     <div className="space-y-12">
                         <div className="p-10 bg-[#151515] border border-white/5 rounded-3xl hover:border-[#c5a059] transition-all group">
                             <h3 className="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR VISION</h3>
                             <p className="text-sm text-gray-400">
-                                {aboutData.vision || "To become one of the most trusted and innovative production houses..."}
+                                {aboutData.details?.vision || "To become one of the most trusted and innovative production houses..."}
                             </p>
                         </div>
                         <div className="p-10 bg-[#151515] border border-white/5 rounded-3xl hover:border-[#c5a059] transition-all group">
                             <h3 className="font-heading text-xl font-bold mb-4 text-[#c5a059]">OUR MISSION</h3>
                             <p className="text-sm text-gray-400">
-                                {aboutData.mission || "To help brands and individuals communicate their stories through powerful visuals..."}
+                                {aboutData.details?.mission || "To help brands and individuals communicate their stories through powerful visuals..."}
                             </p>
                         </div>
                     </div>
                 </div>
+
 
                 {/* Founder's Note */}
                 <div className="mt-20 md:mt-32 max-w-5xl mx-auto">

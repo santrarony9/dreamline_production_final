@@ -13,7 +13,7 @@ export async function POST(req) {
         // Save to database
         const booking = await Booking.create(body);
 
-        // Send WhatsApp Notification (If configured)
+        // 1. WhatsApp Business API (New Method)
         if (process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_ID) {
             const message = `🌟 New Inquiry from ${body.firstName} ${body.lastName}!\n\nEmail: ${body.email}\nPhone: ${body.phone}\nEvent: ${body.serviceType}\nDate: ${body.eventDate}\nVision: ${body.vision}`;
 
@@ -34,9 +34,30 @@ export async function POST(req) {
                     }
                 );
             } catch (waErr) {
-                console.error("WhatsApp notification failed:", waErr.response?.data || waErr.message);
+                console.error("WhatsApp Business API failed:", waErr.response?.data || waErr.message);
             }
         }
+
+        // 2. Legacy BhashSMS Notification (Backup/Alternative)
+        if (process.env.WHATSAPP_PASS) {
+            try {
+                const message = `New Inquiry: ${body.firstName} ${body.lastName} - ${body.phone} - ${body.serviceType}`;
+                await axios.get('http://bhashsms.com/api/sendmsg.php', {
+                    params: {
+                        user: process.env.WHATSAPP_USER || 'Rony_BW',
+                        pass: process.env.WHATSAPP_PASS,
+                        sender: process.env.WHATSAPP_SENDER || 'BUZWAP',
+                        phone: process.env.WHATSAPP_ADMIN_PHONE || '8240054002',
+                        text: message,
+                        priority: 'wa',
+                        stype: 'normal'
+                    }
+                });
+            } catch (legacyErr) {
+                console.error("Legacy WhatsApp notification failed:", legacyErr.message);
+            }
+        }
+
 
         return NextResponse.json({ success: true, data: booking }, { status: 201 });
     } catch (error) {
