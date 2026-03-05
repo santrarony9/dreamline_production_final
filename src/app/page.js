@@ -37,7 +37,7 @@ export default async function Home() {
       <Stats stats={homeData.stats} />
       <QuoteSection />
       <Expertise expertise={homeData.expertise} />
-      <ServicesCategories />
+      <ServicesCategories services={homeData.services} />
       <MotionGallery images={homeData.motionArchive?.images} />
       <MasterGallery images={siteContent?.splitGallery} />
       <ProjectGallery initialProjects={serializedWeddings} />

@@ -188,6 +188,132 @@ export default function HomeEditor() {
                                 placeholder="Image URL"
                             />
                         </div>
+
+                        {/* Who We Are Services List */}
+                        <div className="md:col-span-2 space-y-4 pt-4 border-t border-white/5">
+                            <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Expertise Services (Who We Are)</label>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {(content.expertise.servicesList || []).map((srv, i) => (
+                                    <div key={i} className="bg-white/2 border border-white/5 p-4 rounded-xl space-y-3 relative group">
+                                        <input
+                                            type="text"
+                                            value={srv.number || ""}
+                                            onChange={(e) => {
+                                                const newList = [...content.expertise.servicesList];
+                                                newList[i] = { ...newList[i], number: e.target.value };
+                                                updateSection("expertise", "servicesList", newList);
+                                            }}
+                                            placeholder="No. (e.01)"
+                                            className="w-full bg-transparent text-[10px] font-black text-[#c5a059] outline-none"
+                                        />
+                                        <input
+                                            type="text"
+                                            value={srv.name || ""}
+                                            onChange={(e) => {
+                                                const newList = [...content.expertise.servicesList];
+                                                newList[i] = { ...newList[i], name: e.target.value };
+                                                updateSection("expertise", "servicesList", newList);
+                                            }}
+                                            placeholder="Service Name"
+                                            className="w-full bg-transparent text-sm font-bold text-white outline-none"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const newList = content.expertise.servicesList.filter((_, idx) => idx !== i);
+                                                updateSection("expertise", "servicesList", newList);
+                                            }}
+                                            className="absolute top-2 right-2 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newList = [...(content.expertise.servicesList || []), { name: "", number: "0" + ((content.expertise.servicesList?.length || 0) + 1) }];
+                                        updateSection("expertise", "servicesList", newList);
+                                    }}
+                                    className="flex items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-video sm:aspect-auto p-4"
+                                >
+                                    + Add Expertise Service
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* SERVICES CATEGORIES SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Service Categories (Main Gallery)</h3>
+                    <div className="space-y-6">
+                        {(content.services || []).map((srv, i) => (
+                            <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Number</label>
+                                    <input
+                                        type="text"
+                                        value={srv.number || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.services];
+                                            newList[i] = { ...newList[i], number: e.target.value };
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                                        placeholder="01"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Category Name</label>
+                                    <input
+                                        type="text"
+                                        value={srv.title || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.services];
+                                            newList[i] = { ...newList[i], title: e.target.value };
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                                        placeholder="WEDDING CINEMA"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Pricing Hint/Description</label>
+                                    <input
+                                        type="text"
+                                        value={srv.priceHint || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.services];
+                                            newList[i] = { ...newList[i], priceHint: e.target.value };
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                                        placeholder="Starting at..."
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newList = content.services.filter((_, idx) => idx !== i);
+                                        setContent(prev => ({ ...prev, services: newList }));
+                                    }}
+                                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const newList = [...(content.services || []), { title: "", number: "0" + ((content.services?.length || 0) + 1), priceHint: "" }];
+                                setContent(prev => ({ ...prev, services: newList }));
+                            }}
+                            className="w-full py-6 border border-dashed border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#c5a059] hover:border-[#c5a059]/30 transition-all"
+                        >
+                            + Add Service Category
+                        </button>
                     </div>
                 </div>
 

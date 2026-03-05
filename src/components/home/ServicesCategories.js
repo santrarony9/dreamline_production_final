@@ -1,4 +1,4 @@
-export default function ServicesCategories() {
+export default function ServicesCategories({ services }) {
     return (
         <section id="services" className="py-32 bg-black text-white border-t border-white/5">
             <div className="container mx-auto px-6">
@@ -8,58 +8,26 @@ export default function ServicesCategories() {
                 </div>
 
                 <div className="space-y-4">
-                    {/* 01 Wedding */}
-                    <div className="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
-                        <div className="flex items-center gap-10">
-                            <span className="text-gray-600 font-heading text-xl">01</span>
-                            <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">WEDDING CINEMA</h3>
+                    {(services && services.length > 0 ? services : [
+                        { number: "01", title: "WEDDING CINEMA", priceHint: "Premium Packages Start at ₹85,000" },
+                        { number: "02", title: "COMMERCIAL ADS", priceHint: "Full Production & Scripting" },
+                        { number: "03", title: "CORPORATE EVENTS", priceHint: "Summits • Expos • Launches" },
+                        { number: "04", title: "MUSIC VIDEOS", priceHint: "4K Narrative Visualization" },
+                        { number: "05", title: "SOCIAL MEDIA", priceHint: "Reels • Portfolios • Branding" }
+                    ]).map((srv, i) => (
+                        <div key={i} className="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
+                            <div className="flex items-center gap-10">
+                                <span className="text-gray-600 font-heading text-xl">{srv.number}</span>
+                                <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase">{srv.title}</h3>
+                            </div>
+                            <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <p className="text-xs text-[#c5a059] uppercase font-bold">{srv.priceHint}</p>
+                            </div>
                         </div>
-                        <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <p className="text-xs text-[#c5a059] uppercase font-bold">Premium Packages Start at ₹85,000</p>
-                        </div>
-                    </div>
-                    {/* 02 Commercial */}
-                    <div className="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
-                        <div className="flex items-center gap-10">
-                            <span className="text-gray-600 font-heading text-xl">02</span>
-                            <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">COMMERCIAL ADS</h3>
-                        </div>
-                        <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity text-right">
-                            <p className="text-xs text-[#c5a059] uppercase font-bold">Full Production & Scripting</p>
-                        </div>
-                    </div>
-                    {/* 03 Events */}
-                    <div className="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
-                        <div className="flex items-center gap-10">
-                            <span className="text-gray-600 font-heading text-xl">03</span>
-                            <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">CORPORATE EVENTS</h3>
-                        </div>
-                        <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <p className="text-xs text-[#c5a059] uppercase font-bold">Summits • Expos • Launches</p>
-                        </div>
-                    </div>
-                    {/* 04 Music Album */}
-                    <div className="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
-                        <div className="flex items-center gap-10">
-                            <span className="text-gray-600 font-heading text-xl">04</span>
-                            <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">MUSIC VIDEOS</h3>
-                        </div>
-                        <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <p className="text-xs text-[#c5a059] uppercase font-bold">4K Narrative Visualization</p>
-                        </div>
-                    </div>
-                    {/* 05 Social */}
-                    <div className="reveal border-t border-white/10 py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
-                        <div className="flex items-center gap-10">
-                            <span className="text-gray-600 font-heading text-xl">05</span>
-                            <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text">SOCIAL MEDIA</h3>
-                        </div>
-                        <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <p className="text-xs text-[#c5a059] uppercase font-bold">Reels • Portfolios • Branding</p>
-                        </div>
-                    </div>
+                    ))}
                 </div>
             </div>
         </section>
     );
 }
+
