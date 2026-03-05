@@ -69,11 +69,70 @@ export async function generateMetadata() {
   };
 }
 
+import Script from "next/script";
+
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Dreamline Production",
+    "image": "https://dreamlineproduction.com/logo.png",
+    "description": "Dreamline Production is a premier cinematic visual house in Kolkata, specializing in wedding photography, corporate films, and commercial storytelling.",
+    "@id": "https://dreamlineproduction.com",
+    "url": "https://dreamlineproduction.com",
+    "telephone": "+919886679945",
+    "email": "santrarony9@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Haridevpur",
+      "addressLocality": "Kolkata",
+      "addressRegion": "West Bengal",
+      "postalCode": "700082",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 22.498,
+      "longitude": 88.357
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+      ],
+      "opens": "09:00",
+      "closes": "21:00"
+    },
+    "sameAs": [
+      "https://www.facebook.com/dreamlineproduction",
+      "https://www.instagram.com/dreamlineproduction",
+      "https://www.youtube.com/dreamlineproduction"
+    ],
+    "priceRange": "$$"
+  };
+
   return (
     <html lang="en" className="overflow-x-hidden">
       <head>
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+        {/* Google tag (gtag.js) */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17805539120');
+          `}
+        </Script>
+        {/* JSON-LD Structured Data */}
+        <Script id="json-ld" type="application/ld+json" strategy="afterInteractive">
+          {JSON.stringify(jsonLd)}
+        </Script>
       </head>
       <body
         className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}
@@ -96,3 +155,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
