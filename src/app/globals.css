@@ -310,3 +310,16 @@
   opacity: 1;
   transform: translateY(0) scale(1);
 }
+
+/* Media Protection */
+img,
+video {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+}
