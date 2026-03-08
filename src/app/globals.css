@@ -145,6 +145,10 @@
   }
 }
 
+.animate-brand-glide {
+  animation: brand-glide 30s linear infinite;
+}
+
 /* Kinetic Scrolling Text */
 @keyframes scrollLeft {
   from {

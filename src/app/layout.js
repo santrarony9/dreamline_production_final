@@ -6,6 +6,7 @@ import AuthProvider from "@/context/AuthProvider";
 import CustomCursor from "@/components/CustomCursor";
 import VideoModal from "@/components/VideoModal";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import Preloader from "@/components/Preloader";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -137,6 +138,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}
       >
+        <Preloader />
         <AuthProvider>
           <ThemeProvider>
             <AnalyticsTracker />
