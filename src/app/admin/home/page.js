@@ -26,6 +26,7 @@ export default function HomeEditor() {
                 motionArchive: data.motionArchive || { images: [] },
                 videoVault: data.videoVault || [],
                 reviews: data.reviews || { list: [] },
+                splitGallery: res.data?.splitGallery || data?.splitGallery || []
             });
         } catch (err) {
             console.error(err);
@@ -42,7 +43,11 @@ export default function HomeEditor() {
             // Need to wrap in 'home' object so it matches backend structure if we use atomic updates
             // But flattening in backend means we just send top-level keys like `home.hero.titleLine1` 
             // Better to structure it as { home: content } to match Content schema
-            await axios.post("/api/content", { home: content, videoVault: content.videoVault });
+            await axios.post("/api/content", {
+                home: content,
+                videoVault: content.videoVault,
+                splitGallery: content.splitGallery
+            });
             setMessage("Home page content updated!");
             setTimeout(() => setMessage(""), 3000);
         } catch (err) {
@@ -424,7 +429,7 @@ export default function HomeEditor() {
                             />
                         </div>
                         <div className="space-y-4 md:col-span-2 pt-4 border-t border-white/5">
-                            <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Archive Assets (Images)</label>
+                            <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Archive Assets (Images) - <span className="text-gray-500">1080x1080 square recommended</span></label>
                             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
                                 {(content.motionArchive.images || []).map((img, i) => (
                                     <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
@@ -509,7 +514,7 @@ export default function HomeEditor() {
                                         newList[i] = { ...newList[i], image: e.target.value };
                                         setContent(prev => ({ ...prev, videoVault: newList }));
                                     }}
-                                    placeholder="Thumbnail URL"
+                                    placeholder="Thumbnail URL (1920x1080 recommended)"
                                     className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
                                 />
                                 <button
@@ -534,6 +539,45 @@ export default function HomeEditor() {
                         >
                             + Add Reel to Vault
                         </button>
+                    </div>
+                </div>
+
+                {/* MASTER GALLERY SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Master Gallery (Split Scrolling Grid)</h3>
+                    <div className="space-y-4">
+                        <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Gallery Images - <span className="text-gray-500">Minimum 6 images (800x1000 vertical recommended)</span></label>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+                            {(content.splitGallery || []).map((img, i) => (
+                                <div key={i} className="relative aspect-[4/5] rounded-xl overflow-hidden group border border-white/5">
+                                    <img src={img} className="w-full h-full object-cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newGal = content.splitGallery.filter((_, idx) => idx !== i);
+                                            setContent(prev => ({ ...prev, splitGallery: newGal }));
+                                        }}
+                                        className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <span className="text-[10px] font-black uppercase text-white">Remove</span>
+                                    </button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const url = prompt("Enter Gallery Image URL:");
+                                    if (url) {
+                                        const newGal = [...(content.splitGallery || []), url];
+                                        setContent(prev => ({ ...prev, splitGallery: newGal }));
+                                    }
+                                }}
+                                className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-[4/5]"
+                            >
+                                <span>+ Add</span>
+                                <span>Image</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 

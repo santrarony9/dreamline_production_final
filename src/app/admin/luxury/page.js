@@ -20,7 +20,8 @@ export default function LuxuryEditor() {
             const data = res.data.luxury || res.data || {};
             setContent({
                 hero: data.hero || {},
-                testimonial: data.testimonial || {}
+                testimonial: data.testimonial || {},
+                sparkCarousel: data.sparkCarousel || []
             });
         } catch (err) {
             console.error(err);
@@ -127,7 +128,7 @@ export default function LuxuryEditor() {
                         <div className="space-y-2 md:col-span-2 relative">
                             <div className="flex justify-between items-center mb-1">
                                 <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Author Image (Optional) - <span className="text-[#c5a059]">400x400 (square)</span>
+                                    Author Image (Optional) - <span className="text-[#c5a059]">400x400 (square) recommended</span>
                                 </label>
                                 {content.testimonial.image && (
                                     <button type="button" onClick={() => updateSection("testimonial", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
@@ -140,6 +141,45 @@ export default function LuxuryEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                                 placeholder="Paste image URL"
                             />
+                        </div>
+                    </div>
+                </div>
+
+                {/* DIAMOND CUT (SPARK CAROUSEL) SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Diamond Cut (Signature Frames)</h3>
+                    <div className="space-y-4">
+                        <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Carousel Images - <span className="text-gray-500">Minimum 5 images (1200x800 recommended)</span></label>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+                            {(content.sparkCarousel || []).map((img, i) => (
+                                <div key={i} className="relative aspect-[3/2] rounded-xl overflow-hidden group border border-white/5">
+                                    <img src={img} className="w-full h-full object-cover" />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newGal = content.sparkCarousel.filter((_, idx) => idx !== i);
+                                            setContent(prev => ({ ...prev, sparkCarousel: newGal }));
+                                        }}
+                                        className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                    >
+                                        <span className="text-[10px] font-black uppercase text-white">Remove</span>
+                                    </button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const url = prompt("Enter Image URL:");
+                                    if (url) {
+                                        const newGal = [...(content.sparkCarousel || []), url];
+                                        setContent(prev => ({ ...prev, sparkCarousel: newGal }));
+                                    }
+                                }}
+                                className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-[3/2]"
+                            >
+                                <span>+ Add</span>
+                                <span>Image</span>
+                            </button>
                         </div>
                     </div>
                 </div>

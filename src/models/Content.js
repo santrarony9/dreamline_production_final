@@ -86,7 +86,8 @@ const ContentSchema = new mongoose.Schema({
             author: { type: String, default: "Priyanka Sen" },
             role: { type: String, default: "Marketing Head, Kolkata Retailers" },
             image: { type: String, default: "" }
-        }
+        },
+        sparkCarousel: [String]
     },
     commercial: {
         hero: {

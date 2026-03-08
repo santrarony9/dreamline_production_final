@@ -156,7 +156,7 @@ export default function AboutEditor() {
                         <div className="space-y-2 md:col-span-2 relative">
                             <div className="flex justify-between items-center mb-1">
                                 <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Founder Portrait - <span className="text-[#c5a059]">800x1200 (vertical)</span>
+                                    Founder Portrait - <span className="text-[#c5a059]">800x1200 vertical recommended</span>
                                 </label>
                                 {content.founder.image && (
                                     <button type="button" onClick={() => updateSection("founder", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
@@ -180,7 +180,7 @@ export default function AboutEditor() {
                         <div className="space-y-2 md:col-span-2 relative">
                             <div className="flex justify-between items-center mb-1">
                                 <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Video Cover Image - <span className="text-[#c5a059]">1600x900 (16:9)</span>
+                                    Video Cover Image - <span className="text-[#c5a059]">1600x900 (16:9) recommended</span>
                                 </label>
                                 {content.bts.videoImage && (
                                     <button type="button" onClick={() => updateSection("bts", "videoImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
@@ -210,6 +210,143 @@ export default function AboutEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                                 placeholder="Paste video URL"
                             />
+                        </div>
+                    </div>
+                </div>
+
+                {/* TIMELINE SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Studio Timeline</h3>
+                    <div className="space-y-4">
+                        {(content.timeline || []).map((t, i) => (
+                            <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl relative group grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input
+                                    type="text"
+                                    value={t.year || ""}
+                                    onChange={(e) => {
+                                        const newList = [...content.timeline];
+                                        newList[i] = { ...newList[i], year: e.target.value };
+                                        setContent(prev => ({ ...prev, timeline: newList }));
+                                    }}
+                                    placeholder="Year (e.g. 2010)"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-[#c5a059] text-xs font-black"
+                                />
+                                <input
+                                    type="text"
+                                    value={t.title || ""}
+                                    onChange={(e) => {
+                                        const newList = [...content.timeline];
+                                        newList[i] = { ...newList[i], title: e.target.value };
+                                        setContent(prev => ({ ...prev, timeline: newList }));
+                                    }}
+                                    placeholder="Milestone Title"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                />
+                                <textarea
+                                    value={t.description || ""}
+                                    onChange={(e) => {
+                                        const newList = [...content.timeline];
+                                        newList[i] = { ...newList[i], description: e.target.value };
+                                        setContent(prev => ({ ...prev, timeline: newList }));
+                                    }}
+                                    placeholder="Milestone Event Description"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold md:col-span-2 min-h-[80px]"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newList = content.timeline.filter((_, idx) => idx !== i);
+                                        setContent(prev => ({ ...prev, timeline: newList }));
+                                    }}
+                                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const newList = [...(content.timeline || []), { year: "", title: "", description: "" }];
+                                setContent(prev => ({ ...prev, timeline: newList }));
+                            }}
+                            className="w-full py-6 border border-dashed border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#c5a059] transition-all"
+                        >
+                            + Add Timeline Milestone
+                        </button>
+                    </div>
+                </div>
+
+                {/* TEAM SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">The Creators (Team)</h3>
+                    <div className="space-y-4">
+                        <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Team Members - <span className="text-gray-500">800x1000 vertical recommended</span></label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {(content.team.members || []).map((m, i) => (
+                                <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-2xl relative group space-y-4">
+                                    <div className="aspect-[4/5] bg-black rounded-lg overflow-hidden border border-white/5 relative">
+                                        {m.image ? (
+                                            <img src={m.image} className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black uppercase text-gray-600">No Image</div>
+                                        )}
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={m.name || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.team.members];
+                                            newList[i] = { ...newList[i], name: e.target.value };
+                                            updateSection("team", "members", newList);
+                                        }}
+                                        placeholder="Name"
+                                        className="w-full bg-transparent border-b border-white/10 pb-2 text-white text-sm font-bold outline-none focus:border-[#c5a059]"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={m.role || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.team.members];
+                                            newList[i] = { ...newList[i], role: e.target.value };
+                                            updateSection("team", "members", newList);
+                                        }}
+                                        placeholder="Role / Title"
+                                        className="w-full bg-transparent border-b border-white/10 pb-2 text-[#c5a059] text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#c5a059]"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={m.image || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.team.members];
+                                            newList[i] = { ...newList[i], image: e.target.value };
+                                            updateSection("team", "members", newList);
+                                        }}
+                                        placeholder="Image URL"
+                                        className="w-full bg-white/5 rounded p-2 text-gray-400 text-[10px] font-bold outline-none focus:text-white"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newList = content.team.members.filter((_, idx) => idx !== i);
+                                            updateSection("team", "members", newList);
+                                        }}
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const newList = [...(content.team.members || []), { name: "", role: "", image: "" }];
+                                    updateSection("team", "members", newList);
+                                }}
+                                className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-[#c5a059] min-h-[300px]"
+                            >
+                                + Add Member
+                            </button>
                         </div>
                     </div>
                 </div>
