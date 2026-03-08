@@ -116,7 +116,7 @@ const ContentSchema = new mongoose.Schema({
             subtitle: { type: String, default: "The Visionary" },
             heading: { type: String, default: "Capturing<br>The Unseen." },
             note: { type: String, default: "\"At Dreamline, we don't just record events; we archive feelings. My journey began with a simple belief: that every brand and every couple has a story that deserves to be told with cinematic grandeur. Over the last decade, we've refined our craft to ensure that when you look back at our work 20 years from now, you don't just see what happened — you feel it.\"" },
-            name: { type: String, default: "Rony" },
+            name: { type: String, default: "Aditya Singh" },
             role: { type: String, default: "Founder & Creative Director" },
             image: { type: String, default: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800" }
         },
