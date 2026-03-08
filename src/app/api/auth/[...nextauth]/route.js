@@ -11,8 +11,8 @@ const handler = NextAuth({
             },
             async authorize(credentials) {
                 // In production, these should be env variables
-                const adminUser = process.env.ADMIN_USER || "admin";
-                const adminPass = process.env.ADMIN_PASS || "admin123";
+                const adminUser = process.env.ADMIN_USER || "info.dreamline@";
+                const adminPass = process.env.ADMIN_PASS || "Dreamline";
 
                 if (
                     credentials?.username === adminUser &&
