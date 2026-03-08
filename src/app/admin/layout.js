@@ -20,6 +20,7 @@ export default function AdminLayout({ children }) {
         { label: "About", path: "/admin/about", icon: "🏢" },
         { label: "Luxury", path: "/admin/luxury", icon: "✨" },
         { label: "Commercial", path: "/admin/commercial", icon: "🏢" },
+        { label: "Tech", path: "/admin/tech", icon: "💻" },
         { label: "Projects", path: "/admin/gallery", icon: "🎬" },
         { label: "Weddings", path: "/admin/weddings", icon: "💍" },
         { label: "Journal", path: "/admin/journal", icon: "📝" },

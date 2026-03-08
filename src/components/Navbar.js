@@ -44,14 +44,14 @@ export default function Navbar() {
                     <Link href="/about" className="hover:text-white transition-colors interactive">
                         HISTORY
                     </Link>
-                    <Link href="/tech" className="hover:text-white transition-colors interactive text-[#c5a059]">
-                        TECH
-                    </Link>
                     <Link href="/luxury" className="hover:text-white transition-colors interactive">
                         LUXURY WEDDINGS
                     </Link>
                     <Link href="/commercial" className="hover:text-white transition-colors interactive">
                         COMMERCIAL
+                    </Link>
+                    <Link href="/tech" className="hover:text-white transition-colors interactive text-[#c5a059]">
+                        TECH
                     </Link>
                     <Link href="/contact" className="hover:text-white transition-colors interactive">
                         CONTACT
@@ -106,9 +106,6 @@ export default function Navbar() {
                     <Link onClick={() => setIsMenuOpen(false)} href="/about" className="interactive">
                         History
                     </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="interactive text-[#c5a059]">
-                        Tech
-                    </Link>
                     <Link
                         onClick={() => setIsMenuOpen(false)}
                         href="/luxury"
@@ -122,6 +119,9 @@ export default function Navbar() {
                         className="interactive"
                     >
                         Commercial
+                    </Link>
+                    <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="interactive text-[#c5a059]">
+                        Tech
                     </Link>
                     <Link onClick={() => setIsMenuOpen(false)} href="/contact" className="interactive">
                         Contact

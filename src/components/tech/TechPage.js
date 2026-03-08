@@ -1,55 +1,29 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import axios from "axios";
 import MagneticButton from "@/components/ui/MagneticButton";
 
-const websites = [
-    {
-        id: 1,
-        title: "Aura Aesthetics",
-        category: "E-Commerce",
-        img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200",
-        url: "#",
-    },
-    {
-        id: 2,
-        title: "Nexus Financial",
-        category: "Corporate",
-        img: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=1200",
-        url: "#",
-    },
-    {
-        id: 3,
-        title: "Luminex Studios",
-        category: "Portfolio",
-        img: "https://images.unsplash.com/photo-1507238692062-5a042e9e18c4?auto=format&fit=crop&w=1200",
-        url: "#",
-    },
-    {
-        id: 4,
-        title: "Velocity Motors",
-        category: "Automotive",
-        img: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=1200",
-        url: "#",
-    },
-    {
-        id: 5,
-        title: "Noir Fashion",
-        category: "Fashion & Retail",
-        img: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1200",
-        url: "#",
-    },
-    {
-        id: 6,
-        title: "Apex Fitness",
-        category: "Health & Wellness",
-        img: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?auto=format&fit=crop&w=1200",
-        url: "#",
-    }
-];
-
 export default function TechPage() {
+    const [websites, setWebsites] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const fetchProjects = async () => {
+        try {
+            const { data } = await axios.get("/api/tech");
+            setWebsites(data);
+        } catch (error) {
+            console.error("Failed to load tech portfolio:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchProjects();
+    }, []);
+
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -110,34 +84,36 @@ export default function TechPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                     {websites.map((site, i) => (
                         <motion.div
-                            key={site.id}
+                            key={site._id}
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-100px" }}
                             transition={{ duration: 0.8, delay: i % 2 === 0 ? 0 : 0.2 }}
                             className="group relative"
                         >
-                            <div
-                                className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-zinc-900 border border-white/5 relative mb-6 cursor-pointer"
-                                data-cursor="VIEW SITE"
-                            >
-                                <motion.img
-                                    src={site.img}
-                                    alt={site.title}
-                                    className="w-full h-full object-cover filter grayscale-[40%] brightness-75"
-                                    whileHover={{ scale: 1.05, filter: "grayscale(0%) brightness(1.1)" }}
-                                    transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                            </div>
+                            <a href={site.domain} target="_blank" rel="noopener noreferrer" className="block">
+                                <div
+                                    className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-zinc-900 border border-white/5 relative mb-6 cursor-pointer"
+                                    data-cursor="VIEW SITE"
+                                >
+                                    <motion.img
+                                        src={site.img}
+                                        alt={site.title}
+                                        className="w-full h-full object-cover filter grayscale-[40%] brightness-75"
+                                        whileHover={{ scale: 1.05, filter: "grayscale(0%) brightness(1.1)" }}
+                                        transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                                </div>
+                            </a>
 
                             <div className="flex justify-between items-start px-2">
-                                <div>
-                                    <h3 className="font-heading text-xl sm:text-2xl font-black uppercase text-white mb-2">{site.title}</h3>
-                                    <p className="text-[#c5a059] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest">{site.category}</p>
+                                <div className="max-w-[80%]">
+                                    <h3 className="font-heading text-xl sm:text-2xl font-black uppercase text-white mb-2 truncate" title={site.title}>{site.title}</h3>
+                                    <p className="text-[#c5a059] text-[9px] sm:text-[10px] font-bold uppercase tracking-widest truncate">{site.domain.replace(/^https?:\/\//, '')}</p>
                                 </div>
                                 <MagneticButton>
-                                    <a href={site.url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors rotate-45 group-hover:rotate-0 duration-500">
+                                    <a href={site.domain} target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex-shrink-0 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-colors rotate-45 group-hover:rotate-0 duration-500">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <line x1="5" y1="12" x2="19" y2="12"></line>
                                             <polyline points="12 5 19 12 12 19"></polyline>
