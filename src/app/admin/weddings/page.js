@@ -62,7 +62,8 @@ export default function WeddingAdmin() {
             videoUrl: "",
             description: "",
             review: "",
-            clientNames: ""
+            clientNames: "",
+            images: []
         });
     };
 
@@ -126,7 +127,7 @@ export default function WeddingAdmin() {
                                     <input type="text" value={editingWedding.location} onChange={(e) => setEditingWedding({ ...editingWedding, location: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059]" />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Hero Image URL</label>
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Hero Image URL (Recommended: 1920x1080)</label>
                                     <input type="text" value={editingWedding.img} onChange={(e) => setEditingWedding({ ...editingWedding, img: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] outline-none" placeholder="https://..." />
                                 </div>
                                 <div className="space-y-1">
@@ -144,6 +145,56 @@ export default function WeddingAdmin() {
                                 <h3 className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">Client Reflection</h3>
                                 <textarea value={editingWedding.review} onChange={(e) => setEditingWedding({ ...editingWedding, review: e.target.value })} placeholder="Quote from the client..." className="w-full bg-transparent border-b border-white/10 p-2 text-white outline-none italic text-lg" />
                                 <input type="text" value={editingWedding.clientNames} onChange={(e) => setEditingWedding({ ...editingWedding, clientNames: e.target.value })} placeholder="Couple's Name for Review Attribution" className="w-full bg-transparent text-[10px] font-black uppercase text-gray-500 outline-none" />
+                            </div>
+
+                            {/* Gallery Images Array Editor */}
+                            <div className="bg-white/2 border border-white/5 p-8 rounded-3xl space-y-6">
+                                <div className="flex justify-between items-center mb-6">
+                                    <div>
+                                        <h3 className="text-[12px] font-black uppercase tracking-widest text-[#c5a059]">Cinematic Gallery Array</h3>
+                                        <p className="text-[10px] text-gray-500 font-bold mt-1">Provide 12-25 images for the masonry grid. (Recommended Widths: 800px or 1200px)</p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setEditingWedding({ ...editingWedding, images: [...(editingWedding.images || []), ""] })}
+                                        className="bg-white/10 hover:bg-white text-white hover:text-black px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all"
+                                    >
+                                        + Add Image
+                                    </button>
+                                </div>
+
+                                <div className="space-y-3">
+                                    {(editingWedding.images || []).map((img, index) => (
+                                        <div key={index} className="flex gap-3">
+                                            <input
+                                                type="text"
+                                                value={img}
+                                                onChange={(e) => {
+                                                    const newImages = [...editingWedding.images];
+                                                    newImages[index] = e.target.value;
+                                                    setEditingWedding({ ...editingWedding, images: newImages });
+                                                }}
+                                                placeholder="https://..."
+                                                className="flex-1 bg-black/50 border border-white/10 rounded-xl p-3 text-xs text-gray-300 outline-none focus:border-[#c5a059]"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newImages = editingWedding.images.filter((_, i) => i !== index);
+                                                    setEditingWedding({ ...editingWedding, images: newImages });
+                                                }}
+                                                className="bg-red-500/10 text-red-500/50 hover:bg-red-500 hover:text-white px-4 rounded-xl text-[10px] font-black uppercase transition-all"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {(!editingWedding.images || editingWedding.images.length === 0) && (
+                                        <div className="text-center py-8 text-gray-600 border border-dashed border-gray-800 rounded-2xl">
+                                            <p className="text-[10px] uppercase font-black tracking-widest">No Gallery Images Added</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="pt-12">

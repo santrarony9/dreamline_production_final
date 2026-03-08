@@ -61,8 +61,8 @@ export default async function WeddingDetailPage({ params }) {
 
     if (!wedding) return notFound();
 
-    // Collect all images from chapters or use fallbacks to ensure 12-25 images
-    let allImages = [];
+    // Collect explicitly uploaded gallery images, and merge with legacy chapters
+    let allImages = wedding.images || [];
     if (wedding.storyChapters && wedding.storyChapters.length > 0) {
         wedding.storyChapters.forEach(chapter => {
             if (chapter.images) allImages = allImages.concat(chapter.images);

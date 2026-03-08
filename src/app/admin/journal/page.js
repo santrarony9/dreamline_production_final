@@ -136,8 +136,8 @@ export default function JournalAdmin() {
                                     </select>
                                 </div>
                                 <div className="space-y-1 lg:col-span-2">
-                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Featured Keyframe (Image URL)</label>
-                                    <input type="text" value={editingPost.image} onChange={(e) => setEditingPost({ ...editingPost, image: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] outline-none text-xs font-bold" />
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Featured Keyframe (Recommended: 1600x900)</label>
+                                    <input type="text" value={editingPost.image} onChange={(e) => setEditingPost({ ...editingPost, image: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] outline-none text-xs font-bold" placeholder="https://..." />
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Publish Date</label>

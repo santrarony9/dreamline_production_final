@@ -110,7 +110,7 @@ export default function GalleryAdmin() {
 
                             <div className="space-y-4 pt-4 border-t border-white/5">
                                 <div className="space-y-1">
-                                    <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Thumbnail URL</label>
+                                    <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Thumbnail URL (Recommended: 1920x1080)</label>
                                     <input
                                         type="text"
                                         value={proj.img}
