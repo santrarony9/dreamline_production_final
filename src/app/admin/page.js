@@ -4,6 +4,7 @@ import Analytics from "@/models/Analytics";
 import Booking from "@/models/Booking";
 import Journal from "@/models/Journal";
 import Wedding from "@/models/Wedding";
+import Content from "@/models/Content";
 
 export default async function AdminDashboard() {
     await dbConnect();
@@ -14,7 +15,7 @@ export default async function AdminDashboard() {
         Booking.countDocuments({ status: "pending" }),
         Journal.countDocuments(),
         Wedding.countDocuments(),
-        dbConnect().then(() => dbConnect.connection.db.collection("contents").findOne({})).then(doc => doc?.projects?.length || 0)
+        Content.findOne().lean().then(doc => doc?.projects?.length || 0)
     ]);
 
     // Calculate dynamic storage (assuming ~1.5MB per Wedding, ~1MB per Journal, ~2MB per Gallery Project + 500MB baseline for core assets)
