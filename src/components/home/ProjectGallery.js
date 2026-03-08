@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { openVideo } from "@/components/VideoModal";
 
 export default function ProjectGallery({ initialProjects, category = "all" }) {
@@ -53,10 +54,17 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                             onClick={() => openVideo(project.videoUrl, project.title)}
                             className="aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden relative group interactive"
                         >
-                            <img
+                            <motion.img
                                 src={project.img}
                                 alt={project.title}
-                                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"
+                                className="absolute inset-0 w-full h-full object-cover filter grayscale-[30%] brightness-75"
+                                initial={{ scale: 1.05 }}
+                                whileHover={{
+                                    scale: 1.15,
+                                    filter: "grayscale(0%) brightness(1)",
+                                    rotate: 1
+                                }}
+                                transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
                             />
 
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />

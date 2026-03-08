@@ -1,5 +1,9 @@
 "use client";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
 export default function MasterGallery({ images = [] }) {
+    const [selectedImage, setSelectedImage] = useState(null);
     // Fallback images if none provided from global content
     const defaultImages = [
         "https://dreamlinepro.s3.ap-south-2.amazonaws.com/uploads/1772417032378-b2770244f256ecaa93033b1d-Untitled_design__5_.webp",
@@ -44,9 +48,15 @@ export default function MasterGallery({ images = [] }) {
                 <div className="flex-1 flex flex-col gap-4 overflow-hidden">
                     <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
                         {getSeamlessArray(col1).map((src, i) => (
-                            <div key={`c1-${i}`} className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0">
+                            <motion.div
+                                layoutId={`gallery-img-${src}-${i}`}
+                                key={`c1-${i}`}
+                                onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-${i}` })}
+                                className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
+                                data-cursor="VIEW"
+                            >
                                 <img src={src} className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
@@ -55,9 +65,15 @@ export default function MasterGallery({ images = [] }) {
                 <div className="flex-1 flex flex-col gap-4 overflow-hidden pt-20">
                     <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused] whitespace-nowrap">
                         {getSeamlessArray(col2).map((src, i) => (
-                            <div key={`c2-${i}`} className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0">
+                            <motion.div
+                                layoutId={`gallery-img-${src}-c2-${i}`}
+                                key={`c2-${i}`}
+                                onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-c2-${i}` })}
+                                className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
+                                data-cursor="VIEW"
+                            >
                                 <img src={src} className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
@@ -66,13 +82,43 @@ export default function MasterGallery({ images = [] }) {
                 <div className="hidden md:flex flex-1 flex-col gap-4 overflow-hidden pt-10">
                     <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
                         {getSeamlessArray(col3).map((src, i) => (
-                            <div key={`c3-${i}`} className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0">
+                            <motion.div
+                                layoutId={`gallery-img-${src}-c3-${i}`}
+                                key={`c3-${i}`}
+                                onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-c3-${i}` })}
+                                className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
+                                data-cursor="VIEW"
+                            >
                                 <img src={src} className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </div>
+
+            {/* Full Screen Reveal Overlay */}
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl cursor-pointer"
+                        onClick={() => setSelectedImage(null)}
+                        data-cursor="CLOSE"
+                    >
+                        <motion.img
+                            layoutId={selectedImage.id}
+                            src={selectedImage.src}
+                            alt="Expanded View"
+                            className="w-auto h-auto max-w-[90vw] max-h-[90vh] object-contain rounded-xl shadow-2xl"
+                        />
+                        <div className="absolute top-8 right-8 text-white/50 text-xs font-black uppercase tracking-widest hover:text-white transition-colors">
+                            Close [X]
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
