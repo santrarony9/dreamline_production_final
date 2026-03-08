@@ -50,7 +50,7 @@ export default function Navbar() {
                     <Link href="/commercial" className="hover:text-white transition-colors interactive">
                         COMMERCIAL
                     </Link>
-                    <Link href="/tech" className="hover:text-white transition-colors interactive text-[#c5a059]">
+                    <Link href="/tech" className="hover:text-white transition-colors interactive">
                         TECH
                     </Link>
                     <Link href="/contact" className="hover:text-white transition-colors interactive">
@@ -109,7 +109,7 @@ export default function Navbar() {
                     <Link
                         onClick={() => setIsMenuOpen(false)}
                         href="/luxury"
-                        className="interactive text-[#c5a059]"
+                        className="interactive"
                     >
                         Luxury Weddings
                     </Link>
@@ -120,7 +120,7 @@ export default function Navbar() {
                     >
                         Commercial
                     </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="interactive text-[#c5a059]">
+                    <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="interactive">
                         Tech
                     </Link>
                     <Link onClick={() => setIsMenuOpen(false)} href="/contact" className="interactive">

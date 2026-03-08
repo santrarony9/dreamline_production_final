@@ -1,7 +1,7 @@
 export default function QuoteSection() {
     return (
         <section
-            className="relative py-40 md:py-60 flex items-center justify-center border-t border-white/5 bg-fixed bg-center bg-cover bg-no-repeat"
+            className="relative py-40 md:py-60 flex items-center justify-center border-t border-white/5 bg-center bg-cover bg-no-repeat"
             style={{
                 backgroundImage: 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80")'
             }}
