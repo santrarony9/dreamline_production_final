@@ -50,7 +50,7 @@ export default async function LuxuryPage() {
             </section>
 
             {/* Spark Blue Diamond Premium Carousel */}
-            <SparkCarousel />
+            <SparkCarousel images={luxuryData.sparkCarousel} />
 
             {/* Reusing ProjectGallery but with strict category enforcement */}
             <ProjectGallery initialProjects={serializedWeddings} category="wedding" />
