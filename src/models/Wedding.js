@@ -9,6 +9,7 @@ const WeddingSchema = new mongoose.Schema({
     hoverVideo: { type: String },
     videoUrl: { type: String },
     albumUrl: { type: String },
+    images: [String],
     reviews: [{
         author: String,
         text: String,
