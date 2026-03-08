@@ -13,7 +13,7 @@ export default function Marquee({ items }) {
                     {displayItems.map((item, index) => (
                         <span
                             key={index}
-                            className={`font-heading font-black text-4xl whitespace-nowrap ${index % 2 === 0 ? 'text-outline opacity-30 hover:opacity-100 transition-opacity' : 'text-[#c5a059]'
+                            className={`font-heading font-bold text-3xl md:text-4xl whitespace-nowrap ${index % 2 === 0 ? 'text-outline opacity-30 hover:opacity-100 transition-opacity' : 'text-[#c5a059]'
                                 }`}
                         >
                             {item}
@@ -23,7 +23,7 @@ export default function Marquee({ items }) {
                     {displayItems.map((item, index) => (
                         <span
                             key={`dup-${index}`}
-                            className={`font-heading font-black text-4xl whitespace-nowrap ${index % 2 === 0 ? 'text-outline opacity-30 hover:opacity-100 transition-opacity' : 'text-[#c5a059]'
+                            className={`font-heading font-bold text-3xl md:text-4xl whitespace-nowrap ${index % 2 === 0 ? 'text-outline opacity-30 hover:opacity-100 transition-opacity' : 'text-[#c5a059]'
                                 }`}
                         >
                             {item}

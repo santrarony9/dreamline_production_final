@@ -14,7 +14,7 @@ export default function Stats({ stats }) {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     {displayStats.map((stat, index) => (
                         <div key={index} className="border-l border-white/10 pl-8 py-4 group">
-                            <div className="text-[#c5a059] font-heading text-5xl font-black mb-2 group-hover:scale-110 transition-transform origin-left">
+                            <div className="text-[#c5a059] font-heading text-4xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform origin-left">
                                 {stat.value}
                             </div>
                             <div className="text-[10px] font-black uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
