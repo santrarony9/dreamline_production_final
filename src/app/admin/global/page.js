@@ -156,14 +156,18 @@ export default function GlobalSettings() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
                             />
                         </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">OG Image URL (1200x630)</label>
-                            <input
-                                type="text"
-                                value={content.seo?.ogImage || ""}
-                                onChange={(e) => updateNested("seo", "ogImage", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
-                            />
+                        <div className="space-y-4">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">OG Image (Social Sharing - 1200x630)</label>
+                            <div className="relative">
+                                <ImageUploader
+                                    currentImage={content.seo?.ogImage || ""}
+                                    recommendedSize="1200x630 pixels recommended for high-quality social previews."
+                                    onUploadSuccess={(url) => updateNested("seo", "ogImage", url)}
+                                />
+                                {content.seo?.ogImage && (
+                                    <button type="button" onClick={() => updateNested("seo", "ogImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors mt-2">Clear Asset</button>
+                                )}
+                            </div>
                         </div>
                         <div className="space-y-4">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Global Favicon (Wait for deploy)</label>

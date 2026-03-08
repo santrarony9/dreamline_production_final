@@ -131,14 +131,14 @@ export default function GalleryAdmin() {
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Hover Preview Video</label>
-                                    <input
-                                        type="text"
-                                        value={proj.hoverVideo}
-                                        onChange={(e) => updateProject(i, "hoverVideo", e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-[10px] text-gray-500 outline-none"
-                                        placeholder="Direct .mp4 link"
+                                    <ImageUploader
+                                        currentImage={proj.hoverVideo}
+                                        recommendedSize="Hover Preview Video (Direct .mp4)"
+                                        onUploadSuccess={(url) => updateProject(i, "hoverVideo", url)}
                                     />
+                                    {proj.hoverVideo && (
+                                        <button type="button" onClick={() => updateProject(i, "hoverVideo", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors mt-2">Clear Asset</button>
+                                    )}
                                 </div>
                             </div>
 
