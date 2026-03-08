@@ -108,7 +108,7 @@ export default async function AboutPage() {
                         <div className="relative mb-12">
                             <div className="absolute inset-0 bg-[#c5a059]/20 blur-[100px] rounded-full scale-150 animate-pulse"></div>
                             <img
-                                src="/logo.svg"
+                                src={aboutData.logoHistory || "/logo.svg"}
                                 alt="Dreamline Brand Mark"
                                 className="h-16 md:h-24 w-auto relative z-10 opacity-80"
                             />
