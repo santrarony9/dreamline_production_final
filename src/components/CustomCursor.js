@@ -37,8 +37,28 @@ export default function CustomCursor() {
             el.addEventListener("mouseleave", handleMouseLeave);
         });
 
+        // Premium Global Intersection Observer for Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("in-view");
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        // Auto-attach reveal animation to majestic elements
+        const majesticElements = document.querySelectorAll("h1, h2, .premium-card, section");
+        majesticElements.forEach(el => {
+            // Don't override elements that already have complex inner animations
+            if (!el.classList.contains("reveal-inner") && !el.querySelector('.reveal-inner')) {
+                el.classList.add("reveal-up");
+                observer.observe(el);
+            }
+        });
+
         return () => {
             window.removeEventListener("mousemove", moveCursor);
+            observer.disconnect();
             interatables.forEach((el) => {
                 el.removeEventListener("mouseenter", handleMouseEnter);
                 el.removeEventListener("mouseleave", handleMouseLeave);
