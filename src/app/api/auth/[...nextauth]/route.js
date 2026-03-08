@@ -26,10 +26,22 @@ const handler = NextAuth({
     ],
     session: {
         strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 Days
+        maxAge: 30 * 24 * 60 * 60, // 30 Days persistence
+        updateAge: 24 * 60 * 60,   // Refresh token every 24h
     },
     jwt: {
         maxAge: 30 * 24 * 60 * 60, // 30 Days
+    },
+    cookies: {
+        sessionToken: {
+            name: process.env.NODE_ENV === 'production' ? `__Secure-next-auth.session-token` : `next-auth.session-token`,
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production',
+            },
+        },
     },
     pages: {
         signIn: "/admin/login",
