@@ -47,9 +47,7 @@ export default function Preloader() {
             }}
         >
             <div className="text-center">
-                <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-tighter flex items-end justify-center gap-1">
-                    D/P <span className="w-2 h-2 rounded-full bg-[#c5a059] mb-2"></span>
-                </h2>
+                <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-widest">DREAMLINE</h2>
                 <div className="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
                     <div
                         className="h-full bg-[#c5a059] transition-all duration-300 ease-out"
