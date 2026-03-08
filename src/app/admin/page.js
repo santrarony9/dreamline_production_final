@@ -9,12 +9,19 @@ export default async function AdminDashboard() {
     await dbConnect();
 
     // Aggregate stats
-    const [totalViews, activeBookings, totalJournalPosts, totalWeddings] = await Promise.all([
+    const [totalViews, activeBookings, totalJournalPosts, totalWeddings, totalProjects] = await Promise.all([
         Analytics.aggregate([{ $group: { _id: null, total: { $sum: "$views" } } }]),
         Booking.countDocuments({ status: "pending" }),
         Journal.countDocuments(),
         Wedding.countDocuments(),
+        dbConnect().then(() => dbConnect.connection.db.collection("contents").findOne({})).then(doc => doc?.projects?.length || 0)
     ]);
+
+    // Calculate dynamic storage (assuming ~1.5MB per Wedding, ~1MB per Journal, ~2MB per Gallery Project + 500MB baseline for core assets)
+    const estimatedStorageMB = 500 + (totalWeddings * 1.5) + (totalJournalPosts * 1.0) + (totalProjects * 2.0);
+    const estimatedStorageGB = (estimatedStorageMB / 1024).toFixed(2);
+    const maxStorageGB = 100; // Baseline capacity
+    const storagePercentage = Math.min(100, Math.round((estimatedStorageGB / maxStorageGB) * 100));
 
     const stats = [
         { label: "Total Reach", value: totalViews[0]?.total || 0, icon: "👁️" },
@@ -101,9 +108,12 @@ export default async function AdminDashboard() {
                     </div>
 
                     <div className="bg-gradient-to-br from-[#c5a059]/20 to-transparent border border-[#c5a059]/20 rounded-3xl p-8">
-                        <h3 className="text-xs font-black uppercase tracking-widest text-white mb-4">Storage Usage</h3>
-                        <p className="text-2xl font-black text-white mb-2">12.4 <span className="text-gray-500 text-sm">GB</span></p>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Your media archive is currently 42% utilized. Consider S3 lifecycle policies for optimized cost management.</p>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-white mb-4">Est. Storage Usage</h3>
+                        <p className="text-2xl font-black text-white mb-2">{estimatedStorageGB} <span className="text-gray-500 text-sm">GB</span></p>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Your media archive is currently {storagePercentage}% utilized based on active film ({totalWeddings}), narrative ({totalJournalPosts}), and gallery ({totalProjects}) records.</p>
+                        <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden mt-4">
+                            <div className="bg-[#c5a059] h-full transition-all duration-1000" style={{ width: `${storagePercentage}%` }}></div>
+                        </div>
                     </div>
                 </section>
             </div>
