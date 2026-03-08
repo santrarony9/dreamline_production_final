@@ -48,8 +48,8 @@ export default async function LuxuryPage() {
                 </div>
             </section>
 
-            {/* Reusing ProjectGallery but with pre-filtered wedding data */}
-            <ProjectGallery initialProjects={serializedWeddings} />
+            {/* Reusing ProjectGallery but with strict category enforcement */}
+            <ProjectGallery initialProjects={serializedWeddings} category="wedding" />
 
             {/* Luxury Testimonial Section */}
             {luxuryData.testimonial && luxuryData.testimonial.quote && (
