@@ -27,9 +27,9 @@ export default function ReviewSlider({ reviews }) {
     const loopReviews = [...displayReviews, ...displayReviews];
 
     return (
-        <section className="py-32 bg-[#050505] border-t border-white/5">
+        <section className="py-16 md:py-32 bg-[#050505] border-t border-white/5">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-20 gap-8">
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
                             TESTIMONIALS
@@ -38,7 +38,7 @@ export default function ReviewSlider({ reviews }) {
                             Reviews.
                         </h2>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left md:text-right w-full md:w-auto mt-4 md:mt-0 pt-6 md:pt-0 border-t border-white/10 md:border-none">
                         <div className="text-[#c5a059] font-heading text-4xl font-black mb-2">4.9/5</div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-white/20">
                             AVERAGE RATING ON GOOGLE
