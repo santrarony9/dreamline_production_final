@@ -23,9 +23,9 @@ export default function VideoVault({ videos = [] }) {
     const displayVideos = videos && videos.length > 0 ? videos : defaultVideos;
 
     return (
-        <section className="py-32 bg-black overflow-hidden">
+        <section className="py-16 md:py-32 bg-black overflow-hidden">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-20 gap-8">
                     <div className="max-w-2xl">
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c5a059] mb-6">
                             CINEMATIC REEL

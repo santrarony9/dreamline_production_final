@@ -28,8 +28,8 @@ export default function MasterGallery({ images = [] }) {
     const getSeamlessArray = (arr) => [...arr, ...arr, ...arr];
 
     return (
-        <section className="bg-[#050505] border-t border-white/5 py-32 overflow-hidden">
-            <div className="container mx-auto px-6 md:px-12 mb-20 relative z-10">
+        <section className="bg-[#050505] border-t border-white/5 py-16 md:py-32 overflow-hidden">
+            <div className="container mx-auto px-6 md:px-12 mb-10 md:mb-20 relative z-10">
                 <h2 className="font-heading text-5xl md:text-7xl lg:text-[100px] font-black uppercase tracking-tighter leading-[0.85] mb-6">
                     MASTER<br /><span className="text-[#c5a059]">GALLERY.</span>
                 </h2>
@@ -39,7 +39,7 @@ export default function MasterGallery({ images = [] }) {
             </div>
 
             {/* Vertical Scroll Tracks */}
-            <div className="h-[70vh] flex gap-4 md:gap-6 px-6 md:px-12 mt-16 group relative">
+            <div className="h-[60vh] md:h-[70vh] flex gap-4 md:gap-6 px-4 md:px-12 mt-8 md:mt-16 group relative">
                 {/* Gradient Fades for Top/Bottom */}
                 <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
                 <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#050505] to-transparent z-10 pointer-events-none"></div>

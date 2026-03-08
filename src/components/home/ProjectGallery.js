@@ -23,9 +23,9 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
     const filteredProjects = (category !== "all" || filter === "all") ? projects : projects.filter(p => p.type === filter);
 
     return (
-        <section className="py-32 bg-[#050505]">
+        <section className="py-16 md:py-32 bg-[#050505]">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-10 md:mb-16 gap-6 md:gap-8">
                     <h2 className="font-heading text-4xl sm:text-5xl font-black text-white uppercase italic">
                         Portfolio.
                     </h2>

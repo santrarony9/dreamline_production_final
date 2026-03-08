@@ -5,14 +5,14 @@ export default function LetsCreate() {
     return (
         <section className="bg-[#050505] text-white border-t border-white/5 flex flex-col lg:flex-row">
             {/* Left Content */}
-            <div className="flex-1 py-32 px-6 md:px-16 lg:px-24 flex flex-col justify-center">
-                <p className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-8">Ready For Action.</p>
+            <div className="flex-1 py-16 md:py-32 px-6 md:px-16 lg:px-24 flex flex-col justify-center">
+                <p className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-6 md:mb-8">Ready For Action.</p>
 
-                <h2 className="font-heading text-6xl md:text-8xl lg:text-[100px] font-black leading-[0.85] tracking-tighter uppercase mb-20 drop-shadow-lg">
+                <h2 className="font-heading text-5xl md:text-8xl lg:text-[100px] font-black leading-[0.85] tracking-tighter uppercase mb-12 md:mb-20 drop-shadow-lg break-words">
                     LET'S<br />CREATE.
                 </h2>
 
-                <div className="space-y-16">
+                <div className="space-y-10 md:space-y-16">
                     <div>
                         <h4 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">LOCATION</h4>
                         <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug">
@@ -28,7 +28,7 @@ export default function LetsCreate() {
                         </a>
                     </div>
 
-                    <div className="flex gap-6 text-[10px] font-black uppercase tracking-[0.2em] pt-8 border-t border-white/10">
+                    <div className="flex flex-wrap gap-4 md:gap-6 text-[10px] font-black uppercase tracking-[0.2em] pt-8 border-t border-white/10">
                         <a href="https://www.instagram.com/dreamlineproduction/" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
                         <a href="https://www.youtube.com/@dreamlineproduction" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">YOUTUBE</a>
                         <a href="https://vimeo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">VIMEO</a>
