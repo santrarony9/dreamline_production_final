@@ -101,10 +101,26 @@ export default async function AboutPage() {
             </section>
 
             {/* History Timeline */}
-            <section className="py-20 md:py-32 bg-black overflow-hidden relative border-t border-white/5">
+            <section className="py-24 md:py-40 bg-black overflow-hidden relative border-t border-white/5">
                 <div className="container mx-auto px-6">
-                    <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Our Journey</span>
-                    <h2 className="font-heading text-4xl md:text-5xl font-black mb-16 uppercase text-white">Milestones & Memories</h2>
+                    {/* Emotional Brand Intro */}
+                    <div className="flex flex-col items-center text-center mb-20">
+                        <div className="relative mb-12">
+                            <div className="absolute inset-0 bg-[#c5a059]/20 blur-[100px] rounded-full scale-150 animate-pulse"></div>
+                            <img
+                                src="/logo.svg"
+                                alt="Dreamline Brand Mark"
+                                className="h-16 md:h-24 w-auto relative z-10 opacity-80"
+                            />
+                        </div>
+                        <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.6em] mb-6 block ml-[0.6em]">
+                            Our Journey
+                        </span>
+                        <h2 className="font-heading text-4xl md:text-6xl font-black mb-6 uppercase text-white leading-none">
+                            Milestones & <br className="md:hidden" /><span className="text-white/20">Memories.</span>
+                        </h2>
+                        <div className="h-[60px] w-[1px] bg-gradient-to-b from-[#c5a059] to-transparent mt-8"></div>
+                    </div>
 
                     <div className="relative border-l border-white/10 ml-4 md:ml-10 py-10 space-y-20">
                         {(aboutData.timeline || [
