@@ -60,7 +60,7 @@ export default function ContactPage() {
                     {/* Booking Form */}
                     <div>
                         <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Begin the Journey</span>
-                        <h1 className="font-heading text-5xl md:text-7xl font-black mb-12 leading-none uppercase text-white">
+                        <h1 className="font-heading text-4xl sm:text-5xl md:text-7xl font-black mb-12 leading-none uppercase text-white break-words">
                             Book Your<br /><span className="text-[#c5a059]">Experience.</span>
                         </h1>
 
