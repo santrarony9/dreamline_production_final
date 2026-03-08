@@ -93,13 +93,20 @@ export default function JournalAdmin() {
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-700 font-black uppercase">Missing Asset</div>
                                 )}
-                                <div className="absolute top-4 left-4">
-                                    <span className="bg-[#c5a059] text-black px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest">{post.category}</span>
-                                </div>
                             </div>
                             <div className="p-8 flex-1 flex flex-col">
+                                <div className="flex justify-between items-start mb-4">
+                                    <span className="text-[10px] text-gray-500 font-bold tracking-widest uppercase">{post.category}</span>
+                                    <div className="flex flex-col items-end gap-1">
+                                        <span className="text-[10px] text-white/50">{new Date(post.date).toLocaleDateString()}</span>
+                                        {post.date > new Date().toISOString().split('T')[0] ? (
+                                            <span className="text-[8px] bg-[#c5a059]/20 text-[#c5a059] px-2 py-0.5 rounded uppercase font-black tracking-widest">Scheduled</span>
+                                        ) : (
+                                            <span className="text-[8px] bg-green-500/20 text-green-500 px-2 py-0.5 rounded uppercase font-black tracking-widest">Published</span>
+                                        )}
+                                    </div>
+                                </div>
                                 <h3 className="text-lg font-bold text-white mb-2 leading-tight uppercase tracking-tight">{post.title}</h3>
-                                <p className="text-[10px] text-gray-500 font-bold mb-6">{new Date(post.date).toLocaleDateString()}</p>
                                 <p className="text-xs text-gray-400 line-clamp-3 mb-8">{post.excerpt || "No summary available."}</p>
 
                                 <div className="mt-auto flex justify-between items-center pt-6 border-t border-white/5">
@@ -148,7 +155,8 @@ export default function JournalAdmin() {
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Publish Date</label>
-                                    <input type="date" value={editingPost.date.split('T')[0]} onChange={(e) => setEditingPost({ ...editingPost, date: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059]" />
+                                    <input type="date" value={editingPost.date} onChange={(e) => setEditingPost({ ...editingPost, date: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059]" />
+                                    <p className="text-[9px] text-gray-500 pl-2 pt-1">Selecting a future date will keep the post hidden from the live website until that day arrives.</p>
                                 </div>
                             </div>
 
