@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/context/AuthProvider";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import SmoothScroll from "@/components/global/SmoothScroll";
+import MediaProtection from "@/components/global/MediaProtection";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -136,6 +137,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <ThemeProvider>
             <SmoothScroll>
+              <MediaProtection />
               <AnalyticsTracker />
               <PublicLayoutWrapper>
                 {children}

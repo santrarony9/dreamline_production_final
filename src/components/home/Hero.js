@@ -41,6 +41,8 @@ export default function Hero({ content }) {
                         loop
                         muted
                         playsInline
+                        controlsList="nodownload"
+                        disablePictureInPicture
                         className="h-full w-full object-cover scale-110"
                     />
                 ) : backgroundImage ? (
