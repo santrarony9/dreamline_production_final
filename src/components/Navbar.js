@@ -26,14 +26,9 @@ export default function Navbar() {
                     }`}
             >
                 <div className="font-heading font-black text-lg tracking-tighter">
-                    <Link href="/" className="interactive flex items-center gap-2">
-                        <Image
-                            src="/logo.svg"
-                            alt="Dreamline Logo"
-                            width={100}
-                            height={32}
-                            className={`h-8 w-auto grayscale ${theme === 'light' ? 'invert-0' : 'invert'}`}
-                        />
+                    <Link href="/" className="interactive flex items-end gap-1 group">
+                        <span className="font-heading font-black text-2xl tracking-tighter text-white">D/P</span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] mb-1.5 group-hover:scale-150 transition-transform"></span>
                     </Link>
                 </div>
 
