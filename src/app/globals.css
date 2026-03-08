@@ -181,11 +181,6 @@
   color: transparent;
 }
 
-.text-outline {
-  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.15);
-  color: transparent;
-}
-
 .reveal-text {
   overflow: hidden;
 }
