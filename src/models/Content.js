@@ -103,6 +103,7 @@ const ContentSchema = new mongoose.Schema({
             titleLine2: { type: String, default: "HOUSE IN KOLKATA." },
             description: { type: String, default: "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions for brands, businesses, and individuals. Known for creativity, professionalism, and storytelling excellence, we transform ideas into visually powerful content that creates emotional impact and brand value." }
         },
+        logoHistory: { type: String, default: "/logo.svg" },
         details: {
             heading: { type: String, default: "About Us" },
             text1: { type: String, default: "Dreamline Production is a Kolkata-based creative production company dedicated to producing high-quality visual content with strong storytelling and cinematic aesthetics. We combine creative direction, modern equipment, and industry experience to deliver professional results across multiple industries." },

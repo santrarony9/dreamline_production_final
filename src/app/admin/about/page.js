@@ -21,6 +21,7 @@ export default function AboutEditor() {
             const data = res.data.about || res.data || {};
             setContent({
                 hero: data.hero || {},
+                logoHistory: data.logoHistory || "",
                 details: data.details || {},
                 founder: data.founder || {},
                 timeline: data.timeline || [],
@@ -203,7 +204,27 @@ export default function AboutEditor() {
 
                 {/* TIMELINE SECTION */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Studio Timeline</h3>
+                    <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Studio Timeline</h3>
+                    </div>
+
+                    {/* Journey Logo Upload */}
+                    <div className="space-y-4 mb-10 pb-10 border-b border-white/5">
+                        <h4 className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1 mb-2">Emotional Journey Logo (SVG or PNG transparent)</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="relative">
+                                <ImageUploader
+                                    currentImage={content.logoHistory || "/logo.svg"}
+                                    recommendedSize="Vector graphic or transparent PNG recommended for spinning effect."
+                                    onUploadSuccess={(url) => setContent(prev => ({ ...prev, logoHistory: url }))}
+                                />
+                                {content.logoHistory && (
+                                    <button type="button" onClick={() => setContent(prev => ({ ...prev, logoHistory: "" }))} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors mt-2">Clear Asset</button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="space-y-4">
                         {(content.timeline || []).map((t, i) => (
                             <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl relative group grid grid-cols-1 md:grid-cols-2 gap-4">
