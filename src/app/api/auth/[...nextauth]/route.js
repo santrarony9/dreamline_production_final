@@ -25,7 +25,11 @@ const handler = NextAuth({
         })
     ],
     session: {
-        strategy: "jwt"
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 Days
+    },
+    jwt: {
+        maxAge: 30 * 24 * 60 * 60, // 30 Days
     },
     pages: {
         signIn: "/admin/login",
@@ -36,6 +40,7 @@ const handler = NextAuth({
         },
     },
     secret: process.env.NEXTAUTH_SECRET || "dreamline-premium-secret-2024",
+    trustHost: true, // Tells NextAuth to implicitly trust Vercel forwarded host headers 
 });
 
 export { handler as GET, handler as POST };
