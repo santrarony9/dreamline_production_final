@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function JournalAdmin() {
     const [posts, setPosts] = useState([]);
@@ -135,9 +136,15 @@ export default function JournalAdmin() {
                                         <option value="TECHNICAL">Technical Breakdown</option>
                                     </select>
                                 </div>
-                                <div className="space-y-1 lg:col-span-2">
-                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Featured Keyframe (Recommended: 1600x900)</label>
-                                    <input type="text" value={editingPost.image} onChange={(e) => setEditingPost({ ...editingPost, image: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] outline-none text-xs font-bold" placeholder="https://..." />
+                                <div className="space-y-4 lg:col-span-2">
+                                    <ImageUploader
+                                        currentImage={editingPost.image}
+                                        recommendedSize="Featured Keyframe (Recommended: 1600x900)"
+                                        onUploadSuccess={(url) => setEditingPost({ ...editingPost, image: url })}
+                                    />
+                                    {editingPost.image && (
+                                        <button type="button" onClick={() => setEditingPost({ ...editingPost, image: "" })} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                                    )}
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Publish Date</label>

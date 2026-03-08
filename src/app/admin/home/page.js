@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function HomeEditor() {
     const [content, setContent] = useState(null);
@@ -117,22 +118,15 @@ export default function HomeEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
                             />
                         </div>
-                        <div className="space-y-2 md:col-span-2 relative">
-                            <div className="flex justify-between items-center mb-1">
-                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Cinematic Backdrop (Video URL) - <span className="text-[#c5a059]">1920x1080 (16:9)</span>
-                                </label>
-                                {content.hero.backgroundImage && (
-                                    <button type="button" onClick={() => updateSection("hero", "backgroundImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
-                                )}
-                            </div>
-                            <input
-                                type="text"
-                                value={content.hero.backgroundImage || ""}
-                                onChange={(e) => updateSection("hero", "backgroundImage", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
-                                placeholder="Paste direct .mp4 or Cloudinary URL"
+                        <div className="space-y-4 md:col-span-2 relative">
+                            <ImageUploader
+                                currentImage={content.hero.backgroundImage}
+                                recommendedSize="Cinematic Backdrop (Video MP4 or Image URL) - 1920x1080 (16:9)"
+                                onUploadSuccess={(url) => updateSection("hero", "backgroundImage", url)}
                             />
+                            {content.hero.backgroundImage && (
+                                <button type="button" onClick={() => updateSection("hero", "backgroundImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -177,22 +171,15 @@ export default function HomeEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold min-h-[100px]"
                             />
                         </div>
-                        <div className="space-y-2 md:col-span-2">
-                            <div className="flex justify-between items-center mb-1">
-                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Expertise Image - <span className="text-[#c5a059]">800x1200 (vertical)</span>
-                                </label>
-                                {content.expertise.image && (
-                                    <button type="button" onClick={() => updateSection("expertise", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
-                                )}
-                            </div>
-                            <input
-                                type="text"
-                                value={content.expertise.image || ""}
-                                onChange={(e) => updateSection("expertise", "image", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
-                                placeholder="Image URL"
+                        <div className="space-y-4 md:col-span-2 relative">
+                            <ImageUploader
+                                currentImage={content.expertise.image}
+                                recommendedSize="Expertise Image - 800x1200 (vertical)"
+                                onUploadSuccess={(url) => updateSection("expertise", "image", url)}
                             />
+                            {content.expertise.image && (
+                                <button type="button" onClick={() => updateSection("expertise", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                            )}
                         </div>
 
                         {/* Who We Are Services List */}
@@ -446,20 +433,14 @@ export default function HomeEditor() {
                                         </button>
                                     </div>
                                 ))}
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        const url = prompt("Enter Image URL:");
-                                        if (url) {
+                                <div className="aspect-square bg-white/5 border flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">
+                                    <ImageUploader
+                                        onUploadSuccess={(url) => {
                                             const newImgs = [...(content.motionArchive.images || []), url];
                                             updateSection("motionArchive", "images", newImgs);
-                                        }
-                                    }}
-                                    className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-square"
-                                >
-                                    <span>+ Add</span>
-                                    <span>Image</span>
-                                </button>
+                                        }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -506,17 +487,29 @@ export default function HomeEditor() {
                                     placeholder="Embed URL (YouTube/Vimeo)"
                                     className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
                                 />
-                                <input
-                                    type="text"
-                                    value={v.image || ""}
-                                    onChange={(e) => {
-                                        const newList = [...content.videoVault];
-                                        newList[i] = { ...newList[i], image: e.target.value };
-                                        setContent(prev => ({ ...prev, videoVault: newList }));
-                                    }}
-                                    placeholder="Thumbnail URL (1920x1080 recommended)"
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
-                                />
+                                <div className="pt-2">
+                                    <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest pl-1 block mb-2">Video Thumbnail</label>
+                                    {v.image ? (
+                                        <div className="relative rounded-lg overflow-hidden border border-white/10 group aspect-video">
+                                            <img src={v.image} className="w-full h-full object-cover" />
+                                            <button type="button" onClick={() => {
+                                                const newList = [...content.videoVault];
+                                                newList[i] = { ...newList[i], image: "" };
+                                                setContent(prev => ({ ...prev, videoVault: newList }));
+                                            }} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-black uppercase text-white">
+                                                Remove Image
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <ImageUploader
+                                            onUploadSuccess={(url) => {
+                                                const newList = [...content.videoVault];
+                                                newList[i] = { ...newList[i], image: url };
+                                                setContent(prev => ({ ...prev, videoVault: newList }));
+                                            }}
+                                        />
+                                    )}
+                                </div>
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -563,20 +556,14 @@ export default function HomeEditor() {
                                     </button>
                                 </div>
                             ))}
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const url = prompt("Enter Gallery Image URL:");
-                                    if (url) {
+                            <div className="aspect-[4/5] bg-white/5 border w-full flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">
+                                <ImageUploader
+                                    onUploadSuccess={(url) => {
                                         const newGal = [...(content.splitGallery || []), url];
                                         setContent(prev => ({ ...prev, splitGallery: newGal }));
-                                    }
-                                }}
-                                className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-[4/5]"
-                            >
-                                <span>+ Add</span>
-                                <span>Image</span>
-                            </button>
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

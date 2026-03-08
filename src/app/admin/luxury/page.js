@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function LuxuryEditor() {
     const [content, setContent] = useState(null);
@@ -125,22 +126,15 @@ export default function LuxuryEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
                             />
                         </div>
-                        <div className="space-y-2 md:col-span-2 relative">
-                            <div className="flex justify-between items-center mb-1">
-                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Author Image (Optional) - <span className="text-[#c5a059]">400x400 (square) recommended</span>
-                                </label>
-                                {content.testimonial.image && (
-                                    <button type="button" onClick={() => updateSection("testimonial", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
-                                )}
-                            </div>
-                            <input
-                                type="text"
-                                value={content.testimonial.image || ""}
-                                onChange={(e) => updateSection("testimonial", "image", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
-                                placeholder="Paste image URL"
+                        <div className="space-y-4 md:col-span-2 relative">
+                            <ImageUploader
+                                currentImage={content.testimonial.image}
+                                recommendedSize="Author Image (Optional) - 400x400 (square) recommended"
+                                onUploadSuccess={(url) => updateSection("testimonial", "image", url)}
                             />
+                            {content.testimonial.image && (
+                                <button type="button" onClick={() => updateSection("testimonial", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -166,20 +160,14 @@ export default function LuxuryEditor() {
                                     </button>
                                 </div>
                             ))}
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    const url = prompt("Enter Image URL:");
-                                    if (url) {
+                            <div className="aspect-[3/2] bg-white/5 border w-full flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">
+                                <ImageUploader
+                                    onUploadSuccess={(url) => {
                                         const newGal = [...(content.sparkCarousel || []), url];
                                         setContent(prev => ({ ...prev, sparkCarousel: newGal }));
-                                    }
-                                }}
-                                className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-xl text-[9px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-[3/2]"
-                            >
-                                <span>+ Add</span>
-                                <span>Image</span>
-                            </button>
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

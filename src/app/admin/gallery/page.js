@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function GalleryAdmin() {
     const [projects, setProjects] = useState([]);
@@ -109,15 +110,15 @@ export default function GalleryAdmin() {
                             />
 
                             <div className="space-y-4 pt-4 border-t border-white/5">
-                                <div className="space-y-1">
-                                    <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Thumbnail URL (Recommended: 1920x1080)</label>
-                                    <input
-                                        type="text"
-                                        value={proj.img}
-                                        onChange={(e) => updateProject(i, "img", e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-[10px] text-gray-300 outline-none"
-                                        placeholder="https://..."
+                                <div className="space-y-4">
+                                    <ImageUploader
+                                        currentImage={proj.img}
+                                        recommendedSize="Thumbnail URL (Recommended: 1920x1080)"
+                                        onUploadSuccess={(url) => updateProject(i, "img", url)}
                                     />
+                                    {proj.img && (
+                                        <button type="button" onClick={() => updateProject(i, "img", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                                    )}
                                 </div>
                                 <div className="space-y-1">
                                     <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Master Video (YouTube/Direct)</label>

@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function AboutEditor() {
     const [content, setContent] = useState(null);
@@ -153,22 +154,15 @@ export default function AboutEditor() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold min-h-[100px]"
                             />
                         </div>
-                        <div className="space-y-2 md:col-span-2 relative">
-                            <div className="flex justify-between items-center mb-1">
-                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Founder Portrait - <span className="text-[#c5a059]">800x1200 vertical recommended</span>
-                                </label>
-                                {content.founder.image && (
-                                    <button type="button" onClick={() => updateSection("founder", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
-                                )}
-                            </div>
-                            <input
-                                type="text"
-                                value={content.founder.image || ""}
-                                onChange={(e) => updateSection("founder", "image", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
-                                placeholder="Paste image URL"
+                        <div className="space-y-4 md:col-span-2 relative">
+                            <ImageUploader
+                                currentImage={content.founder.image}
+                                recommendedSize="Founder Portrait - 800x1200 vertical recommended"
+                                onUploadSuccess={(url) => updateSection("founder", "image", url)}
                             />
+                            {content.founder.image && (
+                                <button type="button" onClick={() => updateSection("founder", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -177,22 +171,15 @@ export default function AboutEditor() {
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
                     <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Behind The Scenes Video</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-2 md:col-span-2 relative">
-                            <div className="flex justify-between items-center mb-1">
-                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
-                                    Video Cover Image - <span className="text-[#c5a059]">1600x900 (16:9) recommended</span>
-                                </label>
-                                {content.bts.videoImage && (
-                                    <button type="button" onClick={() => updateSection("bts", "videoImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase">Clear</button>
-                                )}
-                            </div>
-                            <input
-                                type="text"
-                                value={content.bts.videoImage || ""}
-                                onChange={(e) => updateSection("bts", "videoImage", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-[#c5a059] focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
-                                placeholder="Paste image URL"
+                        <div className="space-y-4 md:col-span-2 relative">
+                            <ImageUploader
+                                currentImage={content.bts.videoImage}
+                                recommendedSize="Video Cover Image - 1600x900 (16:9) recommended"
+                                onUploadSuccess={(url) => updateSection("bts", "videoImage", url)}
                             />
+                            {content.bts.videoImage && (
+                                <button type="button" onClick={() => updateSection("bts", "videoImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                            )}
                         </div>
                         <div className="space-y-2 md:col-span-2 relative">
                             <div className="flex justify-between items-center mb-1">
@@ -314,17 +301,26 @@ export default function AboutEditor() {
                                         placeholder="Role / Title"
                                         className="w-full bg-transparent border-b border-white/10 pb-2 text-[#c5a059] text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#c5a059]"
                                     />
-                                    <input
-                                        type="text"
-                                        value={m.image || ""}
-                                        onChange={(e) => {
-                                            const newList = [...content.team.members];
-                                            newList[i] = { ...newList[i], image: e.target.value };
-                                            updateSection("team", "members", newList);
-                                        }}
-                                        placeholder="Image URL"
-                                        className="w-full bg-white/5 rounded p-2 text-gray-400 text-[10px] font-bold outline-none focus:text-white"
-                                    />
+                                    <div className="mt-2 text-center pb-2">
+                                        {m.image ? (
+                                            <button type="button" onClick={() => {
+                                                const newList = [...content.team.members];
+                                                newList[i] = { ...newList[i], image: "" };
+                                                updateSection("team", "members", newList);
+                                            }} className="text-[10px] text-red-500 font-black uppercase tracking-widest hover:text-white transition-colors">
+                                                REMOVE IMAGE
+                                            </button>
+                                        ) : (
+                                            <ImageUploader
+                                                currentImage={m.image}
+                                                onUploadSuccess={(url) => {
+                                                    const newList = [...content.team.members];
+                                                    newList[i] = { ...newList[i], image: url };
+                                                    updateSection("team", "members", newList);
+                                                }}
+                                            />
+                                        )}
+                                    </div>
                                     <button
                                         type="button"
                                         onClick={() => {
