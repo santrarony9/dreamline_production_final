@@ -74,7 +74,11 @@ const ContentSchema = new mongoose.Schema({
                 rating: { type: Number, default: 5 },
                 initial: String
             }]
-        }
+        },
+        partners: [{
+            name: String,
+            image: String
+        }]
     },
     luxury: {
         hero: {
@@ -171,11 +175,6 @@ const ContentSchema = new mongoose.Schema({
         type: String, // 'commercial', 'wedding', 'music'
         img: String,
         hoverVideo: String
-    }],
-    partners: [{
-        name: String,
-        letter: String,
-        image: String
     }],
     splitGallery: [String]
 }, { timestamps: true });

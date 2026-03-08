@@ -27,6 +27,7 @@ export default function HomeEditor() {
                 motionArchive: data.motionArchive || { images: [] },
                 videoVault: data.videoVault || [],
                 reviews: data.reviews || { list: [] },
+                partners: data.partners || [],
                 splitGallery: res.data?.splitGallery || data?.splitGallery || []
             });
         } catch (err) {
@@ -567,7 +568,6 @@ export default function HomeEditor() {
                         </div>
                     </div>
                 </div>
-
                 {/* REVIEWS SECTION */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
                     <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Reputation / Reviews Configuration</h3>
@@ -602,6 +602,74 @@ export default function HomeEditor() {
                                 placeholder="e.g. Average Rating (150+ Reviews on Google)"
                             />
                         </div>
+                    </div>
+                </div>
+
+                {/* PARTNERS / CLIENTS SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
+                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Clients Served (Brand Logos)</h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
+                        {(content.partners || []).map((partner, i) => (
+                            <div key={i} className="bg-white/2 border border-white/5 p-4 rounded-2xl relative group space-y-3">
+                                <div className="aspect-square bg-black rounded-xl overflow-hidden border border-white/5 relative">
+                                    {partner.image ? (
+                                        <img src={partner.image} className="w-full h-full object-contain p-4" />
+                                    ) : (
+                                        <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black uppercase text-gray-600">Logo</div>
+                                    )}
+                                </div>
+                                <input
+                                    type="text"
+                                    value={partner.name || ""}
+                                    onChange={(e) => {
+                                        const newList = [...content.partners];
+                                        newList[i] = { ...newList[i], name: e.target.value };
+                                        setContent(prev => ({ ...prev, partners: newList }));
+                                    }}
+                                    placeholder="Company Name"
+                                    className="w-full bg-transparent border-b border-white/10 pb-2 text-white text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#c5a059] text-center"
+                                />
+                                <div className="mt-2 text-center">
+                                    {partner.image ? (
+                                        <button type="button" onClick={() => {
+                                            const newList = [...content.partners];
+                                            newList[i] = { ...newList[i], image: "" };
+                                            setContent(prev => ({ ...prev, partners: newList }));
+                                        }} className="text-[10px] text-red-500 font-black uppercase tracking-widest hover:text-white transition-colors">
+                                            REMOVE
+                                        </button>
+                                    ) : (
+                                        <ImageUploader
+                                            onUploadSuccess={(url) => {
+                                                const newList = [...content.partners];
+                                                newList[i] = { ...newList[i], image: url };
+                                                setContent(prev => ({ ...prev, partners: newList }));
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newList = content.partners.filter((_, idx) => idx !== i);
+                                        setContent(prev => ({ ...prev, partners: newList }));
+                                    }}
+                                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                                >
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const newList = [...(content.partners || []), { name: "", image: "" }];
+                                setContent(prev => ({ ...prev, partners: newList }));
+                            }}
+                            className="flex flex-col items-center justify-center border border-dashed border-white/10 rounded-2xl text-[10px] font-black uppercase text-gray-500 hover:text-[#c5a059] aspect-square"
+                        >
+                            + Add Client
+                        </button>
                     </div>
                 </div>
 
