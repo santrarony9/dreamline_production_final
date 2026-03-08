@@ -82,7 +82,7 @@ export default function VideoVault({ videos = [] }) {
                     <button className="absolute top-10 right-10 text-white font-black text-2xl interactive">✕</button>
                     <div className="w-full h-full max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl">
                         <iframe
-                            src={activeVideo}
+                            src={activeVideo.includes('?') ? `${activeVideo}&autoplay=1` : `${activeVideo}?autoplay=1`}
                             className="w-full h-full"
                             allow="autoplay; fullscreen"
                             allowFullScreen
