@@ -45,7 +45,7 @@ export async function POST(request) {
         }
 
         const finalFileName = `${Date.now()}-${fileName}`;
-        const bucketName = process.env.AWS_S3_BUCKET_NAME || "dreamline-production";
+        const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamline-production";
 
         const command = new PutObjectCommand({
             Bucket: bucketName,
