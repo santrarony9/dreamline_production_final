@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Tilt from "react-parallax-tilt";
 
 export default function SparkCarousel({ images }) {
     // Premium diamond/wedding fallback array
@@ -88,8 +89,18 @@ export default function SparkCarousel({ images }) {
                             }}
                             onClick={() => (isLeft || isRight) && setActiveIndex(index)}
                         >
-                            <img src={img} className="w-full h-full object-cover" alt={`Frame ${index}`} />
-                            <div className={`absolute inset-0 bg-black/50 transition-opacity duration-1000 ${isCenter ? 'opacity-0' : 'opacity-100'}`} />
+                            <Tilt
+                                tiltMaxAngleX={10}
+                                tiltMaxAngleY={10}
+                                perspective={1000}
+                                transitionSpeed={1000}
+                                scale={1.02}
+                                tiltEnable={isCenter}
+                                className="w-full h-full"
+                            >
+                                <img src={img} className="w-full h-full object-cover" alt={`Frame ${index}`} />
+                                <div className={`absolute inset-0 bg-black/50 transition-opacity duration-1000 pointer-events-none ${isCenter ? 'opacity-0' : 'opacity-100'}`} />
+                            </Tilt>
                         </div>
                     );
                 })}

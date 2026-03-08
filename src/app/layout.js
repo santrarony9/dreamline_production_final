@@ -3,6 +3,7 @@ import PublicLayoutWrapper from "@/components/PublicLayoutWrapper";
 import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/context/AuthProvider";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import SmoothScroll from "@/components/global/SmoothScroll";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -131,21 +132,18 @@ export default function RootLayout({ children }) {
           {JSON.stringify(jsonLd)}
         </Script>
       </head>
-      <body
-        className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}
-      >
+      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}>
         <AuthProvider>
           <ThemeProvider>
-            <AnalyticsTracker />
-            <PublicLayoutWrapper>
-              {children}
-            </PublicLayoutWrapper>
+            <SmoothScroll>
+              <AnalyticsTracker />
+              <PublicLayoutWrapper>
+                {children}
+              </PublicLayoutWrapper>
+            </SmoothScroll>
           </ThemeProvider>
         </AuthProvider>
 
-        {/* Custom Cursor Dot & Outline */}
-        <div id="cursor-dot"></div>
-        <div id="cursor-outline"></div>
       </body>
     </html>
   );
