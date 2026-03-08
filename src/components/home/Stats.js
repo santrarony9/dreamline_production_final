@@ -9,7 +9,7 @@ export default function Stats({ stats }) {
     const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
     return (
-        <section className="py-12 md:py-16 bg-[#050505]">
+        <section className="py-4 md:py-8 bg-[#050505]">
             <div className="container mx-auto px-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
                     {displayStats.map((stat, index) => (
