@@ -14,6 +14,8 @@ import ServicesCategories from "@/components/home/ServicesCategories";
 import QuoteSection from "@/components/home/QuoteSection";
 import VideoVault from "@/components/home/VideoVault";
 import JournalSection from "@/components/home/JournalSection";
+import MasterGallery from "@/components/home/MasterGallery";
+import LetsCreate from "@/components/home/LetsCreate";
 import Journal from "@/models/Journal";
 
 export default async function Home() {
