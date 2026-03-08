@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 export default function GlobalSettings() {
     const [content, setContent] = useState(null);
@@ -163,6 +164,19 @@ export default function GlobalSettings() {
                                 onChange={(e) => updateNested("seo", "ogImage", e.target.value)}
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                             />
+                        </div>
+                        <div className="space-y-4">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Global Favicon (Wait for deploy)</label>
+                            <div className="relative">
+                                <ImageUploader
+                                    currentImage={content.seo?.favicon || "/favicon.ico"}
+                                    recommendedSize="Square transparent PNG or ICO recommended (e.g., 32x32 or 512x512)"
+                                    onUploadSuccess={(url) => updateNested("seo", "favicon", url)}
+                                />
+                                {content.seo?.favicon && (
+                                    <button type="button" onClick={() => updateNested("seo", "favicon", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors mt-2">Clear Asset</button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </section>

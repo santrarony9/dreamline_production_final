@@ -20,7 +20,8 @@ const ContentSchema = new mongoose.Schema({
             title: { type: String, default: "Dreamline Production | Cinematic Weddings & Commercials" },
             description: { type: String, default: "Kolkata's premium cinematic video production house specializing in luxury weddings and commercial storytelling." },
             keywords: { type: String, default: "wedding photography, cinematic wedding video, kolkata, production house, commercial video" },
-            ogImage: { type: String, default: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200" }
+            ogImage: { type: String, default: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200" },
+            favicon: { type: String, default: "/favicon.ico" }
         }
     },
     home: {

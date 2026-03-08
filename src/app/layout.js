@@ -54,6 +54,11 @@ export async function generateMetadata() {
       description: globalSeo.description || "Capture your moments with Kolkata's finest production house.",
       images: [globalSeo.ogImage || "/logo.png"],
     },
+    icons: {
+      icon: globalSeo.favicon || "/logo.svg",
+      shortcut: globalSeo.favicon || "/logo.svg",
+      apple: globalSeo.favicon || "/logo.svg",
+    },
     robots: {
       index: true,
       follow: true,
@@ -113,7 +118,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="overflow-x-hidden">
       <head>
-        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         {/* Google tag (gtag.js) */}
         <Script
           async
