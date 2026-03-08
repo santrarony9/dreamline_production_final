@@ -50,7 +50,7 @@ export default async function CommercialPage() {
                 </div>
             </section>
 
-            <ProjectGallery initialProjects={serializedProjects} />
+            <ProjectGallery initialProjects={serializedProjects} category="commercial" />
 
             <section className="py-24 bg-[#050505] border-t border-white/5 text-center">
                 <h2 className="font-heading text-3xl font-black text-white uppercase italic mb-8">

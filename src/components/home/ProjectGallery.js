@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { openVideo } from "@/components/VideoModal";
 
-export default function ProjectGallery({ initialProjects }) {
+export default function ProjectGallery({ initialProjects, category = "all" }) {
     const [filter, setFilter] = useState("all");
 
     const defaultProjects = [
@@ -13,11 +13,13 @@ export default function ProjectGallery({ initialProjects }) {
         { id: "default-4", title: "Adidas Originals", type: "commercial", img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=800", videoUrl: "#" }
     ];
 
-    const projects = initialProjects && initialProjects.length > 0
-        ? [...initialProjects, ...defaultProjects.slice(initialProjects.length).filter(dp => !initialProjects.some(p => p.title === dp.title))]
-        : defaultProjects;
+    const allowedDefaults = category === "all" ? defaultProjects : defaultProjects.filter(p => p.type === category);
 
-    const filteredProjects = filter === "all" ? projects : projects.filter(p => p.type === filter);
+    const projects = initialProjects && initialProjects.length > 0
+        ? [...initialProjects, ...allowedDefaults.slice(0, Math.max(0, 4 - initialProjects.length)).filter(dp => !initialProjects.some(p => p.title === dp.title))]
+        : allowedDefaults;
+
+    const filteredProjects = (category !== "all" || filter === "all") ? projects : projects.filter(p => p.type === filter);
 
     return (
         <section className="py-32 bg-[#050505]">
@@ -26,20 +28,22 @@ export default function ProjectGallery({ initialProjects }) {
                     <h2 className="font-heading text-4xl sm:text-5xl font-black text-white uppercase italic">
                         Portfolio.
                     </h2>
-                    <div className="flex flex-wrap justify-center gap-2 md:gap-4 p-1 bg-[#151515] rounded-3xl md:rounded-full border border-white/5 max-w-full">
-                        {["all", "wedding", "commercial"].map((f) => (
-                            <button
-                                key={f}
-                                onClick={() => setFilter(f)}
-                                className={`px-5 py-2 md:px-8 md:py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === f
-                                    ? "bg-[#c5a059] text-black"
-                                    : "text-white/40 hover:text-white"
-                                    }`}
-                            >
-                                {f}
-                            </button>
-                        ))}
-                    </div>
+                    {category === "all" && (
+                        <div className="flex flex-wrap justify-center gap-2 md:gap-4 p-1 bg-[#151515] rounded-3xl md:rounded-full border border-white/5 max-w-full">
+                            {["all", "wedding", "commercial"].map((f) => (
+                                <button
+                                    key={f}
+                                    onClick={() => setFilter(f)}
+                                    className={`px-5 py-2 md:px-8 md:py-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${filter === f
+                                        ? "bg-[#c5a059] text-black"
+                                        : "text-white/40 hover:text-white"
+                                        }`}
+                                >
+                                    {f}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
