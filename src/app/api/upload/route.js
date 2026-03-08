@@ -5,7 +5,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
 const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
+    region: process.env.AWS_REGION || "auto",
+    endpoint: process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT, // Optional for R2/DigitalOcean
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -55,7 +56,20 @@ export async function POST(request) {
 
         await s3Client.send(command);
 
-        const url = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${finalFileName}`;
+        // Determine URL format
+        let url;
+        if (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT) {
+            // Usually R2 or DigitalOcean returns a custom domain or path-style
+            const baseEndpoint = (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT).replace(/\/$/, "");
+            if (process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN) {
+                url = `${process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN}/${finalFileName}`;
+            } else {
+                url = `${baseEndpoint}/${bucketName}/${finalFileName}`;
+            }
+        } else {
+            // Standard AWS S3 URL
+            url = `https://${bucketName}.s3.${process.env.AWS_REGION || "us-east-1"}.amazonaws.com/${finalFileName}`;
+        }
 
         return NextResponse.json({ url });
     } catch (error) {
