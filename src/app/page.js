@@ -16,6 +16,7 @@ import VideoVault from "@/components/home/VideoVault";
 import JournalSection from "@/components/home/JournalSection";
 import MasterGallery from "@/components/home/MasterGallery";
 import LetsCreate from "@/components/home/LetsCreate";
+import Partners from "@/components/home/Partners";
 import Journal from "@/models/Journal";
 
 export default async function Home() {
@@ -45,6 +46,7 @@ export default async function Home() {
       <Hero content={homeData.hero} />
       <Marquee items={homeData.marquee} />
       <Stats stats={homeData.stats} />
+      <Partners partners={homeData.partners} />
       <QuoteSection />
       <Expertise expertise={homeData.expertise} />
       <ServicesCategories services={homeData.services} />
