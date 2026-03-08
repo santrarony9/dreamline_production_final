@@ -7,7 +7,7 @@ export default function Marquee({ items }) {
     const displayItems = items && items.length > 0 ? items : defaultItems;
 
     return (
-        <section className="bg-[#151515] border-y border-white/5 py-12 overflow-hidden">
+        <section className="bg-[#151515] border-y border-white/5 py-6 overflow-hidden">
             <div className="marquee">
                 <div className="marquee-inner">
                     {displayItems.map((item, index) => (
