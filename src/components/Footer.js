@@ -16,19 +16,25 @@ export default function Footer() {
                         </p>
                         <div className="flex gap-4">
                             <a
-                                href="#"
+                                href="https://www.instagram.com/dreamlineproduction/"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
                             >
                                 IG
                             </a>
                             <a
-                                href="#"
+                                href="https://www.facebook.com/dreamlineproduction/"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
                             >
                                 FB
                             </a>
                             <a
-                                href="#"
+                                href="https://www.youtube.com/@dreamlineproduction"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
                             >
                                 YT
@@ -97,10 +103,10 @@ export default function Footer() {
                         &copy; {new Date().getFullYear()} DREAMLINE PRODUCTION. ALL RIGHTS RESERVED.
                     </p>
                     <div className="flex gap-8 text-[10px] text-gray-600 uppercase tracking-widest font-bold">
-                        <Link href="#" className="hover:text-white transition-colors">
+                        <Link href="/" className="hover:text-white transition-colors">
                             Privacy Policy
                         </Link>
-                        <Link href="#" className="hover:text-white transition-colors">
+                        <Link href="/" className="hover:text-white transition-colors">
                             Terms of Service
                         </Link>
                     </div>

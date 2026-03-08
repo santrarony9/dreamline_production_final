@@ -29,9 +29,9 @@ export default function LetsCreate() {
                     </div>
 
                     <div className="flex gap-6 text-[10px] font-black uppercase tracking-[0.2em] pt-8 border-t border-white/10">
-                        <a href="#" className="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
-                        <a href="#" className="hover:text-[#c5a059] transition-colors">YOUTUBE</a>
-                        <a href="#" className="hover:text-[#c5a059] transition-colors">VIMEO</a>
+                        <a href="https://www.instagram.com/dreamlineproduction/" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
+                        <a href="https://www.youtube.com/@dreamlineproduction" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">YOUTUBE</a>
+                        <a href="https://vimeo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">VIMEO</a>
                     </div>
                 </div>
             </div>
