@@ -49,7 +49,7 @@ export default function LoginPage() {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-700 font-bold"
-                            placeholder="Username"
+                            placeholder="info.dreamline@"
                             required
                         />
                     </div>
