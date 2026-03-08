@@ -7,7 +7,20 @@ import { getServerSession } from "next-auth";
 
 export async function GET() {
     await dbConnect();
-    const journals = await Journal.find().sort({ date: -1 }).lean();
+
+    // Determine whether the caller is a Public User or an Authenticated Admin Admin
+    const session = await getServerSession();
+
+    // We store dates as YYYY-MM-DD. A simple lexical string comparison works.
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    let query = {};
+    if (!session) {
+        // Public users only see posts that are scheduled for today or in the past
+        query = { date: { $lte: todayStr } };
+    }
+
+    const journals = await Journal.find(query).sort({ date: -1 }).lean();
     return NextResponse.json(journals);
 }
 
