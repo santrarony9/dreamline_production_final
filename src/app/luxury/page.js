@@ -3,6 +3,7 @@ import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
 import ProjectGallery from "@/components/home/ProjectGallery";
+import SparkCarousel from "@/components/luxury/SparkCarousel";
 
 export async function generateMetadata() {
     await dbConnect();
@@ -47,6 +48,9 @@ export default async function LuxuryPage() {
                     </p>
                 </div>
             </section>
+
+            {/* Spark Blue Diamond Premium Carousel */}
+            <SparkCarousel />
 
             {/* Reusing ProjectGallery but with strict category enforcement */}
             <ProjectGallery initialProjects={serializedWeddings} category="wedding" />
