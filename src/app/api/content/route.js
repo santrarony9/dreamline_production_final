@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import { getServerSession } from "next-auth";
@@ -27,5 +28,17 @@ export async function POST(request) {
         { upsert: true, new: true }
     );
 
+    // Clear ISR cache so changes appear immediately on the frontend
+    try {
+        revalidatePath("/");
+        revalidatePath("/about");
+        revalidatePath("/luxury");
+        revalidatePath("/commercial");
+        console.log("Revalidated all public pages after content update");
+    } catch (e) {
+        console.error("Revalidation warning:", e.message);
+    }
+
     return NextResponse.json(content);
 }
+

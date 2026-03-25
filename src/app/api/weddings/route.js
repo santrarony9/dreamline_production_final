@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import { getServerSession } from "next-auth";
@@ -18,6 +19,7 @@ export async function POST(request) {
     await dbConnect();
     const data = await request.json();
     const wedding = await Wedding.create(data);
+    try { revalidatePath("/"); } catch(e) {}
     return NextResponse.json(wedding);
 }
 
@@ -29,6 +31,7 @@ export async function PUT(request) {
     const data = await request.json();
     const { id, ...updateData } = data;
     const wedding = await Wedding.findByIdAndUpdate(id, updateData, { new: true });
+    try { revalidatePath("/"); } catch(e) {}
     return NextResponse.json(wedding);
 }
 
@@ -40,5 +43,6 @@ export async function DELETE(request) {
     const id = url.searchParams.get("id");
     await dbConnect();
     await Wedding.findByIdAndDelete(id);
+    try { revalidatePath("/"); } catch(e) {}
     return NextResponse.json({ success: true });
 }
