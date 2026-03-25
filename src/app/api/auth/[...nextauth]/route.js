@@ -1,6 +1,11 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+// Validate critical environment variables at module load
+if (process.env.NODE_ENV === 'production' && !process.env.NEXTAUTH_SECRET) {
+    console.error("CRITICAL: NEXTAUTH_SECRET environment variable is not set!");
+}
+
 const handler = NextAuth({
     providers: [
         CredentialsProvider({
@@ -10,9 +15,13 @@ const handler = NextAuth({
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                // In production, these should be env variables
-                const adminUser = process.env.ADMIN_USER || "info.dreamline@";
-                const adminPass = process.env.ADMIN_PASS || "Dreamline";
+                const adminUser = process.env.ADMIN_USER;
+                const adminPass = process.env.ADMIN_PASS;
+
+                if (!adminUser || !adminPass) {
+                    console.error("ADMIN_USER or ADMIN_PASS environment variables are not set");
+                    return null;
+                }
 
                 if (
                     credentials?.username === adminUser &&
@@ -26,11 +35,11 @@ const handler = NextAuth({
     ],
     session: {
         strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30 Days persistence
-        updateAge: 24 * 60 * 60,   // Refresh token every 24h
+        maxAge: 7 * 24 * 60 * 60, // 7 days (reduced from 30 for better security)
+        updateAge: 24 * 60 * 60,
     },
     jwt: {
-        maxAge: 30 * 24 * 60 * 60, // 30 Days
+        maxAge: 7 * 24 * 60 * 60,
     },
     cookies: {
         sessionToken: {
@@ -51,8 +60,9 @@ const handler = NextAuth({
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET || "dreamline-premium-secret-2024",
-    trustHost: true, // Tells NextAuth to implicitly trust Vercel forwarded host headers 
+    secret: process.env.NEXTAUTH_SECRET,
+    trustHost: true,
 });
 
 export { handler as GET, handler as POST };
+

@@ -1,4 +1,4 @@
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 600; // Revalidate every 10 min (on-demand revalidation handles immediate updates)
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
