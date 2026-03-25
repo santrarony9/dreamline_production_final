@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Tilt from "react-parallax-tilt";
+import Image from "next/image";
 
 export default function SparkCarousel({ images }) {
     // Premium diamond/wedding fallback array
@@ -98,7 +99,7 @@ export default function SparkCarousel({ images }) {
                                 tiltEnable={isCenter}
                                 className="w-full h-full"
                             >
-                                <img src={img} className="w-full h-full object-cover" alt={`Frame ${index}`} />
+                                <Image src={img} fill sizes="(max-width: 768px) 80vw, 50vw" className="object-cover" alt={`Spark carousel frame ${index + 1}`} priority={index === 0} />
                                 <div className={`absolute inset-0 bg-black/50 transition-opacity duration-1000 pointer-events-none ${isCenter ? 'opacity-0' : 'opacity-100'}`} />
                             </Tilt>
                         </div>

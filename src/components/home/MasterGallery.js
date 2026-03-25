@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 export default function MasterGallery({ images = [] }) {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -55,7 +56,7 @@ export default function MasterGallery({ images = [] }) {
                                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
                                 data-cursor="VIEW"
                             >
-                                <img src={src} className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -72,7 +73,7 @@ export default function MasterGallery({ images = [] }) {
                                 className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
                                 data-cursor="VIEW"
                             >
-                                <img src={src} className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -89,7 +90,7 @@ export default function MasterGallery({ images = [] }) {
                                 className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
                                 data-cursor="VIEW"
                             >
-                                <img src={src} className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
