@@ -142,7 +142,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider>
             <SmoothScroll>
               <MediaProtection />
-              <AnalyticsTracker />
+              {/* <AnalyticsTracker /> */}
               <PublicLayoutWrapper>
                 {children}
               </PublicLayoutWrapper>
