@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ReviewSlider from "@/components/home/ReviewSlider";

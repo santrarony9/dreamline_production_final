@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useRef } from "react";
+import axios from "axios";
 
 export default function ImageUploader({ onUploadSuccess, currentImage, recommendedSize }) {
     const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
     const [error, setError] = useState(null);
     const fileInputRef = useRef(null);
 
@@ -17,37 +19,66 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             return;
         }
 
-        if (file.size > 50 * 1024 * 1024) { // 50MB limit
-            setError("File size exceeds 50MB limit.");
+        const MAX_SIZE = 500 * 1024 * 1024; // Increased to 500MB for better support
+        if (file.size > MAX_SIZE) {
+            setError("File size exceeds 500MB limit.");
             return;
         }
 
         setIsUploading(true);
+        setUploadProgress(0);
         setError(null);
 
-        const formData = new FormData();
-        formData.append("file", file);
-
         try {
-            const res = await fetch("/api/upload", {
+            // 1. Get Pre-signed URL
+            console.log("Getting pre-signed URL for:", file.name);
+            const presignedRes = await fetch("/api/upload/presigned", {
                 method: "POST",
-                body: formData,
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    fileName: file.name,
+                    fileType: file.type
+                }),
             });
 
-            const data = await res.json();
-
-            if (!res.ok) {
-                throw new Error(data.error || "Upload failed");
+            // Improved error handling for non-JSON responses (like 413, 500 HTML pages)
+            let data;
+            const responseText = await presignedRes.text();
+            try {
+                data = JSON.parse(responseText);
+            } catch (e) {
+                console.error("Failed to parse JSON response:", responseText);
+                throw new Error(`Server returned an invalid response (Status ${presignedRes.status}): ${responseText.substring(0, 100)}...`);
             }
 
-            // Success, send the secure S3 URL back to the parent component form
-            onUploadSuccess(data.url);
+            if (!presignedRes.ok) {
+                throw new Error(data.error || `Upload preparation failed with status ${presignedRes.status}`);
+            }
+
+            const { uploadUrl, publicUrl } = data;
+
+            // 2. Direct Upload to S3 using Axios for progress tracking
+            console.log("Directly uploading to S3...");
+            await axios.put(uploadUrl, file, {
+                headers: {
+                    "Content-Type": file.type,
+                },
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round(
+                        (progressEvent.loaded * 100) / progressEvent.total
+                    );
+                    setUploadProgress(percentCompleted);
+                },
+            });
+
+            // 3. Success
+            onUploadSuccess(publicUrl);
         } catch (err) {
-            console.error(err);
+            console.error("Upload error details:", err);
             setError(err.message || "An unexpected error occurred during upload.");
         } finally {
             setIsUploading(false);
-            // Reset input so the same file can be uploaded again if needed
+            setUploadProgress(0);
             if (fileInputRef.current) {
                 fileInputRef.current.value = "";
             }
@@ -66,7 +97,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 <div className="flex-1 relative">
                     <input
                         type="file"
-                        accept="image/*,video/mp4"
+                        accept="image/*,video/*"
                         onChange={handleFileChange}
                         disabled={isUploading}
                         ref={fileInputRef}
@@ -87,7 +118,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                                     currentImage ? 'text-green-500' :
                                         error ? 'text-red-500' : 'text-gray-400'
                                     }`}>
-                                    {isUploading ? "Uploading..." :
+                                    {isUploading ? `Uploading ${uploadProgress}%` :
                                         error ? "Upload Failed" :
                                             currentImage ? "Asset Linked" : "Choose File"}
                                 </p>
@@ -98,6 +129,11 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                                 )}
                             </div>
                         </div>
+
+                        {/* Progress Bar (Visible during upload) */}
+                        {isUploading && (
+                            <div className="absolute bottom-0 left-0 h-1 bg-yellow-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                        )}
 
                         {/* Preview Area */}
                         {currentImage && !isUploading && (
@@ -126,3 +162,4 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
         </div>
     );
 }
+

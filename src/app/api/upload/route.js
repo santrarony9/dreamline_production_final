@@ -5,12 +5,13 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
 const s3Client = new S3Client({
-    region: process.env.AWS_REGION || "auto",
-    endpoint: process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT, // Optional for R2/DigitalOcean
+    region: process.env.AWS_REGION || "ap-south-2",
+    endpoint: process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT || undefined,
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
+    forcePathStyle: false,
 });
 
 import sharp from "sharp";
@@ -45,7 +46,7 @@ export async function POST(request) {
         }
 
         const finalFileName = `${Date.now()}-${fileName}`;
-        const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamline-production";
+        const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamlinepro";
 
         const command = new PutObjectCommand({
             Bucket: bucketName,
@@ -68,7 +69,7 @@ export async function POST(request) {
             }
         } else {
             // Standard AWS S3 URL
-            url = `https://${bucketName}.s3.${process.env.AWS_REGION || "us-east-1"}.amazonaws.com/${finalFileName}`;
+            url = `https://${bucketName}.s3.${process.env.AWS_REGION || "ap-south-2"}.amazonaws.com/${finalFileName}`;
         }
 
         return NextResponse.json({ url });
