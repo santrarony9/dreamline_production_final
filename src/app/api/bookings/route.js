@@ -10,8 +10,28 @@ export async function POST(req) {
         await dbConnect();
         const body = await req.json();
 
-        // Save to database
-        const booking = await Booking.create(body);
+        // Input validation — only allow expected fields (prevent mass assignment)
+        const { firstName, lastName, phone, email, eventDate, serviceType, vision } = body;
+
+        if (!firstName || !lastName || !phone) {
+            return NextResponse.json({ error: "Name and phone are required" }, { status: 400 });
+        }
+
+        // Sanitize input lengths to prevent DB abuse
+        const sanitize = (str, maxLen = 200) => String(str || "").slice(0, maxLen).trim();
+
+        const bookingData = {
+            firstName: sanitize(firstName, 100),
+            lastName: sanitize(lastName, 100),
+            phone: sanitize(phone, 20),
+            email: sanitize(email, 150),
+            eventDate: sanitize(eventDate, 30),
+            serviceType: sanitize(serviceType, 100),
+            vision: sanitize(vision, 1000),
+        };
+
+        // Save to database with sanitized data only
+        const booking = await Booking.create(bookingData);
 
         // 1. WhatsApp Business API (New Method)
         if (process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_ID) {

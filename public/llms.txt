@@ -1,4 +1,4 @@
-# Dreamline Production
+# Dreamline Production — AI Context File
 
 ## Who We Are
 Dreamline Production is a premier cinematic visual house based in Kolkata, India. Established in 2010, we specialize in high-end wedding photography, corporate ad films, and commercial visual storytelling. We are known for our cinematic approach, using advanced lighting and color grading techniques to create film-like visuals.
@@ -13,11 +13,88 @@ Dreamline Production is a premier cinematic visual house based in Kolkata, India
 - **Experience**: Over 15 years in the industry.
 - **Reputation**: Rated 4.9/5 stars based on 150+ reviews across Google and Justdial.
 - **Contact**: santrarony9@gmail.com | +91 9886679945
+- **Website**: https://dreamlineproduction.com
 
-## Why Choose Us?
-- **Cinematic Quality**: We don't just take photos; we create art.
-- **Professional Team**: Our team consists of experienced directors, cinematographers, and editors.
-- **Visual Excellence**: We use top-tier equipment and post-production techniques.
+---
 
-## Website
-https://dreamlineproduction.com
+## Technical Architecture
+
+### Stack
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS 4, Framer Motion
+- **Backend**: Next.js API Routes (serverless on Vercel), Express.js legacy server (`/server/server.js`)
+- **Database**: MongoDB Atlas via Mongoose
+- **Storage**: AWS S3 (`dreamlinepro` bucket, `ap-south-2` region) — images auto-converted to WebP via Sharp
+- **Auth**: NextAuth.js with Credentials provider, JWT sessions (7-day), httpOnly cookies
+- **Hosting**: Vercel (production)
+
+### Project Structure
+```
+Final/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── page.js             # Homepage (ISR 10 min + on-demand revalidation)
+│   │   ├── about/page.js       # About page
+│   │   ├── luxury/page.js      # Luxury weddings page
+│   │   ├── commercial/page.js  # Commercial works page
+│   │   ├── journal/            # Journal/blog pages (list + [id] detail)
+│   │   ├── wedding/[id]/       # Individual wedding detail
+│   │   ├── tech/               # Tech portfolio page
+│   │   ├── contact/            # Contact page
+│   │   ├── admin/              # Admin panel (protected by middleware)
+│   │   │   ├── home/page.js    # Home content editor
+│   │   │   ├── about/page.js   # About content editor
+│   │   │   ├── gallery/page.js # Project gallery editor
+│   │   │   ├── weddings/page.js# Wedding CRUD
+│   │   │   ├── journal/page.js # Journal CRUD
+│   │   │   ├── luxury/page.js  # Luxury page editor
+│   │   │   ├── global/page.js  # Global settings (SEO, contact, social)
+│   │   │   └── login/page.js   # Admin login
+│   │   ├── api/
+│   │   │   ├── auth/[...nextauth]/route.js  # NextAuth config
+│   │   │   ├── content/route.js     # GET/POST site content (+ on-demand revalidation)
+│   │   │   ├── weddings/route.js    # CRUD weddings (+ on-demand revalidation)
+│   │   │   ├── journals/route.js    # CRUD journals (+ on-demand revalidation)
+│   │   │   ├── bookings/route.js    # POST booking inquiry (with input validation)
+│   │   │   ├── upload/route.js      # Server-side upload (Sharp optimization)
+│   │   │   ├── upload/presigned/route.js # Pre-signed S3 URL for direct browser upload
+│   │   │   ├── revalidate/route.js  # On-demand ISR revalidation endpoint
+│   │   │   ├── tracking/view/route.js # Page view analytics
+│   │   │   └── tech/route.js        # Tech projects CRUD (with SSRF protection)
+│   │   ├── layout.js           # Root layout (SEO, JSON-LD, Google Analytics)
+│   │   ├── sitemap.js          # Dynamic sitemap generation
+│   │   └── robots.js           # Robots.txt config
+│   ├── components/
+│   │   ├── admin/ImageUploader.js  # S3 upload component (presigned URL flow)
+│   │   ├── home/               # Homepage section components
+│   │   ├── global/             # SmoothScroll, MediaProtection
+│   │   ├── Navbar.js, Footer.js, Preloader.js, CustomCursor.js
+│   │   └── PublicLayoutWrapper.js
+│   ├── models/                 # Mongoose models
+│   │   ├── Content.js          # Single-document site content (huge schema)
+│   │   ├── Wedding.js, Journal.js, Booking.js, TechProject.js, Analytics.js
+│   ├── lib/mongodb.js          # Cached MongoDB connection
+│   ├── middleware.js           # NextAuth middleware (protects /admin/*)
+│   └── context/                # ThemeContext, AuthProvider
+├── server/                     # Legacy Express server (not used on Vercel)
+├── api/                        # Legacy API config files
+├── next.config.mjs             # Next.js config (images, security headers)
+├── vercel.json                 # Vercel deployment config
+└── public/                     # Static assets (llms.txt, logo, sitemap.xml)
+```
+
+### Key Patterns
+- **Upload Flow**: `ImageUploader.js` → `/api/upload/presigned` (gets presigned S3 URL) → browser PUTs directly to S3. Both routes require `export const runtime = 'nodejs'`.
+- **Content Model**: A single MongoDB document holds ALL site content (home, about, luxury, commercial sections). Admin edits are saved via `$set` updates.
+- **ISR + On-Demand Revalidation**: Pages use `revalidate = 600` (10 min) as fallback. Admin save operations call `revalidatePath()` to clear cache immediately.
+- **Security**: Auth requires env vars (`NEXTAUTH_SECRET`, `ADMIN_USER`, `ADMIN_PASS`). Security headers (HSTS, X-Frame-Options, etc.) configured in `next.config.mjs`. Booking API uses explicit field extraction. Tech API has SSRF protection.
+
+### Required Environment Variables (Vercel)
+- `NEXTAUTH_SECRET` — Random 32+ char string for JWT signing
+- `NEXTAUTH_URL` — `https://dreamlineproduction.com`
+- `ADMIN_USER` — Admin username
+- `ADMIN_PASS` — Admin password
+- `MONGODB_URI` — MongoDB Atlas connection string
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` — S3 credentials
+- `AWS_REGION` — `ap-south-2`
+- `AWS_S3_BUCKET_NAME` — `dreamlinepro`
+- `NEXT_PUBLIC_SITE_URL` — `https://dreamlineproduction.com`

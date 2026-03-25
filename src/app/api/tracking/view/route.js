@@ -7,14 +7,17 @@ export async function POST(request) {
         await dbConnect();
         const { path } = await request.json();
 
-        if (!path) return NextResponse.json({ error: "Missing path" }, { status: 400 });
+        if (!path || typeof path !== 'string') return NextResponse.json({ error: "Missing path" }, { status: 400 });
+
+        // Sanitize: limit length, allow only URL-safe characters
+        const cleanPath = path.slice(0, 200).replace(/[^a-zA-Z0-9\-_\/\.\?=&%]/g, '');
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         // Increment views for the path on this day
         await Analytics.findOneAndUpdate(
-            { path, date: today },
+            { path: cleanPath, date: today },
             { $inc: { views: 1 } },
             { upsert: true, new: true }
         );

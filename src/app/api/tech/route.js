@@ -23,7 +23,17 @@ export async function POST(req) {
         }
 
         // Clean the domain (remove http/https if user pasted full URL)
-        let cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        let cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '').slice(0, 253);
+
+        // SSRF Prevention — block private/internal hostnames
+        const blockedPatterns = [
+            /^localhost/i, /^127\./, /^10\./, /^172\.(1[6-9]|2\d|3[01])\./, /^192\.168\./,
+            /^0\./, /^169\.254\./, /^\[/, /^::/, /\.local$/i, /\.internal$/i
+        ];
+        if (blockedPatterns.some(p => p.test(cleanDomain))) {
+            return NextResponse.json({ error: "Invalid domain" }, { status: 400 });
+        }
+
         let targetUrl = `https://${cleanDomain}`;
 
         // Create a fallback Thumbnail URL using thum.io
@@ -32,13 +42,19 @@ export async function POST(req) {
         // Attempt to extract Title from the actual website via Fetch
         let title = cleanDomain;
         try {
-            const res = await fetch(targetUrl, { signal: AbortSignal.timeout(5000) });
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            const res = await fetch(targetUrl, {
+                signal: controller.signal,
+                redirect: 'manual', // Don't follow redirects to prevent SSRF via redirect
+            });
+            clearTimeout(timeoutId);
             const html = await res.text();
 
             // Regex to find the <title> tag
             const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
             if (titleMatch && titleMatch[1]) {
-                title = titleMatch[1].trim().split('|')[0].trim(); // Take the first part of the title
+                title = titleMatch[1].trim().split('|')[0].trim();
             }
         } catch (error) {
             console.log("Failed to fetch metadata, using domain as title:", error.message);
