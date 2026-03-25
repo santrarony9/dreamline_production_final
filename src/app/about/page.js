@@ -2,6 +2,7 @@ export const revalidate = 600; // Revalidate every 10 min (on-demand revalidatio
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ReviewSlider from "@/components/home/ReviewSlider";
+import Image from "next/image";
 
 export async function generateMetadata() {
     await dbConnect();
@@ -71,10 +72,12 @@ export default async function AboutPage() {
                         <div className="relative order-2 md:order-1">
                             <div className="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
                                 {aboutData.founder?.image ? (
-                                    <img
+                                    <Image
                                         src={aboutData.founder.image}
-                                        className="w-full h-full object-cover"
+                                        fill
+                                        className="object-cover"
                                         alt="Founder"
+                                        sizes="(max-width: 768px) 100vw, 400px"
                                     />
                                 ) : null}
                             </div>
@@ -107,9 +110,11 @@ export default async function AboutPage() {
                     <div className="flex flex-col items-center text-center mb-20">
                         <div className="relative mb-12">
                             <div className="absolute inset-0 bg-[#c5a059]/20 blur-[100px] rounded-full scale-150 animate-pulse"></div>
-                            <img
+                            <Image
                                 src={aboutData.logoHistory || "/logo.svg"}
                                 alt="Dreamline Brand Mark"
+                                width={96}
+                                height={96}
                                 className="h-16 md:h-24 w-auto relative z-10 opacity-80"
                             />
                         </div>
@@ -169,9 +174,11 @@ export default async function AboutPage() {
                             { name: "Vikram Roy", role: "Senior Editor", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800" }
                         ]).map((member, idx) => (
                             <div key={idx} className="group relative overflow-hidden rounded-xl aspect-[3/4] cursor-pointer">
-                                <img src={member.image}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                                    alt={member.name} />
+                                <Image src={member.image}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                                    alt={member.name}
+                                    sizes="(max-width: 768px) 100vw, 33vw" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                                 <div className="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                     <h3 className="font-heading text-xl font-bold text-white mb-1">{member.name}</h3>
@@ -215,9 +222,11 @@ export default async function AboutPage() {
 
                         <div className="relative">
                             <div className="aspect-video bg-zinc-800 rounded-2xl overflow-hidden border border-white/10 relative group">
-                                <img src={aboutData.bts?.videoImage || "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1600"}
-                                    className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-                                    alt="Behind the Scenes" />
+                                <Image src={aboutData.bts?.videoImage || "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1600"}
+                                    fill
+                                    className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                                    alt="Behind the Scenes"
+                                    sizes="(max-width: 768px) 100vw, 50vw" />
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform cursor-pointer border border-white/20">
                                         <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">

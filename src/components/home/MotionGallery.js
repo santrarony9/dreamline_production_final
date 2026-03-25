@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function MotionGallery({ images }) {
     const defaultImages = [
         "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
@@ -25,12 +27,15 @@ export default function MotionGallery({ images }) {
                     {scrollingImages.map((src, index) => (
                         <div
                             key={index}
-                            className="w-[85vw] md:w-[450px] flex-shrink-0 aspect-[16/10] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 border border-white/10"
+                            className="w-[85vw] md:w-[450px] flex-shrink-0 aspect-[16/10] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 border border-white/10 relative"
                         >
-                            <img
+                            <Image
                                 src={src}
-                                alt={`Gallery ${index}`}
-                                className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s]"
+                                alt={`Motion archive frame ${index + 1}`}
+                                fill
+                                sizes="(max-width: 768px) 85vw, 450px"
+                                className="object-cover hover:scale-110 transition-transform duration-[2s]"
+                                loading="lazy"
                             />
                         </div>
                     ))}

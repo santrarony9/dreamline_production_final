@@ -4,6 +4,7 @@ import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
 import ProjectGallery from "@/components/home/ProjectGallery";
 import SparkCarousel from "@/components/luxury/SparkCarousel";
+import Image from "next/image";
 
 export async function generateMetadata() {
     await dbConnect();
@@ -70,8 +71,8 @@ export default async function LuxuryPage() {
                             </h2>
                             <div className="flex items-center justify-center gap-6">
                                 {luxuryData.testimonial.image && (
-                                    <div className="w-16 h-16 rounded-full overflow-hidden border border-[#c5a059]/30">
-                                        <img src={luxuryData.testimonial.image} alt={luxuryData.testimonial.author} className="w-full h-full object-cover" />
+                                    <div className="w-16 h-16 rounded-full overflow-hidden border border-[#c5a059]/30 relative">
+                                        <Image src={luxuryData.testimonial.image} alt={luxuryData.testimonial.author} fill className="object-cover" sizes="64px" />
                                     </div>
                                 )}
                                 <div className="text-left">

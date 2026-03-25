@@ -3,6 +3,7 @@ import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import VideoModal from "@/components/VideoModal";
 
 export async function generateMetadata({ params }) {
@@ -130,7 +131,7 @@ export default async function WeddingDetailPage({ params }) {
                         ></iframe>
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-zinc-900 interactive group relative">
-                            <img src={wedding.coverImage || wedding.img || allImages[0]} className="absolute inset-0 w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt="Video Placeholder" />
+                            <Image src={wedding.coverImage || wedding.img || allImages[0]} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt="Video Placeholder" sizes="(max-width: 768px) 100vw, 1200px" />
                             <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 z-10">
                                 <span className="text-white text-xs font-black tracking-widest uppercase">Play</span>
                             </div>
@@ -148,8 +149,8 @@ export default async function WeddingDetailPage({ params }) {
 
                 <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                     {allImages.map((img, index) => (
-                        <div key={index} className="break-inside-avoid rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group">
-                            <img src={img} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000" alt={`Wedding Capture ${index + 1}`} loading="lazy" />
+                        <div key={index} className="break-inside-avoid rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group relative">
+                            <Image src={img} width={800} height={600} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000" alt={`Wedding Capture ${index + 1}`} loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                         </div>
                     ))}
                 </div>
