@@ -1,4 +1,10 @@
-export default function ReviewSlider({ reviews }) {
+export default function ReviewSlider({ 
+    reviews, 
+    averageRating = "4.9", 
+    totalReviewsText = "AVERAGE RATING ON GOOGLE",
+    sectionTitle = "Reviews.",
+    sectionSubtitle = "TESTIMONIALS"
+}) {
     const defaultReviews = [
         {
             author: "Priyanka Sen",
@@ -32,16 +38,16 @@ export default function ReviewSlider({ reviews }) {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-20 gap-8">
                     <div>
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
-                            TESTIMONIALS
+                            {sectionSubtitle}
                         </p>
                         <h2 className="font-heading text-5xl font-black text-white italic">
-                            Reviews.
+                            {sectionTitle}
                         </h2>
                     </div>
                     <div className="text-left md:text-right w-full md:w-auto mt-4 md:mt-0 pt-6 md:pt-0 border-t border-white/10 md:border-none">
-                        <div className="text-[#c5a059] font-heading text-4xl font-black mb-2">4.9/5</div>
+                        <div className="text-[#c5a059] font-heading text-4xl font-black mb-2">{averageRating}/5</div>
                         <p className="text-[10px] font-black uppercase tracking-widest text-white/20">
-                            AVERAGE RATING ON GOOGLE
+                            {totalReviewsText}
                         </p>
                     </div>
                 </div>

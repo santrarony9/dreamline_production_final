@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-export default function VideoVault({ videos = [] }) {
+export default function VideoVault({ 
+    videos = [], 
+    title = "CINEMATIC REEL", 
+    subtitle = "Video Vault.", 
+    description = "15+ Years of Frames" 
+}) {
     const [activeVideo, setActiveVideo] = useState(null);
 
     const defaultVideos = [
@@ -28,14 +33,16 @@ export default function VideoVault({ videos = [] }) {
                 <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-20 gap-8">
                     <div className="max-w-2xl">
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c5a059] mb-6">
-                            CINEMATIC REEL
+                            {title}
                         </p>
                         <h2 className="font-heading text-5xl md:text-8xl font-black text-white uppercase italic leading-[0.9]">
-                            Video <span className="text-outline">Vault.</span>
+                            {subtitle.includes('.') ? (
+                                <>{subtitle.split('.')[0]} <span className="text-outline">{subtitle.split('.')[1]}.</span></>
+                            ) : subtitle}
                         </h2>
                     </div>
                     <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px] mb-4">
-                        15+ Years of Frames
+                        {description}
                     </p>
                 </div>
 

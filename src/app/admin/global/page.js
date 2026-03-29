@@ -60,7 +60,10 @@ export default function GlobalSettings() {
             <form onSubmit={handleSave} className="space-y-8 bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl">
                 {/* Contact info */}
                 <section className="space-y-6">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Communication</h3>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📞 Contact Information</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Your studio's email, phone, and physical address shown on the Contact page.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Display Email</label>
@@ -94,7 +97,10 @@ export default function GlobalSettings() {
 
                 {/* Social Links */}
                 <section className="space-y-6 pt-4">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Social Ecosystem</h3>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🌐 Social Media Links</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Links to your Instagram, Facebook, and YouTube profiles.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Instagram URL</label>
@@ -128,7 +134,10 @@ export default function GlobalSettings() {
 
                 {/* SEO Metadata */}
                 <section className="space-y-6 pt-4">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">SEO Architecture</h3>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🔍 Search Engine Optimization (SEO)</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Set how your website appears on Google and when sharing links on social media.</p>
+                    </div>
                     <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Meta Title Template</label>

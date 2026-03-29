@@ -64,8 +64,14 @@ export default function LuxuryEditor() {
 
             <form onSubmit={handleSave} className="space-y-10">
                 {/* HERO SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Hero Projection</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <a href="/services/luxury" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                    </div>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🏠 Luxury Page Header</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The main title and description at the top of the Luxury Weddings page.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary Title</label>
@@ -97,8 +103,11 @@ export default function LuxuryEditor() {
                 </div>
 
                 {/* TESTIMONIAL SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Testimonial</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">⭐ Star Testimonial</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A featured review from a high-profile client.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Quote</label>
@@ -140,8 +149,11 @@ export default function LuxuryEditor() {
                 </div>
 
                 {/* DIAMOND CUT (SPARK CAROUSEL) SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Diamond Cut (Signature Frames)</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">💎 Signature Frames</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A beautiful sliding carousel of your best wedding photography.</p>
+                    </div>
                     <div className="space-y-4">
                         <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Carousel Images - <span className="text-gray-500">Minimum 5 images (1200x800 recommended)</span></label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">

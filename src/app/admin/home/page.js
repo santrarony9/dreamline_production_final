@@ -27,6 +27,7 @@ export default function HomeEditor() {
                 motionArchive: data.motionArchive || { images: [] },
                 videoVault: data.videoVault || [],
                 reviews: data.reviews || { list: [] },
+                quote: data.quote || { text: "", backgroundImage: "" },
                 partners: data.partners || [],
                 splitGallery: res.data?.splitGallery || data?.splitGallery || []
             });
@@ -88,8 +89,14 @@ export default function HomeEditor() {
 
             <form onSubmit={handleSave} className="space-y-10">
                 {/* HERO SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Hero Projection</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <a href="/" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                    </div>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🏠 Homepage Banner</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The main full-screen image or video at the very top of your homepage.</p>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
@@ -133,8 +140,14 @@ export default function HomeEditor() {
                 </div>
 
                 {/* EXPERTISE SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Expertise Section</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <a href="/#expertise" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                    </div>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📸 Who We Are Section</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The "Expertise Focus" section with your photo and a list of your core values.</p>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
@@ -239,8 +252,11 @@ export default function HomeEditor() {
                 </div>
 
                 {/* SERVICES CATEGORIES SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Service Categories (Main Gallery)</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🗂️ Service Categories</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The numbered list of categories (01 Wedding Cinema, 02 Commercial Ads, etc.)</p>
+                    </div>
                     <div className="space-y-6">
                         {(content.services || []).map((srv, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -312,8 +328,11 @@ export default function HomeEditor() {
                 </div>
 
                 {/* MARQUEE EDITOR */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Kinetic Ticker</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📢 Scrolling Text Bar</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Horizontal scrolling headlines that appear below the banner.</p>
+                    </div>
                     <div className="space-y-4">
                         {content.marquee.map((text, i) => (
                             <div key={i} className="flex gap-4">
@@ -347,8 +366,11 @@ export default function HomeEditor() {
                 </div>
 
                 {/* STATS EDITOR */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Legacy Figures</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📊 Stats Counter</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Big numbers like "15+ Years" or "500+ Weddings".</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {content.stats.map((stat, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl space-y-4 relative group">
@@ -393,9 +415,38 @@ export default function HomeEditor() {
                     </div>
                 </div>
 
+                {/* QUOTE SECTION */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">💬 Inspirational Quote</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The large quote with a background image that appears in the middle of the page.</p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Quote Text</label>
+                            <textarea
+                                value={content.quote.text || ""}
+                                onChange={(e) => updateSection("quote", "text", e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold min-h-[100px]"
+                            />
+                        </div>
+                        <div className="space-y-4 relative">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Background Image</label>
+                            <ImageUploader
+                                currentImage={content.quote.backgroundImage}
+                                recommendedSize="Quote Background - 1920x1080"
+                                onUploadSuccess={(url) => updateSection("quote", "backgroundImage", url)}
+                            />
+                        </div>
+                    </div>
+                </div>
+
                 {/* MOTION ARCHIVE */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Motion Archive</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎞️ Auto-Scrolling Gallery</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The moving horizontal strip of photos.</p>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
@@ -448,8 +499,14 @@ export default function HomeEditor() {
                 </div>
 
                 {/* VIDEO VAULT */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Video Vault (Cinematic Grid)</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <a href="/#video-vault" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                    </div>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎬 Video Showcase</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The grid where you show your best YouTube or Vimeo videos.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {(content.videoVault || []).map((v, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group space-y-4">
@@ -537,8 +594,11 @@ export default function HomeEditor() {
                 </div>
 
                 {/* MASTER GALLERY SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Master Gallery (Split Scrolling Grid)</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🖼️ Photo Gallery (3-Column)</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The vertical scrolling photo gallery with 3 columns.</p>
+                    </div>
                     <div className="space-y-4">
                         <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Gallery Images - <span className="text-gray-500">Minimum 6 images (800x1000 vertical recommended)</span></label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -569,8 +629,11 @@ export default function HomeEditor() {
                     </div>
                 </div>
                 {/* REVIEWS SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Reputation / Reviews Configuration</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">⭐ Customer Reviews</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The review slider showing feedback from your clients.</p>
+                    </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
@@ -606,8 +669,11 @@ export default function HomeEditor() {
                 </div>
 
                 {/* PARTNERS / CLIENTS SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Clients Served (Brand Logos)</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🤝 Partner Logos</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Brand logos of clients and partners you've worked with.</p>
+                    </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
                         {(content.partners || []).map((partner, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-4 rounded-2xl relative group space-y-3">

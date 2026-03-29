@@ -70,8 +70,14 @@ export default function AboutEditor() {
 
             <form onSubmit={handleSave} className="space-y-10">
                 {/* HERO SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Hero Projection</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <a href="/about" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                    </div>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🏠 About Page Header</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The main title and description at the top of the About page.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary Title</label>
@@ -103,8 +109,11 @@ export default function AboutEditor() {
                 </div>
 
                 {/* DETAILS SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Details</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📝 Our Vision & Values</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Detailed text about the studio's history, mission, and vision.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2 md:col-span-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Text 1</label>
@@ -126,8 +135,11 @@ export default function AboutEditor() {
                 </div>
 
                 {/* FOUNDER SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Founder</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">👤 Founder Profile</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The section highlighting the founder's message and portrait.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Name</label>
@@ -169,8 +181,11 @@ export default function AboutEditor() {
                 </div>
 
                 {/* BTS SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Behind The Scenes Video</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎬 Behind The Scenes</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A video showcase of your team in action.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-4 md:col-span-2 relative">
                             <ImageUploader
@@ -203,9 +218,10 @@ export default function AboutEditor() {
                 </div>
 
                 {/* TIMELINE SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Studio Timeline</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📅 Company History</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A year-by-year timeline of major studio milestones.</p>
                     </div>
 
                     {/* Journey Logo Upload */}
@@ -286,8 +302,11 @@ export default function AboutEditor() {
                 </div>
 
                 {/* TEAM SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">The Creators (Team)</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">👥 Team Members</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Photos and roles of your creative collective.</p>
+                    </div>
                     <div className="space-y-4">
                         <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Team Members - <span className="text-gray-500">800x1000 vertical recommended</span></label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function LetsCreate() {
+export default function LetsCreate({ global }) {
+    const contact = global?.contact || {};
+    const social = global?.social || {};
+
     return (
         <section className="bg-[#050505] text-white border-t border-white/5 flex flex-col lg:flex-row">
             {/* Left Content */}
@@ -16,22 +19,21 @@ export default function LetsCreate() {
                     <div>
                         <h4 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">LOCATION</h4>
                         <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug">
-                            85, Tilottama Plaza, First Floor<br />
-                            Kolkata 700082, West Bengal
+                            {contact.address || "85, Tilottama Plaza, First Floor Kolkata 700082, West Bengal"}
                         </address>
                     </div>
 
                     <div>
                         <h4 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">INQUIRIES</h4>
-                        <a href="tel:+918240054002" className="text-4xl md:text-5xl font-black font-heading hover:text-[#c5a059] transition-colors">
-                            +91 82400 54002
+                        <a href={`tel:${contact.phone || "+918240054002"}`} className="text-4xl md:text-5xl font-black font-heading hover:text-[#c5a059] transition-colors">
+                            {contact.phone || "+91 82400 54002"}
                         </a>
                     </div>
 
                     <div className="flex flex-wrap gap-4 md:gap-6 text-[10px] font-black uppercase tracking-[0.2em] pt-8 border-t border-white/10">
-                        <a href="https://www.instagram.com/dreamlineproduction/" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
-                        <a href="https://www.youtube.com/@dreamlineproduction" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">YOUTUBE</a>
-                        <a href="https://vimeo.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">VIMEO</a>
+                        <a href={social.instagram || "https://www.instagram.com/dreamlineproduction/"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
+                        <a href={social.youtube || "https://www.youtube.com/@dreamlineproduction"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">YOUTUBE</a>
+                        <a href={social.facebook || "https://facebook.com"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">FACEBOOK</a>
                     </div>
                 </div>
             </div>

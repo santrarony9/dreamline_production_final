@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -12,8 +13,22 @@ export default function ContactPage() {
         serviceType: "Luxury Wedding",
         vision: ""
     });
+    const [global, setGlobal] = useState(null);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState({ type: "", message: "" });
+
+    useEffect(() => {
+        fetchGlobal();
+    }, []);
+
+    const fetchGlobal = async () => {
+        try {
+            const res = await axios.get("/api/content");
+            setGlobal(res.data.global || {});
+        } catch (err) {
+            console.error("Error fetching contact info:", err);
+        }
+    };
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,6 +67,9 @@ export default function ContactPage() {
             setLoading(false);
         }
     };
+
+    const contact = global?.contact || {};
+    const social = global?.social || {};
 
     return (
         <main className="pt-32 min-h-screen bg-black">
@@ -180,7 +198,7 @@ export default function ContactPage() {
                         <div className="w-full h-[400px] rounded-[2rem] overflow-hidden border border-white/10 relative">
                             <div className="absolute inset-0 bg-[#c5a059] mix-blend-overlay opacity-10 pointer-events-none z-10"></div>
                             <iframe
-                                src="https://maps.google.com/maps?q=85%20Tilottama%20Plaza%20Kolkata%20700082&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                src={`https://maps.google.com/maps?q=${encodeURIComponent(contact.address || "85 Tilottama Plaza Kolkata 700082")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0, filter: 'grayscale(100%) invert(100%) contrast(80%)' }}
@@ -191,13 +209,13 @@ export default function ContactPage() {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=85+Tilottama+Plaza+Kolkata+700082" target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group interactive">
+                            <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(contact.address || "85 Tilottama Plaza Kolkata 700082")}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group interactive">
                                 <svg className="w-5 h-5 text-[#c5a059] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
                                 </svg>
                                 <span className="text-[10px] font-bold uppercase tracking-widest">Distance From Here</span>
                             </a>
-                            <a href="https://m.uber.com/ul/?action=setPickup&client_id=&pickup=my_location&dropoff[formatted_address]=Dreamline%20Production%20Kolkata&dropoff[latitude]=22.467&dropoff[longitude]=88.336&promo=DREAMLINE100" target="_blank" className="flex flex-col items-center justify-center gap-1 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group relative overflow-hidden interactive">
+                            <a href={`https://m.uber.com/ul/?action=setPickup&client_id=&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(contact.address || "Dreamline Production Kolkata")}&dropoff[latitude]=22.467&dropoff[longitude]=88.336&promo=DREAMLINE100`} target="_blank" className="flex flex-col items-center justify-center gap-1 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group relative overflow-hidden interactive">
                                 <div className="flex items-center gap-2">
                                     <svg className="w-5 h-5 text-[#c5a059] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
@@ -212,14 +230,13 @@ export default function ContactPage() {
                             <div>
                                 <h5 className="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Studio Location</h5>
                                 <address className="not-italic text-lg font-bold leading-relaxed">
-                                    85, Tilottama Plaza,<br />First Floor<br />
-                                    Kolkata 700082, WB
+                                    {contact.address || "85, Tilottama Plaza, First Floor Kolkata 700082, WB"}
                                 </address>
                             </div>
                             <div>
                                 <h5 className="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Contact</h5>
-                                <a href="tel:+918240054002" className="block text-lg font-bold hover:text-[#c5a059] transition-colors">+91 82400 54002</a>
-                                <a href="mailto:santrarony9@gmail.com" className="block text-lg font-bold hover:text-[#c5a059] transition-colors">santrarony9@gmail.com</a>
+                                <a href={`tel:${contact.phone || "+918240054002"}`} className="block text-lg font-bold hover:text-[#c5a059] transition-colors">{contact.phone || "+91 82400 54002"}</a>
+                                <a href={`mailto:${contact.email || "santrarony9@gmail.com"}`} className="block text-lg font-bold hover:text-[#c5a059] transition-colors">{contact.email || "santrarony9@gmail.com"}</a>
                             </div>
                         </div>
                     </div>

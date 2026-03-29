@@ -65,6 +65,7 @@ const ContentSchema = new mongoose.Schema({
         },
         reviews: {
             sectionSubtitle: { type: String, default: "The Reputation" },
+            sectionTitle: { type: String, default: "Reviews." },
             averageRating: { type: String, default: "4.9" },
             totalReviewsText: { type: String, default: "Average Rating (150+ Reviews on Google & Justdial)" },
             list: [{
@@ -74,6 +75,10 @@ const ContentSchema = new mongoose.Schema({
                 rating: { type: Number, default: 5 },
                 initial: String
             }]
+        },
+        quote: {
+            text: { type: String, default: "We don't take pictures with a camera. We bring to the act of photography all the books we have read, the movies we have seen, the music we have heard." },
+            backgroundImage: { type: String, default: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80" }
         },
         partners: [{
             name: String,

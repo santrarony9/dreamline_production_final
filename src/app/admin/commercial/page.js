@@ -61,8 +61,14 @@ export default function CommercialEditor() {
 
             <form onSubmit={handleSave} className="space-y-10">
                 {/* HERO SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8">
-                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] border-b border-white/5 pb-4">Hero Projection</h3>
+                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <a href="/services/commercial" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                    </div>
+                    <div>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🏠 Commercial Page Header</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The main title and description at the top of the Commercial Works page.</p>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary Title</label>

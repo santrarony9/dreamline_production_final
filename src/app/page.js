@@ -47,16 +47,35 @@ export default async function Home() {
       <Marquee items={homeData.marquee} />
       <Stats stats={homeData.stats} />
       <Partners partners={homeData.partners} />
-      <QuoteSection />
+      <QuoteSection 
+        quote={homeData.quote?.text} 
+        backgroundImage={homeData.quote?.backgroundImage} 
+      />
       <Expertise expertise={homeData.expertise} />
       <ServicesCategories services={homeData.services} />
-      <MotionGallery images={homeData.motionArchive?.images} />
-      <VideoVault videos={siteContent?.videoVault} />
+      <MotionGallery 
+        images={homeData.motionArchive?.images} 
+        title={homeData.motionArchive?.title}
+        subtitle={homeData.motionArchive?.subtitle}
+        description={homeData.motionArchive?.description}
+      />
+      <VideoVault 
+        videos={siteContent?.videoVault} 
+        title={homeData.motionArchive?.title === "The Motion" ? "CINEMATIC REEL" : homeData.motionArchive?.title}
+        subtitle={homeData.motionArchive?.subtitle === "Archive." ? "Video Vault." : homeData.motionArchive?.subtitle}
+        description={homeData.motionArchive?.description}
+      />
       <MasterGallery images={siteContent?.splitGallery} />
       <ProjectGallery initialProjects={serializedWeddings} />
       <JournalSection journals={serializedJournals} />
-      <ReviewSlider reviews={homeData.reviews?.list} />
-      <LetsCreate />
+      <ReviewSlider 
+        reviews={homeData.reviews?.list} 
+        averageRating={homeData.reviews?.averageRating}
+        totalReviewsText={homeData.reviews?.totalReviewsText}
+        sectionTitle={homeData.reviews?.sectionTitle}
+        sectionSubtitle={homeData.reviews?.sectionSubtitle}
+      />
+      <LetsCreate global={siteContent?.global} />
     </main>
   );
 }
