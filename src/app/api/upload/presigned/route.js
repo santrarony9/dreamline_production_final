@@ -1,10 +1,12 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const maxDuration = 60; // Allow up to 60s for presigned URL generation
 
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const s3Client = new S3Client({
     region: process.env.AWS_REGION || "ap-south-2",
@@ -25,10 +27,11 @@ export async function POST(request) {
         return NextResponse.json({ error: "Server configuration error: Missing AWS credentials" }, { status: 500 });
     }
 
-    const session = await getServerSession();
+    // Pass authOptions so getServerSession works correctly on Vercel production
+    const session = await getServerSession(authOptions);
     if (!session) {
-        console.log("Unauthorized request to pre-signed URL");
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        console.log("Unauthorized request to pre-signed URL — session is null");
+        return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
     }
 
     try {
@@ -42,7 +45,15 @@ export async function POST(request) {
 
         const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamlinepro";
         const region = process.env.AWS_REGION || "ap-south-2";
-        const finalFileName = `${Date.now()}-${fileName.replace(/\s+/g, "-")}`;
+
+        // Sanitize filename: remove non-ASCII, special chars, collapse spaces
+        const sanitizedName = fileName
+            .replace(/[^\x20-\x7E]/g, '') // Remove non-ASCII (Bengali, emojis, etc.)
+            .replace(/[^a-zA-Z0-9._-]/g, '-') // Replace special chars with dash
+            .replace(/-+/g, '-') // Collapse multiple dashes
+            .replace(/^-|-$/g, ''); // Trim leading/trailing dashes
+
+        const finalFileName = `${Date.now()}-${sanitizedName || 'upload'}`;
 
         console.log("Generating presigned URL for bucket:", bucketName, "region:", region, "file:", finalFileName);
 

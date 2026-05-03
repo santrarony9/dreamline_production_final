@@ -1,8 +1,11 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+export const maxDuration = 60; // Allow up to 60s for upload + Sharp processing
+
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const s3Client = new S3Client({
     region: process.env.AWS_REGION || "ap-south-2",
@@ -17,8 +20,11 @@ const s3Client = new S3Client({
 import sharp from "sharp";
 
 export async function POST(request) {
-    const session = await getServerSession();
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Pass authOptions so session validation works on Vercel production
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
+    }
 
     try {
         const formData = await request.formData();
@@ -30,7 +36,14 @@ export async function POST(request) {
 
         const arrayBuffer = await file.arrayBuffer();
         let buffer = Buffer.from(arrayBuffer);
-        let fileName = file.name.replace(/\s+/g, "-");
+
+        // Sanitize filename: remove non-ASCII, special chars
+        let fileName = file.name
+            .replace(/[^\x20-\x7E]/g, '')
+            .replace(/[^a-zA-Z0-9._-]/g, '-')
+            .replace(/-+/g, '-')
+            .replace(/^-|-$/g, '') || 'upload';
+
         let contentType = file.type;
 
         // Optimization: Convert images to WebP (excluding SVGs)
@@ -60,7 +73,6 @@ export async function POST(request) {
         // Determine URL format
         let url;
         if (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT) {
-            // Usually R2 or DigitalOcean returns a custom domain or path-style
             const baseEndpoint = (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT).replace(/\/$/, "");
             if (process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN) {
                 url = `${process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN}/${finalFileName}`;
@@ -68,7 +80,6 @@ export async function POST(request) {
                 url = `${baseEndpoint}/${bucketName}/${finalFileName}`;
             }
         } else {
-            // Standard AWS S3 URL
             url = `https://${bucketName}.s3.${process.env.AWS_REGION || "ap-south-2"}.amazonaws.com/${finalFileName}`;
         }
 
@@ -78,4 +89,3 @@ export async function POST(request) {
         return NextResponse.json({ error: "Upload failed: " + error.message }, { status: 500 });
     }
 }
-

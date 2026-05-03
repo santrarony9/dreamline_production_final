@@ -7,7 +7,11 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [error, setError] = useState(null);
+    const [retryCount, setRetryCount] = useState(0);
     const fileInputRef = useRef(null);
+
+    const MAX_RETRIES = 3;
+    const UPLOAD_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
     const handleFileChange = async (e) => {
         const file = e.target.files?.[0];
@@ -19,7 +23,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             return;
         }
 
-        const MAX_SIZE = 500 * 1024 * 1024; // Increased to 500MB for better support
+        const MAX_SIZE = 500 * 1024 * 1024; // 500MB
         if (file.size > MAX_SIZE) {
             setError("File size exceeds 500MB limit.");
             return;
@@ -28,10 +32,21 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
         setIsUploading(true);
         setUploadProgress(0);
         setError(null);
+        setRetryCount(0);
 
+        await attemptUpload(file, 0);
+    };
+
+    const attemptUpload = async (file, attempt) => {
         try {
+            setRetryCount(attempt);
+            if (attempt > 0) {
+                setUploadProgress(0);
+                setError(null);
+            }
+
             // 1. Get Pre-signed URL
-            console.log("Getting pre-signed URL for:", file.name);
+            console.log(`[Upload] Attempt ${attempt + 1}/${MAX_RETRIES}: Getting pre-signed URL for:`, file.name);
             const presignedRes = await fetch("/api/upload/presigned", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -41,28 +56,33 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 }),
             });
 
-            // Improved error handling for non-JSON responses (like 413, 500 HTML pages)
+            // Handle non-JSON responses (413, 500 HTML pages, etc.)
             let data;
             const responseText = await presignedRes.text();
             try {
                 data = JSON.parse(responseText);
             } catch (e) {
-                console.error("Failed to parse JSON response:", responseText);
-                throw new Error(`Server returned an invalid response (Status ${presignedRes.status}): ${responseText.substring(0, 100)}...`);
+                console.error("Failed to parse JSON response:", responseText.substring(0, 200));
+                throw new Error(`Server error (Status ${presignedRes.status}). Please try again.`);
             }
 
             if (!presignedRes.ok) {
-                throw new Error(data.error || `Upload preparation failed with status ${presignedRes.status}`);
+                // Session expired — don't retry, tell user to re-login
+                if (presignedRes.status === 401) {
+                    throw new Error("Session expired. Please refresh the page and log in again.");
+                }
+                throw new Error(data.error || `Upload preparation failed (Status ${presignedRes.status})`);
             }
 
             const { uploadUrl, publicUrl } = data;
 
-            // 2. Direct Upload to S3 using Axios for progress tracking
-            console.log("Directly uploading to S3...");
+            // 2. Direct Upload to S3 with timeout and progress
+            console.log("[Upload] Uploading to S3...");
             await axios.put(uploadUrl, file, {
                 headers: {
                     "Content-Type": file.type,
                 },
+                timeout: UPLOAD_TIMEOUT_MS,
                 onUploadProgress: (progressEvent) => {
                     const percentCompleted = Math.round(
                         (progressEvent.loaded * 100) / progressEvent.total
@@ -72,15 +92,39 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             });
 
             // 3. Success
+            console.log("[Upload] Success! Public URL:", publicUrl);
             onUploadSuccess(publicUrl);
-        } catch (err) {
-            console.error("Upload error details:", err);
-            setError(err.message || "An unexpected error occurred during upload.");
-        } finally {
             setIsUploading(false);
             setUploadProgress(0);
-            if (fileInputRef.current) {
-                fileInputRef.current.value = "";
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        } catch (err) {
+            console.error(`[Upload] Attempt ${attempt + 1} failed:`, err.message);
+
+            // Don't retry on auth errors
+            const isAuthError = err.message?.includes("Session expired") || err.message?.includes("401");
+
+            if (attempt < MAX_RETRIES - 1 && !isAuthError) {
+                // Wait 2 seconds before retrying
+                console.log(`[Upload] Retrying in 2 seconds... (${attempt + 2}/${MAX_RETRIES})`);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                await attemptUpload(file, attempt + 1);
+            } else {
+                // All retries exhausted
+                let userMessage = err.message || "Upload failed. Please try again.";
+
+                // Make error messages user-friendly
+                if (err.code === "ECONNABORTED" || err.message?.includes("timeout")) {
+                    userMessage = "Upload timed out. Check your internet connection and try again.";
+                } else if (err.message?.includes("Network Error")) {
+                    userMessage = "Network error. Please check your internet connection.";
+                } else if (err.message?.includes("403")) {
+                    userMessage = "S3 access denied. Please contact admin to check AWS permissions.";
+                }
+
+                setError(userMessage);
+                setIsUploading(false);
+                setUploadProgress(0);
+                if (fileInputRef.current) fileInputRef.current.value = "";
             }
         }
     };
@@ -111,16 +155,17 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                     `}>
                         <div className="flex items-center gap-3 overflow-hidden">
                             <span className="text-xl flex-shrink-0">
-                                {isUploading ? "⏳" : currentImage ? "✅" : "📁"}
+                                {isUploading ? "⏳" : currentImage ? "✅" : error ? "❌" : "📁"}
                             </span>
                             <div className="text-left overflow-hidden">
                                 <p className={`text-[10px] font-black uppercase tracking-widest ${isUploading ? 'text-yellow-500' :
                                     currentImage ? 'text-green-500' :
                                         error ? 'text-red-500' : 'text-gray-400'
                                     }`}>
-                                    {isUploading ? `Uploading ${uploadProgress}%` :
-                                        error ? "Upload Failed" :
-                                            currentImage ? "Asset Linked" : "Choose File"}
+                                    {isUploading
+                                        ? `Uploading ${uploadProgress}%${retryCount > 0 ? ` (Retry ${retryCount})` : ''}`
+                                        : error ? "Upload Failed"
+                                            : currentImage ? "Asset Linked" : "Choose File"}
                                 </p>
                                 {currentImage && !isUploading && !error && (
                                     <p className="text-[9px] text-gray-500 font-bold truncate max-w-[120px]">
@@ -130,9 +175,9 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                             </div>
                         </div>
 
-                        {/* Progress Bar (Visible during upload) */}
+                        {/* Progress Bar */}
                         {isUploading && (
-                            <div className="absolute bottom-0 left-0 h-1 bg-yellow-500 transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
+                            <div className="absolute bottom-0 left-0 h-1 bg-yellow-500 transition-all duration-300 rounded-b-2xl" style={{ width: `${uploadProgress}%` }} />
                         )}
 
                         {/* Preview Area */}
@@ -155,11 +200,19 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             </div>
 
             {error && (
-                <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest pl-1">
-                    {error}
-                </p>
+                <div className="flex items-center justify-between">
+                    <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest pl-1">
+                        {error}
+                    </p>
+                    <button
+                        type="button"
+                        onClick={() => { setError(null); fileInputRef.current?.click(); }}
+                        className="text-[10px] text-[#c5a059] font-black uppercase tracking-widest hover:text-white transition-colors"
+                    >
+                        Retry
+                    </button>
+                </div>
             )}
         </div>
     );
 }
-
