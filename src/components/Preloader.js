@@ -11,7 +11,7 @@ export default function Preloader() {
             setProgress((prev) => {
                 if (prev >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => setIsLoading(false), 800); // Give it a moment to sit at 100%
+                    setTimeout(() => setIsLoading(false), 400);
                     return 100;
                 }
                 return prev + Math.floor(Math.random() * 15) + 5;
@@ -29,8 +29,15 @@ export default function Preloader() {
             window.addEventListener('load', handleLoad);
         }
 
+        // Fail-safe: never show loader for more than 3 seconds
+        const failSafe = setTimeout(() => {
+            setProgress(100);
+            setTimeout(() => setIsLoading(false), 400);
+        }, 3000);
+
         return () => {
             clearInterval(interval);
+            clearTimeout(failSafe);
             window.removeEventListener('load', handleLoad);
         };
     }, []);

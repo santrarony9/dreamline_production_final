@@ -55,7 +55,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                             className="aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden relative group interactive"
                         >
                             <motion.img
-                                src={project.img}
+                                src={project.coverImage || project.img || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}
                                 alt={project.title}
                                 className="absolute inset-0 w-full h-full object-cover filter grayscale-[30%] brightness-75"
                                 initial={{ scale: 1.05 }}

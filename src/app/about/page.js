@@ -70,7 +70,7 @@ export default async function AboutPage() {
                 <div className="mt-20 md:mt-32 max-w-5xl mx-auto">
                     <div className="grid md:grid-cols-2 gap-12 items-center bg-[#151515] p-6 md:p-12 rounded-[2rem] border border-white/5">
                         <div className="relative order-2 md:order-1">
-                            <div className="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+                            <div className="aspect-[3/4] bg-zinc-800 rounded-xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-500 relative">
                                 {aboutData.founder?.image ? (
                                     <Image
                                         src={aboutData.founder.image}
@@ -302,7 +302,7 @@ export default async function AboutPage() {
                     <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">What We Do</span>
                     <h2 className="font-heading text-4xl md:text-5xl font-black mb-16 uppercase text-white">Production Services</h2>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {(aboutData.services || [
+                        {(aboutData.productionServices?.length > 0 ? aboutData.productionServices : [
                             { title: "Corporate Video Production", desc: "Professional brand films and company profile videos..." },
                             { title: "Wedding Cinematography", desc: "Emotion-driven cinematic wedding films capturing real moments..." },
                             { title: "Commercial Shoots", desc: "High-impact advertisement films and product promotions..." },

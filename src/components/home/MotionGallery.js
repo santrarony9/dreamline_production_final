@@ -54,7 +54,7 @@ export default function MotionGallery({
                     ))}
                     {/* Duplicate for infinite effect */}
                     {displayImages.map((src, i) => (
-                        <div key={`dup-${i}`} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group">
+                        <div key={`dup-${i}`} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group border border-white/5">
                             <Image 
                                 src={src} 
                                 alt={`Gallery Duplicate ${i}`}

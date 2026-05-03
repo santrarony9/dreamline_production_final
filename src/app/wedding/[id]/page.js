@@ -4,11 +4,11 @@ import Wedding from "@/models/Wedding";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import VideoModal from "@/components/VideoModal";
+
 
 export async function generateMetadata({ params }) {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
 
     try {
         const wedding = await Wedding.findById(id).lean();
@@ -50,7 +50,7 @@ function getEmbedUrl(url) {
 }
 
 export default async function WeddingDetailPage({ params }) {
-    const { id } = params;
+    const { id } = await params;
     await dbConnect();
 
     let wedding;

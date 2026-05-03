@@ -179,7 +179,8 @@ const ContentSchema = new mongoose.Schema({
         title: String,
         type: String, // 'commercial', 'wedding', 'music'
         img: String,
-        hoverVideo: String
+        hoverVideo: String,
+        videoUrl: String // Full video URL for the player
     }],
     splitGallery: [String]
 }, { timestamps: true });

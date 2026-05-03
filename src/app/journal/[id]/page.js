@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export async function generateMetadata({ params }) {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
 
     try {
         const post = await Journal.findById(id).lean();
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function JournalDetailPage({ params }) {
-    const { id } = params;
+    const { id } = await params;
     await dbConnect();
 
     let post;

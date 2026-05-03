@@ -5,11 +5,16 @@ const WeddingSchema = new mongoose.Schema({
     title: { type: String, required: true },
     subtitle: { type: String },
     description: { type: String },
+    location: { type: String },
+    date: { type: Date },
     coverImage: { type: String },
+    img: { type: String }, // backward compat alias for coverImage
     hoverVideo: { type: String },
     videoUrl: { type: String },
     albumUrl: { type: String },
     images: [String],
+    review: { type: String },
+    clientNames: { type: String },
     reviews: [{
         author: String,
         text: String,

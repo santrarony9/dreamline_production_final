@@ -60,11 +60,13 @@ export default function WeddingAdmin() {
             location: "",
             date: new Date().toISOString().split('T')[0],
             img: "",
+            coverImage: "",
             videoUrl: "",
             description: "",
             review: "",
             clientNames: "",
-            images: []
+            images: [],
+            id: `wedding-${Date.now()}`
         });
     };
 
@@ -91,7 +93,7 @@ export default function WeddingAdmin() {
                     {weddings.map((w) => (
                         <div key={w._id} className="bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden group hover:border-[#c5a059]/30 transition-all flex flex-col">
                             <div className="aspect-video relative overflow-hidden">
-                                <img src={w.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt={w.title} />
+                                <img src={w.coverImage || w.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt={w.title} />
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button onClick={() => setEditingWedding(w)} className="bg-white text-black p-4 rounded-full font-black uppercase text-[10px] tracking-widest hover:scale-110 transition-transform">Edit Narrative</button>
                                 </div>
@@ -129,12 +131,12 @@ export default function WeddingAdmin() {
                                 </div>
                                 <div className="space-y-4">
                                     <ImageUploader
-                                        currentImage={editingWedding.img}
+                                        currentImage={editingWedding.coverImage || editingWedding.img}
                                         recommendedSize="Hero Image URL (Recommended: 1920x1080)"
-                                        onUploadSuccess={(url) => setEditingWedding({ ...editingWedding, img: url })}
+                                        onUploadSuccess={(url) => setEditingWedding({ ...editingWedding, coverImage: url, img: url })}
                                     />
-                                    {editingWedding.img && (
-                                        <button type="button" onClick={() => setEditingWedding({ ...editingWedding, img: "" })} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                                    {(editingWedding.coverImage || editingWedding.img) && (
+                                        <button type="button" onClick={() => setEditingWedding({ ...editingWedding, coverImage: "", img: "" })} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
                                     )}
                                 </div>
                                 <div className="space-y-1">
