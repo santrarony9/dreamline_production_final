@@ -34,7 +34,8 @@ export default function GalleryAdmin() {
             setMessage("Gallery synchronized successfully!");
             setTimeout(() => setMessage(""), 3000);
         } catch (err) {
-            setMessage("Error syncing gallery.");
+            console.error("Gallery Sync Error:", err.response?.data || err.message);
+            setMessage(err.response?.data?.error || "Error syncing gallery.");
         } finally {
             setSaving(false);
         }
