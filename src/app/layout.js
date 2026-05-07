@@ -60,16 +60,17 @@ export async function generateMetadata() {
       apple: globalSeo.favicon || "/logo.svg",
     },
     robots: {
-      index: true,
+      index: process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com',
       follow: true,
       googleBot: {
-        index: true,
+        index: process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com',
         follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
       },
     },
+    alternates: {
+      canonical: 'https://dreamlineproduction.com',
+    }
+
   };
 }
 

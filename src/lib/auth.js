@@ -17,12 +17,18 @@ export const authOptions = {
                     return null;
                 }
 
+                console.log(`DEBUG AUTH: Comparing User [${credentials?.username?.trim() === adminUser?.trim()}] Pass [${credentials?.password === adminPass?.trim()}]`);
+                console.log(`DEBUG AUTH: Expected User length: ${adminUser?.trim().length}, Pass length: ${adminPass?.trim().length}`);
+                
                 if (
                     credentials?.username?.trim() === adminUser?.trim() &&
                     credentials?.password === adminPass?.trim()
                 ) {
+                    console.log("DEBUG AUTH: Success!");
                     return { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com" };
                 }
+                console.log("DEBUG AUTH: Failure.");
+
                 return null;
             }
         })
