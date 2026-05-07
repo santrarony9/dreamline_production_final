@@ -15,6 +15,6 @@ const JournalSchema = new mongoose.Schema({
         keywords: { type: String, default: "" }
     },
     createdAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
 
-module.exports = mongoose.model('Journal', JournalSchema);
+module.exports = mongoose.models.Journal || mongoose.model('Journal', JournalSchema);

@@ -18,8 +18,8 @@ export const authOptions = {
                 }
 
                 if (
-                    credentials?.username === adminUser &&
-                    credentials?.password === adminPass
+                    credentials?.username?.trim() === adminUser?.trim() &&
+                    credentials?.password === adminPass?.trim()
                 ) {
                     return { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com" };
                 }

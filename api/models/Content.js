@@ -28,7 +28,7 @@ const ContentSchema = new mongoose.Schema({
         hero: {
             titleLine1: { type: String, default: "Visionary" },
             titleLine2: { type: String, default: "Cinema." },
-            subtitle: { type: String, default: "Loading Experience" },
+            subtitle: { type: String, default: "EST. 2010 • DREAMLINE PRODUCTION" },
             backgroundImage: { type: String, default: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80" },
             cta1Text: { type: String, default: "Explore Weddings" },
             cta1Link: { type: String, default: "luxury.html" },
@@ -65,6 +65,7 @@ const ContentSchema = new mongoose.Schema({
         },
         reviews: {
             sectionSubtitle: { type: String, default: "The Reputation" },
+            sectionTitle: { type: String, default: "Reviews." },
             averageRating: { type: String, default: "4.9" },
             totalReviewsText: { type: String, default: "Average Rating (150+ Reviews on Google & Justdial)" },
             list: [{
@@ -74,7 +75,15 @@ const ContentSchema = new mongoose.Schema({
                 rating: { type: Number, default: 5 },
                 initial: String
             }]
-        }
+        },
+        quote: {
+            text: { type: String, default: "We don't take pictures with a camera. We bring to the act of photography all the books we have read, the movies we have seen, the music we have heard." },
+            backgroundImage: { type: String, default: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80" }
+        },
+        partners: [{
+            name: String,
+            image: String
+        }]
     },
     luxury: {
         hero: {
@@ -87,7 +96,9 @@ const ContentSchema = new mongoose.Schema({
             author: { type: String, default: "Priyanka Sen" },
             role: { type: String, default: "Marketing Head, Kolkata Retailers" },
             image: { type: String, default: "" }
-        }
+        },
+        luxuryCarousel: [String],
+        sparkCarousel: [String] // Kept for backward compatibility
     },
     commercial: {
         hero: {
@@ -103,6 +114,7 @@ const ContentSchema = new mongoose.Schema({
             titleLine2: { type: String, default: "HOUSE IN KOLKATA." },
             description: { type: String, default: "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions for brands, businesses, and individuals. Known for creativity, professionalism, and storytelling excellence, we transform ideas into visually powerful content that creates emotional impact and brand value." }
         },
+        logoHistory: { type: String, default: "/logo.svg" },
         details: {
             heading: { type: String, default: "About Us" },
             text1: { type: String, default: "Dreamline Production is a Kolkata-based creative production company dedicated to producing high-quality visual content with strong storytelling and cinematic aesthetics. We combine creative direction, modern equipment, and industry experience to deliver professional results across multiple industries." },
@@ -114,7 +126,7 @@ const ContentSchema = new mongoose.Schema({
             subtitle: { type: String, default: "The Visionary" },
             heading: { type: String, default: "Capturing<br>The Unseen." },
             note: { type: String, default: "\"At Dreamline, we don't just record events; we archive feelings. My journey began with a simple belief: that every brand and every couple has a story that deserves to be told with cinematic grandeur. Over the last decade, we've refined our craft to ensure that when you look back at our work 20 years from now, you don't just see what happened — you feel it.\"" },
-            name: { type: String, default: "Rony" },
+            name: { type: String, default: "Aditya Singh" },
             role: { type: String, default: "Founder & Creative Director" },
             image: { type: String, default: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800" }
         },
@@ -168,15 +180,10 @@ const ContentSchema = new mongoose.Schema({
         title: String,
         type: String, // 'commercial', 'wedding', 'music'
         img: String,
-        hoverVideo: String, // Added for video hover support
+        hoverVideo: String,
         videoUrl: String // Full video URL for the player
     }],
-    partners: [{
-        name: String,
-        letter: String, // Not really used anymore, keeping it just in case
-        image: String // For partner logos if needed
-    }],
     splitGallery: [String]
-});
+}, { timestamps: true });
 
-module.exports = mongoose.model('Content', ContentSchema);
+module.exports = mongoose.models.Content || mongoose.model('Content', ContentSchema);

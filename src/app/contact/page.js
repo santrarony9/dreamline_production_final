@@ -11,8 +11,10 @@ export default function ContactPage() {
         phone: "",
         eventDate: "",
         serviceType: "Luxury Wedding",
-        vision: ""
+        vision: "",
+        website: "" // Honeypot field
     });
+
     const [global, setGlobal] = useState(null);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState({ type: "", message: "" });
@@ -176,6 +178,19 @@ export default function ContactPage() {
                                     className="placeholder-white/20 bg-transparent border-b border-white/20 text-white w-full py-4 outline-none focus:border-[#c5a059] transition-colors"
                                 ></textarea>
                             </div>
+
+                            {/* Honeypot field - hidden from users, but bots will fill it */}
+                            <div className="hidden" aria-hidden="true">
+                                <input
+                                    type="text"
+                                    name="website"
+                                    value={formData.website}
+                                    onChange={handleChange}
+                                    tabIndex="-1"
+                                    autoComplete="off"
+                                />
+                            </div>
+
 
                             {status.message && (
                                 <div className={`p-4 rounded-xl text-sm ${status.type === 'success' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>

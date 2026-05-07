@@ -11,7 +11,14 @@ export async function POST(req) {
         const body = await req.json();
 
         // Input validation — only allow expected fields (prevent mass assignment)
-        const { firstName, lastName, phone, email, eventDate, serviceType, vision } = body;
+        const { firstName, lastName, phone, email, eventDate, serviceType, vision, website } = body;
+
+        // Honeypot check: If 'website' is filled, it's likely a bot.
+        if (website) {
+            console.log("Spam detected via honeypot field.");
+            return NextResponse.json({ success: true, message: "Inquiry received" }, { status: 201 }); // Return success to deceive the bot
+        }
+
 
         if (!firstName || !lastName || !phone) {
             return NextResponse.json({ error: "Name and phone are required" }, { status: 400 });

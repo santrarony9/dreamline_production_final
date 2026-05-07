@@ -22,7 +22,7 @@ export default function LuxuryEditor() {
             setContent({
                 hero: data.hero || {},
                 testimonial: data.testimonial || {},
-                sparkCarousel: data.sparkCarousel || []
+                luxuryCarousel: data.luxuryCarousel || data.sparkCarousel || []
             });
         } catch (err) {
             console.error(err);
@@ -66,7 +66,7 @@ export default function LuxuryEditor() {
                 {/* HERO SECTION */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4">
-                        <a href="/services/luxury" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                        <a href="/luxury" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
                     </div>
                     <div>
                         <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🏠 Luxury Page Header</h3>
@@ -148,23 +148,23 @@ export default function LuxuryEditor() {
                     </div>
                 </div>
 
-                {/* DIAMOND CUT (SPARK CAROUSEL) SECTION */}
+                {/* CINEMATIC MOTION (LUXURY CAROUSEL) SECTION */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                     <div>
-                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">💎 Signature Frames</h3>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A beautiful sliding carousel of your best wedding photography.</p>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎬 Cinematic Motion</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A beautiful sliding carousel of your best luxury wedding photography.</p>
                     </div>
                     <div className="space-y-4">
                         <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Carousel Images - <span className="text-gray-500">Minimum 5 images (1200x800 recommended)</span></label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
-                            {(content.sparkCarousel || []).map((img, i) => (
+                            {(content.luxuryCarousel || []).map((img, i) => (
                                 <div key={i} className="relative aspect-[3/2] rounded-xl overflow-hidden group border border-white/5">
                                     <img src={img} className="w-full h-full object-cover" />
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            const newGal = content.sparkCarousel.filter((_, idx) => idx !== i);
-                                            setContent(prev => ({ ...prev, sparkCarousel: newGal }));
+                                            const newGal = content.luxuryCarousel.filter((_, idx) => idx !== i);
+                                            setContent(prev => ({ ...prev, luxuryCarousel: newGal }));
                                         }}
                                         className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
                                     >
@@ -175,8 +175,8 @@ export default function LuxuryEditor() {
                             <div className="aspect-[3/2] bg-white/5 border w-full flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">
                                 <ImageUploader
                                     onUploadSuccess={(url) => {
-                                        const newGal = [...(content.sparkCarousel || []), url];
-                                        setContent(prev => ({ ...prev, sparkCarousel: newGal }));
+                                        const newGal = [...(content.luxuryCarousel || []), url];
+                                        setContent(prev => ({ ...prev, luxuryCarousel: newGal }));
                                     }}
                                 />
                             </div>

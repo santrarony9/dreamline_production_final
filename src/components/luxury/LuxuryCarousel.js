@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Tilt from "react-parallax-tilt";
 import Image from "next/image";
 
-export default function SparkCarousel({ images }) {
-    // Premium diamond/wedding fallback array
+export default function LuxuryCarousel({ images }) {
+    // Premium cinematic fallback array
     const defaultImages = [
         "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200",
         "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200",
@@ -33,7 +33,7 @@ export default function SparkCarousel({ images }) {
             <div className="container mx-auto px-6 mb-16 text-center z-10 relative">
                 <span className="text-[#c5a059] font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Signature Frames</span>
                 <h2 className="font-heading text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic">
-                    The Diamond <span className="text-[#c5a059]">Cut.</span>
+                    Cinematic <span className="text-[#c5a059]">Motion.</span>
                 </h2>
             </div>
 
@@ -99,7 +99,7 @@ export default function SparkCarousel({ images }) {
                                 tiltEnable={isCenter}
                                 className="w-full h-full"
                             >
-                                <Image src={img} fill sizes="(max-width: 768px) 80vw, 50vw" className="object-cover" alt={`Spark carousel frame ${index + 1}`} priority={index === 0} />
+                                <Image src={img} fill sizes="(max-width: 768px) 80vw, 50vw" className="object-cover" alt={`Luxury carousel frame ${index + 1}`} priority={index === 0} />
                                 <div className={`absolute inset-0 bg-black/50 transition-opacity duration-1000 pointer-events-none ${isCenter ? 'opacity-0' : 'opacity-100'}`} />
                             </Tilt>
                         </div>

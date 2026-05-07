@@ -5,12 +5,14 @@ import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+
 
 export async function GET() {
     await dbConnect();
 
     // Determine whether the caller is a Public User or an Authenticated Admin Admin
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
     // We store dates as YYYY-MM-DD. A simple lexical string comparison works.
     const todayStr = new Date().toISOString().split('T')[0];
@@ -26,7 +28,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await dbConnect();
@@ -37,7 +39,7 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await dbConnect();
@@ -49,7 +51,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const url = new URL(request.url);
