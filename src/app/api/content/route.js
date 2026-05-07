@@ -31,11 +31,18 @@ export async function POST(request) {
     // Remove undefined fields to avoid overwriting with null
     Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
 
-    const content = await Content.findOneAndUpdate(
-        {},
-        { $set: updateData },
-        { upsert: true, new: true }
-    );
+    let content;
+    try {
+        content = await Content.findOneAndUpdate(
+            {},
+            { $set: updateData },
+            { upsert: true, new: true }
+        );
+    } catch (dbErr) {
+        console.error("Database Update Error:", dbErr);
+        return NextResponse.json({ error: "Database update failed: " + dbErr.message }, { status: 500 });
+    }
+
 
 
     // Clear ISR cache so changes appear immediately on the frontend
