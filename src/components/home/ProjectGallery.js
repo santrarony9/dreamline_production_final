@@ -7,19 +7,7 @@ import { openVideo } from "@/components/VideoModal";
 export default function ProjectGallery({ initialProjects, category = "all" }) {
     const [filter, setFilter] = useState("all");
 
-    const defaultProjects = [
-        { id: "default-1", title: "Rohan & Sneha", type: "wedding", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800", videoUrl: "#" },
-        { id: "default-2", title: "Vogue India Edit", type: "commercial", img: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800", videoUrl: "#" },
-        { id: "default-3", title: "The Royal Bengal", type: "wedding", img: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800", videoUrl: "#" },
-        { id: "default-4", title: "Adidas Originals", type: "commercial", img: "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=800", videoUrl: "#" }
-    ];
-
-    const allowedDefaults = category === "all" ? defaultProjects : defaultProjects.filter(p => p.type === category);
-
-    const projects = initialProjects && initialProjects.length > 0
-        ? [...initialProjects, ...allowedDefaults.slice(0, Math.max(0, 4 - initialProjects.length)).filter(dp => !initialProjects.some(p => p.title === dp.title))]
-        : allowedDefaults;
-
+    const projects = initialProjects || [];
     const filteredProjects = (category !== "all" || filter === "all") ? projects : projects.filter(p => p.type === filter);
 
     return (
