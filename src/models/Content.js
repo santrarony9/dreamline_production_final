@@ -56,7 +56,8 @@ const ContentSchema = new mongoose.Schema({
             title: String,
             description: String,
             number: String,
-            priceHint: String
+            priceHint: String,
+            subcategories: [String]
         }],
         motionArchive: {
             title: { type: String, default: "The Motion" },

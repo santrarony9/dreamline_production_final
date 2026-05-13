@@ -329,6 +329,53 @@ export default function HomeEditor() {
                                         placeholder="Starting at..."
                                     />
                                 </div>
+
+                                {/* SUBCATEGORIES CHIPS */}
+                                <div className="md:col-span-3 space-y-3 pt-4 border-t border-white/5">
+                                    <label className="text-[9px] uppercase font-black text-[#c5a059] tracking-[0.2em]">List of Subcategories / Specializations</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {(srv.subcategories || []).map((sub, subIdx) => (
+                                            <div key={subIdx} className="flex items-center gap-2 bg-[#c5a059]/10 border border-[#c5a059]/20 px-3 py-1.5 rounded-full">
+                                                <input 
+                                                    type="text"
+                                                    value={sub}
+                                                    onChange={(e) => {
+                                                        const newList = [...content.services];
+                                                        const newSubs = [...(newList[i].subcategories || [])];
+                                                        newSubs[subIdx] = e.target.value;
+                                                        newList[i] = { ...newList[i], subcategories: newSubs };
+                                                        setContent(prev => ({ ...prev, services: newList }));
+                                                    }}
+                                                    className="bg-transparent text-[10px] font-black text-white outline-none min-w-[80px]"
+                                                />
+                                                <button 
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const newList = [...content.services];
+                                                        const newSubs = (newList[i].subcategories || []).filter((_, idx) => idx !== subIdx);
+                                                        newList[i] = { ...newList[i], subcategories: newSubs };
+                                                        setContent(prev => ({ ...prev, services: newList }));
+                                                    }}
+                                                    className="text-red-500 hover:text-red-400"
+                                                >
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const newList = [...content.services];
+                                                const newSubs = [...(newList[i].subcategories || []), "New Item"];
+                                                newList[i] = { ...newList[i], subcategories: newSubs };
+                                                setContent(prev => ({ ...prev, services: newList }));
+                                            }}
+                                            className="px-4 py-1.5 border border-dashed border-white/20 rounded-full text-[9px] font-black text-gray-500 hover:text-[#c5a059] transition-colors"
+                                        >
+                                            + ADD SUB
+                                        </button>
+                                    </div>
+                                </div>
                                 <button
                                     type="button"
                                     onClick={() => {

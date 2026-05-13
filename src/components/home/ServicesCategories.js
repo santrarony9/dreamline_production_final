@@ -15,12 +15,25 @@ export default function ServicesCategories({ services }) {
                         { number: "04", title: "MUSIC VIDEOS", priceHint: "4K Narrative Visualization" },
                         { number: "05", title: "SOCIAL MEDIA", priceHint: "Reels • Portfolios • Branding" }
                     ]).map((srv, i) => (
-                        <div key={i} className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer">
-                            <div className="flex items-center gap-4 md:gap-10">
-                                <span className="text-gray-600 font-heading text-xl">{srv.number}</span>
-                                <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase">{srv.title}</h3>
+                        <div key={i} className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer overflow-hidden">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex items-center gap-4 md:gap-10">
+                                    <span className="text-gray-600 font-heading text-xl">{srv.number}</span>
+                                    <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase">{srv.title}</h3>
+                                </div>
+                                
+                                {/* SUBCATEGORIES LIST */}
+                                {srv.subcategories && srv.subcategories.length > 0 && (
+                                    <div className="flex flex-wrap gap-2 md:pl-20 mt-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                        {srv.subcategories.map((sub, idx) => (
+                                            <span key={idx} className="text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1 rounded-full whitespace-nowrap">
+                                                {sub}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
-                            <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                                 <p className="text-xs text-[#c5a059] uppercase font-bold">{srv.priceHint}</p>
                             </div>
                         </div>
