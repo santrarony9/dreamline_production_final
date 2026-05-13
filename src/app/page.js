@@ -36,6 +36,16 @@ export default async function Home() {
     type: "wedding"
   }));
 
+  const commercialProjects = (siteContent?.projects || [])
+    .filter(p => p.type === "commercial" || p.category === "commercial")
+    .map(p => ({
+      ...JSON.parse(JSON.stringify(p)),
+      id: p._id?.toString() || Math.random().toString(),
+      type: "commercial"
+    }));
+
+  const allProjects = [...serializedWeddings, ...commercialProjects];
+
   const serializedJournals = journals.map(j => ({
     ...JSON.parse(JSON.stringify(j)),
     id: j.id || j._id.toString()
@@ -66,7 +76,7 @@ export default async function Home() {
         description={homeData.motionArchive?.description}
       />
       <MasterGallery images={siteContent?.splitGallery} />
-      <ProjectGallery initialProjects={serializedWeddings} />
+      <ProjectGallery initialProjects={allProjects} />
       <JournalSection journals={serializedJournals} />
       <ReviewSlider 
         reviews={homeData.reviews?.list} 
