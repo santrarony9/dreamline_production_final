@@ -11,7 +11,7 @@
                 },
                 {
                     "key": "Content-Security-Policy",
-                    "value": "frame-src 'self' https://www.youtube.com https://youtube.com https://youtu.be https://player.vimeo.com https://vimeo.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com;"
+                    "value": "default-src 'self'; frame-src 'self' https://www.youtube.com https://youtube.com https://youtu.be https://player.vimeo.com https://vimeo.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss:;"
                 },
                 {
                     "key": "X-Frame-Options",
@@ -20,25 +20,10 @@
                 {
                     "key": "Referrer-Policy",
                     "value": "strict-origin-when-cross-origin"
-                }
-            ],
-            "has": [
-                {
-                    "type": "host",
-                    "value": "(.*).vercel.app"
-                }
-            ]
-        },
-        {
-            "source": "/(.*)",
-            "headers": [
-                {
-                    "key": "Content-Security-Policy",
-                    "value": "frame-src 'self' https://www.youtube.com https://youtube.com https://youtu.be https://player.vimeo.com https://vimeo.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com;"
                 },
                 {
-                    "key": "Referrer-Policy",
-                    "value": "strict-origin-when-cross-origin"
+                    "key": "X-Content-Type-Options",
+                    "value": "nosniff"
                 }
             ]
         }

@@ -1,5 +1,5 @@
 "use client";
-/* VERSION: 1.0.5 - FORCE REFRESH */
+/* VERSION: 1.0.6 - FINAL DEPLOY */
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
