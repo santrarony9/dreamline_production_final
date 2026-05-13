@@ -66,30 +66,12 @@ export default async function WeddingDetailPage({ params }) {
     let allImages = wedding.images || [];
     if (wedding.storyChapters && wedding.storyChapters.length > 0) {
         wedding.storyChapters.forEach(chapter => {
-            if (chapter.images) allImages = allImages.concat(chapter.images);
+            if (chapter.images) {
+                chapter.images.forEach(img => {
+                    if (img && !allImages.includes(img)) allImages.push(img);
+                });
+            }
         });
-    }
-
-    // Fallback images if database is sparse
-    if (allImages.length < 12) {
-        const fallbacks = [
-            "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1456561177426-ab0e2fb1cc62?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1516196238356-d4191feeb59c?auto=format&fit=crop&w=1200",
-            "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1200"
-        ];
-        allImages = [...allImages, ...fallbacks].slice(0, 15); // guarantee at least 15 images
     }
 
     const embedUrl = getEmbedUrl(wedding.videoUrl);
@@ -141,20 +123,22 @@ export default async function WeddingDetailPage({ params }) {
             </section>
 
             {/* Massive Masonry Gallery */}
-            <section className="container mx-auto px-6 pb-32">
-                <div className="mb-16 flex flex-col items-center">
-                    <h2 className="font-heading text-3xl md:text-5xl font-black uppercase text-white mb-4">The <span className="text-[#c5a059]">Gallery.</span></h2>
-                    <div className="w-12 h-1 bg-[#c5a059] rounded-full"></div>
-                </div>
+            {allImages.length > 0 && (
+                <section className="container mx-auto px-6 pb-32">
+                    <div className="mb-16 flex flex-col items-center">
+                        <h2 className="font-heading text-3xl md:text-5xl font-black uppercase text-white mb-4">The <span className="text-[#c5a059]">Gallery.</span></h2>
+                        <div className="w-12 h-1 bg-[#c5a059] rounded-full"></div>
+                    </div>
 
-                <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                    {allImages.map((img, index) => (
-                        <div key={index} className="break-inside-avoid rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group relative">
-                            <Image src={img} width={800} height={600} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000" alt={`Wedding Capture ${index + 1}`} loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-                        </div>
-                    ))}
-                </div>
-            </section>
+                    <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                        {allImages.map((img, index) => (
+                            <div key={index} className="break-inside-avoid rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group relative">
+                                <Image src={img} width={800} height={600} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000" alt={`Wedding Capture ${index + 1}`} loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             {/* Review Section */}
             {wedding.reviews && wedding.reviews.length > 0 && (
