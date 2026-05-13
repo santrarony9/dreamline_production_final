@@ -57,11 +57,13 @@ export default async function Home() {
       <Marquee items={homeData.marquee} />
       <Stats stats={homeData.stats} />
       <Partners partners={homeData.partners} />
+      {/* Quote Section with forced data refresh logic */}
       <QuoteSection 
-        key={homeData.quote?.backgroundImage || 'default-quote'}
-        quote={homeData.quote?.text} 
-        backgroundImage={homeData.quote?.backgroundImage} 
+        key={`quote-${homeData?.quote?.backgroundImage || 'default'}`}
+        quote={homeData?.quote?.text} 
+        backgroundImage={homeData?.quote?.backgroundImage} 
       />
+      {/* Debug marker: {homeData?.quote?.backgroundImage ? 'Custom Image Loaded' : 'Using Fallback'} */}
       <Expertise expertise={homeData.expertise} />
       <ServicesCategories services={homeData.services} />
       <MotionGallery 
