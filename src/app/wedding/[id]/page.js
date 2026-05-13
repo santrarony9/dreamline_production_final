@@ -1,17 +1,24 @@
-export const revalidate = 600; // Revalidate every 10 min (on-demand revalidation handles immediate updates)
+export const dynamic = 'force-dynamic';
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-
+import mongoose from "mongoose";
 
 export async function generateMetadata({ params }) {
     await dbConnect();
     const { id } = await params;
 
     try {
-        const wedding = await Wedding.findById(id).lean();
+        let wedding;
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            wedding = await Wedding.findById(id).lean();
+        }
+        if (!wedding) {
+            wedding = await Wedding.findOne({ id }).lean();
+        }
+        
         if (!wedding) return {};
 
         return {
@@ -23,31 +30,13 @@ export async function generateMetadata({ params }) {
                 images: wedding.coverImage || wedding.img ? [{ url: wedding.coverImage || wedding.img, width: 1200, height: 630 }] : [],
                 type: "video.movie",
             },
-            twitter: {
-                card: "summary_large_image",
-                title: `${wedding.title} | Cinematic Wedding Film`,
-                description: wedding.description || "A breathtaking luxury wedding documented by Dreamline Production.",
-                images: wedding.coverImage || wedding.img ? [wedding.coverImage || wedding.img] : [],
-            }
         };
     } catch (e) {
         return {};
     }
 }
 
-// Helper function to extract Vimeo/YouTube ID
-function getEmbedUrl(url) {
-    if (!url) return null;
-    if (url.includes('vimeo')) {
-        const match = url.match(/vimeo\.com\/(\d+)/);
-        return match ? `https://player.vimeo.com/video/${match[1]}?autoplay=0&title=0&byline=0&portrait=0` : null;
-    }
-    if (url.includes('youtube') || url.includes('youtu.be')) {
-        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-        return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=0&rel=0` : null;
-    }
-    return url; // fallback
-}
+// ... existing getEmbedUrl helper ...
 
 export default async function WeddingDetailPage({ params }) {
     const { id } = await params;
@@ -55,7 +44,14 @@ export default async function WeddingDetailPage({ params }) {
 
     let wedding;
     try {
-        wedding = await Wedding.findById(id).lean();
+        // Try finding by MongoDB _id first
+        if (mongoose.Types.ObjectId.isValid(id)) {
+            wedding = await Wedding.findById(id).lean();
+        }
+        // Fallback to custom id string
+        if (!wedding) {
+            wedding = await Wedding.findOne({ id: id }).lean();
+        }
     } catch (err) {
         return notFound();
     }
@@ -63,8 +59,21 @@ export default async function WeddingDetailPage({ params }) {
     if (!wedding) return notFound();
 
     // Collect explicitly uploaded gallery images, and merge with legacy chapters
-    let allImages = wedding.images || [];
-    if (wedding.storyChapters && wedding.storyChapters.length > 0) {
+    let allImages = [];
+    
+    // Add cover image first if available
+    if (wedding.coverImage) allImages.push(wedding.coverImage);
+    else if (wedding.img) allImages.push(wedding.img);
+
+    // Add gallery images
+    if (wedding.images && Array.isArray(wedding.images)) {
+        wedding.images.forEach(img => {
+            if (img && !allImages.includes(img)) allImages.push(img);
+        });
+    }
+
+    // Add chapter images
+    if (wedding.storyChapters && Array.isArray(wedding.storyChapters)) {
         wedding.storyChapters.forEach(chapter => {
             if (chapter.images) {
                 chapter.images.forEach(img => {
