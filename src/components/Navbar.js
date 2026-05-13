@@ -39,12 +39,47 @@ export default function Navbar() {
                     <Link href="/about" className="hover:text-white transition-colors interactive">
                         HISTORY
                     </Link>
-                    <Link href="/luxury" className="hover:text-white transition-colors interactive">
-                        LUXURY WEDDINGS
-                    </Link>
-                    <Link href="/commercial" className="hover:text-white transition-colors interactive">
-                        COMMERCIAL
-                    </Link>
+                    
+                    {/* LUXURY WEDDINGS WITH DROPDOWN */}
+                    <div className="relative group py-2">
+                        <Link href="/luxury" className="hover:text-white transition-colors interactive flex items-center gap-1">
+                            LUXURY WEDDINGS
+                            <svg className="w-2.5 h-2.5 opacity-50 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+                        </Link>
+                        <div className="absolute top-full left-0 w-56 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                            <div className="bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl space-y-3">
+                                <Link href="/luxury" className="block text-[9px] text-[#c5a059] font-black hover:pl-2 transition-all">VIEW ALL WEDDINGS</Link>
+                                <div className="h-px bg-white/5 w-full my-2"></div>
+                                <div className="space-y-2">
+                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">CATEGORIES</span>
+                                    <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px]">Candid Photography</Link>
+                                    <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px]">Cinematography</Link>
+                                    <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px]">Traditional Shoots</Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* COMMERCIAL WITH DROPDOWN */}
+                    <div className="relative group py-2">
+                        <Link href="/commercial" className="hover:text-white transition-colors interactive flex items-center gap-1">
+                            COMMERCIAL
+                            <svg className="w-2.5 h-2.5 opacity-50 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+                        </Link>
+                        <div className="absolute top-full left-0 w-56 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                            <div className="bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl space-y-3">
+                                <Link href="/commercial" className="block text-[9px] text-[#c5a059] font-black hover:pl-2 transition-all">COMMERCIAL SHOWCASE</Link>
+                                <div className="h-px bg-white/5 w-full my-2"></div>
+                                <div className="space-y-2">
+                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">DIVISIONS</span>
+                                    <Link href="/commercial" className="block hover:text-white transition-all text-[10px]">Brand Films</Link>
+                                    <Link href="/commercial" className="block hover:text-white transition-all text-[10px]">Corporate Shoots</Link>
+                                    <Link href="/commercial" className="block hover:text-white transition-all text-[10px]">Digital Ads</Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <Link href="/tech" className="hover:text-white transition-colors interactive">
                         TECH
                     </Link>
