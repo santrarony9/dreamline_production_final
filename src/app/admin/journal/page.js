@@ -31,14 +31,15 @@ export default function JournalAdmin() {
         setSaving(true);
         try {
             if (editingPost._id) {
-                await axios.put("/api/journals", { id: editingPost._id, ...editingPost });
+                await axios.put("/api/journals", editingPost);
             } else {
                 await axios.post("/api/journals", editingPost);
             }
             setEditingPost(null);
             fetchPosts();
         } catch (err) {
-            alert("Error saving journal post.");
+            console.error(err);
+            alert(err.response?.data?.error || "Error saving journal post.");
         } finally {
             setSaving(false);
         }

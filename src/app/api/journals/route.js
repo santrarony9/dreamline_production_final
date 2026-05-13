@@ -39,15 +39,31 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    await dbConnect();
-    const data = await request.json();
-    const { id, ...updateData } = data;
-    const post = await Journal.findByIdAndUpdate(id, updateData, { new: true });
-    try { revalidatePath("/"); revalidatePath("/journal"); } catch(e) {}
-    return NextResponse.json(post);
+        await dbConnect();
+        const data = await request.json();
+        const { _id, id, ...updateData } = data;
+
+        const post = await Journal.findByIdAndUpdate(_id || id, updateData, { new: true });
+        
+        if (!post) {
+            return NextResponse.json({ error: "Journal post not found" }, { status: 404 });
+        }
+
+        try { 
+            revalidatePath("/"); 
+            revalidatePath("/journal"); 
+            revalidatePath(`/journal/${id || _id}`);
+        } catch(e) {}
+        
+        return NextResponse.json(post);
+    } catch (err) {
+        console.error("Journal PUT Error:", err);
+        return NextResponse.json({ error: err.message }, { status: 500 });
+    }
 }
 
 export async function DELETE(request) {
