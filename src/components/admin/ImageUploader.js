@@ -69,7 +69,6 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             }
 
             if (!presignedRes.ok) {
-                // Session expired — don't retry, tell user to re-login
                 if (presignedRes.status === 401) {
                     throw new Error("Session expired. Please refresh the page and log in again.");
                 }
@@ -78,20 +77,48 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
 
             const { uploadUrl, publicUrl } = data;
 
-            // 2. Direct Upload to S3 with timeout and progress
+            // 2. Direct Upload to S3 with progress
             console.log("[Upload] Uploading to S3...");
-            await axios.put(uploadUrl, file, {
-                headers: {
-                    "Content-Type": file.type,
-                },
-                timeout: UPLOAD_TIMEOUT_MS,
-                onUploadProgress: (progressEvent) => {
-                    const percentCompleted = Math.round(
-                        (progressEvent.loaded * 100) / progressEvent.total
-                    );
-                    setUploadProgress(percentCompleted);
-                },
+            
+            // Using XMLHttpRequest for progress tracking since fetch doesn't support it easily yet
+            const xhr = new XMLHttpRequest();
+            
+            const uploadPromise = new Promise((resolve, reject) => {
+                xhr.upload.addEventListener("progress", (e) => {
+                    if (e.lengthComputable) {
+                        const percent = Math.round((e.loaded * 100) / e.total);
+                        setUploadProgress(percent);
+                    }
+                });
+
+                xhr.addEventListener("load", () => {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve();
+                    } else {
+                        // S3 returns XML error messages in the body
+                        console.error("[Upload] S3 Error Response:", xhr.responseText);
+                        reject(new Error(`S3 Upload failed (Status ${xhr.status})`));
+                    }
+                });
+
+                xhr.addEventListener("error", () => reject(new Error("Network error during S3 upload")));
+                xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
+
+                xhr.open("PUT", uploadUrl);
+                // CRITICAL: We must ONLY send the Content-Type header to match the pre-signed URL signature
+                xhr.setRequestHeader("Content-Type", file.type);
+                xhr.send(file);
             });
+
+            // Set a generous timeout (30 minutes for large files)
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => {
+                    xhr.abort();
+                    reject(new Error("Upload timed out after 30 minutes"));
+                }, 30 * 60 * 1000)
+            );
+
+            await Promise.race([uploadPromise, timeoutPromise]);
 
             // 3. Success
             console.log("[Upload] Success! Public URL:", publicUrl);
@@ -100,30 +127,17 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             setUploadProgress(0);
             if (fileInputRef.current) fileInputRef.current.value = "";
         } catch (err) {
-            console.error(`[Upload] Attempt ${attempt + 1} failed:`, err.message);
+            console.error(`[Upload] Attempt ${attempt + 1} failed:`, err);
 
-            // Don't retry on auth errors
+            // Don't retry on auth errors or specific 403s
             const isAuthError = err.message?.includes("Session expired") || err.message?.includes("401");
 
             if (attempt < MAX_RETRIES - 1 && !isAuthError) {
-                // Wait 2 seconds before retrying
                 console.log(`[Upload] Retrying in 2 seconds... (${attempt + 2}/${MAX_RETRIES})`);
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 await attemptUpload(file, attempt + 1);
             } else {
-                // All retries exhausted
-                let userMessage = err.message || "Upload failed. Please try again.";
-
-                // Make error messages user-friendly
-                if (err.code === "ECONNABORTED" || err.message?.includes("timeout")) {
-                    userMessage = "Upload timed out. Check your internet connection and try again.";
-                } else if (err.message?.includes("Network Error")) {
-                    userMessage = "Network error. Please check your internet connection.";
-                } else if (err.message?.includes("403")) {
-                    userMessage = "S3 access denied. Please contact admin to check AWS permissions.";
-                }
-
-                setError(userMessage);
+                setError(err.message || "Upload failed. Please try again.");
                 setIsUploading(false);
                 setUploadProgress(0);
                 if (fileInputRef.current) fileInputRef.current.value = "";

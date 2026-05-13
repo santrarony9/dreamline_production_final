@@ -53,7 +53,7 @@ export async function POST(request) {
             .replace(/-+/g, '-') // Collapse multiple dashes
             .replace(/^-|-$/g, ''); // Trim leading/trailing dashes
 
-        const finalFileName = `${Date.now()}-${sanitizedName || 'upload'}`;
+        const finalFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}-${sanitizedName || 'upload'}`;
 
         console.log("Generating presigned URL for bucket:", bucketName, "region:", region, "file:", finalFileName);
 
