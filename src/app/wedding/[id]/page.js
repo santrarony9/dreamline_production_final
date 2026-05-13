@@ -50,6 +50,8 @@ function getEmbedUrl(url) {
     return url; // fallback
 }
 
+import WeddingGallery from "@/components/wedding/WeddingGallery";
+
 export default async function WeddingDetailPage({ params }) {
     const { id } = await params;
     await dbConnect();
@@ -151,13 +153,7 @@ export default async function WeddingDetailPage({ params }) {
                         <div className="w-12 h-1 bg-[#c5a059] rounded-full"></div>
                     </div>
 
-                    <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                        {allImages.map((img, index) => (
-                            <div key={index} className="break-inside-avoid rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group relative">
-                                <Image src={img} width={800} height={600} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000" alt={`Wedding Capture ${index + 1}`} loading="lazy" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" />
-                            </div>
-                        ))}
-                    </div>
+                    <WeddingGallery images={allImages} />
                 </section>
             )}
 
