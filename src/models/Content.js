@@ -57,6 +57,7 @@ const ContentSchema = new mongoose.Schema({
             description: String,
             number: String,
             priceHint: String,
+            category: { type: String, enum: ['wedding', 'commercial', 'tech', 'other'], default: 'wedding' },
             subcategories: [String]
         }],
         motionArchive: {

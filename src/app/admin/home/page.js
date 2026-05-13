@@ -339,6 +339,23 @@ export default function HomeEditor() {
                                     />
                                 </div>
                                 <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest text-[#c5a059]">Service Bucket (Menu Group)</label>
+                                    <select
+                                        value={srv.category || "wedding"}
+                                        onChange={(e) => {
+                                            const newList = [...content.services];
+                                            newList[i] = { ...newList[i], category: e.target.value };
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="w-full bg-white/10 border border-[#c5a059]/30 rounded-xl p-3 text-white text-xs font-bold outline-none"
+                                    >
+                                        <option value="wedding" className="bg-black text-white">Wedding (Luxury)</option>
+                                        <option value="commercial" className="bg-black text-white">Commercial</option>
+                                        <option value="tech" className="bg-black text-white">Tech</option>
+                                        <option value="other" className="bg-black text-white">Other</option>
+                                    </select>
+                                </div>
+                                <div className="space-y-2">
                                     <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Category Name</label>
                                     <input
                                         type="text"

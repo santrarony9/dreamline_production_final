@@ -7,7 +7,21 @@ import Image from "next/image";
 import { useTheme } from "../context/ThemeContext";
 
 export default function Navbar() {
-    const { theme, toggleTheme } = useTheme();
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const res = await fetch("/api/content");
+                const data = await res.json();
+                setServices(data.home?.services || []);
+            } catch (error) {
+                console.error("Error fetching services for navbar:", error);
+            }
+        };
+        fetchServices();
+    }, []);
+
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -18,6 +32,10 @@ export default function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const weddingServices = services.filter(s => s.category === "wedding");
+    const commercialServices = services.filter(s => s.category === "commercial");
+    const techServices = services.filter(s => s.category === "tech");
 
     return (
         <>
@@ -41,49 +59,93 @@ export default function Navbar() {
                         HISTORY
                     </Link>
                     
-                    {/* LUXURY WEDDINGS WITH DROPDOWN */}
+                    {/* LUXURY WEDDINGS DROP */}
                     <div className="relative group py-2">
                         <Link href="/luxury" className="hover:text-white transition-colors interactive flex items-center gap-1">
                             LUXURY WEDDINGS
                             <svg className="w-2.5 h-2.5 opacity-50 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
                         </Link>
-                        <div className="absolute top-full left-0 w-56 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                            <div className="bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl space-y-3">
-                                <Link href="/luxury" className="block text-[9px] text-[#c5a059] font-black hover:pl-2 transition-all">VIEW ALL WEDDINGS</Link>
-                                <div className="h-px bg-white/5 w-full my-2"></div>
-                                <div className="space-y-2">
-                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">CATEGORIES</span>
-                                    <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px]">Candid Photography</Link>
-                                    <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px]">Cinematography</Link>
-                                    <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px]">Traditional Shoots</Link>
+                        <div className="absolute top-full left-0 w-64 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4">
+                                <Link href="/luxury" className="block text-[10px] text-[#c5a059] font-black hover:pl-2 transition-all">VIEW ALL WEDDINGS</Link>
+                                <div className="h-px bg-white/5 w-full"></div>
+                                <div className="space-y-3">
+                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">DIVISIONS</span>
+                                    {weddingServices.length > 0 ? weddingServices.map((s, idx) => (
+                                        <div key={idx} className="group/item">
+                                            <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
+                                            <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
+                                                {(s.subcategories || []).map((sub, i) => (
+                                                    <span key={i} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full">{sub}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <span className="text-[9px] text-gray-600 italic">No services added yet</span>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* COMMERCIAL WITH DROPDOWN */}
+                    {/* COMMERCIAL DROP */}
                     <div className="relative group py-2">
                         <Link href="/commercial" className="hover:text-white transition-colors interactive flex items-center gap-1">
                             COMMERCIAL
                             <svg className="w-2.5 h-2.5 opacity-50 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
                         </Link>
-                        <div className="absolute top-full left-0 w-56 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                            <div className="bg-black/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl space-y-3">
-                                <Link href="/commercial" className="block text-[9px] text-[#c5a059] font-black hover:pl-2 transition-all">COMMERCIAL SHOWCASE</Link>
-                                <div className="h-px bg-white/5 w-full my-2"></div>
-                                <div className="space-y-2">
-                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">DIVISIONS</span>
-                                    <Link href="/commercial" className="block hover:text-white transition-all text-[10px]">Brand Films</Link>
-                                    <Link href="/commercial" className="block hover:text-white transition-all text-[10px]">Corporate Shoots</Link>
-                                    <Link href="/commercial" className="block hover:text-white transition-all text-[10px]">Digital Ads</Link>
+                        <div className="absolute top-full left-0 w-64 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4">
+                                <Link href="/commercial" className="block text-[10px] text-[#c5a059] font-black hover:pl-2 transition-all">COMMERCIAL SHOWCASE</Link>
+                                <div className="h-px bg-white/5 w-full"></div>
+                                <div className="space-y-3">
+                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">SPECIALIZATIONS</span>
+                                    {commercialServices.length > 0 ? commercialServices.map((s, idx) => (
+                                        <div key={idx} className="group/item">
+                                            <Link href="/commercial" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
+                                            <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
+                                                {(s.subcategories || []).map((sub, i) => (
+                                                    <span key={i} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full">{sub}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <span className="text-[9px] text-gray-600 italic">No services added yet</span>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <Link href="/tech" className="hover:text-white transition-colors interactive">
-                        TECH
-                    </Link>
+                    {/* TECH DROP */}
+                    <div className="relative group py-2">
+                        <Link href="/tech" className="hover:text-white transition-colors interactive flex items-center gap-1">
+                            TECH
+                            <svg className="w-2.5 h-2.5 opacity-50 group-hover:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+                        </Link>
+                        <div className="absolute top-full left-0 w-64 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4">
+                                <Link href="/tech" className="block text-[10px] text-[#c5a059] font-black hover:pl-2 transition-all">TECH DIVISIONS</Link>
+                                <div className="h-px bg-white/5 w-full"></div>
+                                <div className="space-y-3">
+                                    <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">SOLUTIONS</span>
+                                    {techServices.length > 0 ? techServices.map((s, idx) => (
+                                        <div key={idx} className="group/item">
+                                            <Link href="/tech" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
+                                            <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
+                                                {(s.subcategories || []).map((sub, i) => (
+                                                    <span key={i} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full">{sub}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <span className="text-[9px] text-gray-600 italic">No services added yet</span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <Link href="/contact" className="hover:text-white transition-colors interactive">
                         CONTACT
                     </Link>
