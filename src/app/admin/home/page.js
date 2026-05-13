@@ -493,13 +493,13 @@ export default function HomeEditor() {
                 {/* MOTION ARCHIVE */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                     <div>
-                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎞️ Auto-Scrolling Gallery</h3>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The moving horizontal strip of photos.</p>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎞️ Motion Archive Gallery</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The moving horizontal strip of photos on your homepage.</p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Title</label>
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Display Title</label>
                             <input
                                 type="text"
                                 value={content.motionArchive.title || ""}
@@ -508,7 +508,7 @@ export default function HomeEditor() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Subtitle</label>
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Display Subtitle</label>
                             <input
                                 type="text"
                                 value={content.motionArchive.subtitle || ""}
@@ -517,7 +517,7 @@ export default function HomeEditor() {
                             />
                         </div>
                         <div className="space-y-4 md:col-span-2 pt-4 border-t border-white/5">
-                            <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Archive Assets (Images) - <span className="text-gray-500">1080x1080 square recommended</span></label>
+                            <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-[0.2em] pl-1">🖼️ UPLOAD ARCHIVE FRAMES (1080x1080 Recommended)</label>
                             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
                                 {(content.motionArchive.images || []).map((img, i) => (
                                     <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
