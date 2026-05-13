@@ -73,8 +73,15 @@ export async function GET() {
             if (content.splitGallery) content.splitGallery.forEach(addImage);
         }
 
-        // Convert set to array and sort (maybe latest first if we had dates, but we don't for all)
-        const sortedImages = Array.from(images).reverse();
+        // Convert set to array and sort by timestamp in filename (Old to New)
+        const sortedImages = Array.from(images).sort((a, b) => {
+            const getTimestamp = (url) => {
+                const fileName = url.split('/').pop();
+                const match = fileName.match(/^(\d+)-/);
+                return match ? parseInt(match[1]) : 0;
+            };
+            return getTimestamp(a) - getTimestamp(b);
+        });
 
         return NextResponse.json(sortedImages);
     } catch (err) {
