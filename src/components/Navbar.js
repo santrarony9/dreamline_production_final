@@ -33,7 +33,7 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const weddingServices = services.filter(s => s.category === "wedding");
+    const weddingServices = services.filter(s => !s.category || s.category === "wedding");
     const commercialServices = services.filter(s => s.category === "commercial");
     const techServices = services.filter(s => s.category === "tech");
 
