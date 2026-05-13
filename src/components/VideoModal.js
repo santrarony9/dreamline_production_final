@@ -29,12 +29,12 @@ export default function VideoModal() {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         const match = videoUrl.match(regExp);
         if (match && match[2].length === 11) {
-            embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1`;
+            embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1&rel=0&modestbranding=1`;
         }
     } else if (isVimeo) {
         const match = videoUrl.match(/vimeo.com\/(\d+)/);
         if (match) {
-            embedUrl = `https://player.vimeo.com/video/${match[1]}?autoplay=1`;
+            embedUrl = `https://player.vimeo.com/video/${match[1]}?autoplay=1&badge=0&autopause=0`;
         }
     }
 
@@ -54,9 +54,10 @@ export default function VideoModal() {
                 {isYouTube || isVimeo ? (
                     <iframe
                         src={embedUrl}
-                        className="w-full h-full"
-                        allow="autoplay; fullscreen"
+                        className="w-full h-full border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
+                        referrerPolicy="strict-origin-when-cross-origin"
                     />
                 ) : (
                     <video src={videoUrl} controls autoPlay className="w-full h-full" />
