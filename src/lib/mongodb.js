@@ -23,7 +23,8 @@ async function dbConnect() {
     }
 
     if (!MONGODB_URI) {
-        throw new Error("MONGODB_URI is required for database connection.");
+        console.warn("MONGODB_URI is missing. Skipping database connection (expected during build/CI).");
+        return null;
     }
 
     if (!cached.promise) {
@@ -35,7 +36,15 @@ async function dbConnect() {
             return mongoose;
         });
     }
-    cached.conn = await cached.promise;
+    
+    try {
+        cached.conn = await cached.promise;
+    } catch (e) {
+        cached.promise = null;
+        console.error("MongoDB Connection Error:", e);
+        return null;
+    }
+    
     return cached.conn;
 }
 
