@@ -1,4 +1,21 @@
 {
     "framework": "nextjs",
-    "outputDirectory": ".next"
+    "outputDirectory": ".next",
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "X-Robots-Tag",
+                    "value": "noindex"
+                }
+            ],
+            "has": [
+                {
+                    "type": "host",
+                    "value": "(.*).vercel.app"
+                }
+            ]
+        }
+    ]
 }

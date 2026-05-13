@@ -1,12 +1,14 @@
 export default function robots() {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com';
+    // Only allow indexing on the primary production domain
+    const isProduction = process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com' || 
+                         process.env.VERCEL_ENV === 'production';
 
     return {
         rules: {
             userAgent: '*',
-            allow: '/',
-            disallow: ['/admin/', '/api/'], // Prevent crawling of admin and api routes
+            allow: isProduction ? '/' : [],
+            disallow: isProduction ? ['/admin/', '/api/'] : '/',
         },
-        sitemap: `${baseUrl}/sitemap.xml`,
+        sitemap: `https://dreamlineproduction.com/sitemap.xml`,
     };
 }
