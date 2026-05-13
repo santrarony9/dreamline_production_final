@@ -164,7 +164,17 @@ export default function LuxuryEditor() {
                         <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">A beautiful sliding carousel of your best luxury wedding photography.</p>
                     </div>
                     <div className="space-y-4">
-                        <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Carousel Images - <span className="text-gray-500">Minimum 5 images (1200x800 recommended)</span></label>
+                        <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Carousel Images - <span className="text-gray-500">Minimum 3 images (1200x800 recommended)</span></label>
+                        
+                        {(!content.luxuryCarousel || content.luxuryCarousel.length === 0) && (
+                            <div className="bg-[#c5a059]/5 border border-[#c5a059]/20 p-6 rounded-2xl mb-6">
+                                <p className="text-[11px] text-[#c5a059] font-bold uppercase tracking-widest leading-relaxed">
+                                    💡 Note: Your database is currently empty. The live website is showing "Cinematic Fallbacks" (placeholders). 
+                                    Upload 3+ images here to replace them with your own work.
+                                </p>
+                            </div>
+                        )}
+
                         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
                             {(content.luxuryCarousel || []).map((img, i) => (
                                 <div key={i} className="relative aspect-[3/2] rounded-xl overflow-hidden group border border-white/5">
