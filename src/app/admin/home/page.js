@@ -287,6 +287,43 @@ export default function HomeEditor() {
                     <div className="space-y-6">
                         {(content.services || []).map((srv, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {/* REORDER BUTTONS */}
+                                <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (i === 0) return;
+                                            const newList = [...content.services];
+                                            [newList[i], newList[i-1]] = [newList[i-1], newList[i]];
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="bg-black border border-white/10 p-2 rounded-full text-gray-400 hover:text-[#c5a059]"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" /></svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (i === content.services.length - 1) return;
+                                            const newList = [...content.services];
+                                            [newList[i], newList[i+1]] = [newList[i+1], newList[i]];
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="bg-black border border-white/10 p-2 rounded-full text-gray-400 hover:text-[#c5a059]"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newList = content.services.filter((_, idx) => idx !== i);
+                                            setContent(prev => ({ ...prev, services: newList }));
+                                        }}
+                                        className="bg-red-950/80 border border-red-500/20 p-2 rounded-full text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                </div>
                                 <div className="space-y-2">
                                     <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest">Number</label>
                                     <input
@@ -448,36 +485,40 @@ export default function HomeEditor() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {content.stats.map((stat, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl space-y-4 relative group">
-                                <input
-                                    type="text"
-                                    value={stat.value}
-                                    onChange={(e) => {
-                                        const newStats = [...content.stats];
-                                        newStats[i].value = e.target.value;
-                                        setContent(prev => ({ ...prev, stats: newStats }));
-                                    }}
-                                    placeholder="Value (e.g. 500+)"
-                                    className="w-full bg-transparent text-2xl font-black text-white outline-none focus:text-[#c5a059] transition-colors"
-                                />
-                                <input
-                                    type="text"
-                                    value={stat.label}
-                                    onChange={(e) => {
-                                        const newStats = [...content.stats];
-                                        newStats[i].label = e.target.value;
-                                        setContent(prev => ({ ...prev, stats: newStats }));
-                                    }}
-                                    placeholder="Label"
-                                    className="w-full bg-transparent text-[10px] font-black uppercase text-gray-500 outline-none"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setContent(prev => ({ ...prev, stats: prev.stats.filter((_, idx) => idx !== i) }))}
-                                    className="absolute top-2 right-2 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                                >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            </div>
+                                {/* REORDER BUTTONS */}
+                                <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (i === 0) return;
+                                            const newList = [...content.stats];
+                                            [newList[i], newList[i-1]] = [newList[i-1], newList[i]];
+                                            setContent(prev => ({ ...prev, stats: newList }));
+                                        }}
+                                        className="bg-black border border-white/10 p-1.5 rounded-full text-gray-400 hover:text-[#c5a059]"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" /></svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (i === content.stats.length - 1) return;
+                                            const newList = [...content.stats];
+                                            [newList[i], newList[i+1]] = [newList[i+1], newList[i]];
+                                            setContent(prev => ({ ...prev, stats: newList }));
+                                        }}
+                                        className="bg-black border border-white/10 p-1.5 rounded-full text-gray-400 hover:text-[#c5a059]"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setContent(prev => ({ ...prev, stats: prev.stats.filter((_, idx) => idx !== i) }))}
+                                        className="bg-red-950/80 border border-red-500/20 p-1.5 rounded-full text-red-500 hover:bg-red-500 hover:text-white"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                </div>
                         ))}
                         <button
                             type="button"
@@ -522,16 +563,44 @@ export default function HomeEditor() {
                                 {(content.motionArchive.images || []).map((img, i) => (
                                     <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
                                         <img src={img} className="w-full h-full object-cover" />
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const newImgs = content.motionArchive.images.filter((_, idx) => idx !== i);
-                                                updateSection("motionArchive", "images", newImgs);
-                                            }}
-                                            className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <span className="text-[10px] font-black uppercase text-white">Remove</span>
-                                        </button>
+                                        
+                                        {/* REORDER CONTROLS */}
+                                        <div className="absolute inset-x-0 bottom-0 p-2 bg-black/60 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    if (i === 0) return;
+                                                    const newImgs = [...content.motionArchive.images];
+                                                    [newImgs[i], newImgs[i-1]] = [newImgs[i-1], newImgs[i]];
+                                                    updateSection("motionArchive", "images", newImgs);
+                                                }}
+                                                className="p-1 hover:text-[#c5a059] text-white transition-colors"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7" /></svg>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newImgs = content.motionArchive.images.filter((_, idx) => idx !== i);
+                                                    updateSection("motionArchive", "images", newImgs);
+                                                }}
+                                                className="p-1 hover:text-red-500 text-white transition-colors"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    if (i === content.motionArchive.images.length - 1) return;
+                                                    const newImgs = [...content.motionArchive.images];
+                                                    [newImgs[i], newImgs[i+1]] = [newImgs[i+1], newImgs[i]];
+                                                    updateSection("motionArchive", "images", newImgs);
+                                                }}
+                                                className="p-1 hover:text-[#c5a059] text-white transition-colors"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                                 <div className="aspect-square bg-white/5 border flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">
@@ -559,6 +628,43 @@ export default function HomeEditor() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {(content.videoVault || []).map((v, i) => (
                             <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group space-y-4">
+                                {/* REORDER BUTTONS */}
+                                <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (i === 0) return;
+                                            const newList = [...content.videoVault];
+                                            [newList[i], newList[i-1]] = [newList[i-1], newList[i]];
+                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                        }}
+                                        className="bg-black border border-white/10 p-2 rounded-full text-gray-400 hover:text-[#c5a059]"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 15l7-7 7 7" /></svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            if (i === content.videoVault.length - 1) return;
+                                            const newList = [...content.videoVault];
+                                            [newList[i], newList[i+1]] = [newList[i+1], newList[i]];
+                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                        }}
+                                        className="bg-black border border-white/10 p-2 rounded-full text-gray-400 hover:text-[#c5a059]"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" /></svg>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newList = content.videoVault.filter((_, idx) => idx !== i);
+                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                        }}
+                                        className="bg-red-950/80 border border-red-500/20 p-2 rounded-full text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                                    >
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                    </button>
+                                </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <input
                                         type="text"
