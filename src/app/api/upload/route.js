@@ -72,7 +72,10 @@ export async function POST(request) {
 
         // Determine URL format
         let url;
-        if (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT) {
+        if (process.env.NEXT_PUBLIC_CLOUDFRONT_URL) {
+            const cloudFrontUrl = process.env.NEXT_PUBLIC_CLOUDFRONT_URL.replace(/\/$/, "");
+            url = `${cloudFrontUrl}/${finalFileName}`;
+        } else if (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT) {
             const baseEndpoint = (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT).replace(/\/$/, "");
             if (process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN) {
                 url = `${process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN}/${finalFileName}`;

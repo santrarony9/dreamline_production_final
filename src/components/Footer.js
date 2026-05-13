@@ -53,11 +53,6 @@ export default function Footer() {
                     <p className="text-[9px] text-gray-600 uppercase tracking-[0.3em] font-bold">
                         &copy; {new Date().getFullYear()} DREAMLINE PRODUCTION. ALL RIGHTS RESERVED.
                     </p>
-                    <div className="flex gap-6 text-[9px] text-gray-600 uppercase tracking-widest font-black">
-                        <Link href="/admin/login" className="hover:text-[#c5a059] opacity-40 hover:opacity-100 transition-all">
-                            Admin Access
-                        </Link>
-                    </div>
                 </div>
             </div>
         </footer>

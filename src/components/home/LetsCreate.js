@@ -33,7 +33,7 @@ export default function LetsCreate({ global }) {
                     <div className="flex flex-wrap gap-4 md:gap-6 text-[10px] font-black uppercase tracking-[0.2em] pt-8 border-t border-white/10">
                         <a href={social.instagram || "https://www.instagram.com/dreamlineproduction/"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">INSTAGRAM</a>
                         <a href={social.youtube || "https://www.youtube.com/@dreamlineproduction"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">YOUTUBE</a>
-                        <a href={social.facebook || "https://facebook.com"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">FACEBOOK</a>
+                        <a href={social.facebook || "https://www.facebook.com/dreamlineproduction/"} target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">FACEBOOK</a>
                     </div>
                 </div>
             </div>

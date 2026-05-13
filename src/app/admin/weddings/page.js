@@ -31,14 +31,15 @@ export default function WeddingAdmin() {
         setSaving(true);
         try {
             if (editingWedding._id) {
-                await axios.put("/api/weddings", { id: editingWedding._id, ...editingWedding });
+                await axios.put("/api/weddings", editingWedding);
             } else {
                 await axios.post("/api/weddings", editingWedding);
             }
             setEditingWedding(null);
             fetchWeddings();
         } catch (err) {
-            alert("Error saving wedding film.");
+            console.error(err);
+            alert(err.response?.data?.error || "Error saving wedding film.");
         } finally {
             setSaving(false);
         }

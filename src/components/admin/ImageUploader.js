@@ -2,12 +2,14 @@
 
 import { useState, useRef } from "react";
 import axios from "axios";
+import MediaLibrary from "./MediaLibrary";
 
 export default function ImageUploader({ onUploadSuccess, currentImage, recommendedSize }) {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [error, setError] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
+    const [showLibrary, setShowLibrary] = useState(false);
     const fileInputRef = useRef(null);
 
     const MAX_RETRIES = 3;
@@ -137,7 +139,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 </label>
             )}
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
                 <div className="flex-1 relative">
                     <input
                         type="file"
@@ -163,15 +165,10 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                                         error ? 'text-red-500' : 'text-gray-400'
                                     }`}>
                                     {isUploading
-                                        ? `Uploading ${uploadProgress}%${retryCount > 0 ? ` (Retry ${retryCount})` : ''}`
+                                        ? `Uploading ${uploadProgress}%`
                                         : error ? "Upload Failed"
                                             : currentImage ? "Asset Linked" : "Choose File"}
                                 </p>
-                                {currentImage && !isUploading && !error && (
-                                    <p className="text-[9px] text-gray-500 font-bold truncate max-w-[120px]">
-                                        {currentImage.split('/').pop()}
-                                    </p>
-                                )}
                             </div>
                         </div>
 
@@ -197,6 +194,16 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                         )}
                     </div>
                 </div>
+
+                <button
+                    type="button"
+                    onClick={() => setShowLibrary(true)}
+                    className="h-[60px] px-6 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center gap-1 hover:bg-[#c5a059]/10 hover:border-[#c5a059]/50 transition-all group"
+                    title="Open Media Library"
+                >
+                    <span className="text-xl group-hover:scale-110 transition-transform">🏛️</span>
+                    <span className="text-[8px] font-black uppercase tracking-tighter text-gray-500 group-hover:text-[#c5a059]">Vault</span>
+                </button>
             </div>
 
             {error && (
@@ -212,6 +219,16 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                         Retry
                     </button>
                 </div>
+            )}
+
+            {showLibrary && (
+                <MediaLibrary 
+                    onClose={() => setShowLibrary(false)}
+                    onSelect={(url) => {
+                        onUploadSuccess(url);
+                        setShowLibrary(false);
+                    }}
+                />
             )}
         </div>
     );
