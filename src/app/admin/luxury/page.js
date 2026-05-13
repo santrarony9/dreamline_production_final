@@ -18,14 +18,17 @@ export default function LuxuryEditor() {
     const fetchContent = async () => {
         try {
             const res = await axios.get("/api/content");
-            const data = res.data.luxury || res.data || {};
+            // Support both root-level and nested luxury object
+            const luxuryRoot = res.data.luxury || {};
+            
             setContent({
-                hero: data.hero || {},
-                testimonial: data.testimonial || {},
-                luxuryCarousel: data.luxuryCarousel || data.sparkCarousel || []
+                hero: luxuryRoot.hero || {},
+                testimonial: luxuryRoot.testimonial || {},
+                // Aggressively search for carousel images in all known locations
+                luxuryCarousel: luxuryRoot.luxuryCarousel || luxuryRoot.sparkCarousel || res.data.sparkCarousel || []
             });
         } catch (err) {
-            console.error(err);
+            console.error("Fetch Error:", err);
         } finally {
             setLoading(false);
         }
@@ -36,10 +39,16 @@ export default function LuxuryEditor() {
         setSaving(true);
         setMessage("");
         try {
-            await axios.post("/api/content", { luxury: content });
+            // Save to both keys to ensure the frontend (sparkCarousel) and admin (luxuryCarousel) stay in sync
+            const payload = {
+                ...content,
+                sparkCarousel: content.luxuryCarousel
+            };
+            await axios.post("/api/content", { luxury: payload });
             setMessage("Luxury page content updated!");
             setTimeout(() => setMessage(""), 3000);
         } catch (err) {
+            console.error("Save Error:", err);
             setMessage("Error saving content.");
         } finally {
             setSaving(false);
