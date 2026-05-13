@@ -22,8 +22,9 @@ export default function Navbar() {
     return (
         <>
             <nav
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl rounded-full nav-glass py-4 px-4 md:px-8 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl" : "top-6"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-4 md:px-8 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl" : "top-6"
                     }`}
+                style={{ overflow: 'visible' }}
             >
                 <div className="font-heading font-black text-lg tracking-tighter">
                     <Link href="/" className="interactive flex items-end gap-1 group">
