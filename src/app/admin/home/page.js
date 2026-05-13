@@ -43,13 +43,11 @@ export default function HomeEditor() {
         setSaving(true);
         setMessage("");
         try {
-            // Need to wrap in 'home' object so it matches backend structure if we use atomic updates
-            // But flattening in backend means we just send top-level keys like `home.hero.titleLine1` 
-            // Better to structure it as { home: content } to match Content schema
+            const { videoVault, splitGallery, ...homeData } = content;
             await axios.post("/api/content", {
-                home: content,
-                videoVault: content.videoVault,
-                splitGallery: content.splitGallery
+                home: homeData,
+                videoVault: videoVault,
+                splitGallery: splitGallery
             });
             setMessage("Home page content updated!");
             setTimeout(() => setMessage(""), 3000);
