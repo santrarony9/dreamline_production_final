@@ -58,6 +58,7 @@ export default async function Home() {
       <Stats stats={homeData.stats} />
       <Partners partners={homeData.partners} />
       <QuoteSection 
+        key={homeData.quote?.backgroundImage || 'default-quote'}
         quote={homeData.quote?.text} 
         backgroundImage={homeData.quote?.backgroundImage} 
       />
