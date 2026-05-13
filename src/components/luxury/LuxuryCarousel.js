@@ -14,7 +14,7 @@ export default function LuxuryCarousel({ images }) {
         "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200"
     ];
 
-    const displayImages = images?.length >= 3 ? images : defaultImages;
+    const displayImages = images?.length > 0 ? images : defaultImages;
     const [activeIndex, setActiveIndex] = useState(0);
 
     useEffect(() => {
