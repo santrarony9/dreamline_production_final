@@ -137,6 +137,35 @@ export default function HomeEditor() {
                     </div>
                 </div>
 
+                {/* QUOTE SECTION - MOVED TO TOP FOR QUICK ACCESS */}
+                <div id="quote-section" className="bg-[#0a0a0a] border-2 border-[#c5a059]/30 p-10 rounded-3xl space-y-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4">
+                        <span className="text-[8px] font-black text-black bg-[#c5a059] px-2 py-0.5 rounded uppercase">High Priority</span>
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-black uppercase tracking-widest text-[#c5a059] mb-1">💬 Inspirational Quote Section</h3>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The large quote with a background image that appears in the middle of the homepage.</p>
+                    </div>
+                    <div className="grid grid-cols-1 gap-8">
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Quote Text</label>
+                            <textarea
+                                value={content.quote.text || ""}
+                                onChange={(e) => updateSection("quote", "text", e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold min-h-[100px]"
+                            />
+                        </div>
+                        <div className="space-y-4 relative">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Background Image</label>
+                            <ImageUploader
+                                currentImage={content.quote.backgroundImage}
+                                recommendedSize="Quote Background - 1920x1080"
+                                onUploadSuccess={(url) => updateSection("quote", "backgroundImage", url)}
+                            />
+                        </div>
+                    </div>
+                </div>
+
                 {/* EXPERTISE SECTION */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4">
@@ -413,31 +442,6 @@ export default function HomeEditor() {
                     </div>
                 </div>
 
-                {/* QUOTE SECTION */}
-                <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
-                    <div>
-                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">💬 Inspirational Quote</h3>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The large quote with a background image that appears in the middle of the page.</p>
-                    </div>
-                    <div className="grid grid-cols-1 gap-8">
-                        <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Quote Text</label>
-                            <textarea
-                                value={content.quote.text || ""}
-                                onChange={(e) => updateSection("quote", "text", e.target.value)}
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold min-h-[100px]"
-                            />
-                        </div>
-                        <div className="space-y-4 relative">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Background Image</label>
-                            <ImageUploader
-                                currentImage={content.quote.backgroundImage}
-                                recommendedSize="Quote Background - 1920x1080"
-                                onUploadSuccess={(url) => updateSection("quote", "backgroundImage", url)}
-                            />
-                        </div>
-                    </div>
-                </div>
 
                 {/* MOTION ARCHIVE */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
