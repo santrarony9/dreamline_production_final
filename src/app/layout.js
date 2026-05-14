@@ -57,9 +57,9 @@ export async function generateMetadata() {
         images: [globalSeo.ogImage || "/logo.png"],
       },
       icons: {
-        icon: globalSeo.favicon || "/logo.svg",
-        shortcut: globalSeo.favicon || "/logo.svg",
-        apple: globalSeo.favicon || "/logo.svg",
+        icon: globalSeo.favicon || "/favicon.png",
+        shortcut: globalSeo.favicon || "/favicon.png",
+        apple: globalSeo.favicon || "/favicon.png",
       },
       robots: {
         index: process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com',
