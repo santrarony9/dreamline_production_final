@@ -536,6 +536,48 @@ export default function HomeEditor() {
                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
                                     </button>
                                 </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] uppercase font-black text-gray-600">Value</label>
+                                        <input
+                                            type="text"
+                                            value={stat.value || ""}
+                                            onChange={(e) => {
+                                                const newList = [...content.stats];
+                                                newList[i] = { ...newList[i], value: e.target.value };
+                                                setContent(prev => ({ ...prev, stats: newList }));
+                                            }}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] uppercase font-black text-gray-600">Suffix</label>
+                                        <input
+                                            type="text"
+                                            value={stat.suffix || ""}
+                                            onChange={(e) => {
+                                                const newList = [...content.stats];
+                                                newList[i] = { ...newList[i], suffix: e.target.value };
+                                                setContent(prev => ({ ...prev, stats: newList }));
+                                            }}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[9px] uppercase font-black text-gray-600">Label</label>
+                                    <input
+                                        type="text"
+                                        value={stat.label || ""}
+                                        onChange={(e) => {
+                                            const newList = [...content.stats];
+                                            newList[i] = { ...newList[i], label: e.target.value };
+                                            setContent(prev => ({ ...prev, stats: newList }));
+                                        }}
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                    />
+                                </div>
+                            </div>
                         ))}
                         <button
                             type="button"
