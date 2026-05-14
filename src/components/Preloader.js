@@ -54,7 +54,12 @@ export default function Preloader() {
             }}
         >
             <div className="text-center">
-                <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-widest">DREAMLINE</h2>
+                <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-widest inline-flex items-start">
+                    DREAMLIN
+                    <span className="relative">
+                        E<span className="text-[8px] absolute -top-1.5 -right-3 font-bold">®</span>
+                    </span>
+                </h2>
                 <div className="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
                     <div
                         className="h-full bg-[#c5a059] transition-all duration-300 ease-out"
