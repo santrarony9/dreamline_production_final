@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Expertise({ expertise }) {
     const { heading, description, image, servicesList } = expertise || {};
 
@@ -7,11 +9,13 @@ export default function Expertise({ expertise }) {
                 <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
                     <div className="relative group">
                         {image ? (
-                            <div className="aspect-[4/5] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000">
-                                <img
+                            <div className="aspect-[4/5] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 relative">
+                                <Image
                                     src={image}
                                     alt="Expertise"
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
                                 />
                             </div>
                         ) : null}

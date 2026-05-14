@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function Partners({ partners = [] }) {
     if (!partners || partners.length === 0) return null;
@@ -35,10 +36,12 @@ export default function Partners({ partners = [] }) {
                         >
                             <div className="h-12 sm:h-16 w-32 sm:w-48 relative grayscale group-hover:grayscale-0 transition-all duration-500 opacity-30 group-hover:opacity-100 transform group-hover:scale-110">
                                 {partner.image ? (
-                                    <img
+                                    <Image
                                         src={partner.image}
                                         alt={partner.name}
-                                        className="w-full h-full object-contain"
+                                        fill
+                                        className="object-contain"
+                                        sizes="(max-width: 768px) 120px, 200px"
                                     />
                                 ) : (
                                     <span className="text-white/20 font-black uppercase text-xs tracking-widest">

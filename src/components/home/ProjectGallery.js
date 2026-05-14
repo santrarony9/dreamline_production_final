@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { openVideo } from "@/components/VideoModal";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ProjectGallery({ initialProjects, category = "all" }) {
     const [filter, setFilter] = useState("all");
@@ -50,18 +51,25 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                 {...wrapperProps}
                                 className="aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden relative group interactive block"
                             >
-                                <motion.img
-                                    src={project.coverImage || project.img || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}
-                                    alt={project.title}
-                                    className="absolute inset-0 w-full h-full object-cover filter grayscale-[30%] brightness-75"
-                                    initial={{ scale: 1.05 }}
-                                    whileHover={{
-                                        scale: 1.15,
-                                        filter: "grayscale(0%) brightness(1)",
-                                        rotate: 1
-                                    }}
-                                    transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
-                                />
+                                <div className="absolute inset-0 w-full h-full overflow-hidden">
+                                    <motion.div
+                                        className="w-full h-full"
+                                        initial={{ scale: 1.05 }}
+                                        whileHover={{
+                                            scale: 1.15,
+                                            rotate: 1
+                                        }}
+                                        transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
+                                    >
+                                        <Image
+                                            src={project.coverImage || project.img || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}
+                                            alt={project.title}
+                                            fill
+                                            className="object-cover filter grayscale-[30%] brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        />
+                                    </motion.div>
+                                </div>
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
 

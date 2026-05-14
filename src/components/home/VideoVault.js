@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function VideoVault({ 
     videos = [], 
@@ -53,10 +54,12 @@ export default function VideoVault({
                             className="aspect-video relative group overflow-hidden cursor-none interactive"
                             onClick={() => setActiveVideo(video.videoUrl)}
                         >
-                            <img
+                            <Image
                                 src={video.image}
                                 alt={video.title}
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-60 group-hover:opacity-100"
+                                fill
+                                className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-60 group-hover:opacity-100"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             />
 
                             {/* Overlay */}

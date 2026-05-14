@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import Link from "next/link";
 
 export default function JournalSection({ journals = [] }) {
@@ -26,11 +26,13 @@ export default function JournalSection({ journals = [] }) {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                     {journals.map((post, index) => (
                         <article key={index} className="group interactive">
-                            <Link href={`/journal/${post.id}`} className="block overflow-hidden rounded-3xl mb-8 aspect-[4/3]">
-                                <img
+                            <Link href={`/journal/${post.id}`} className="block overflow-hidden rounded-3xl mb-8 aspect-[4/3] relative">
+                                <Image
                                     src={post.image}
                                     alt={post.title}
-                                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
+                                    fill
+                                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 />
                             </Link>
                             <div className="flex gap-4 mb-4 text-[9px] font-black uppercase tracking-widest text-white/40">

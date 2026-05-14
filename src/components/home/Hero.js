@@ -1,6 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Hero({ content }) {
@@ -46,10 +47,13 @@ export default function Hero({ content }) {
                         className="h-full w-full object-cover scale-110"
                     />
                 ) : backgroundImage ? (
-                    <img
+                    <Image
                         src={backgroundImage}
                         alt="Hero Background"
-                        className="h-full w-full object-cover scale-110"
+                        fill
+                        priority
+                        className="object-cover scale-110"
+                        sizes="100vw"
                     />
                 ) : null}
             </motion.div>
