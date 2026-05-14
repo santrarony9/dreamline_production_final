@@ -72,10 +72,10 @@ export default function Hero({ content }) {
                 </h1>
 
                 <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                    <MagneticButton className="px-10 py-5 bg-[#c5a059] text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1">
+                    <MagneticButton className="min-w-[220px] px-10 py-5 bg-[#c5a059] border border-transparent text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all duration-500">
                         Explore Weddings
                     </MagneticButton>
-                    <MagneticButton className="px-10 py-5 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all transform hover:-translate-y-1">
+                    <MagneticButton className="min-w-[220px] px-10 py-5 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all duration-500">
                         Commercial Works
                     </MagneticButton>
                 </div>
