@@ -35,7 +35,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; frame-src 'self' https://www.youtube.com https://youtube.com https://youtu.be https://www.youtube-nocookie.com https://*.youtube.com https://player.vimeo.com https://vimeo.com; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss:;",
+            value: "default-src 'self'; frame-src 'self' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss:;",
           },
           {
             key: 'X-Frame-Options',
