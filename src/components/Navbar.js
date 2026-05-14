@@ -10,17 +10,19 @@ export default function Navbar() {
     const [services, setServices] = useState([]);
 
     useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                const res = await fetch("/api/content");
-                const data = await res.json();
-                setServices(data.home?.services || []);
-            } catch (error) {
-                console.error("Error fetching services for navbar:", error);
-            }
-        };
-        fetchServices();
-    }, []);
+    const fetchServices = async () => {
+                try {
+                    const res = await fetch("/api/content");
+                    const data = await res.json();
+                    setServices(data.home?.services || []);
+                } catch (error) {
+                    console.error("Error fetching services for navbar:", error);
+                }
+            };
+            fetchServices();
+        }, []);
+
+    const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,7 +78,7 @@ export default function Navbar() {
                                             <Link href="/luxury#services" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
                                             <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
                                                 {(s.subcategories || []).map((sub, i) => (
-                                                    <span key={i} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full">{sub}</span>
+                                                    <Link key={i} href={`/services/${slugify(sub)}`} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full hover:bg-white hover:text-black transition-all">{sub}</Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -105,7 +107,7 @@ export default function Navbar() {
                                             <Link href="/commercial" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
                                             <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
                                                 {(s.subcategories || []).map((sub, i) => (
-                                                    <span key={i} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full">{sub}</span>
+                                                    <Link key={i} href={`/services/${slugify(sub)}`} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full hover:bg-white hover:text-black transition-all">{sub}</Link>
                                                 ))}
                                             </div>
                                         </div>
@@ -134,7 +136,7 @@ export default function Navbar() {
                                             <Link href="/tech" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
                                             <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
                                                 {(s.subcategories || []).map((sub, i) => (
-                                                    <span key={i} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full">{sub}</span>
+                                                    <Link key={i} href={`/services/${slugify(sub)}`} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full hover:bg-white hover:text-black transition-all">{sub}</Link>
                                                 ))}
                                             </div>
                                         </div>

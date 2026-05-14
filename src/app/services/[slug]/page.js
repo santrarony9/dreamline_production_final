@@ -1,0 +1,136 @@
+import dbConnect from "@/lib/mongodb";
+import ServicePage from "@/models/ServicePage";
+import Content from "@/models/Content";
+import Image from "next/image";
+import VideoModal from "@/components/VideoModal";
+
+export async function generateMetadata({ params }) {
+    await dbConnect();
+    const { slug } = await params;
+    const page = await ServicePage.findOne({ slug }).lean();
+    return {
+        title: `${page?.title || "Service"} | Dreamline Production`,
+        description: page?.description || "Professional cinematic production services in Kolkata.",
+    };
+}
+
+export default async function DynamicServicePage({ params }) {
+    await dbConnect();
+    const { slug } = await params;
+    const page = await ServicePage.findOne({ slug }).lean();
+    const siteContent = await Content.findOne().lean();
+
+    if (!page) {
+        return (
+            <main className="bg-black min-h-screen flex items-center justify-center pt-32">
+                <div className="text-center">
+                    <h1 className="text-[#c5a059] font-black text-6xl uppercase tracking-tighter">PAGE NOT FOUND</h1>
+                    <p className="text-gray-500 mt-4 font-bold uppercase tracking-widest text-xs">This service page hasn't been built yet.</p>
+                    <a href="/" className="inline-block mt-8 text-white border border-white/10 px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Back Home</a>
+                </div>
+            </main>
+        );
+    }
+
+    return (
+        <main className="bg-black pt-24 md:pt-32">
+            {/* HERO SECTION */}
+            <section className="px-8 md:px-16 mb-20">
+                <div className="max-w-4xl">
+                    <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">
+                        {page.subtitle || "Service Specialty"}
+                    </span>
+                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white leading-[0.9]">
+                        {page.title}
+                    </h1>
+                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl font-medium">
+                        {page.description}
+                    </p>
+                </div>
+            </section>
+
+            {/* HERO IMAGE / VIDEO AREA */}
+            {page.heroImage && (
+                <section className="px-4 md:px-10 mb-24">
+                    <div className="relative aspect-[21/9] w-full rounded-[2rem] overflow-hidden border border-white/5">
+                        <Image 
+                            src={page.heroImage} 
+                            alt={page.title} 
+                            fill 
+                            className="object-cover opacity-80"
+                            priority
+                            sizes="100vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    </div>
+                </section>
+            )}
+
+            {/* VIDEO SHOWCASE SECTION */}
+            {page.videos && page.videos.length > 0 && (
+                <section className="py-24 bg-[#050505] border-y border-white/5">
+                    <div className="px-8 md:px-16 mb-12">
+                        <h2 className="font-heading text-3xl font-black text-white uppercase italic tracking-tighter">
+                            Cinematic <span className="text-[#c5a059]">Showcase.</span>
+                        </h2>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-8 md:px-16">
+                        {page.videos.map((video, idx) => (
+                            <div key={idx} className="group relative aspect-video bg-white/5 rounded-3xl overflow-hidden border border-white/10">
+                                <Image 
+                                    src={video.thumbnail || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"} 
+                                    alt={video.title} 
+                                    fill 
+                                    className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60"
+                                />
+                                <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 to-transparent">
+                                    <h3 className="text-white font-black text-lg uppercase tracking-tight mb-2">{video.title}</h3>
+                                    <div className="flex items-center gap-4">
+                                        <VideoModal videoUrl={video.url} />
+                                        <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Watch Film</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* PHOTO GALLERY SECTION */}
+            {page.gallery && page.gallery.length > 0 && (
+                <section className="py-24 px-8 md:px-16">
+                    <div className="mb-12">
+                        <h2 className="font-heading text-3xl font-black text-white uppercase italic tracking-tighter">
+                            Captured <span className="text-[#c5a059]">Frames.</span>
+                        </h2>
+                    </div>
+                    <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+                        {page.gallery.map((img, idx) => (
+                            <div key={idx} className="relative rounded-3xl overflow-hidden border border-white/5 group">
+                                <img 
+                                    src={img.url} 
+                                    alt={img.caption || `Gallery image ${idx}`} 
+                                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
+                                />
+                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                                    <p className="text-white text-[10px] font-black uppercase tracking-widest">{img.caption}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* CALL TO ACTION */}
+            <section className="py-32 bg-black text-center border-t border-white/5">
+                <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.4em] mb-6 block">Ready to collaborate?</span>
+                <h2 className="font-heading text-4xl md:text-6xl font-black text-white uppercase italic mb-12 leading-tight">
+                    Let's create <br /> something <span className="text-[#c5a059]">iconic.</span>
+                </h2>
+                <a href="/contact" className="inline-block px-12 py-5 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive shadow-2xl">
+                    Get a Quote
+                </a>
+            </section>
+        </main>
+    );
+}
