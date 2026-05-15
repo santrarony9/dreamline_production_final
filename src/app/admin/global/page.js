@@ -236,13 +236,25 @@ export default function GlobalSettings() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                             />
                         </div>
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Verification Content ID</p>
+                        </div>
                         <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Search Console Tag</label>
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Client ID (Business Sync)</label>
                             <input
                                 type="text"
-                                value={content.google?.searchConsoleId || ""}
-                                onChange={(e) => updateNested("google", "searchConsoleId", e.target.value)}
-                                placeholder="Verification Content ID"
+                                value={content.google?.clientId || ""}
+                                onChange={(e) => updateNested("google", "clientId", e.target.value)}
+                                placeholder="OAuth Client ID from Google Cloud Console"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Client Secret</label>
+                            <input
+                                type="password"
+                                value={content.google?.clientSecret || ""}
+                                onChange={(e) => updateNested("google", "clientSecret", e.target.value)}
+                                placeholder="OAuth Client Secret"
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                             />
                         </div>
