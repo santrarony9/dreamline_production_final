@@ -28,7 +28,7 @@ export default async function Home() {
   const journals = await Journal.find().sort({ order: 1 }).limit(3).lean();
 
   const homeData = {
-    hero: siteContent?.hero || siteContent?.home?.hero || {},
+    hero: siteContent?.home?.hero || siteContent?.hero || {},
     marquee: siteContent?.marquee || siteContent?.home?.marquee || [],
     stats: siteContent?.stats || siteContent?.home?.stats || [],
     partners: siteContent?.partners || siteContent?.home?.partners || [],
