@@ -265,7 +265,7 @@ export default async function AdminDashboard() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-[10px] text-gray-400 font-bold mb-1">{new Date(b.eventDate).toLocaleDateString()}</p>
+                                        <p className="text-[10px] text-gray-400 font-bold mb-1">{b.eventDate && !isNaN(new Date(b.eventDate).getTime()) ? new Date(b.eventDate).toLocaleDateString() : "Pending Date"}</p>
                                         <span className="text-[8px] bg-white/5 px-2 py-0.5 rounded text-gray-500 font-black uppercase tracking-widest group-hover:bg-[#c5a059]/20 group-hover:text-[#c5a059] transition-all">Pending</span>
                                     </div>
                                 </div>
