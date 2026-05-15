@@ -9,7 +9,7 @@ export default function ReviewSlider({
         {
             author: "Priyanka Sen",
             role: "Client",
-            text: "Working with Dreamline was the best decision for our brand identity. Their cinematic vision is unparalleled.",
+            text: "Working with Dreamline® was the best decision for our brand identity. Their cinematic vision is unparalleled.",
             rating: 5,
             initial: "P"
         },

@@ -36,7 +36,7 @@ export default function Expertise({ expertise }) {
                                 dangerouslySetInnerHTML={{ __html: heading || "LUXURY<br/>EMOTION<br/>STORYTELLING." }}
                             />
                             <p className="text-gray-500 text-lg max-w-xl leading-relaxed">
-                                {description || "Dreamline Production moves away from \"standard shots.\" We build cinematic experiences that preserve the soul of the event, treated with high-end color grading and sound design."}
+                                {description || "Dreamline® Production moves away from \"standard shots.\" We build cinematic experiences that preserve the soul of the event, treated with high-end color grading and sound design."}
                             </p>
                         </div>
 
