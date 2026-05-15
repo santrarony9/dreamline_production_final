@@ -26,10 +26,11 @@ export default function VideoModal() {
 
     let embedUrl = videoUrl;
     if (isYouTube) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
         const match = videoUrl.match(regExp);
         if (match && match[2].length === 11) {
-            embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1`;
+            const host = typeof window !== "undefined" ? window.location.origin : "";
+            embedUrl = `https://www.youtube.com/embed/${match[2]}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1&origin=${encodeURIComponent(host)}`;
         }
     } else if (isVimeo) {
         const match = videoUrl.match(/vimeo.com\/(\d+)/);
