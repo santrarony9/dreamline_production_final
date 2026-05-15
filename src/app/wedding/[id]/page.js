@@ -115,7 +115,7 @@ export default async function WeddingDetailPage({ params }) {
                         {wedding.title}
                     </h1>
                     <p className="text-gray-500 text-sm uppercase tracking-widest font-bold mb-10">
-                        {wedding.location || "Kolkata, India"} • {wedding.date && !isNaN(new Date(wedding.date).getTime()) ? new Date(wedding.date).getFullYear() : "2025"}
+                        {wedding.location || "Kolkata, India"} • {wedding.date ? new Date(wedding.date).getFullYear() : "2024"}
                     </p>
                     <p className="text-gray-300 leading-relaxed text-lg italic max-w-2xl mx-auto">
                         "{wedding.description || "Every frame of this film was crafted to reflect the timeless elegance and deep cultural roots of this heritage celebration."}"

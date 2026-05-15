@@ -32,7 +32,7 @@ export default async function AboutPage() {
                     <span className="text-white/20">{aboutData.hero?.titleLine2 || "HOUSE IN KOLKATA."}</span>
                 </h1>
                 <p className="max-w-3xl text-lg text-gray-400 leading-relaxed mb-12">
-                    {aboutData.hero?.description || "Dreamline® Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions..."}
+                    {aboutData.hero?.description || "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions..."}
                 </p>
                 <div className="h-[1px] w-full bg-white/10 mb-20"></div>
 
@@ -43,7 +43,7 @@ export default async function AboutPage() {
                             {aboutData.details?.heading || "About Us"}
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-8">
-                            {aboutData.details?.text1 || "Dreamline® Production is a Kolkata-based creative production company..."}
+                            {aboutData.details?.text1 || "Dreamline Production is a Kolkata-based creative production company..."}
                         </p>
                         <p className="text-gray-400 leading-relaxed">
                             {aboutData.details?.text2 || "We work with corporate brands, startups, agencies..."}
@@ -252,7 +252,7 @@ export default async function AboutPage() {
                             <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                                 {aboutData.whyUs?.sectionSubtitle || "Why Us"}
                             </span>
-                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase" dangerouslySetInnerHTML={{ __html: aboutData.whyUs?.heading || "THE DREAMLINE®<br>DIFFERENCE." }} />
+                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase" dangerouslySetInnerHTML={{ __html: aboutData.whyUs?.heading || "THE DREAMLINE<br>DIFFERENCE." }} />
                             <p className="text-gray-400 mb-8">
                                 {aboutData.whyUs?.description || "We don't just record events; we craft stories that emotionally connect with audiences."}
                             </p>
@@ -336,7 +336,7 @@ export default async function AboutPage() {
                                 TRUST & <span className="text-white/20">COMPLIANCE.</span>
                             </h2>
                             <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-12">
-                                Dreamline® Production operates as a fully registered and compliant visual production house in West Bengal, India. We are committed to transparency in our business operations and adhere to all local government regulations for cinematic and digital content creation.
+                                Dreamline Production operates as a fully registered and compliant visual production house in West Bengal, India. We are committed to transparency in our business operations and adhere to all local government regulations for cinematic and digital content creation.
                             </p>
                             <div className="grid sm:grid-cols-2 gap-8 text-[11px] font-black uppercase tracking-widest">
                                 <div className="space-y-2">

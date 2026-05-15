@@ -23,48 +23,58 @@ export async function POST(request) {
     await dbConnect();
     const body = await request.json();
     
-    // Explicitly pick allowed fields to prevent mass assignment
-    const { 
-        hero, home, about, luxury, commercial, contact, social, footer, 
-        splitGallery, videoVault, global, projects,
-        services, partners, marquee, stats 
-    } = body;
+    // Structure the update data using dot notation for nested fields
+    // to prevent overwriting entire parent objects.
+    const updateData = {};
 
-    const updateData = { 
-        hero, home, about, luxury, commercial, contact, social, footer, 
-        splitGallery, videoVault, global, projects,
-        services, partners, marquee, stats 
-    };
+    // Top-level fields
+    const topLevelFields = [
+        'about', 'luxury', 'commercial', 'contact', 'social', 'footer', 
+        'splitGallery', 'videoVault', 'global', 'projects'
+    ];
+    topLevelFields.forEach(field => {
+        if (body[field] !== undefined) updateData[field] = body[field];
+    });
 
+    // Home-nested fields
+    const homeFields = [
+        'hero', 'services', 'partners', 'marquee', 'stats', 
+        'expertise', 'motionArchive', 'reviews', 'quote'
+    ];
+    
+    // If 'home' itself is provided as an object, we can merge its properties
+    if (body.home && typeof body.home === 'object') {
+        Object.keys(body.home).forEach(key => {
+            updateData[`home.${key}`] = body.home[key];
+        });
+    }
 
-    // Remove undefined fields to avoid overwriting with null
-    Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
+    // Explicitly handle fields that might be sent at top-level by legacy admin forms
+    homeFields.forEach(field => {
+        if (body[field] !== undefined) {
+            updateData[`home.${field}`] = body[field];
+        }
+    });
 
     let content;
     try {
         content = await Content.findOneAndUpdate(
             {},
             { $set: updateData },
-            { upsert: true, new: true }
+            { upsert: true, new: true, runValidators: true }
         );
-    } catch (dbErr) {
-        console.error("Database Update Error:", dbErr);
-        return NextResponse.json({ error: "Database update failed: " + dbErr.message }, { status: 500 });
+
+        // Revalidate paths for on-demand ISR
+        revalidatePath('/');
+        revalidatePath('/about');
+        revalidatePath('/luxury');
+        revalidatePath('/commercial');
+        revalidatePath('/tech');
+        
+        return NextResponse.json({ success: true, data: content });
+    } catch (error) {
+        console.error("API Update Error:", error);
+        return NextResponse.json({ success: false, error: error.message }, { status: 400 });
     }
-
-
-
-    // Clear ISR cache so changes appear immediately on the frontend
-    try {
-        revalidatePath("/");
-        revalidatePath("/about");
-        revalidatePath("/luxury");
-        revalidatePath("/commercial");
-        console.log("Revalidated all public pages after content update");
-    } catch (e) {
-        console.error("Revalidation warning:", e.message);
-    }
-
-    return NextResponse.json(content);
 }
 

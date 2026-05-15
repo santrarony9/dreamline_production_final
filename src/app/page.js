@@ -29,14 +29,14 @@ export default async function Home() {
 
   const homeData = {
     hero: siteContent?.home?.hero || siteContent?.hero || {},
-    marquee: siteContent?.marquee || siteContent?.home?.marquee || [],
-    stats: siteContent?.stats || siteContent?.home?.stats || [],
-    partners: siteContent?.partners || siteContent?.home?.partners || [],
-    services: siteContent?.services || siteContent?.home?.services || [],
-    reviews: siteContent?.reviews || siteContent?.home?.reviews || { list: [] },
-    quote: siteContent?.quote || siteContent?.home?.quote || { text: "", backgroundImage: "" },
-    expertise: siteContent?.expertise || siteContent?.home?.expertise || {},
-    motionArchive: siteContent?.motionArchive || siteContent?.home?.motionArchive || { images: [] }
+    marquee: (siteContent?.home?.marquee?.length > 0) ? siteContent.home.marquee : (siteContent?.marquee || []),
+    stats: (siteContent?.home?.stats?.length > 0) ? siteContent.home.stats : (siteContent?.stats || []),
+    partners: (siteContent?.home?.partners?.length > 0) ? siteContent.home.partners : (siteContent?.partners || []),
+    services: (siteContent?.home?.services?.length > 0) ? siteContent.home.services : (siteContent?.services || []),
+    reviews: siteContent?.home?.reviews || siteContent?.reviews || { list: [] },
+    quote: siteContent?.home?.quote || siteContent?.quote || { text: "", backgroundImage: "" },
+    expertise: siteContent?.home?.expertise || siteContent?.expertise || {},
+    motionArchive: siteContent?.home?.motionArchive || siteContent?.motionArchive || { images: [] }
   };
 
   // Serialize data for client components

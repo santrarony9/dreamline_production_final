@@ -27,11 +27,5 @@
                 }
             ]
         }
-    ],
-    "crons": [
-        {
-            "path": "/api/admin/automation/sync/daily",
-            "schedule": "30 3 * * *"
-        }
     ]
 }

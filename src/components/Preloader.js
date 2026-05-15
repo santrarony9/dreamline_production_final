@@ -56,8 +56,8 @@ export default function Preloader() {
             }}
         >
             <div className="text-center">
-                <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-widest">
-                    DREAMLINE
+                <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-widest relative inline-block">
+                    DREAMLINE<span className="absolute -top-2 -right-4 text-[10px] text-[#c5a059] font-bold">®</span>
                 </h2>
                 <div className="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
                     <div

@@ -28,7 +28,9 @@ function HomeEditorContent() {
     const fetchContent = async () => {
         try {
             const res = await axios.get("/api/content");
-            const data = res.data.home || res.data || {}; // Handle if nested under home or top-level depending on response
+                        const rawData = res.data || {};
+            const data = rawData.home || rawData || {}; 
+ // Handle if nested under home or top-level depending on response
             setContent({
                 hero: data.hero || {},
                 stats: data.stats || [],

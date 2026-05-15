@@ -36,7 +36,7 @@ export default function JournalSection({ journals = [] }) {
                                 />
                             </Link>
                             <div className="flex gap-4 mb-3 text-[9px] font-black uppercase tracking-widest text-white/40">
-                                <span>{post.date && !isNaN(new Date(post.date).getTime()) ? new Date(post.date).toLocaleDateString() : "Latest Story"}</span>
+                                <span>{new Date(post.date).toLocaleDateString()}</span>
                                 <span className="text-[#c5a059]">•</span>
                                 <span>{post.category}</span>
                             </div>

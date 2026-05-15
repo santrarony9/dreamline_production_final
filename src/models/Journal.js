@@ -9,7 +9,6 @@ const JournalSchema = new mongoose.Schema({
     excerpt: String,
     content: String, // HTML content
     order: { type: Number, default: 0 },
-    googleSynced: { type: Boolean, default: false },
     seo: {
         title: { type: String, default: "" },
         description: { type: String, default: "" },

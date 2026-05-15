@@ -25,7 +25,7 @@ export default function QuoteSection({ quote, backgroundImage }) {
 
     return (
         <section
-            className="relative py-20 md:py-48 flex items-center justify-center border-t border-white/5 bg-fixed bg-center bg-cover bg-no-repeat"
+            className="relative py-12 md:py-24 flex items-center justify-center border-t border-white/5 bg-fixed bg-center bg-cover bg-no-repeat"
             style={{
                 backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("${backgroundImage || defaultBg}")`
             }}
@@ -36,9 +36,9 @@ export default function QuoteSection({ quote, backgroundImage }) {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="space-y-8"
+                    className="space-y-6"
                 >
-                    <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white italic leading-relaxed max-w-4xl mx-auto drop-shadow-2xl uppercase tracking-wider">
+                    <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-white italic leading-snug max-w-3xl mx-auto drop-shadow-2xl uppercase tracking-normal">
                         "{quote || defaultQuote}"
                     </h2>
 

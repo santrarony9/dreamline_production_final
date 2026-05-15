@@ -102,7 +102,7 @@ export default function WeddingAdmin() {
                             <div className="p-8 flex-1 flex flex-col justify-between">
                                 <div>
                                     <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-tight">{w.title}</h3>
-                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{w.location} • {w.date && !isNaN(new Date(w.date).getTime()) ? new Date(w.date).getFullYear() : "2025"}</p>
+                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{w.location} • {new Date(w.date).getFullYear()}</p>
                                 </div>
                                 <button onClick={() => deleteWedding(w._id)} className="text-[10px] font-black text-red-500/30 hover:text-red-500 uppercase tracking-widest text-left mt-8 transition-colors">Decommission Film</button>
                             </div>

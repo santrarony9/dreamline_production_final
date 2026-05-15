@@ -63,7 +63,8 @@ const ContentSchema = new mongoose.Schema({
         motionArchive: {
             title: { type: String, default: "The Motion" },
             subtitle: { type: String, default: "Archive." },
-            description: { type: String, default: "15+ Years of Frames" }
+            description: { type: String, default: "15+ Years of Frames" },
+            images: [String]
         },
         reviews: {
             sectionSubtitle: { type: String, default: "The Reputation" },

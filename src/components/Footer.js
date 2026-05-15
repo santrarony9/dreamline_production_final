@@ -8,7 +8,7 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div className="space-y-4">
                         <Link href="/" className="font-heading text-2xl font-black inline-block uppercase tracking-tighter interactive whitespace-nowrap">
-                            DREAMLINE <span className="text-[#c5a059] relative">
+                            DREAMLINE<sup className="text-[#c5a059] text-[10px] ml-0.5">®</sup> <span className="text-[#c5a059] relative">
                                 PRODUCTION
                             </span>
                         </Link>
