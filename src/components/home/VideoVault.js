@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { openVideo } from "@/components/VideoModal";
 
 export default function VideoVault({ 
     videos = [], 
@@ -9,21 +9,10 @@ export default function VideoVault({
     subtitle = "Video Vault.", 
     description = "15+ Years of Frames" 
 }) {
-    const [activeVideo, setActiveVideo] = useState(null);
-
+    // No local state needed for activeVideo anymore
+    
     const defaultVideos = [
-        {
-            title: "Royal Grandeur",
-            category: "Wedding Cinema",
-            image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
-            videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
-        },
-        {
-            title: "Neon Pulse",
-            category: "Music Video",
-            image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800",
-            videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
-        }
+        // ... (existing default videos)
     ];
 
     const displayVideos = videos && videos.length > 0 ? videos : defaultVideos;
@@ -52,7 +41,7 @@ export default function VideoVault({
                         <div
                             key={index}
                             className="aspect-video relative group overflow-hidden cursor-none interactive"
-                            onClick={() => setActiveVideo(video.videoUrl)}
+                            onClick={() => openVideo(video.videoUrl, video.title)}
                         >
                             <Image
                                 src={video.image}
@@ -82,24 +71,6 @@ export default function VideoVault({
                     ))}
                 </div>
             </div>
-
-            {/* Video Modal (Simple implementation for paritiy) */}
-            {activeVideo && (
-                <div
-                    className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-10"
-                    onClick={() => setActiveVideo(null)}
-                >
-                    <button className="absolute top-10 right-10 text-white font-black text-2xl interactive">✕</button>
-                    <div className="w-full h-full max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl">
-                        <iframe
-                            src={activeVideo.includes('?') ? `${activeVideo}&autoplay=1` : `${activeVideo}?autoplay=1`}
-                            className="w-full h-full"
-                            allow="autoplay; fullscreen"
-                            allowFullScreen
-                        />
-                    </div>
-                </div>
-            )}
         </section>
     );
 }

@@ -28,9 +28,9 @@ function HomeEditorContent() {
     const fetchContent = async () => {
         try {
             const res = await axios.get("/api/content");
-                        const rawData = res.data || {};
+            const rawData = res.data || {};
             const data = rawData.home || rawData || {}; 
- // Handle if nested under home or top-level depending on response
+            // Handle if nested under home or top-level depending on response
             setContent({
                 hero: data.hero || {},
                 stats: data.stats || [],
@@ -56,12 +56,7 @@ function HomeEditorContent() {
         setSaving(true);
         setMessage("");
         try {
-
             await axios.post("/api/content", content);
-
-
-
-
             setMessage("Home page content updated!");
             setTimeout(() => setMessage(""), 3000);
         } catch (err) {
@@ -78,18 +73,6 @@ function HomeEditorContent() {
             [section]: { ...prev[section], [field]: value }
         }));
     };
-
-    const updateNested = (section, category, field, value) => {
-        setContent(prev => ({
-            ...prev,
-            [section]: {
-                ...prev[section],
-                [category]: { ...prev[section][category], [field]: value }
-            }
-        }));
-    };
-
-
 
     if (loading) return <div className="text-gray-500 uppercase text-[10px] font-bold tracking-widest">Decoding cinema data...</div>;
 
@@ -108,7 +91,6 @@ function HomeEditorContent() {
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Cinematography</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Front <span className="text-gray-700">Office.</span></h1>
                 </div>
-                {/* Tab Navigation */}
                 <div className="flex flex-wrap gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/5">
                     {tabs.map((tab) => (
                         <button
@@ -130,7 +112,6 @@ function HomeEditorContent() {
                 {/* BANNER TAB */}
                 {activeTab === "BANNER" && (
                     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {/* HERO SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4">
                                 <a href="/" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
@@ -181,7 +162,6 @@ function HomeEditorContent() {
                             </div>
                         </div>
 
-                        {/* MARQUEE EDITOR */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📢 Scrolling Text Bar</h3>
@@ -224,7 +204,6 @@ function HomeEditorContent() {
                 {/* SERVICES TAB */}
                 {activeTab === "SERVICES" && (
                     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {/* SERVICES CATEGORIES SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div className="flex justify-between items-start">
                                 <div>
@@ -236,7 +215,6 @@ function HomeEditorContent() {
                             <div className="space-y-6">
                                 {(content.services || []).map((srv, i) => (
                                     <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group grid grid-cols-1 md:grid-cols-3 gap-6">
-                                        {/* REORDER BUTTONS */}
                                         <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                             <button
                                                 type="button"
@@ -332,8 +310,6 @@ function HomeEditorContent() {
                                                 placeholder="Starting at..."
                                             />
                                         </div>
-
-                                        {/* SUBCATEGORIES CHIPS */}
                                         <div className="md:col-span-3 space-y-3 pt-4 border-t border-white/5">
                                             <label className="text-[9px] uppercase font-black text-[#c5a059] tracking-[0.2em]">List of Subcategories / Specializations</label>
                                             <div className="flex flex-wrap gap-2">
@@ -399,7 +375,6 @@ function HomeEditorContent() {
                 {/* BRAND IDENTITY TAB */}
                 {activeTab === "BRAND" && (
                     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {/* EXPERTISE SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4">
                                 <a href="/#expertise" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
@@ -455,8 +430,6 @@ function HomeEditorContent() {
                                         <button type="button" onClick={() => updateSection("expertise", "image", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
                                     )}
                                 </div>
-
-                                {/* Who We Are Services List */}
                                 <div className="md:col-span-2 space-y-4 pt-4 border-t border-white/5">
                                     <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Expertise Services (Who We Are)</label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -511,7 +484,6 @@ function HomeEditorContent() {
                             </div>
                         </div>
 
-                        {/* STATS EDITOR */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">📊 Stats Counter</h3>
@@ -520,7 +492,6 @@ function HomeEditorContent() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                 {content.stats.map((stat, i) => (
                                     <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl space-y-4 relative group">
-                                        {/* REORDER BUTTONS */}
                                         <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                             <button
                                                 type="button"
@@ -612,7 +583,6 @@ function HomeEditorContent() {
                 {/* SOCIAL PROOF TAB */}
                 {activeTab === "SOCIAL" && (
                     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {/* QUOTE SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-sm font-black uppercase tracking-widest text-[#c5a059] mb-1">💬 Inspirational Quote Section</h3>
@@ -638,7 +608,6 @@ function HomeEditorContent() {
                             </div>
                         </div>
 
-                        {/* REVIEWS SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">⭐ Customer Reviews</h3>
@@ -680,24 +649,11 @@ function HomeEditorContent() {
                             <div className="pt-10 border-t border-white/5 space-y-6">
                                 <div className="flex justify-between items-center">
                                     <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c5a059]">Managed Testimonials</h4>
-                                    {content.global?.google?.placeId && (
-                                        <button 
-                                            type="button"
-                                            className="text-[9px] font-black uppercase tracking-widest bg-white/5 border border-white/10 px-4 py-2 rounded-full hover:bg-[#c5a059] hover:text-black transition-all flex items-center gap-2"
-                                            onClick={() => alert("Syncing latest Google Reviews... This feature requires a production Maps API Key.")}
-                                        >
-                                            <svg className="w-3 h-3" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"/>
-                                            </svg>
-                                            Sync Google Reviews
-                                        </button>
-                                    )}
                                 </div>
 
                                 <div className="space-y-6">
                                     {(content.reviews?.list || []).map((review, i) => (
                                         <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group space-y-6">
-                                            {/* REORDER & DELETE */}
                                             <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                                 <button
                                                     type="button"
@@ -844,7 +800,6 @@ function HomeEditorContent() {
                             </div>
                         </div>
 
-                        {/* PARTNERS / CLIENTS SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🤝 Partner Logos</h3>
@@ -920,7 +875,6 @@ function HomeEditorContent() {
                 {/* VISUAL ARCHIVES TAB */}
                 {activeTab === "GALLERY" && (
                     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {/* MOTION ARCHIVE */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🎞️ Motion Archive Gallery</h3>
@@ -952,8 +906,6 @@ function HomeEditorContent() {
                                         {(content.motionArchive.images || []).map((img, i) => (
                                             <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
                                                 <img src={img} className="w-full h-full object-cover" />
-
-                                                {/* REORDER CONTROLS */}
                                                 <div className="absolute inset-x-0 bottom-0 p-2 bg-black/60 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <button
                                                         type="button"
@@ -1005,7 +957,6 @@ function HomeEditorContent() {
                             </div>
                         </div>
 
-                        {/* VIDEO VAULT */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4">
                                 <a href="/#video-vault" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
@@ -1017,7 +968,6 @@ function HomeEditorContent() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {(content.videoVault || []).map((v, i) => (
                                     <div key={i} className="bg-white/2 border border-white/5 p-6 rounded-2xl relative group space-y-4">
-                                        {/* REORDER BUTTONS */}
                                         <div className="absolute -top-3 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                             <button
                                                 type="button"
@@ -1078,19 +1028,38 @@ function HomeEditorContent() {
                                                 className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
                                             />
                                         </div>
-                                        <input
-                                            type="text"
-                                            value={v.videoUrl || ""}
-                                            onChange={(e) => {
-                                                const newList = [...content.videoVault];
-                                                newList[i] = { ...newList[i], videoUrl: e.target.value };
-                                                setContent(prev => ({ ...prev, videoVault: newList }));
-                                            }}
-                                            placeholder="Embed URL (YouTube/Vimeo)"
-                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
-                                        />
+                                        <div className="space-y-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest pl-1">Embed URL (YouTube/Vimeo)</label>
+                                                    <input
+                                                        type="text"
+                                                        value={v.videoUrl || ""}
+                                                        onChange={(e) => {
+                                                            const newList = [...content.videoVault];
+                                                            newList[i] = { ...newList[i], videoUrl: e.target.value };
+                                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                                        }}
+                                                        placeholder="https://youtube.com/embed/..."
+                                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[9px] uppercase font-black text-[#c5a059] tracking-widest pl-1">OR: DIRECT VIDEO UPLOAD</label>
+                                                    <ImageUploader
+                                                        onUploadSuccess={(url) => {
+                                                            const newList = [...content.videoVault];
+                                                            newList[i] = { ...newList[i], videoUrl: url };
+                                                            setContent(prev => ({ ...prev, videoVault: newList }));
+                                                        }}
+                                                        currentImage={v.videoUrl?.match(/\.(mp4|webm|ogg|mov)$|video/i) ? v.videoUrl : null}
+                                                        recommendedSize="Vertical Reels (9:16) or Cinematic (16:9)"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="pt-2">
-                                            <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest pl-1 block mb-2">Video Thumbnail</label>
+                                            <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest pl-1 block mb-2">Video Thumbnail (Poster Image)</label>
                                             {v.image ? (
                                                 <div className="relative rounded-lg overflow-hidden border border-white/10 group aspect-video">
                                                     <img src={v.image} className="w-full h-full object-cover" />
@@ -1127,7 +1096,6 @@ function HomeEditorContent() {
                             </div>
                         </div>
 
-                        {/* MASTER GALLERY SECTION */}
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                             <div>
                                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🖼️ Photo Gallery (3-Column)</h3>
