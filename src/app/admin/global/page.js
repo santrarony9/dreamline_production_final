@@ -235,6 +235,7 @@ export default function GlobalSettings() {
                                 placeholder="Enter Google Cloud API Key"
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                             />
+                        </div>
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Search Console Tag</label>
                             <input
