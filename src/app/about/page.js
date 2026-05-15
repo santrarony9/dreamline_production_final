@@ -344,8 +344,8 @@ export default async function AboutPage() {
                                     <p className="text-white">{aboutData.details?.address || "85, Tilottama Plaza, Kolkata 700082"}</p>
                                 </div>
                                 <div className="space-y-2">
-                                    <p className="text-gray-600">Govt. Registration No.</p>
-                                    <p className="text-[#c5a059]">{aboutData.details?.regNo || "WB-PR-00XXXXXX"}</p>
+                                    <p className="text-gray-600">Official GST No.</p>
+                                    <p className="text-[#c5a059]">19EILPS2898F1ZE</p>
                                 </div>
                                 <div className="space-y-2">
                                     <p className="text-gray-600">Legal Contact</p>

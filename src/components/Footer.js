@@ -14,7 +14,7 @@ export default function Footer() {
                             Kolkata's premier cinematic house & Pan-India luxury storyteller. Premium weddings and commercial films since 2010.
                         </p>
                         <div className="pt-2">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-gray-700 border border-white/5 px-2 py-1 rounded">Reg No: WB-PR-00XXXXXX</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-white/40 border border-white/10 px-2 py-1 rounded">GST: 19EILPS2898F1ZE</span>
                         </div>
                     </div>
 
