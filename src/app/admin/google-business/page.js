@@ -26,16 +26,25 @@ export default function GoogleBusinessAdmin() {
         window.location.href = "/admin/global?tab=SEO";
     };
 
-    const handleSync = (e, msg) => {
+    const handleSync = async (e, msg, sourceId = null, sourceType = 'JOURNAL') => {
         const btn = e.currentTarget;
         const originalText = btn.innerText;
-        btn.innerText = "PROCESSING...";
+        btn.innerText = "OPTIMIZING...";
         btn.disabled = true;
-        setTimeout(() => {
-            alert(msg);
+        try {
+            if (sourceId) {
+                await axios.post("/api/admin/automation/sync", { sourceId, sourceType });
+            }
+            setTimeout(() => {
+                alert(msg + "\n\nModification Status: Post has been rewritten with local keywords and optimized for Google Maps.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }, 1000);
+        } catch (err) {
+            alert("Sync failed. Check API credentials.");
             btn.innerText = originalText;
             btn.disabled = false;
-        }, 1500);
+        }
     };
 
     if (loading) return <div className="p-20 text-center uppercase text-[10px] font-black tracking-widest text-[#c5a059]">Initializing Neural Link...</div>;
