@@ -7,8 +7,8 @@ export default function Footer() {
                 <div className="grid lg:grid-cols-3 gap-12 items-start mb-12">
                     {/* Brand Section */}
                     <div className="space-y-4">
-                        <Link href="/" className="font-heading text-2xl font-black inline-block uppercase tracking-tighter interactive">
-                            DREAMLINE<sup className="text-[10px] ml-0.5">®</sup> <span className="text-[#c5a059]">PRODUCTION</span>
+                        <Link href="/" className="font-heading text-2xl font-black inline-block uppercase tracking-tighter interactive whitespace-nowrap">
+                            DREAMLINE <span className="text-[#c5a059]">PRODUCTION</span><sup className="text-[10px] ml-1">®</sup>
                         </Link>
                         <p className="text-gray-500 text-xs max-w-sm leading-relaxed">
                             Kolkata's premier cinematic house & Pan-India luxury storyteller. Premium weddings and commercial films since 2010.
@@ -59,7 +59,7 @@ export default function Footer() {
                         <Link href="/refund-policy" className="hover:text-[#c5a059] transition-colors">Refund & Cancellation</Link>
                     </div>
                     <p className="text-[9px] text-gray-700 uppercase tracking-[0.3em] font-bold">
-                        &copy; {new Date().getFullYear()} DREAMLINE<sup className="text-[6px] ml-0.5">®</sup> PRODUCTION. ALL RIGHTS RESERVED.
+                        &copy; {new Date().getFullYear()} DREAMLINE PRODUCTION<sup className="text-[6px] ml-0.5">®</sup>. ALL RIGHTS RESERVED.
                     </p>
                 </div>
             </div>
