@@ -32,15 +32,15 @@ export async function generateMetadata() {
     return {
       metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com'),
       title: {
-        default: globalSeo.title || "Dreamline® Production | Best Wedding Photographer in Kolkata",
-        template: `%s | ${globalSeo.title || "Dreamline® Production"}`
+        default: globalSeo.title || "Dreamline Production | Best Wedding Photographer in Kolkata",
+        template: `%s | ${globalSeo.title || "Dreamline Production"}`
       },
       description: globalSeo.description || "Dreamline Production is the leading wedding photographer and cinematic film house in Kolkata.",
       keywords: globalSeo.keywords || "Wedding Photographer Kolkata, Best Cinematic Films Kolkata, Luxury Wedding Photography Bengal",
       openGraph: {
-        title: globalSeo.title || "Dreamline® Production | Premier Photography & Cinema",
+        title: globalSeo.title || "Dreamline Production | Premier Photography & Cinema",
         description: globalSeo.description || "Capture your moments with Kolkata's finest production house.",
-        siteName: "Dreamline® Production",
+        siteName: "Dreamline Production",
         images: [
           {
             url: globalSeo.ogImage || "/logo.png",
@@ -79,8 +79,8 @@ export async function generateMetadata() {
   } catch (e) {
     console.warn("Metadata Generation Fallback:", e.message);
     return {
-      title: "Dreamline® Production | Best Wedding Photographer in Kolkata & Pan-India",
-      description: "Dreamline® Production is a premier production house in Kolkata providing luxury wedding photography and commercial films across India.",
+      title: "Dreamline Production | Best Wedding Photographer in Kolkata & Pan-India",
+      description: "Dreamline Production is a premier production house in Kolkata providing luxury wedding photography and commercial films across India.",
       alternates: { canonical: 'https://dreamlineproduction.com' }
     };
   }
