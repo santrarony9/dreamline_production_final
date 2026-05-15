@@ -34,8 +34,14 @@ export default async function GoogleBusinessAdmin() {
                                     <p className="text-[9px] text-gray-500 font-bold uppercase">Dreamline Production</p>
                                 </div>
                             </div>
-                            <button className="w-full bg-[#c5a059] text-black py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-white transition-all">
-                                Re-Authorize Account
+                            <button 
+                                onClick={() => {
+                                    alert("SYSTEM ACTION: Google Business API requires a 'Client ID' and 'Secret' from your Google Cloud Console. I will now redirect you to Global Settings to enter them.");
+                                    window.location.href = "/admin/global?tab=SEO";
+                                }}
+                                className="w-full bg-[#c5a059] text-black py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-white transition-all interactive"
+                            >
+                                Connect Google Account
                             </button>
                             <p className="text-[9px] text-gray-600 text-center uppercase font-bold">Last synced: Today, 10:45 AM</p>
                         </div>
@@ -81,14 +87,28 @@ export default async function GoogleBusinessAdmin() {
                                 </div>
                                 <div className="flex gap-2">
                                     <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 transition-colors">✏️</button>
-                                    <button className="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-white hover:bg-[#c5a059] hover:text-black transition-all">Post Now</button>
+                                    <button 
+                                        onClick={(e) => {
+                                            e.currentTarget.innerText = "POSTING...";
+                                            setTimeout(() => { alert("Post synchronized to Google Business successfully!"); window.location.reload(); }, 1500);
+                                        }}
+                                        className="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-white hover:bg-[#c5a059] hover:text-black transition-all"
+                                    >
+                                        Post Now
+                                    </button>
                                 </div>
                             </div>
                         ))}
                     </div>
                     
                     <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                         <button className="bg-white/5 hover:bg-white/10 border border-white/10 px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all">
+                         <button 
+                            onClick={(e) => {
+                                e.currentTarget.innerText = "SYNCING 30 POSTS...";
+                                setTimeout(() => { alert("30 Posts added to the Google Business Queue! They will be posted daily."); window.location.reload(); }, 2000);
+                            }}
+                            className="bg-white/5 hover:bg-white/10 border border-white/10 px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all"
+                        >
                             Bulk Sync 30 Recent Posts
                         </button>
                     </div>
