@@ -22,7 +22,7 @@ export default function Footer() {
                     </div>
 
                     {/* Navigation Section */}
-                    <div className="flex flex-wrap gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
                         <Link href="/" className="hover:text-white transition-colors interactive">Home</Link>
                         <Link href="/about" className="hover:text-white transition-colors interactive">History</Link>
                         <Link href="/luxury" className="hover:text-white transition-colors interactive">Luxury Weddings</Link>
@@ -32,8 +32,8 @@ export default function Footer() {
                     </div>
 
                     {/* Contact & Social Section */}
-                    <div className="lg:text-right space-y-4">
-                        <div className="text-[10px] font-black text-white/50 space-x-6 uppercase tracking-widest">
+                    <div className="lg:text-right space-y-6">
+                        <div className="text-[10px] font-black text-white/50 flex flex-col sm:flex-row lg:justify-end gap-2 sm:gap-6 uppercase tracking-widest">
                             <span>+91 82400 54002</span>
                             <span className="hidden sm:inline">|</span>
                             <span>Kolkata, WB</span>
@@ -45,7 +45,7 @@ export default function Footer() {
                                     href={`https://www.${platform === 'IG' ? 'instagram' : platform === 'FB' ? 'facebook' : 'youtube'}.com/dreamlineproduction/`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
+                                    className="w-10 h-10 sm:w-8 sm:h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
                                 >
                                     {platform}
                                 </a>
@@ -55,11 +55,12 @@ export default function Footer() {
                 </div>
 
                 {/* Legal & Bottom Row */}
-                <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div className="flex flex-wrap justify-center gap-6 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600">
+                <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-center md:text-left">
+                    <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-3 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600">
                         <Link href="/privacy-policy" className="hover:text-[#c5a059] transition-colors">Privacy Policy</Link>
                         <Link href="/terms" className="hover:text-[#c5a059] transition-colors">Terms of Service</Link>
                         <Link href="/refund-policy" className="hover:text-[#c5a059] transition-colors">Refund & Cancellation</Link>
+                        <Link href="/company-details" className="hover:text-[#c5a059] transition-colors text-white/80 font-black">Company Details</Link>
                     </div>
                     <p className="text-[9px] text-gray-700 uppercase tracking-[0.3em] font-bold">
                         &copy; {new Date().getFullYear()} DREAMLINE PRODUCTION<sup className="text-[12px] ml-1 font-black">®</sup>. ALL RIGHTS RESERVED.

@@ -22,11 +22,11 @@ export async function generateMetadata({ params }) {
         if (!wedding) return {};
 
         return {
-            title: `${wedding.title} | Luxury Wedding Film`,
-            description: wedding.description || `Cinematic wedding film from ${wedding.location || 'Dreamline Production'}`,
+            title: `${wedding.title} | A Cinematic Wedding Story`,
+            description: wedding.description || `Experience the timeless elegance of ${wedding.title}. Documented with cinematic grandeur by Dreamline Production.`,
             openGraph: {
-                title: `${wedding.title} | Cinematic Wedding Film`,
-                description: wedding.description || "A breathtaking luxury wedding documented by Dreamline Production.",
+                title: `${wedding.title} | Luxury Wedding Film`,
+                description: wedding.description || "A breathtaking luxury wedding documented with cinematic vision by Dreamline Production.",
                 images: wedding.coverImage || wedding.img ? [{ url: wedding.coverImage || wedding.img, width: 1200, height: 630 }] : [],
                 type: "video.movie",
             },

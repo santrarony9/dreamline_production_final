@@ -53,7 +53,10 @@ export default function AnalyticsTracker() {
         // Report view on route change to custom tracking
         const reportView = async () => {
             try {
-                await axios.post("/api/tracking/view", { path: pathname });
+                await axios.post("/api/tracking/view", { 
+                    path: pathname,
+                    referrer: document.referrer 
+                });
             } catch (err) {
                 // Silently fail
             }

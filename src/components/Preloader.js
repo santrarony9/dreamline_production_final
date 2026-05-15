@@ -11,7 +11,9 @@ export default function Preloader() {
             setProgress((prev) => {
                 if (prev >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => setIsLoading(false), 400);
+                    setTimeout(() => {
+                        setIsLoading(false);
+                    }, 1200); // Wait for transition
                     return 100;
                 }
                 return prev + Math.floor(Math.random() * 15) + 5;
@@ -32,7 +34,7 @@ export default function Preloader() {
         // Fail-safe: never show loader for more than 3 seconds
         const failSafe = setTimeout(() => {
             setProgress(100);
-            setTimeout(() => setIsLoading(false), 400);
+            setTimeout(() => setIsLoading(false), 1200);
         }, 3000);
 
         return () => {

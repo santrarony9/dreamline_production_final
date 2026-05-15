@@ -5,7 +5,7 @@ import Analytics from "@/models/Analytics";
 export async function POST(request) {
     try {
         await dbConnect();
-        const { path } = await request.json();
+        const { path, referrer } = await request.json();
 
         if (!path || typeof path !== 'string') return NextResponse.json({ error: "Missing path" }, { status: 400 });
 
@@ -15,10 +15,18 @@ export async function POST(request) {
         const now = new Date();
         const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
+        // Detect organic google traffic
+        const isGoogle = referrer && (referrer.includes('google.com') || referrer.includes('google.co.in'));
+
         // Increment views for the path on this day
         await Analytics.findOneAndUpdate(
             { path: cleanPath, date: today },
-            { $inc: { views: 1 } },
+            { 
+                $inc: { 
+                    views: 1,
+                    googleViews: isGoogle ? 1 : 0
+                } 
+            },
             { upsert: true, new: true }
         );
 
