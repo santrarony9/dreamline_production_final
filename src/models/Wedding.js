@@ -30,6 +30,7 @@ const WeddingSchema = new mongoose.Schema({
         link: String
     }],
     order: { type: Number, default: 0 },
+    googleSynced: { type: Boolean, default: false },
     seo: {
         title: { type: String, default: "" },
         description: { type: String, default: "" },
