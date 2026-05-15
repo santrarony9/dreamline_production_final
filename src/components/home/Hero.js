@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Hero({ content }) {
@@ -62,7 +63,7 @@ export default function Hero({ content }) {
             <div className="container mx-auto px-6 relative z-20 text-center">
                 <div className="overflow-hidden mb-4">
                     <p className="text-xs md:text-sm font-black uppercase tracking-[0.5em] text-[#c5a059] animate-fade-up">
-                        {subtitle || "EST. 2010 • DREAMLINE® PRODUCTION"}
+                        {subtitle || "EST. 2010 • DREAMLINE PRODUCTION"}
                     </p>
                 </div>
 
@@ -76,12 +77,16 @@ export default function Hero({ content }) {
                 </h1>
 
                 <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                    <MagneticButton className="min-w-[220px] px-10 py-5 bg-[#c5a059] border border-transparent text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all duration-500">
-                        Explore Weddings
-                    </MagneticButton>
-                    <MagneticButton className="min-w-[220px] px-10 py-5 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all duration-500">
-                        Commercial Works
-                    </MagneticButton>
+                    <Link href="/luxury">
+                        <MagneticButton className="min-w-[220px] px-10 py-5 bg-[#c5a059] border border-transparent text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all duration-500">
+                            Explore Weddings
+                        </MagneticButton>
+                    </Link>
+                    <Link href="/commercial">
+                        <MagneticButton className="min-w-[220px] px-10 py-5 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all duration-500">
+                            Commercial Works
+                        </MagneticButton>
+                    </Link>
                 </div>
             </div>
 
