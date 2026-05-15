@@ -19,10 +19,10 @@ export default function VideoModal() {
         return () => window.removeEventListener("openVideo", handleOpen);
     }, []);
 
-    if (!isOpen) return null;
+    if (!isOpen || !videoUrl) return null;
 
-    const isYouTube = videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be");
-    const isVimeo = videoUrl.includes("vimeo.com");
+    const isYouTube = videoUrl?.includes("youtube.com") || videoUrl?.includes("youtu.be");
+    const isVimeo = videoUrl?.includes("vimeo.com");
 
     let embedUrl = videoUrl;
     if (isYouTube) {
