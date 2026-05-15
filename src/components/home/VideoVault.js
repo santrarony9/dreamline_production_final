@@ -12,7 +12,18 @@ export default function VideoVault({
     // No local state needed for activeVideo anymore
     
     const defaultVideos = [
-        // ... (existing default videos)
+        {
+            title: "Royal Grandeur",
+            category: "Wedding Cinema",
+            image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
+            videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
+        },
+        {
+            title: "Neon Pulse",
+            category: "Music Video",
+            image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800",
+            videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
+        }
     ];
 
     const displayVideos = videos && videos.length > 0 ? videos : defaultVideos;
@@ -40,19 +51,38 @@ export default function VideoVault({
                     {displayVideos.map((video, index) => (
                         <div
                             key={index}
-                            className="aspect-video relative group overflow-hidden cursor-none interactive"
+                            className="aspect-[9/16] md:aspect-video relative group overflow-hidden cursor-none interactive bg-neutral-900"
                             onClick={() => openVideo(video.videoUrl, video.title)}
                         >
-                            <Image
-                                src={video.image}
-                                alt={video.title}
-                                fill
-                                className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-60 group-hover:opacity-100"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            />
+                            {video.image ? (
+                                <Image
+                                    src={video.image}
+                                    alt={video.title}
+                                    fill
+                                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-60 group-hover:opacity-100"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                            ) : (
+                                // Fallback: If no image, try to show the video itself as a muted preview if it's a direct link
+                                video.videoUrl?.match(/\.(mp4|webm|ogg|mov)$|video/i) ? (
+                                    <video 
+                                        src={video.videoUrl} 
+                                        muted 
+                                        loop 
+                                        playsInline 
+                                        className="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-opacity duration-700"
+                                        onMouseOver={e => e.target.play()}
+                                        onMouseOut={e => {e.target.pause(); e.target.currentTime = 0;}}
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-neutral-900">
+                                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">No Preview</span>
+                                    </div>
+                                )
+                            )}
 
                             {/* Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-90 transition-opacity p-8 flex flex-col justify-end">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity p-8 flex flex-col justify-end">
                                 <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                     {video.category}
                                 </p>
