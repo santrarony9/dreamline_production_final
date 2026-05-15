@@ -14,7 +14,7 @@ export default function Navbar() {
                 try {
                     const res = await fetch("/api/content");
                     const data = await res.json();
-                    setServices(data.home?.services || []);
+                    setServices(data.services || data.home?.services || []);
                 } catch (error) {
                     console.error("Error fetching services for navbar:", error);
                 }

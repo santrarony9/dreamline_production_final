@@ -4,12 +4,14 @@ import Content from "@/models/Content";
 import Image from "next/image";
 import VideoModal from "@/components/VideoModal";
 
+const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
 export async function generateMetadata({ params }) {
     await dbConnect();
     const { slug } = await params;
     const page = await ServicePage.findOne({ slug }).lean();
     return {
-        title: `${page?.title || "Service"} | Dreamline Production`,
+        title: `${page?.title || "Service"} | Dreamline Production Kolkata`,
         description: page?.description || "Professional cinematic production services in Kolkata.",
     };
 }
@@ -21,12 +23,35 @@ export default async function DynamicServicePage({ params }) {
     const siteContent = await Content.findOne().lean();
 
     if (!page) {
+        // Fallback: Try to find which category this subcategory belongs to
+        const categoryMatch = (siteContent?.home?.services || []).find(s => 
+            (s.subcategories || []).some(sub => slugify(sub) === slug)
+        );
+        
+        const parentCategory = categoryMatch?.category || "home";
+        const parentLink = parentCategory === "wedding" ? "/luxury" : parentCategory === "commercial" ? "/commercial" : parentCategory === "tech" ? "/tech" : "/";
+        const parentLabel = parentCategory === "wedding" ? "Luxury Weddings" : parentCategory === "commercial" ? "Commercial Showcase" : parentCategory === "tech" ? "Tech Divisions" : "Home";
+
         return (
-            <main className="bg-black min-h-screen flex items-center justify-center pt-32">
-                <div className="text-center">
-                    <h1 className="text-[#c5a059] font-black text-6xl uppercase tracking-tighter">PAGE NOT FOUND</h1>
-                    <p className="text-gray-500 mt-4 font-bold uppercase tracking-widest text-xs">This service page hasn't been built yet.</p>
-                    <a href="/" className="inline-block mt-8 text-white border border-white/10 px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all">Back Home</a>
+            <main className="bg-black min-h-screen flex items-center justify-center pt-32 px-6">
+                <div className="text-center max-w-2xl">
+                    <div className="mb-8 relative inline-block">
+                        <h1 className="text-[#c5a059] font-heading font-black text-6xl md:text-8xl uppercase tracking-tighter opacity-20">404</h1>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <h2 className="text-white font-black text-2xl md:text-3xl uppercase tracking-widest whitespace-nowrap">NOT READY</h2>
+                        </div>
+                    </div>
+                    <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px] mb-12 leading-relaxed">
+                        The cinematic experience for <span className="text-[#c5a059]">{slug.replace(/-/g, ' ')}</span> is currently being mastered.
+                    </p>
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href={parentLink} className="w-full sm:w-auto bg-[#c5a059] text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1">
+                            Back to {parentLabel}
+                        </a>
+                        <a href="/" className="w-full sm:w-auto border border-white/10 text-white/50 px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:text-white hover:border-white/30 transition-all">
+                            Return Home
+                        </a>
+                    </div>
                 </div>
             </main>
         );

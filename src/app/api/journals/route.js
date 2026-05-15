@@ -7,6 +7,11 @@ import Journal from "@/models/Journal";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+function stripHtml(html) {
+    if (!html) return "";
+    return html.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
+}
+
 
 export async function GET() {
     await dbConnect();
@@ -34,6 +39,28 @@ export async function POST(request) {
     await dbConnect();
     const data = await request.json();
     const post = await Journal.create(data);
+
+    // Automation Trigger: Send to Google Business Profile via Webhook
+    if (process.env.AUTOMATION_WEBHOOK_URL) {
+        try {
+            await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'JOURNAL_POST',
+                    action: 'CREATE',
+                    post: {
+                        ...post.toObject(),
+                        summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
+                        publicUrl: `${process.env.NEXTAUTH_URL}/journal/${post._id || post.id}`
+                    }
+                })
+            });
+        } catch (e) {
+            console.error("Automation Trigger Failed:", e.message);
+        }
+    }
+
     try { revalidatePath("/"); revalidatePath("/journal"); } catch(e) {}
     return NextResponse.json(post);
 }
@@ -51,6 +78,27 @@ export async function PUT(request) {
         
         if (!post) {
             return NextResponse.json({ error: "Journal post not found" }, { status: 404 });
+        }
+
+        // Automation Trigger: Update existing schedule
+        if (process.env.AUTOMATION_WEBHOOK_URL) {
+            try {
+                await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'JOURNAL_POST',
+                        action: 'UPDATE',
+                        post: {
+                            ...post.toObject(),
+                            summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
+                            publicUrl: `${process.env.NEXTAUTH_URL}/journal/${post._id || post.id}`
+                        }
+                    })
+                });
+            } catch (e) {
+                console.error("Automation Trigger Failed:", e.message);
+            }
         }
 
         try { 

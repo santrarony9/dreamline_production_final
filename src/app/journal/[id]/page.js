@@ -16,8 +16,8 @@ export async function generateMetadata({ params }) {
         const plainTextDesc = post.content ? post.content.replace(/<[^>]+>/g, '').substring(0, 150) + '...' : 'Read our latest insights on film and photography.';
 
         return {
-            title: `${post.title} | Journal`,
-            description: plainTextDesc,
+            title: `${post.title} | Dreamline Production Kolkata`,
+            description: post.excerpt || plainTextDesc,
             openGraph: {
                 title: post.title,
                 description: plainTextDesc,

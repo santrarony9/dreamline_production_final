@@ -71,13 +71,16 @@ export async function generateMetadata() {
       },
       alternates: {
         canonical: 'https://dreamlineproduction.com',
+      },
+      verification: {
+        google: siteContent?.global?.google?.searchConsoleId || "",
       }
     };
   } catch (e) {
     console.warn("Metadata Generation Fallback:", e.message);
     return {
-      title: "Dreamline Production | Cinematic Weddings & Commercials",
-      description: "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions.",
+      title: "Dreamline Production | Best Wedding Photographer in Kolkata & Pan-India",
+      description: "Dreamline Production is a premier production house in Kolkata providing luxury wedding photography and commercial films across India.",
       alternates: { canonical: 'https://dreamlineproduction.com' }
     };
   }
@@ -85,67 +88,67 @@ export async function generateMetadata() {
 
 import Script from "next/script";
 
-export default function RootLayout({ children }) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Dreamline Production",
-    "image": "https://dreamlineproduction.com/logo.png",
-    "description": "Dreamline Production is a premier cinematic visual house in Kolkata, specializing in wedding photography, corporate films, and commercial storytelling.",
-    "@id": "https://dreamlineproduction.com",
-    "url": "https://dreamlineproduction.com",
-    "telephone": "+919886679945",
-    "email": "santrarony9@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Haridevpur",
-      "addressLocality": "Kolkata",
-      "addressRegion": "West Bengal",
-      "postalCode": "700082",
-      "addressCountry": "IN"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 22.498,
-      "longitude": 88.357
-    },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": [
-        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-      ],
-      "opens": "09:00",
-      "closes": "21:00"
-    },
-    "sameAs": [
-      "https://www.facebook.com/dreamlineproduction",
-      "https://www.instagram.com/dreamlineproduction",
-      "https://www.youtube.com/dreamlineproduction"
-    ],
-    "priceRange": "$$"
-  };
+export default async function RootLayout({ children }) {
+  let jsonLd = {};
+  
+  try {
+    await dbConnect();
+    const siteContent = await Content.findOne().lean();
+    const company = siteContent?.global?.company || {};
+    const contact = siteContent?.global?.contact || {};
+    const social = siteContent?.global?.social || {};
+    const seo = siteContent?.global?.seo || {};
+
+    jsonLd = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Dreamline Production",
+      "image": seo.ogImage || "https://dreamlineproduction.com/logo.png",
+      "description": seo.description || "Dreamline Production is a premier cinematic visual house in Kolkata.",
+      "@id": "https://dreamlineproduction.com",
+      "url": "https://dreamlineproduction.com",
+      "telephone": contact.phone || "+91 82400 54002",
+      "email": contact.email || "info.dreamlineproduction@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": contact.address?.split('.')[0] || "85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
+        "addressLocality": "Kolkata",
+        "addressRegion": "West Bengal",
+        "postalCode": "700082",
+        "addressCountry": "IN"
+      },
+      "serviceArea": {
+        "@type": "Country",
+        "name": "India"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 22.498,
+        "longitude": 88.357
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "21:00"
+      },
+      "sameAs": [
+        social.facebook,
+        social.instagram,
+        social.youtube
+      ].filter(Boolean),
+      "priceRange": "₹₹₹"
+    };
+  } catch (e) {
+    console.warn("Schema Generation Fallback");
+  }
 
   return (
     <html lang="en" className="overflow-x-hidden">
       <head>
-        {/* Fallback CSP for YouTube/Vimeo */}
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss:;" />
-        
-        {/* Google tag (gtag.js) */}
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17805539120"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-17805539120');
-          `}
-        </Script>
-        {/* JSON-LD Structured Data */}
+        <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss:;" />
         <Script id="json-ld" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify(jsonLd)}
         </Script>
@@ -155,7 +158,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider>
             <SmoothScroll>
               <MediaProtection />
-              {/* <AnalyticsTracker /> */}
+              <AnalyticsTracker />
               <PublicLayoutWrapper>
                 {children}
               </PublicLayoutWrapper>

@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Journal from "@/models/Journal";
+import ServicePage from "@/models/ServicePage";
 
 export default async function sitemap() {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com';
@@ -67,7 +68,16 @@ export default async function sitemap() {
             priority: 0.7,
         }));
 
-        return [...staticRoutes, ...weddingRoutes, ...journalRoutes];
+        // Fetch all services
+        const services = await ServicePage.find({}, 'slug updatedAt').lean();
+        const serviceRoutes = services.map((s) => ({
+            url: `${baseUrl}/services/${s.slug}`,
+            lastModified: s.updatedAt || new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
+        }));
+
+        return [...staticRoutes, ...weddingRoutes, ...journalRoutes, ...serviceRoutes];
     } catch (error) {
         console.error("Sitemap generation error:", error);
         // If DB fails, at least return static routes

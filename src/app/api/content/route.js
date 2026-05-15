@@ -24,8 +24,17 @@ export async function POST(request) {
     const body = await request.json();
     
     // Explicitly pick allowed fields to prevent mass assignment
-    const { hero, home, about, luxury, commercial, contact, social, footer, splitGallery, videoVault, global, projects } = body;
-    const updateData = { hero, home, about, luxury, commercial, contact, social, footer, splitGallery, videoVault, global, projects };
+    const { 
+        hero, home, about, luxury, commercial, contact, social, footer, 
+        splitGallery, videoVault, global, projects,
+        services, partners, marquee, stats 
+    } = body;
+
+    const updateData = { 
+        hero, home, about, luxury, commercial, contact, social, footer, 
+        splitGallery, videoVault, global, projects,
+        services, partners, marquee, stats 
+    };
 
 
     // Remove undefined fields to avoid overwriting with null

@@ -62,7 +62,7 @@ export default function Hero({ content }) {
             <div className="container mx-auto px-6 relative z-20 text-center">
                 <div className="overflow-hidden mb-4">
                     <p className="text-xs md:text-sm font-black uppercase tracking-[0.5em] text-[#c5a059] animate-fade-up">
-                        {subtitle || "EST. 2010 • DREAMLINE PRODUCTION"}
+                        {subtitle || "EST. 2010 • DREAMLINE® PRODUCTION"}
                     </p>
                 </div>
 

@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
+import ImageUploader from "@/components/admin/ImageUploader";
 import { useRouter } from "next/navigation";
 
-export default function AdminServicesPage() {
+export default function ServicesAdmin() {
     const [services, setServices] = useState([]);
     const [servicePages, setServicePages] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function AdminServicesPage() {
                 const contentRes = await fetch("/api/content");
                 const contentData = await contentRes.json();
                 const allSubcats = [];
-                (contentData.home?.services || []).forEach(s => {
+                (contentData.services || contentData.home?.services || []).forEach(s => {
                     (s.subcategories || []).forEach(sub => {
                         if (!allSubcats.find(x => x.name === sub)) {
                             allSubcats.push({ name: sub, slug: slugify(sub) });
@@ -173,13 +174,12 @@ export default function AdminServicesPage() {
                                             placeholder="Write a compelling description for this service..."
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest ml-1">Hero Banner Image URL</label>
-                                        <input 
-                                            type="text" 
-                                            value={formData.heroImage} 
-                                            onChange={(e) => setFormData({...formData, heroImage: e.target.value})}
-                                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-xs font-bold focus:border-[#c5a059] outline-none"
+                                    <div className="space-y-4">
+                                        <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest ml-1">Hero Banner Image</label>
+                                        <ImageUploader 
+                                            currentImage={formData.heroImage}
+                                            recommendedSize="Hero - 1920x800"
+                                            onUploadSuccess={(url) => setFormData({...formData, heroImage: url})}
                                         />
                                     </div>
                                 </div>
@@ -233,26 +233,22 @@ export default function AdminServicesPage() {
                                 {/* GALLERY SECTION */}
                                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-[2.5rem] space-y-8">
                                     <h3 className="text-[#c5a059] text-xs font-black uppercase tracking-widest">Photo Gallery</h3>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                                         {formData.gallery.map((img, idx) => (
                                             <div key={idx} className="bg-black border border-white/5 p-4 rounded-2xl space-y-3 relative group">
-                                                <button onClick={() => setFormData({...formData, gallery: formData.gallery.filter((_, i) => i !== idx)})} className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button onClick={() => setFormData({...formData, gallery: formData.gallery.filter((_, i) => i !== idx)})} className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
                                                 </button>
-                                                <div className="aspect-square bg-white/5 rounded-xl overflow-hidden relative">
-                                                    {img.url ? <img src={img.url} className="object-cover w-full h-full" /> : <div className="flex items-center justify-center h-full text-[8px] text-gray-700">Preview</div>}
+                                                <div className="aspect-square bg-white/5 rounded-xl overflow-hidden relative border border-white/5">
+                                                    <ImageUploader 
+                                                        currentImage={img.url}
+                                                        onUploadSuccess={(url) => {
+                                                            const newG = [...formData.gallery];
+                                                            newG[idx].url = url;
+                                                            setFormData({...formData, gallery: newG});
+                                                        }}
+                                                    />
                                                 </div>
-                                                <input 
-                                                    type="text" 
-                                                    placeholder="Image URL"
-                                                    value={img.url} 
-                                                    onChange={(e) => {
-                                                        const newG = [...formData.gallery];
-                                                        newG[idx].url = e.target.value;
-                                                        setFormData({...formData, gallery: newG});
-                                                    }}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-white text-[9px] font-bold"
-                                                />
                                             </div>
                                         ))}
                                         <button 
@@ -264,8 +260,26 @@ export default function AdminServicesPage() {
                                     </div>
                                 </div>
 
-                                {/* SAVE BUTTON */}
-                                <div className="fixed bottom-10 right-10 z-[100]">
+                                {/* SAVE & DELETE ACTIONS */}
+                                <div className="fixed bottom-10 right-10 z-[100] flex gap-4">
+                                    {servicePages.find(p => p.slug === selectedSlug) && (
+                                        <button 
+                                            onClick={async () => {
+                                                if (confirm("Are you sure you want to delete this page configuration? This will NOT remove the category from the homepage, only the media/content on this sub-page.")) {
+                                                    try {
+                                                        const res = await fetch(`/api/service-pages?slug=${selectedSlug}`, { method: "DELETE" });
+                                                        if (res.ok) {
+                                                            alert("Page config deleted.");
+                                                            window.location.reload();
+                                                        }
+                                                    } catch (err) { alert(err.message); }
+                                                }
+                                            }}
+                                            className="bg-red-500/10 border border-red-500/20 text-red-500 font-black uppercase tracking-widest px-8 py-5 rounded-full hover:bg-red-500 hover:text-white transition-all text-[9px]"
+                                        >
+                                            Delete Page Config
+                                        </button>
+                                    )}
                                     <button 
                                         onClick={handleSave}
                                         className="bg-[#c5a059] text-black font-black uppercase tracking-[0.2em] px-12 py-5 rounded-full shadow-[0_20px_50px_rgba(197,160,89,0.3)] hover:scale-105 active:scale-95 transition-all text-xs"

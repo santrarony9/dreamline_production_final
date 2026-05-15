@@ -32,7 +32,7 @@ export default async function AboutPage() {
                     <span className="text-white/20">{aboutData.hero?.titleLine2 || "HOUSE IN KOLKATA."}</span>
                 </h1>
                 <p className="max-w-3xl text-lg text-gray-400 leading-relaxed mb-12">
-                    {aboutData.hero?.description || "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions..."}
+                    {aboutData.hero?.description || "Dreamline® Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions..."}
                 </p>
                 <div className="h-[1px] w-full bg-white/10 mb-20"></div>
 
@@ -43,7 +43,7 @@ export default async function AboutPage() {
                             {aboutData.details?.heading || "About Us"}
                         </h2>
                         <p className="text-gray-400 leading-relaxed mb-8">
-                            {aboutData.details?.text1 || "Dreamline Production is a Kolkata-based creative production company..."}
+                            {aboutData.details?.text1 || "Dreamline® Production is a Kolkata-based creative production company..."}
                         </p>
                         <p className="text-gray-400 leading-relaxed">
                             {aboutData.details?.text2 || "We work with corporate brands, startups, agencies..."}
@@ -252,7 +252,7 @@ export default async function AboutPage() {
                             <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                                 {aboutData.whyUs?.sectionSubtitle || "Why Us"}
                             </span>
-                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase" dangerouslySetInnerHTML={{ __html: aboutData.whyUs?.heading || "THE DREAMLINE<br>DIFFERENCE." }} />
+                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase" dangerouslySetInnerHTML={{ __html: aboutData.whyUs?.heading || "THE DREAMLINE®<br>DIFFERENCE." }} />
                             <p className="text-gray-400 mb-8">
                                 {aboutData.whyUs?.description || "We don't just record events; we craft stories that emotionally connect with audiences."}
                             </p>
@@ -320,6 +320,46 @@ export default async function AboutPage() {
 
             {/* Reviews Slider */}
             <ReviewSlider reviews={siteContent?.home?.reviews?.list} />
+
+            {/* Business Transparency Section */}
+            <section className="py-20 bg-black border-t border-white/5">
+                <div className="container mx-auto px-6">
+                    <div className="bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-10 md:p-16 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-10 opacity-5">
+                            <svg className="w-40 h-40" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                        </div>
+                        <div className="max-w-3xl">
+                            <span className="text-[#c5a059] font-black text-xs uppercase tracking-[0.4em] mb-6 block">Business Transparency</span>
+                            <h2 className="font-heading text-3xl md:text-5xl font-black mb-8 uppercase text-white leading-tight">
+                                TRUST & <span className="text-white/20">COMPLIANCE.</span>
+                            </h2>
+                            <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-12">
+                                Dreamline® Production operates as a fully registered and compliant visual production house in West Bengal, India. We are committed to transparency in our business operations and adhere to all local government regulations for cinematic and digital content creation.
+                            </p>
+                            <div className="grid sm:grid-cols-2 gap-8 text-[11px] font-black uppercase tracking-widest">
+                                <div className="space-y-2">
+                                    <p className="text-gray-600">Registered Office</p>
+                                    <p className="text-white">{aboutData.details?.address || "85, Tilottama Plaza, Kolkata 700082"}</p>
+                                </div>
+                                <div className="space-y-2">
+                                    <p className="text-gray-600">Govt. Registration No.</p>
+                                    <p className="text-[#c5a059]">{aboutData.details?.regNo || "WB-PR-00XXXXXX"}</p>
+                                </div>
+                                <div className="space-y-2">
+                                    <p className="text-gray-600">Legal Contact</p>
+                                    <p className="text-white">legal@dreamlineproduction.com</p>
+                                </div>
+                                <div className="space-y-2">
+                                    <p className="text-gray-600">Official Jurisdiction</p>
+                                    <p className="text-white">Kolkata Courts, WB</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* CTA Section */}
             <section className="py-32 text-center border-t border-white/5">

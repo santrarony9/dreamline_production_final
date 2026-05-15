@@ -10,7 +10,7 @@ export default function Partners({ partners = [] }) {
     const displayPartners = [...partners, ...partners, ...partners];
 
     return (
-        <section className="py-20 bg-black overflow-hidden border-t border-white/5">
+        <section className="py-12 bg-black overflow-hidden border-t border-white/5">
             <div className="container mx-auto px-6 mb-12">
                 <h2 className="text-[10px] uppercase font-black text-[#c5a059] tracking-[0.5em] mb-4 text-center">
                     Trusted By Industry Leaders
@@ -23,28 +23,26 @@ export default function Partners({ partners = [] }) {
                         x: ["0%", "-50%"],
                     }}
                     transition={{
-                        duration: 30,
+                        duration: 60,
                         ease: "linear",
                         repeat: Infinity,
                     }}
-                    className="flex whitespace-nowrap gap-12 sm:gap-24 items-center"
+                    className="flex whitespace-nowrap gap-12 items-center"
                 >
                     {displayPartners.map((partner, i) => (
                         <div
                             key={i}
                             className="flex-shrink-0 flex flex-col items-center group"
                         >
-                            <div className="h-12 sm:h-16 w-32 sm:w-48 relative grayscale group-hover:grayscale-0 transition-all duration-500 opacity-30 group-hover:opacity-100 transform group-hover:scale-110">
+                            <div className="h-12 sm:h-16 w-32 sm:w-48 relative flex items-center justify-center transition-all duration-500 opacity-60 group-hover:opacity-100 transform group-hover:scale-110">
                                 {partner.image ? (
-                                    <Image
+                                    <img
                                         src={partner.image}
                                         alt={partner.name}
-                                        fill
-                                        className="object-contain"
-                                        sizes="(max-width: 768px) 120px, 200px"
+                                        className="max-h-full max-w-full object-contain"
                                     />
                                 ) : (
-                                    <span className="text-white/20 font-black uppercase text-xs tracking-widest">
+                                    <span className="text-white/40 font-black uppercase text-[10px] tracking-widest text-center">
                                         {partner.name}
                                     </span>
                                 )}

@@ -56,6 +56,41 @@ export default async function AdminDashboard() {
                 ))}
             </section>
 
+            {/* Quick Management */}
+            <section className="space-y-6">
+                <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Quick Management</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <a href="/admin/home?tab=BANNER" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🎬</div>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-white">Update Banner</p>
+                            <p className="text-[9px] text-gray-500 font-bold uppercase">Front office visuals</p>
+                        </div>
+                    </a>
+                    <a href="/admin/services" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🗂️</div>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-white">Service Pages</p>
+                            <p className="text-[9px] text-gray-500 font-bold uppercase">Manage dynamic content</p>
+                        </div>
+                    </a>
+                    <a href="/admin/journal" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">📝</div>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-white">Story Archive</p>
+                            <p className="text-[9px] text-gray-500 font-bold uppercase">Journal & Narratives</p>
+                        </div>
+                    </a>
+                    <a href="/admin/global" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🌐</div>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-white">Global Settings</p>
+                            <p className="text-[9px] text-gray-500 font-bold uppercase">SEO & Social links</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
             <div className="grid lg:grid-cols-12 gap-8">
                 {/* Recent Activity */}
                 <section className="lg:col-span-8 bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden p-8">
@@ -72,7 +107,7 @@ export default async function AdminDashboard() {
                                 <div key={b._id.toString()} className="flex items-center justify-between p-6 bg-white/2 rounded-2xl hover:bg-white/5 transition-all group border border-transparent hover:border-white/5">
                                     <div className="flex items-center gap-6">
                                         <div className="w-12 h-12 rounded-full bg-[#c5a059]/10 flex items-center justify-center text-[#c5a059] font-black text-xs">
-                                            {b.firstName[0]}{b.lastName[0]}
+                                            {b.firstName?.[0]}{b.lastName?.[0]}
                                         </div>
                                         <div>
                                             <p className="text-sm font-bold text-white group-hover:text-[#c5a059] transition-colors">{b.firstName} {b.lastName}</p>

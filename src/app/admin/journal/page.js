@@ -66,6 +66,69 @@ export default function JournalAdmin() {
         });
     };
 
+    const generate30DayStrategy = async () => {
+        if (!confirm("This will generate 30 content drafts for the next 30 days. Proceed?")) return;
+        
+        const topics = [
+            "Luxury Wedding Trends in Kolkata 2026",
+            "Behind the Scenes: Cinematic Lighting at a Kolkata Wedding",
+            "Why Choose a Professional Production House for Your Brand",
+            "Capturing the Soul of North Kolkata: A Photo Essay",
+            "The Art of Storytelling in Commercial Advertisements",
+            "Pre-Wedding Shoot Locations: Hidden Gems in West Bengal",
+            "Top 5 Things to Ask Your Wedding Videographer",
+            "A Glimpse into our Studio at Tilottama Plaza",
+            "How we color grade our Cinematic Films",
+            "The Magic of Candid Photography in Traditional Rituals",
+            "Commercial Video: How to boost your business in India",
+            "Wedding Fashion: What's trending this season",
+            "Technical Breakdown: Our Camera Gear for 2026",
+            "Client Spotlight: A beautiful ceremony at [Venue]",
+            "Editing Magic: Turning raw footage into memories",
+            "Professional Tips for your Corporate Event Coverage",
+            "The Importance of High-Quality Audio in Films",
+            "Seasonal Photography Tips for the Monsoon in Kolkata",
+            "Dreamline Production: Our Journey since 2010",
+            "Why we love filming in the heart of Kolkata",
+            "Creating Viral Content for your Brand: A Guide",
+            "The Role of Drone Photography in Modern Weddings",
+            "South Kolkata Wedding Highlights: Cinematic Journey",
+            "Behind the Lens: A Day with Dreamline Production",
+            "How to Plan your Wedding Timeline for Photography",
+            "Capturing Emotions: The Secret to Great Candid Shots",
+            "Music Video Production: Bringing your song to life",
+            "The Evolution of Cinematic Wedding Films in India",
+            "Digital Content Solutions for Small Businesses in Kolkata",
+            "Looking Ahead: The Future of Visual Storytelling"
+        ];
+
+        setSaving(true);
+        try {
+            for (let i = 0; i < 30; i++) {
+                const scheduleDate = new Date();
+                scheduleDate.setDate(scheduleDate.getDate() + i + 1); // Start from tomorrow
+                
+                const draftPost = {
+                    title: topics[i],
+                    date: scheduleDate.toISOString().split('T')[0],
+                    category: i % 2 === 0 ? "WEDDING" : "INSIGHT",
+                    image: "",
+                    excerpt: `A deep dive into ${topics[i]}. Learn how Dreamline Production approaches professional storytelling in Kolkata and across India.`,
+                    content: `<h2>${topics[i]}</h2><p>This is a scheduled post for our 30-day content series. We will be sharing our insights on professional cinematography and photography directly from our Kolkata studio.</p><p>Stay tuned for the full breakdown and visual highlights!</p>`
+                };
+                
+                await axios.post("/api/journals", draftPost);
+            }
+            alert("30 Days of Content successfully scheduled!");
+            fetchPosts();
+        } catch (err) {
+            console.error(err);
+            alert("Error generating strategy.");
+        } finally {
+            setSaving(false);
+        }
+    };
+
     if (loading) return <div className="text-gray-500 uppercase text-[10px] font-bold tracking-widest">Accessing the archive of insights...</div>;
 
     return (
@@ -75,12 +138,21 @@ export default function JournalAdmin() {
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Narratives</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">The <span className="text-gray-700">Journal.</span></h1>
                 </div>
-                <button
-                    onClick={startNewPost}
-                    className="bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10"
-                >
-                    + Write New Insight
-                </button>
+                <div className="flex gap-4">
+                    <button
+                        onClick={generate30DayStrategy}
+                        disabled={saving}
+                        className="border border-[#c5a059]/30 text-[#c5a059] px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-[#c5a059] hover:text-black transition-all"
+                    >
+                        {saving ? "Generating..." : "✨ Generate 30-Day Strategy"}
+                    </button>
+                    <button
+                        onClick={startNewPost}
+                        className="bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10"
+                    >
+                        + Write New Insight
+                    </button>
+                </div>
             </header>
 
             {/* List Grid */}

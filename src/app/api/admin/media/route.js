@@ -80,7 +80,7 @@ export async function GET() {
                 const match = fileName.match(/^(\d+)-/);
                 return match ? parseInt(match[1]) : 0;
             };
-            return getTimestamp(a) - getTimestamp(b);
+            return getTimestamp(b) - getTimestamp(a);
         });
 
         return NextResponse.json(sortedImages);

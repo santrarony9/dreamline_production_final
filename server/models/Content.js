@@ -22,6 +22,12 @@ const ContentSchema = new mongoose.Schema({
             keywords: { type: String, default: "wedding photography, cinematic wedding video, kolkata, production house, commercial video" },
             ogImage: { type: String, default: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200" },
             favicon: { type: String, default: "/favicon.ico" }
+        },
+        google: {
+            placeId: { type: String, default: "ChIJO-CgXpZ-AjoRvR3PqL2R0v4" }, // Example Kolkata Place ID
+            mapsApiKey: { type: String, default: "" },
+            analyticsId: { type: String, default: "" }, // G-XXXXXXXXXX
+            searchConsoleId: { type: String, default: "" }
         }
     },
     home: {
@@ -73,7 +79,9 @@ const ContentSchema = new mongoose.Schema({
                 role: String,
                 text: String,
                 rating: { type: Number, default: 5 },
-                initial: String
+                initial: String,
+                source: { type: String, default: "Manual" }, // Manual, Google, Justdial
+                sourceUrl: String
             }]
         },
         quote: {

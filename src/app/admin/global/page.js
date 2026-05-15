@@ -194,6 +194,61 @@ export default function GlobalSettings() {
                     </div>
                 </section>
 
+                {/* Google Suite Integration */}
+                <section className="space-y-6 pt-4">
+                    <div>
+                        <div className="flex items-center gap-3 mb-1">
+                            <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">📍 Google Suite Connectivity</h3>
+                            <span className="text-[8px] bg-[#c5a059]/20 text-[#c5a059] px-2 py-0.5 rounded font-black tracking-widest uppercase">PRO Integration</span>
+                        </div>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">Connect your Google Business Profile (Reviews & Maps) and track visitors with Google Analytics.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Place ID (Business Profile)</label>
+                            <input
+                                type="text"
+                                value={content.google?.placeId || ""}
+                                onChange={(e) => updateNested("google", "placeId", e.target.value)}
+                                placeholder="e.g. ChIJO-CgXpZ-AjoRvR3PqL2R0v4"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Used to sync your Google Reviews & Maps location.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Analytics ID (GA4)</label>
+                            <input
+                                type="text"
+                                value={content.google?.analyticsId || ""}
+                                onChange={(e) => updateNested("google", "analyticsId", e.target.value)}
+                                placeholder="e.g. G-XXXXXXXXXX"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Connects your site to Google Analytics 4 tracking.</p>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Maps Javascript API Key</label>
+                            <input
+                                type="password"
+                                value={content.google?.mapsApiKey || ""}
+                                onChange={(e) => updateNested("google", "mapsApiKey", e.target.value)}
+                                placeholder="Enter Google Cloud API Key"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Search Console Tag</label>
+                            <input
+                                type="text"
+                                value={content.google?.searchConsoleId || ""}
+                                onChange={(e) => updateNested("google", "searchConsoleId", e.target.value)}
+                                placeholder="Verification Content ID"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                        </div>
+                    </div>
+                </section>
+
                 <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
                     {message && <p className={`text-[10px] font-black uppercase tracking-widest text-center md:text-left ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
                     <button

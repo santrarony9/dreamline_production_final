@@ -8,11 +8,14 @@ export default function Footer() {
                     {/* Brand Section */}
                     <div className="space-y-4">
                         <Link href="/" className="font-heading text-2xl font-black inline-block uppercase tracking-tighter interactive">
-                            DREAMLINE <span className="text-[#c5a059]">PRODUCTION</span>
+                            DREAMLINE<sup className="text-[10px] ml-0.5">®</sup> <span className="text-[#c5a059]">PRODUCTION</span>
                         </Link>
                         <p className="text-gray-500 text-xs max-w-sm leading-relaxed">
-                            Kolkata's premier cinematic house. Luxury weddings, high-end commercials, and artistic storytelling since 2010.
+                            Kolkata's premier cinematic house & Pan-India luxury storyteller. Premium weddings and commercial films since 2010.
                         </p>
+                        <div className="pt-2">
+                            <span className="text-[9px] font-black uppercase tracking-widest text-gray-700 border border-white/5 px-2 py-1 rounded">Reg No: WB-PR-00XXXXXX</span>
+                        </div>
                     </div>
 
                     {/* Navigation Section */}
@@ -48,10 +51,15 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Bottom Row */}
-                <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-[9px] text-gray-600 uppercase tracking-[0.3em] font-bold">
-                        &copy; {new Date().getFullYear()} DREAMLINE PRODUCTION. ALL RIGHTS RESERVED.
+                {/* Legal & Bottom Row */}
+                <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex flex-wrap justify-center gap-6 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600">
+                        <Link href="/privacy-policy" className="hover:text-[#c5a059] transition-colors">Privacy Policy</Link>
+                        <Link href="/terms" className="hover:text-[#c5a059] transition-colors">Terms of Service</Link>
+                        <Link href="/refund-policy" className="hover:text-[#c5a059] transition-colors">Refund & Cancellation</Link>
+                    </div>
+                    <p className="text-[9px] text-gray-700 uppercase tracking-[0.3em] font-bold">
+                        &copy; {new Date().getFullYear()} DREAMLINE<sup className="text-[6px] ml-0.5">®</sup> PRODUCTION. ALL RIGHTS RESERVED.
                     </p>
                 </div>
             </div>

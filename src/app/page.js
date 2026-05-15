@@ -27,7 +27,17 @@ export default async function Home() {
   const weddings = await Wedding.find().sort({ order: 1 }).limit(6).lean();
   const journals = await Journal.find().sort({ order: 1 }).limit(3).lean();
 
-  const homeData = JSON.parse(JSON.stringify(siteContent?.home || {}));
+  const homeData = {
+    hero: siteContent?.hero || siteContent?.home?.hero || {},
+    marquee: siteContent?.marquee || siteContent?.home?.marquee || [],
+    stats: siteContent?.stats || siteContent?.home?.stats || [],
+    partners: siteContent?.partners || siteContent?.home?.partners || [],
+    services: siteContent?.services || siteContent?.home?.services || [],
+    reviews: siteContent?.reviews || siteContent?.home?.reviews || { list: [] },
+    quote: siteContent?.quote || siteContent?.home?.quote || { text: "", backgroundImage: "" },
+    expertise: siteContent?.expertise || siteContent?.home?.expertise || {},
+    motionArchive: siteContent?.motionArchive || siteContent?.home?.motionArchive || { images: [] }
+  };
 
   // Serialize data for client components
   const serializedWeddings = weddings.map(w => ({

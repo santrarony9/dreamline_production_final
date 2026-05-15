@@ -57,7 +57,7 @@ export default function Preloader() {
                 <h2 className="font-heading font-black text-4xl mb-2 text-white tracking-widest inline-flex items-start">
                     DREAMLIN
                     <span className="relative">
-                        E<span className="text-[16px] absolute -top-3 -right-5 font-black">®</span>
+                        E<span className="text-[20px] absolute top-[-6px] right-[-18px] font-black opacity-90">®</span>
                     </span>
                 </h2>
                 <div className="w-48 h-[2px] bg-gray-800 mx-auto overflow-hidden">
