@@ -10,7 +10,6 @@ export default function Footer() {
                         <Link href="/" className="font-heading text-2xl font-black inline-block uppercase tracking-tighter interactive whitespace-nowrap">
                             DREAMLINE <span className="text-[#c5a059] relative">
                                 PRODUCTION
-                                <span className="text-[20px] absolute top-[-8px] right-[-25px] font-black">®</span>
                             </span>
                         </Link>
                         <p className="text-gray-500 text-xs max-w-sm leading-relaxed">
@@ -63,7 +62,7 @@ export default function Footer() {
                         <Link href="/company-details" className="hover:text-[#c5a059] transition-colors text-white/80 font-black">Company Details</Link>
                     </div>
                     <p className="text-[9px] text-gray-700 uppercase tracking-[0.3em] font-bold">
-                        &copy; {new Date().getFullYear()} DREAMLINE PRODUCTION<sup className="text-[12px] ml-1 font-black">®</sup>. ALL RIGHTS RESERVED.
+                        <span className="text-[12px]">&copy;</span> {new Date().getFullYear()} DREAMLINE PRODUCTION. ALL RIGHTS RESERVED.
                     </p>
                 </div>
             </div>

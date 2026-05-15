@@ -16,7 +16,7 @@ export default async function CompanyDetailsPage() {
     const details = [
         {
             label: "Official Name",
-            value: "DREAM LINE PRODUCTION®",
+            value: "DREAM LINE PRODUCTION",
             type: "text"
         },
         {
