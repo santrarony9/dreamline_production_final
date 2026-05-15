@@ -52,7 +52,7 @@ export default async function CompanyDetailsPage() {
         { label: "Account Number", value: "05840210001073" },
         { label: "IFSC Code", value: "UCBA0000584" },
         { label: "SWIFT Code", value: "UCBAINBB022" },
-        { label: "Branch", value: "Behala, Kolkata" }
+        { label: "Branch", value: "Kalighat" }
     ];
 
     return (
