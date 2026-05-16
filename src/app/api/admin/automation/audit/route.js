@@ -4,10 +4,21 @@ import Analytics from "@/models/Analytics";
 import Booking from "@/models/Booking";
 import Intelligence from "@/models/Intelligence";
 import Content from "@/models/Content";
+import Journal from "@/models/Journal";
 
-export async function GET() {
+export async function GET(request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const secret = searchParams.get("secret");
+        const authHeader = request.headers.get("Authorization");
+        const bearerSecret = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+        
+        if (process.env.AUTOMATION_SECRET && secret !== process.env.AUTOMATION_SECRET && bearerSecret !== process.env.AUTOMATION_SECRET) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
         await dbConnect();
+
 
         const today = new Date().toISOString().split('T')[0];
         const yesterdayDate = new Date();
@@ -15,7 +26,7 @@ export async function GET() {
         const yesterday = yesterdayDate.toISOString().split('T')[0];
 
         // 1. Fetch Data
-        const [todayStats, yesterdayStats, todayBookings] = await Promise.all([
+        const [todayStats, yesterdayStats, todayBookings, todayPost] = await Promise.all([
             Analytics.aggregate([
                 { $match: { date: today } },
                 { $group: { _id: null, views: { $sum: "$views" }, seo: { $sum: "$googleViews" } } }
@@ -29,7 +40,8 @@ export async function GET() {
                     $gte: new Date(new Date().setHours(0,0,0,0)),
                     $lt: new Date(new Date().setHours(23,59,59,999))
                 } 
-            })
+            }),
+            Journal.findOne({ date: today })
         ]);
 
         const tViews = todayStats[0]?.views || 0;
@@ -55,6 +67,25 @@ export async function GET() {
                 priority: 'HIGH'
             });
             actionItems.push("Check 'Wedding Photographer Kolkata' keyword placement in Meta Tags.");
+        }
+
+        // Google Business Post Check
+        const scheduledPost = await Journal.findOne({ date: today });
+        if (scheduledPost) {
+            if (scheduledPost.googleBusinessSync === "SYNCED") {
+                insights.push({
+                    type: 'WIN',
+                    message: `Google Business Post "${scheduledPost.title}" is successfully synced.`,
+                    priority: 'LOW'
+                });
+            } else {
+                insights.push({
+                    type: 'ISSUE',
+                    message: `Scheduled post "${scheduledPost.title}" has not been synced to Google Business Profile.`,
+                    priority: 'HIGH'
+                });
+                actionItems.push("Manually sync the pending GMB post via the Admin Dashboard.");
+            }
         }
 
         // Conversion Insight

@@ -22,11 +22,11 @@
     ],
     "crons": [
         {
-            "path": "/api/admin/automation/daily-sync?secret=dreamline_auto_2026",
+            "path": "/api/admin/automation/daily-sync",
             "schedule": "30 3 * * *"
         },
         {
-            "path": "/api/admin/automation/audit?secret=dreamline_auto_2026",
+            "path": "/api/admin/automation/audit",
             "schedule": "30 4 * * *"
         }
     ]
