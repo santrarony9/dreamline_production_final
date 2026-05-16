@@ -32,28 +32,30 @@ export default function Navbar({ initialServices }) {
     return (
         <>
             <nav
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-4 md:px-8 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl" : "top-6"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-6 md:px-10 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-6"
                     }`}
                 style={{ overflow: 'visible' }}
             >
-                <div className="font-heading font-black text-lg tracking-tighter">
-                    <Link href="/" className="interactive flex items-end gap-1 group">
+                {/* LOGO LEFT */}
+                <div className="flex-shrink-0">
+                    <Link href="/" className="flex items-end gap-1 group">
                         <span className="font-heading font-black text-2xl tracking-tighter text-white">D/P</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] mb-1.5 group-hover:scale-150 transition-transform"></span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] mb-1.5"></span>
                     </Link>
                 </div>
 
-                <div className="hidden md:flex items-center gap-6 text-[11px] font-bold uppercase tracking-widest text-gray-400 whitespace-nowrap">
-                    <Link href="/" className="hover:text-white transition-colors interactive">
+                {/* MENU CENTERED */}
+                <div className="hidden md:flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-white/70 whitespace-nowrap">
+                    <Link href="/" className="transition-colors">
                         HOME
                     </Link>
-                    <Link href="/about" className="hover:text-white transition-colors interactive">
+                    <Link href="/about" className="transition-colors">
                         HISTORY
                     </Link>
                     
                     {/* SERVICES DROP */}
                     <div className="relative group/drop py-2">
-                        <button className="flex items-center gap-2 hover:text-white transition-colors uppercase interactive">
+                        <button className="flex items-center gap-2 transition-colors uppercase">
                             SERVICES
                             <svg className="w-2.5 h-2.5 opacity-40 group-hover/drop:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
@@ -101,17 +103,20 @@ export default function Navbar({ initialServices }) {
                         </div>
                     </div>
 
-                    <Link href="/journal" className="hover:text-white transition-colors interactive">
+                    <Link href="/journal" className="transition-colors">
                         JOURNAL
                     </Link>
-                    <Link href="/contact" className="hover:text-white transition-colors interactive">
+                    <Link href="/contact" className="transition-colors">
                         CONTACT
                     </Link>
                 </div>
 
+                {/* PLACEHOLDER RIGHT TO BALANCE LOGO */}
+                <div className="hidden md:block w-[40px]"></div>
+
                 <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="md:hidden flex flex-col gap-1.5 interactive relative z-[1001]"
+                    className="md:hidden flex flex-col gap-1.5 relative z-[1001]"
                 >
                     <span className={`w-6 h-[2px] bg-white block transition-transform ${isMenuOpen ? "rotate-45 translate-y-[8px]" : ""}`}></span>
                     <span className={`w-6 h-[2px] bg-white block transition-opacity ${isMenuOpen ? "opacity-0" : ""}`}></span>
@@ -125,10 +130,10 @@ export default function Navbar({ initialServices }) {
                     } overflow-y-auto`}
             >
                 <div className="p-10 flex flex-col gap-8 text-[18px] font-black uppercase tracking-widest text-center mt-20">
-                    <Link onClick={() => setIsMenuOpen(false)} href="/" className="interactive">
+                    <Link onClick={() => setIsMenuOpen(false)} href="/">
                         Home
                     </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/about" className="interactive">
+                    <Link onClick={() => setIsMenuOpen(false)} href="/about">
                         History
                     </Link>
                     
@@ -136,7 +141,7 @@ export default function Navbar({ initialServices }) {
                     <div>
                         <button 
                             onClick={() => setOpenSubMenu(openSubMenu === 'services' ? null : 'services')}
-                            className="w-full flex items-center justify-center gap-4 text-white interactive"
+                            className="w-full flex items-center justify-center gap-4 text-white"
                         >
                             Services
                             <svg className={`w-4 h-4 transition-transform ${openSubMenu === 'services' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,9 +149,9 @@ export default function Navbar({ initialServices }) {
                             </svg>
                         </button>
                         <div className={`mt-6 grid gap-6 overflow-hidden transition-all duration-500 ${openSubMenu === 'services' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                            <Link onClick={() => setIsMenuOpen(false)} href="/luxury" className="text-[12px] text-gray-400 hover:text-white">Luxury Weddings</Link>
-                            <Link onClick={() => setIsMenuOpen(false)} href="/commercial" className="text-[12px] text-gray-400 hover:text-white">Commercial</Link>
-                            <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="text-[12px] text-gray-400 hover:text-white">Tech</Link>
+                            <Link onClick={() => setIsMenuOpen(false)} href="/luxury" className="text-[12px] text-gray-400">Luxury Weddings</Link>
+                            <Link onClick={() => setIsMenuOpen(false)} href="/commercial" className="text-[12px] text-gray-400">Commercial</Link>
+                            <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="text-[12px] text-gray-400">Tech</Link>
                             
                             {services.filter(s => !['wedding', 'commercial', 'tech'].includes(s.category)).map((service, idx) => (
                                 <Link
@@ -161,10 +166,10 @@ export default function Navbar({ initialServices }) {
                         </div>
                     </div>
 
-                    <Link onClick={() => setIsMenuOpen(false)} href="/journal" className="interactive">
+                    <Link onClick={() => setIsMenuOpen(false)} href="/journal">
                         Journal
                     </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/contact" className="interactive">
+                    <Link onClick={() => setIsMenuOpen(false)} href="/contact">
                         Contact
                     </Link>
                 </div>
