@@ -205,7 +205,33 @@ export default function GlobalSettings() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Place ID (Business Profile)</label>
+                            <div className="flex justify-between items-center pr-1">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Place ID (Business Profile)</label>
+                                <button 
+                                    type="button"
+                                    onClick={async () => {
+                                        if (!content.google?.placeId || !content.google?.mapsApiKey) {
+                                            alert("Please enter and SAVE your Place ID and Maps API Key first.");
+                                            return;
+                                        }
+                                        if (!confirm("This will replace all current website reviews with the latest ones from Google. Continue?")) return;
+                                        
+                                        setSaving(true);
+                                        try {
+                                            const res = await axios.post("/api/admin/sync-reviews");
+                                            alert(`Successfully synced ${res.data.count} reviews from Google!`);
+                                            window.location.reload();
+                                        } catch (err) {
+                                            alert(err.response?.data?.error || "Failed to sync reviews.");
+                                        } finally {
+                                            setSaving(false);
+                                        }
+                                    }}
+                                    className="text-[9px] font-black uppercase text-[#c5a059] hover:text-white transition-colors"
+                                >
+                                    🔄 Sync Real Reviews
+                                </button>
+                            </div>
                             <input
                                 type="text"
                                 value={content.google?.placeId || ""}
