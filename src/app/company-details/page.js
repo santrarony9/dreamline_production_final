@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
     return {

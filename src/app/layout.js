@@ -1,4 +1,5 @@
 import { Instrument_Sans, Unbounded } from "next/font/google";
+export const dynamic = 'force-dynamic';
 import PublicLayoutWrapper from "@/components/PublicLayoutWrapper";
 import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/context/AuthProvider";

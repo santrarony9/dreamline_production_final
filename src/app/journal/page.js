@@ -1,4 +1,4 @@
-export const revalidate = 600; // Revalidate every 10 min (on-demand revalidation handles immediate updates)
+export const dynamic = 'force-dynamic';
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import Link from "next/link";
