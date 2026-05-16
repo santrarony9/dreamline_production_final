@@ -62,10 +62,10 @@ export async function generateMetadata() {
         apple: globalSeo.favicon || "/favicon.png",
       },
       robots: {
-        index: process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com',
+        index: true,
         follow: true,
         googleBot: {
-          index: process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com',
+          index: true,
           follow: true,
         },
       },
