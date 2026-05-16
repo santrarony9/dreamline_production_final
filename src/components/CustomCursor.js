@@ -92,17 +92,10 @@ export default function CustomCursor() {
     const variants = {
         default: {
             opacity: 1,
-            height: 12,
-            width: 12,
+            height: 10,
+            width: 10,
             backgroundColor: "#c5a059",
             mixBlendMode: "normal"
-        },
-        hover: {
-            opacity: 0.5,
-            height: 48,
-            width: 48,
-            backgroundColor: "#c5a059",
-            mixBlendMode: "difference"
         },
         text: {
             opacity: 1,
@@ -114,9 +107,8 @@ export default function CustomCursor() {
     };
 
     const outlineVariants = {
-        default: { height: 40, width: 40, opacity: 1, borderColor: "rgba(197, 160, 89, 0.5)" },
-        hover: { height: 64, width: 64, opacity: 0, borderColor: "rgba(197, 160, 89, 0)" },
-        text: { height: 96, width: 96, opacity: 0, borderColor: "rgba(197, 160, 89, 0)" },
+        default: { height: 0, width: 0, opacity: 0, borderColor: "transparent" },
+        text: { height: 0, width: 0, opacity: 0, borderColor: "transparent" },
     };
 
     return (

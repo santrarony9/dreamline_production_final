@@ -46,16 +46,16 @@ export default function Navbar({ initialServices }) {
 
                 {/* COLUMN 2: CENTERED MENU */}
                 <div className="hidden md:flex justify-center items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/80 whitespace-nowrap">
-                    <Link href="/" className="transition-colors hover:text-white">
+                    <Link href="/" className="transition-colors">
                         HOME
                     </Link>
-                    <Link href="/about" className="transition-colors hover:text-white">
+                    <Link href="/about" className="transition-colors">
                         HISTORY
                     </Link>
                     
                     {/* SERVICES DROP */}
                     <div className="relative group/drop py-2">
-                        <button className="flex items-center gap-2 transition-colors hover:text-white uppercase">
+                        <button className="flex items-center gap-2 transition-colors uppercase">
                             SERVICES
                             <svg className="w-2.5 h-2.5 opacity-40 group-hover/drop:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
@@ -103,10 +103,10 @@ export default function Navbar({ initialServices }) {
                         </div>
                     </div>
 
-                    <Link href="/journal" className="transition-colors hover:text-white">
+                    <Link href="/journal" className="transition-colors">
                         JOURNAL
                     </Link>
-                    <Link href="/contact" className="transition-colors hover:text-white">
+                    <Link href="/contact" className="transition-colors">
                         CONTACT
                     </Link>
                 </div>
