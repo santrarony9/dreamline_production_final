@@ -5,6 +5,7 @@ import AuthProvider from "@/context/AuthProvider";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import SmoothScroll from "@/components/global/SmoothScroll";
 import MediaProtection from "@/components/global/MediaProtection";
+import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -157,8 +158,9 @@ export default async function RootLayout({ children }) {
           <ThemeProvider>
             <SmoothScroll>
               <MediaProtection />
-              <AnalyticsTracker />
-              <PublicLayoutWrapper>
+              <AnalyticsTracker gaId={siteContent?.global?.google?.analyticsId} />
+              <CustomCursor />
+              <PublicLayoutWrapper siteContent={siteContent}>
                 {children}
               </PublicLayoutWrapper>
             </SmoothScroll>

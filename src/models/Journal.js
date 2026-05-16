@@ -9,12 +9,13 @@ const JournalSchema = new mongoose.Schema({
     excerpt: String,
     content: String, // HTML content
     order: { type: Number, default: 0 },
+    googleBusinessSync: { type: String, default: "PENDING" }, // PENDING, SYNCED, FAILED
+    lastSyncedAt: { type: Date },
     seo: {
         title: { type: String, default: "" },
         description: { type: String, default: "" },
         keywords: { type: String, default: "" }
     },
-    createdAt: { type: Date, default: Date.now }
 }, { timestamps: true });
 
 export default mongoose.models.Journal || mongoose.model('Journal', JournalSchema);

@@ -8,16 +8,12 @@ export function ThemeProvider({ children }) {
     const [theme, setTheme] = useState("dark");
 
     useEffect(() => {
-        const savedTheme = localStorage.getItem("dreamline_theme") || "dark";
-        setTheme(savedTheme);
-        document.documentElement.setAttribute("data-theme", savedTheme);
+        setTheme("dark");
+        document.documentElement.setAttribute("data-theme", "dark");
     }, []);
 
     const toggleTheme = () => {
-        const newTheme = theme === "dark" ? "light" : "dark";
-        setTheme(newTheme);
-        localStorage.setItem("dreamline_theme", newTheme);
-        document.documentElement.setAttribute("data-theme", newTheme);
+        // Theme is locked to dark
     };
 
     return (

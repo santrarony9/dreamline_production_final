@@ -1,26 +1,15 @@
 "use client";
-/* VERSION: 1.0.6 - FINAL DEPLOY */
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
-import { useTheme } from "../context/ThemeContext";
-
-export default function Navbar() {
-    const [services, setServices] = useState([]);
+export default function Navbar({ initialServices }) {
+    const [services, setServices] = useState(initialServices || []);
 
     useEffect(() => {
-    const fetchServices = async () => {
-                try {
-                    const res = await fetch("/api/content");
-                    const data = await res.json();
-                    setServices(data.services || data.home?.services || []);
-                } catch (error) {
-                    console.error("Error fetching services for navbar:", error);
-                }
-            };
-            fetchServices();
-        }, []);
+        if (initialServices) {
+            setServices(initialServices);
+        }
+    }, [initialServices]);
 
     const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 

@@ -6,7 +6,7 @@ import Footer from "./Footer";
 import Preloader from "./Preloader";
 import VideoModal from "./VideoModal";
 
-export default function PublicLayoutWrapper({ children }) {
+export default function PublicLayoutWrapper({ children, siteContent }) {
     const pathname = usePathname();
     const isAdmin = pathname?.startsWith('/admin');
 
@@ -18,7 +18,7 @@ export default function PublicLayoutWrapper({ children }) {
         <>
             <Preloader />
             <VideoModal />
-            <Navbar />
+            <Navbar initialServices={siteContent?.services || siteContent?.home?.services} />
             {children}
             <Footer />
         </>
