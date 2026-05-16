@@ -148,7 +148,6 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" className="overflow-x-hidden">
       <head>
-        <meta name="google-site-verification" content="O9Fv4kQ5G9No4pKGwO90np7zJNinRSHA3Yt2Ap006Q0" />
         <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; frame-src 'self' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https: wss:;" />
         <Script id="json-ld" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify(jsonLd)}
