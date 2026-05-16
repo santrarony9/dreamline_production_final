@@ -266,6 +266,26 @@ export default function GlobalSettings() {
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                             />
                         </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Ads Conversion ID</label>
+                            <input
+                                type="text"
+                                value={content.google?.adsConversionId || ""}
+                                onChange={(e) => updateNested("google", "adsConversionId", e.target.value)}
+                                placeholder="e.g. AW-123456789"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Ads Conversion Label</label>
+                            <input
+                                type="text"
+                                value={content.google?.adsConversionLabel || ""}
+                                onChange={(e) => updateNested("google", "adsConversionLabel", e.target.value)}
+                                placeholder="e.g. AbC-dEfGhIjKlMnOpQr"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                        </div>
                     </div>
                 </section>
 

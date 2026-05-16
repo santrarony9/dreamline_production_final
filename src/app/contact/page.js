@@ -49,6 +49,11 @@ export default function ContactPage() {
             });
 
             if (response.ok) {
+                // Trigger Google Ads Conversion
+                if (typeof window !== 'undefined' && window.reportConversion) {
+                    window.reportConversion();
+                }
+
                 setStatus({ type: "success", message: "Thank you! Your inquiry has been sent successfully. We will reach out on WhatsApp shortly." });
                 setFormData({
                     firstName: "",

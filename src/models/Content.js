@@ -22,6 +22,16 @@ const ContentSchema = new mongoose.Schema({
             keywords: { type: String, default: "wedding photography, cinematic wedding video, kolkata, production house, commercial video" },
             ogImage: { type: String, default: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200" },
             favicon: { type: String, default: "/favicon.ico" }
+        },
+        google: {
+            analyticsId: { type: String, default: "" },
+            searchConsoleId: { type: String, default: "" },
+            mapsApiKey: { type: String, default: "" },
+            placeId: { type: String, default: "" },
+            clientId: { type: String, default: "" },
+            clientSecret: { type: String, default: "" },
+            adsConversionId: { type: String, default: "" },
+            adsConversionLabel: { type: String, default: "" }
         }
     },
     home: {

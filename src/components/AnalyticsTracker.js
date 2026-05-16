@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import axios from "axios";
 import Script from "next/script";
 
-export default function AnalyticsTracker({ gaId }) {
+export default function AnalyticsTracker({ gaId, adsId, adsLabel }) {
     const pathname = usePathname();
 
     useEffect(() => {
@@ -47,6 +47,18 @@ export default function AnalyticsTracker({ gaId }) {
                     gtag('config', '${gaId}', {
                         page_path: window.location.pathname,
                     });
+                    ${adsId ? `gtag('config', '${adsId}');` : ''}
+                    
+                    // Global helper for conversions
+                    window.reportConversion = function() {
+                        if ('${adsId}' && '${adsLabel}') {
+                            gtag('event', 'conversion', {
+                                'send_to': '${adsId}/${adsLabel}',
+                                'value': 1.0,
+                                'currency': 'INR'
+                            });
+                        }
+                    };
                 `}
             </Script>
         </>

@@ -160,7 +160,11 @@ export default async function RootLayout({ children }) {
           <ThemeProvider>
             <SmoothScroll>
               <MediaProtection />
-              <AnalyticsTracker gaId={siteContent?.global?.google?.analyticsId} />
+              <AnalyticsTracker 
+                gaId={siteContent?.global?.google?.analyticsId} 
+                adsId={siteContent?.global?.google?.adsConversionId}
+                adsLabel={siteContent?.global?.google?.adsConversionLabel}
+              />
               <CustomCursor />
               <PublicLayoutWrapper siteContent={siteContent}>
                 {children}
