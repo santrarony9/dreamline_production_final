@@ -121,8 +121,14 @@ export default function Navbar({ initialServices }) {
                                 <div className="space-y-3">
                                     <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">SOLUTIONS</span>
                                     {techServices.length > 0 ? techServices.map((s, idx) => (
+                                        <Link key={idx} href={`/tech/${slugify(s.name)}`} className="block text-[9px] hover:text-[#c5a059] transition-all">{s.name.toUpperCase()}</Link>
+                                    )) : <span className="text-[8px] text-gray-700 italic">No active solutions</span>}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    {/* Services Dropdown */}
+                    {/* SERVICES DROP */}
                     <div className="relative group/drop py-2">
                         <button className="flex items-center gap-2 hover:text-white transition-colors uppercase interactive">
                             SERVICES
