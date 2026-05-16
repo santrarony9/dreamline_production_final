@@ -92,6 +92,7 @@ export default async function JournalDetailPage({ params }) {
                         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
                     />
 
+                    <div className="mt-20 pt-12 border-t border-white/5 flex justify-between items-center">
                         <div className="flex gap-6 items-center">
                             <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Share this story</span>
                             <div className="flex gap-4">
