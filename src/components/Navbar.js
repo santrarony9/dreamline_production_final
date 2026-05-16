@@ -15,6 +15,7 @@ export default function Navbar({ initialServices }) {
 
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [openSubMenu, setOpenSubMenu] = useState(null);
 
     useEffect(() => {
         const handleScroll = () => {
