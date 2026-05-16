@@ -26,8 +26,6 @@ export default function CustomCursor() {
             if (cursorData) {
                 setCursorVariant("text");
                 setCursorText(cursorData);
-            } else {
-                setCursorVariant("hover");
             }
         };
 
