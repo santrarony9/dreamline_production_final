@@ -239,7 +239,7 @@ export default function GlobalSettings() {
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Search Console Tag</label>
                             <input
-                                type="text"
+                                type="password"
                                 value={content.google?.searchConsoleId || ""}
                                 onChange={(e) => updateNested("google", "searchConsoleId", e.target.value)}
                                 placeholder="Verification Content ID"
@@ -249,7 +249,7 @@ export default function GlobalSettings() {
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Client ID (Business Sync)</label>
                             <input
-                                type="text"
+                                type="password"
                                 value={content.google?.clientId || ""}
                                 onChange={(e) => updateNested("google", "clientId", e.target.value)}
                                 placeholder="OAuth Client ID from Google Cloud Console"
@@ -269,7 +269,7 @@ export default function GlobalSettings() {
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Ads Conversion ID</label>
                             <input
-                                type="text"
+                                type="password"
                                 value={content.google?.adsConversionId || ""}
                                 onChange={(e) => updateNested("google", "adsConversionId", e.target.value)}
                                 placeholder="e.g. AW-123456789"
@@ -279,7 +279,7 @@ export default function GlobalSettings() {
                         <div className="space-y-2">
                             <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Google Ads Conversion Label</label>
                             <input
-                                type="text"
+                                type="password"
                                 value={content.google?.adsConversionLabel || ""}
                                 onChange={(e) => updateNested("google", "adsConversionLabel", e.target.value)}
                                 placeholder="e.g. AbC-dEfGhIjKlMnOpQr"
