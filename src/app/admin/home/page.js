@@ -29,7 +29,7 @@ function HomeEditorContent() {
         try {
             const res = await axios.get("/api/content");
             const rawData = res.data || {};
-            const data = rawData.home || rawData || {}; 
+            const data = rawData.home || {}; 
             // Handle if nested under home or top-level depending on response
             setContent({
                 hero: data.hero || {},
@@ -37,12 +37,12 @@ function HomeEditorContent() {
                 marquee: data.marquee || [],
                 expertise: data.expertise || {},
                 motionArchive: data.motionArchive || { images: [] },
-                videoVault: data.videoVault || [],
+                videoVault: rawData.videoVault || data.videoVault || [],
                 reviews: data.reviews || { list: [] },
                 quote: data.quote || { text: "", backgroundImage: "" },
                 partners: data.partners || [],
                 services: data.services || [],
-                splitGallery: res.data?.splitGallery || data?.splitGallery || []
+                splitGallery: rawData.splitGallery || data.splitGallery || []
             });
         } catch (err) {
             console.error(err);
