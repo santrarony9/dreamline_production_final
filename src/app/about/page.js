@@ -3,6 +3,7 @@ import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ReviewSlider from "@/components/home/ReviewSlider";
 import Image from "next/image";
+import DOMPurify from "isomorphic-dompurify";
 
 export async function generateMetadata() {
     await dbConnect();
@@ -158,7 +159,7 @@ export default async function AboutPage() {
                                 {aboutData.team?.sectionSubtitle || "The Creators"}
                             </span>
                             <h2 className="font-heading text-4xl md:text-5xl font-black uppercase text-white"
-                                dangerouslySetInnerHTML={{ __html: aboutData.team?.heading || "Meet The <br>Team." }} />
+                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutData.team?.heading || "Meet The <br>Team.") }} />
                         </div>
                         <div className="mt-8 md:mt-0">
                             <p className="text-gray-400 text-sm max-w-md text-right">
@@ -198,7 +199,7 @@ export default async function AboutPage() {
                             <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                                 {aboutData.bts?.sectionSubtitle || "By The Numbers"}
                             </span>
-                            <h2 className="font-heading text-4xl md:text-6xl font-black mb-12 uppercase leading-none text-white" dangerouslySetInnerHTML={{ __html: aboutData.bts?.heading || "Proven<br>Excellence." }} />
+                            <h2 className="font-heading text-4xl md:text-6xl font-black mb-12 uppercase leading-none text-white" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutData.bts?.heading || "Proven<br>Excellence.") }} />
 
                             <div className="grid grid-cols-2 gap-12">
                                 <div>
@@ -252,7 +253,7 @@ export default async function AboutPage() {
                             <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                                 {aboutData.whyUs?.sectionSubtitle || "Why Us"}
                             </span>
-                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase" dangerouslySetInnerHTML={{ __html: aboutData.whyUs?.heading || "THE DREAMLINE<br>DIFFERENCE." }} />
+                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(aboutData.whyUs?.heading || "THE DREAMLINE<br>DIFFERENCE.") }} />
                             <p className="text-gray-400 mb-8">
                                 {aboutData.whyUs?.description || "We don't just record events; we craft stories that emotionally connect with audiences."}
                             </p>
