@@ -20,7 +20,7 @@ export default function PublicLayoutWrapper({ children, siteContent }) {
             <VideoModal />
             <Navbar initialServices={siteContent?.services || siteContent?.home?.services} />
             {children}
-            <Footer />
+            <Footer siteContent={siteContent} />
         </>
     );
 }

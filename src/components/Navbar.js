@@ -121,38 +121,74 @@ export default function Navbar({ initialServices }) {
                                 <div className="space-y-3">
                                     <span className="block text-[8px] text-gray-600 font-black tracking-[0.2em] mb-1">SOLUTIONS</span>
                                     {techServices.length > 0 ? techServices.map((s, idx) => (
-                                        <div key={idx} className="group/item">
-                                            <Link href="/tech" className="block hover:text-white transition-all text-[10px] font-bold">{s.title}</Link>
-                                            <div className="flex flex-wrap gap-1 mt-1 opacity-40 group-hover/item:opacity-100 transition-opacity">
-                                                {(s.subcategories || []).map((sub, i) => (
-                                                    <Link key={i} href={`/services/${slugify(sub)}`} className="text-[7px] border border-white/10 px-1.5 py-0.5 rounded-full hover:bg-white hover:text-black transition-all">{sub}</Link>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )) : (
-                                        <span className="text-[9px] text-gray-600 italic">No services added yet</span>
-                                    )}
+
+                    {/* Services Dropdown */}
+                    <div className="relative group/drop py-2">
+                        <button className="flex items-center gap-2 hover:text-white transition-colors uppercase interactive">
+                            SERVICES
+                            <svg className="w-2.5 h-2.5 opacity-40 group-hover/drop:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/drop:opacity-100 group-hover/drop:translate-y-0 group-hover/drop:pointer-events-auto transition-all duration-500">
+                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl">
+                                <div className="grid gap-4">
+                                    {services.map((service, idx) => (
+                                        <Link
+                                            key={idx}
+                                            href={`/tech/${slugify(service.name)}`}
+                                            className="text-[9px] hover:text-[#c5a059] transition-colors border-b border-white/5 pb-2 last:border-0 last:pb-0 block"
+                                        >
+                                            {service.name.toUpperCase()}
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <div className="relative group/drop py-2">
+                        <button className="flex items-center gap-2 hover:text-white transition-colors uppercase interactive">
+                            WORKS
+                            <svg className="w-2.5 h-2.5 opacity-40 group-hover/drop:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-56 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/drop:opacity-100 group-hover/drop:translate-y-0 group-hover/drop:pointer-events-auto transition-all duration-500">
+                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl">
+                                <div className="grid gap-6">
+                                    <Link href="/luxury" className="flex items-center gap-4 group/item">
+                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors">
+                                            <span className="text-[10px] text-white group-hover/item:text-black">W</span>
+                                        </div>
+                                        <span className="text-[9px] group-hover:text-white">WEDDINGS</span>
+                                    </Link>
+                                    <Link href="/commercial" className="flex items-center gap-4 group/item">
+                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors">
+                                            <span className="text-[10px] text-white group-hover/item:text-black">C</span>
+                                        </div>
+                                        <span className="text-[9px] group-hover:text-white">COMMERCIAL</span>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Link href="/journal" className="hover:text-white transition-colors interactive">
+                        JOURNAL
+                    </Link>
                     <Link href="/contact" className="hover:text-white transition-colors interactive">
                         CONTACT
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-2 md:gap-4">
-                    {/* Theme Toggle Removed - Locked to Dark Aesthetic */}
-                </div>
-
                 <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className="md:hidden flex flex-col gap-1.5 interactive"
+                    className="md:hidden flex flex-col gap-1.5 interactive relative z-[1001]"
                 >
-                    <span className="w-6 h-[2px] bg-white block"></span>
-                    <span className="w-6 h-[2px] bg-white block"></span>
-                    <span className="w-6 h-[2px] bg-white block"></span>
+                    <span className={`w-6 h-[2px] bg-white block transition-transform ${isMenuOpen ? "rotate-45 translate-y-[8px]" : ""}`}></span>
+                    <span className={`w-6 h-[2px] bg-white block transition-opacity ${isMenuOpen ? "opacity-0" : ""}`}></span>
+                    <span className={`w-6 h-[2px] bg-white block transition-transform ${isMenuOpen ? "-rotate-45 -translate-y-[8px]" : ""}`}></span>
                 </button>
             </nav>
 
@@ -161,37 +197,62 @@ export default function Navbar({ initialServices }) {
                 className={`fixed inset-0 w-full h-[100dvh] bg-black/95 z-[999] transition-all duration-500 ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
                     } overflow-y-auto`}
             >
-                <div className="flex justify-end p-10">
-                    <button
-                        onClick={() => setIsMenuOpen(false)}
-                        className="text-white text-4xl interactive"
-                    >
-                        &times;
-                    </button>
-                </div>
-                <div className="p-10 flex flex-col gap-6 text-[18px] font-black uppercase tracking-widest text-center">
+                <div className="p-10 flex flex-col gap-8 text-[18px] font-black uppercase tracking-widest text-center mt-20">
                     <Link onClick={() => setIsMenuOpen(false)} href="/" className="interactive">
                         Home
                     </Link>
                     <Link onClick={() => setIsMenuOpen(false)} href="/about" className="interactive">
                         History
                     </Link>
-                    <Link
-                        onClick={() => setIsMenuOpen(false)}
-                        href="/luxury"
-                        className="interactive"
-                    >
-                        Luxury Weddings
-                    </Link>
-                    <Link
-                        onClick={() => setIsMenuOpen(false)}
-                        href="/commercial"
-                        className="interactive"
-                    >
-                        Commercial
-                    </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="interactive">
-                        Tech
+                    
+                    {/* Mobile Services */}
+                    <div>
+                        <button 
+                            onClick={() => setOpenSubMenu(openSubMenu === 'services' ? null : 'services')}
+                            className="w-full flex items-center justify-center gap-4 text-white interactive"
+                        >
+                            Services
+                            <svg className={`w-4 h-4 transition-transform ${openSubMenu === 'services' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div className={`mt-6 grid gap-4 overflow-hidden transition-all duration-500 ${openSubMenu === 'services' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                            {services.map((service, idx) => (
+                                <Link
+                                    key={idx}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    href={`/tech/${slugify(service.name)}`}
+                                    className="text-[12px] text-gray-500 hover:text-[#c5a059]"
+                                >
+                                    {service.name.toUpperCase()}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Mobile Works */}
+                    <div>
+                        <button 
+                            onClick={() => setOpenSubMenu(openSubMenu === 'works' ? null : 'works')}
+                            className="w-full flex items-center justify-center gap-4 text-white interactive"
+                        >
+                            Works
+                            <svg className={`w-4 h-4 transition-transform ${openSubMenu === 'works' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div className={`mt-6 grid gap-6 overflow-hidden transition-all duration-500 ${openSubMenu === 'works' ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+                            <Link onClick={() => setIsMenuOpen(false)} href="/luxury" className="text-[12px] text-gray-500">
+                                WEDDINGS
+                            </Link>
+                            <Link onClick={() => setIsMenuOpen(false)} href="/commercial" className="text-[12px] text-gray-500">
+                                COMMERCIAL
+                            </Link>
+                        </div>
+                    </div>
+
+                    <Link onClick={() => setIsMenuOpen(false)} href="/journal" className="interactive">
+                        Journal
                     </Link>
                     <Link onClick={() => setIsMenuOpen(false)} href="/contact" className="interactive">
                         Contact

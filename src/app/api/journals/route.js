@@ -7,6 +7,9 @@ import Journal from "@/models/Journal";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+const FALLBACK_IMAGE = "https://dreamlinepro.s3.ap-south-2.amazonaws.com/1778664039968-apipu-MKS_2044.JPG";
+const PRODUCTION_URL = "https://dreamlineproduction.com";
+
 function stripHtml(html) {
     if (!html) return "";
     return html.replace(/<[^>]*>?/gm, ' ').replace(/\s+/g, ' ').trim();
@@ -43,6 +46,7 @@ export async function POST(request) {
     // Automation Trigger: Send to Google Business Profile via Webhook
     if (process.env.AUTOMATION_WEBHOOK_URL) {
         try {
+            const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
             await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -50,9 +54,14 @@ export async function POST(request) {
                     type: 'JOURNAL_POST',
                     action: 'CREATE',
                     post: {
-                        ...post.toObject(),
+                        _id: post._id,
+                        title: post.title,
+                        date: post.date,
+                        category: post.category || "Wedding",
+                        image: imageUrl,
                         summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
-                        publicUrl: `${process.env.NEXTAUTH_URL}/journal/${post._id || post.id}`
+                        publicUrl: `${PRODUCTION_URL}/journal/${post._id || post.id}`,
+                        excerpt: post.excerpt || stripHtml(post.content).substring(0, 300)
                     }
                 })
             });
@@ -83,6 +92,7 @@ export async function PUT(request) {
         // Automation Trigger: Update existing schedule
         if (process.env.AUTOMATION_WEBHOOK_URL) {
             try {
+                const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
                 await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -90,9 +100,14 @@ export async function PUT(request) {
                         type: 'JOURNAL_POST',
                         action: 'UPDATE',
                         post: {
-                            ...post.toObject(),
+                            _id: post._id,
+                            title: post.title,
+                            date: post.date,
+                            category: post.category || "Wedding",
+                            image: imageUrl,
                             summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
-                            publicUrl: `${process.env.NEXTAUTH_URL}/journal/${post._id || post.id}`
+                            publicUrl: `${PRODUCTION_URL}/journal/${post._id || post.id}`,
+                            excerpt: post.excerpt || stripHtml(post.content).substring(0, 300)
                         }
                     })
                 });

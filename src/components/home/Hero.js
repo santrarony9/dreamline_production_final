@@ -6,7 +6,7 @@ import Link from "next/link";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Hero({ content }) {
-    const { titleLine1, titleLine2, subtitle, backgroundImage } = content || {};
+    const { titleLine1, titleLine2, subtitle, backgroundImage, cta1Text, cta1Link, cta2Text, cta2Link } = content || {};
     const containerRef = useRef(null);
 
     // Smooth Parallax for Marquee and Background
@@ -69,22 +69,22 @@ export default function Hero({ content }) {
 
                 <h1 className="font-heading text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-12 uppercase">
                     <span className="block reveal-text">
-                        <span className="reveal-inner inline-block">{titleLine1 || "VISIONARY"}</span>
+                        <span className="reveal-inner-anim inline-block">{titleLine1 || "VISIONARY"}</span>
                     </span>
                     <span className="block italic text-outline reveal-text">
-                        <span className="reveal-inner inline-block">{titleLine2 || "CINEMA."}</span>
+                        <span className="reveal-inner-anim inline-block">{titleLine2 || "CINEMA."}</span>
                     </span>
                 </h1>
 
                 <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
-                    <Link href="/luxury">
+                    <Link href={cta1Link || "/luxury"}>
                         <MagneticButton className="min-w-[220px] px-10 py-5 bg-[#c5a059] border border-transparent text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all duration-500">
-                            Explore Weddings
+                            {cta1Text || "Explore Weddings"}
                         </MagneticButton>
                     </Link>
-                    <Link href="/commercial">
+                    <Link href={cta2Link || "/commercial"}>
                         <MagneticButton className="min-w-[220px] px-10 py-5 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all duration-500">
-                            Commercial Works
+                            {cta2Text || "Commercial Works"}
                         </MagneticButton>
                     </Link>
                 </div>

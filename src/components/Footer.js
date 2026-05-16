@@ -1,6 +1,14 @@
 import Link from "next/link";
 
-export default function Footer() {
+export default function Footer({ siteContent }) {
+    const socialLinks = siteContent?.global?.social || {};
+    
+    const platforms = [
+        { id: 'instagram', label: 'IG', link: socialLinks.instagram || "https://instagram.com/dreamlineproduction" },
+        { id: 'facebook', label: 'FB', link: socialLinks.facebook || "https://facebook.com/dreamlineproduction" },
+        { id: 'youtube', label: 'YT', link: socialLinks.youtube || "https://youtube.com/dreamlineproduction" }
+    ];
+
     return (
         <footer className="py-12 border-t border-white/5 bg-[#050505]" id="footer">
             <div className="container mx-auto px-6">
@@ -38,15 +46,15 @@ export default function Footer() {
                             <span>Kolkata, WB</span>
                         </div>
                         <div className="flex lg:justify-end gap-3">
-                            {['IG', 'FB', 'YT'].map((platform) => (
+                            {platforms.map((p) => (
                                 <a
-                                    key={platform}
-                                    href={`https://www.${platform === 'IG' ? 'instagram' : platform === 'FB' ? 'facebook' : 'youtube'}.com/dreamlineproduction/`}
+                                    key={p.id}
+                                    href={p.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="w-10 h-10 sm:w-8 sm:h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
                                 >
-                                    {platform}
+                                    {p.label}
                                 </a>
                             ))}
                         </div>

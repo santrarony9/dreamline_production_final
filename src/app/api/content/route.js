@@ -8,9 +8,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 
-export async function GET() {
+export async function GET(request) {
     await dbConnect();
-    const content = await Content.findOne().lean();
+    const { searchParams } = new URL(request.url);
+    const fields = searchParams.get("fields")?.split(',').join(' ');
+    
+    const query = Content.findOne();
+    if (fields) query.select(fields);
+    
+    const content = await query.lean();
     return NextResponse.json(content || {});
 }
 

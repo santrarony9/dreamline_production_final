@@ -20,14 +20,17 @@ const unbounded = Unbounded({
 
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
+import { cache } from 'react';
+
+const getSiteContent = cache(async () => {
+  await dbConnect();
+  return await Content.findOne().lean();
+});
 
 export async function generateMetadata() {
   try {
-    const conn = await dbConnect();
-    if (!conn) throw new Error("No DB connection");
-
-    // Fetch global SEO from database
-    const siteContent = await Content.findOne().lean();
+    // Fetch global SEO from database using cached function
+    const siteContent = await getSiteContent();
     const globalSeo = siteContent?.global?.seo || {};
 
     return {
@@ -93,8 +96,7 @@ export default async function RootLayout({ children }) {
   let jsonLd = {};
   
   try {
-    await dbConnect();
-    const siteContent = await Content.findOne().lean();
+    const siteContent = await getSiteContent();
     const company = siteContent?.global?.company || {};
     const contact = siteContent?.global?.contact || {};
     const social = siteContent?.global?.social || {};

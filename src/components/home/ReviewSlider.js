@@ -56,7 +56,7 @@ export default function ReviewSlider({
                     <div className="flex gap-8 animate-brand-glide">
                         {loopReviews.map((review, index) => (
                             <div
-                                key={index}
+                                key={`review-${index}`}
                                 className="w-[85vw] md:w-[450px] flex-shrink-0 p-8 md:p-12 bg-[#151515] border border-white/5 rounded-3xl relative interactive group"
                             >
                                 <div className="text-[#c5a059] text-6xl font-serif absolute top-8 right-12 opacity-10 group-hover:opacity-100 transition-opacity">

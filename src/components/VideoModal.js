@@ -64,7 +64,7 @@ export default function VideoModal() {
                     <video src={videoUrl} controls autoPlay className="w-full h-full" />
                 )}
 
-                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
                     <h3 className="text-white font-heading text-xl font-black uppercase tracking-widest leading-none">
                         {title}
                     </h3>
