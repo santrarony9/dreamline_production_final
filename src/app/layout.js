@@ -94,9 +94,10 @@ import Script from "next/script";
 
 export default async function RootLayout({ children }) {
   let jsonLd = {};
+  let siteContent = null;
   
   try {
-    const siteContent = await getSiteContent();
+    siteContent = await getSiteContent();
     const company = siteContent?.global?.company || {};
     const contact = siteContent?.global?.contact || {};
     const social = siteContent?.global?.social || {};
