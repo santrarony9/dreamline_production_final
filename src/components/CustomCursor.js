@@ -38,9 +38,9 @@ export default function CustomCursor() {
 
         window.addEventListener("mousemove", moveCursor);
 
-        // Attach to all elements using MutationObserver or just live query
+        // Attach to specific elements using MutationObserver or just live query
         const attachListeners = () => {
-            const interatables = document.querySelectorAll("a, button, .interactive, [data-cursor]");
+            const interatables = document.querySelectorAll(".interactive, [data-cursor]");
             interatables.forEach((el) => {
                 el.removeEventListener("mouseenter", handleMouseEnter);
                 el.removeEventListener("mouseleave", handleMouseLeave);
@@ -83,7 +83,7 @@ export default function CustomCursor() {
             window.removeEventListener("mousemove", moveCursor);
             observer.disconnect();
             mutationObserver.disconnect();
-            const interatables = document.querySelectorAll("a, button, .interactive, [data-cursor]");
+            const interatables = document.querySelectorAll(".interactive, [data-cursor]");
             interatables.forEach((el) => {
                 el.removeEventListener("mouseenter", handleMouseEnter);
                 el.removeEventListener("mouseleave", handleMouseLeave);

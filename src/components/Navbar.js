@@ -32,7 +32,7 @@ export default function Navbar({ initialServices }) {
     return (
         <>
             <nav
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-6 md:px-10 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-6"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-6 md:px-8 flex justify-between items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-6"
                     }`}
                 style={{ overflow: 'visible' }}
             >
@@ -44,25 +44,25 @@ export default function Navbar({ initialServices }) {
                     </Link>
                 </div>
 
-                {/* MENU CENTERED */}
-                <div className="hidden md:flex items-center gap-10 text-[11px] font-black uppercase tracking-[0.2em] text-white/70 whitespace-nowrap">
-                    <Link href="/" className="transition-colors">
+                {/* MENU RIGHT */}
+                <div className="hidden md:flex items-center gap-6 text-[11px] font-black uppercase tracking-[0.2em] text-white/80 whitespace-nowrap">
+                    <Link href="/" className="transition-colors hover:text-white">
                         HOME
                     </Link>
-                    <Link href="/about" className="transition-colors">
+                    <Link href="/about" className="transition-colors hover:text-white">
                         HISTORY
                     </Link>
                     
                     {/* SERVICES DROP */}
                     <div className="relative group/drop py-2">
-                        <button className="flex items-center gap-2 transition-colors uppercase">
+                        <button className="flex items-center gap-2 transition-colors hover:text-white uppercase">
                             SERVICES
                             <svg className="w-2.5 h-2.5 opacity-40 group-hover/drop:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/drop:opacity-100 group-hover/drop:translate-y-0 group-hover/drop:pointer-events-auto transition-all duration-500">
-                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl">
+                        <div className="absolute top-full right-0 w-64 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/drop:opacity-100 group-hover/drop:translate-y-0 group-hover/drop:pointer-events-auto transition-all duration-500">
+                            <div className="bg-black/95 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl text-left">
                                 <div className="grid gap-6">
                                     <Link href="/luxury" className="flex items-center gap-4 group/item">
                                         <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors">
@@ -103,16 +103,13 @@ export default function Navbar({ initialServices }) {
                         </div>
                     </div>
 
-                    <Link href="/journal" className="transition-colors">
+                    <Link href="/journal" className="transition-colors hover:text-white">
                         JOURNAL
                     </Link>
-                    <Link href="/contact" className="transition-colors">
+                    <Link href="/contact" className="transition-colors hover:text-white">
                         CONTACT
                     </Link>
                 </div>
-
-                {/* PLACEHOLDER RIGHT TO BALANCE LOGO */}
-                <div className="hidden md:block w-[40px]"></div>
 
                 <button
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
