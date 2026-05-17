@@ -27,7 +27,7 @@ export default function GlobalSettings() {
     };
 
     const handleSave = async (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
         setSaving(true);
         setMessage("");
         try {
@@ -315,17 +315,19 @@ export default function GlobalSettings() {
                     </div>
                 </section>
 
-                <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                    {message && <p className={`text-[10px] font-black uppercase tracking-widest text-center md:text-left ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
-                    <button
-                        type="submit"
-                        disabled={saving}
-                        className="w-full md:w-auto bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform active:scale-95 disabled:opacity-50"
-                    >
-                        {saving ? "Encrypting Data..." : "Deploy Config"}
-                    </button>
-                </div>
             </form>
+
+            {/* Sticky Save Bar */}
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-12 md:right-12 md:left-auto md:translate-x-0 z-[100] flex items-center gap-4 md:gap-6 bg-black/80 backdrop-blur-xl border border-[#c5a059]/30 p-3 md:p-4 rounded-full shadow-2xl w-[90%] md:w-auto justify-center md:justify-start animate-in fade-in slide-in-from-bottom-4 duration-300">
+                {message && <p className={`text-[10px] font-black uppercase tracking-widest px-4 ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
+                <button
+                    onClick={() => handleSave()}
+                    disabled={saving}
+                    className="bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform active:scale-95 disabled:opacity-50"
+                >
+                    {saving ? "Deploying Config..." : "Deploy Config"}
+                </button>
+            </div>
         </div>
     );
 }
