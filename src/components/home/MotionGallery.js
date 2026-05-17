@@ -36,35 +36,35 @@ export default function MotionGallery({
                 </p>
             </div>
 
-            <div className="relative">
-                {/* The edit changes the animation class and image styling significantly.
-                    Applying the changes from the edit while ensuring the infinite scroll logic. */}
-                <div className="flex animate-scroll-left hover:pause">
+            <div className="relative w-full">
+                <div className="flex md:animate-scroll-left hover:pause overflow-x-auto md:overflow-hidden snap-x snap-mandatory hide-scrollbar pb-8 md:pb-0 px-6 md:px-0">
                     {displayImages.map((src, i) => (
-                        <div key={i} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group">
+                        <div key={i} className="flex-shrink-0 w-[280px] md:w-80 h-[350px] md:h-96 mr-4 md:mx-4 rounded-3xl overflow-hidden relative group snap-center">
                             <Image 
                                 src={src} 
                                 alt={`Gallery ${i}`}
                                 fill
-                                sizes="320px"
-                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" 
-                                loading="lazy" // Added loading="lazy" from original for performance
+                                sizes="(max-width: 768px) 280px, 320px"
+                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 md:scale-110 md:group-hover:scale-100" 
+                                loading="lazy"
                             />
                         </div>
                     ))}
-                    {/* Duplicate for infinite effect */}
-                    {displayImages.map((src, i) => (
-                        <div key={`dup-${i}`} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group border border-white/5">
-                            <Image 
-                                src={src} 
-                                alt={`Gallery Duplicate ${i}`}
-                                fill
-                                sizes="320px"
-                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" 
-                                loading="lazy" // Added loading="lazy" from original for performance
-                            />
-                        </div>
-                    ))}
+                    {/* Duplicate for infinite effect on desktop */}
+                    <div className="hidden md:flex">
+                        {displayImages.map((src, i) => (
+                            <div key={`dup-${i}`} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group border border-white/5">
+                                <Image 
+                                    src={src} 
+                                    alt={`Gallery Duplicate ${i}`}
+                                    fill
+                                    sizes="320px"
+                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" 
+                                    loading="lazy"
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

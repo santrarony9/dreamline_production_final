@@ -32,7 +32,7 @@ export default function Navbar({ initialServices }) {
     return (
         <>
             <nav
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-8 grid grid-cols-3 items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-6"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-8 flex justify-between lg:grid lg:grid-cols-3 items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-6"
                     }`}
                 style={{ overflow: 'visible' }}
             >
@@ -45,7 +45,7 @@ export default function Navbar({ initialServices }) {
                 </div>
 
                 {/* COLUMN 2: CENTERED MENU */}
-                <div className="hidden md:flex justify-center items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/80 whitespace-nowrap">
+                <div className="hidden lg:flex justify-center items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/80 whitespace-nowrap">
                     <Link href="/" className="transition-colors">
                         HOME
                     </Link>
@@ -90,10 +90,10 @@ export default function Navbar({ initialServices }) {
                                             {services.filter(s => !['wedding', 'commercial', 'tech'].includes(s.category)).map((service, idx) => (
                                                 <Link
                                                     key={idx}
-                                                    href={`/services/${slugify(service.name)}`}
+                                                    href={`/services/${slugify(service.title || service.name || '')}`}
                                                     className="text-[9px] hover:text-[#c5a059] transition-colors block"
                                                 >
-                                                    {service.name.toUpperCase()}
+                                                    {(service.title || service.name || '').toUpperCase()}
                                                 </Link>
                                             ))}
                                         </div>
@@ -115,7 +115,7 @@ export default function Navbar({ initialServices }) {
                 <div className="flex justify-end">
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className="md:hidden flex flex-col gap-1.5 relative z-[1001]"
+                        className="lg:hidden flex flex-col gap-1.5 relative z-[1001]"
                     >
                         <span className={`w-6 h-[2px] bg-white block transition-transform ${isMenuOpen ? "rotate-45 translate-y-[8px]" : ""}`}></span>
                         <span className={`w-6 h-[2px] bg-white block transition-opacity ${isMenuOpen ? "opacity-0" : ""}`}></span>
@@ -124,54 +124,73 @@ export default function Navbar({ initialServices }) {
                 </div>
             </nav>
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu Overlay */}
+            <div 
+                className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[998] transition-opacity duration-500 lg:hidden ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+                onClick={() => setIsMenuOpen(false)}
+            />
+
+            {/* Premium Mobile Side Drawer */}
             <div
-                className={`fixed inset-0 w-full h-[100dvh] bg-black/95 z-[999] transition-all duration-500 ${isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                    } overflow-y-auto`}
+                className={`fixed top-0 right-0 h-[100dvh] w-[85vw] max-w-[400px] bg-[#050505] border-l border-white/10 z-[999] transform transition-transform duration-700 ease-[cubic-bezier(0.77,0,0.175,1)] lg:hidden flex flex-col justify-between overflow-y-auto hide-scrollbar ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
             >
-                <div className="p-10 flex flex-col gap-8 text-[18px] font-black uppercase tracking-widest text-center mt-20">
-                    <Link onClick={() => setIsMenuOpen(false)} href="/">
-                        Home
+                <div className="flex flex-col text-left mt-24 px-10">
+                    <Link onClick={() => setIsMenuOpen(false)} href="/" className="py-5 border-b border-white/5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
+                        HOME
                     </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/about">
-                        History
+                    <Link onClick={() => setIsMenuOpen(false)} href="/about" className="py-5 border-b border-white/5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
+                        HISTORY
                     </Link>
                     
                     {/* Mobile Services */}
-                    <div>
+                    <div className="py-5 border-b border-white/5">
                         <button 
                             onClick={() => setOpenSubMenu(openSubMenu === 'services' ? null : 'services')}
-                            className="w-full flex items-center justify-center gap-4 text-white"
+                            className="w-full flex items-center justify-between font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors"
                         >
-                            Services
-                            <svg className={`w-4 h-4 transition-transform ${openSubMenu === 'services' ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
+                            SERVICES
+                            <svg className={`w-6 h-6 transition-transform duration-300 ${openSubMenu === 'services' ? 'rotate-180 text-[#c5a059]' : 'text-white/40'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
-                        <div className={`mt-6 grid gap-6 overflow-hidden transition-all duration-500 ${openSubMenu === 'services' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                            <Link onClick={() => setIsMenuOpen(false)} href="/luxury" className="text-[12px] text-gray-400">Luxury Weddings</Link>
-                            <Link onClick={() => setIsMenuOpen(false)} href="/commercial" className="text-[12px] text-gray-400">Commercial</Link>
-                            <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="text-[12px] text-gray-400">Tech</Link>
-                            
-                            {services.filter(s => !['wedding', 'commercial', 'tech'].includes(s.category)).map((service, idx) => (
-                                <Link
-                                    key={idx}
-                                    onClick={() => setIsMenuOpen(false)}
-                                    href={`/services/${slugify(service.name)}`}
-                                    className="text-[12px] text-gray-500 hover:text-[#c5a059]"
-                                >
-                                    {service.name.toUpperCase()}
-                                </Link>
-                            ))}
+                        <div className={`grid overflow-hidden transition-all duration-500 ${openSubMenu === 'services' ? 'grid-rows-[1fr] opacity-100 mt-6' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+                            <div className="overflow-hidden flex flex-col gap-5 pl-4 border-l-2 border-[#c5a059]/30">
+                                <Link onClick={() => setIsMenuOpen(false)} href="/luxury" className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase">LUXURY WEDDINGS</Link>
+                                <Link onClick={() => setIsMenuOpen(false)} href="/commercial" className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase">COMMERCIAL</Link>
+                                <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase">TECH</Link>
+                                
+                                {services.filter(s => !['wedding', 'commercial', 'tech'].includes(s.category)).map((service, idx) => (
+                                    <Link
+                                        key={idx}
+                                        onClick={() => setIsMenuOpen(false)}
+                                        href={`/services/${slugify(service.title || service.name || '')}`}
+                                        className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase"
+                                    >
+                                        {(service.title || service.name || '').toUpperCase()}
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
-                    <Link onClick={() => setIsMenuOpen(false)} href="/journal">
-                        Journal
+                    <Link onClick={() => setIsMenuOpen(false)} href="/journal" className="py-5 border-b border-white/5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
+                        JOURNAL
                     </Link>
-                    <Link onClick={() => setIsMenuOpen(false)} href="/contact">
-                        Contact
+                    <Link onClick={() => setIsMenuOpen(false)} href="/contact" className="py-5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
+                        CONTACT
                     </Link>
+                </div>
+
+                <div className="p-10 mb-8">
+                    <a 
+                        href="tel:8240054002" 
+                        className="w-full py-5 flex items-center justify-center gap-3 bg-[#c5a059] text-black font-black text-sm tracking-[0.2em] uppercase rounded-full hover:bg-white transition-colors"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                        CALL NOW
+                    </a>
                 </div>
             </div>
         </>

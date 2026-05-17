@@ -1,8 +1,9 @@
+export const dynamic = 'force-dynamic';
 import dbConnect from "@/lib/mongodb";
 import ServicePage from "@/models/ServicePage";
 import Content from "@/models/Content";
 import Image from "next/image";
-import VideoModal from "@/components/VideoModal";
+import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
 
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -92,34 +93,7 @@ export default async function DynamicServicePage({ params }) {
             )}
 
             {/* VIDEO SHOWCASE SECTION */}
-            {page.videos && page.videos.length > 0 && (
-                <section className="py-24 bg-[#050505] border-y border-white/5">
-                    <div className="px-8 md:px-16 mb-12">
-                        <h2 className="font-heading text-3xl font-black text-white uppercase italic tracking-tighter">
-                            Cinematic <span className="text-[#c5a059]">Showcase.</span>
-                        </h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-8 md:px-16">
-                        {page.videos.map((video, idx) => (
-                            <div key={idx} className="group relative aspect-video bg-white/5 rounded-3xl overflow-hidden border border-white/10">
-                                <Image 
-                                    src={video.thumbnail || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"} 
-                                    alt={video.title} 
-                                    fill 
-                                    className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60"
-                                />
-                                <div className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-black/80 to-transparent">
-                                    <h3 className="text-white font-black text-lg uppercase tracking-tight mb-2">{video.title}</h3>
-                                    <div className="flex items-center gap-4">
-                                        <VideoModal videoUrl={video.url} />
-                                        <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Watch Film</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            )}
+            <ServiceVideoShowcase videos={page.videos} />
 
             {/* PHOTO GALLERY SECTION */}
             {page.gallery && page.gallery.length > 0 && (

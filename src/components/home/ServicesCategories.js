@@ -25,11 +25,14 @@ export default function ServicesCategories({ services }) {
                                 {/* SUBCATEGORIES LIST */}
                                 {srv.subcategories && srv.subcategories.length > 0 && (
                                     <div className="flex flex-wrap gap-2 md:pl-20 mt-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                                        {srv.subcategories.map((sub, idx) => (
-                                            <span key={idx} className="text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1 rounded-full whitespace-nowrap">
-                                                {sub}
-                                            </span>
-                                        ))}
+                                        {srv.subcategories.map((sub, idx) => {
+                                            const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                                            return (
+                                                <a href={`/services/${slugify(sub)}`} key={idx} className="text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
+                                                    {sub}
+                                                </a>
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </div>

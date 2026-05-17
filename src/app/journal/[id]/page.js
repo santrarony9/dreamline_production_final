@@ -11,7 +11,12 @@ export async function generateMetadata({ params }) {
     const { id } = await params;
 
     try {
-        const post = await Journal.findById(id).lean();
+        let post;
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            post = await Journal.findById(id).lean();
+        } else {
+            post = await Journal.findOne({ id: id }).lean();
+        }
         if (!post) return {};
 
         // Extract a short description from the HTML content if no plain description exists
@@ -45,7 +50,11 @@ export default async function JournalDetailPage({ params }) {
 
     let post;
     try {
-        post = await Journal.findById(id).lean();
+        if (id.match(/^[0-9a-fA-F]{24}$/)) {
+            post = await Journal.findById(id).lean();
+        } else {
+            post = await Journal.findOne({ id: id }).lean();
+        }
     } catch (err) {
         return notFound();
     }

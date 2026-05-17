@@ -1,4 +1,4 @@
-export const revalidate = 600; // Revalidate every 10 min (on-demand revalidation handles immediate updates)
+// On-demand revalidation handles immediate updates
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import Wedding from "@/models/Wedding";
@@ -24,8 +24,23 @@ export default async function Home() {
 
   // Fetch site content for the home page
   const siteContent = await Content.findOne().lean();
+  // Get today's date in IST format (YYYY-MM-DD)
+  const istOffset = 5.5 * 60 * 60 * 1000;
+  const now = new Date();
+  const istDate = new Date(now.getTime() + istOffset);
+  const todayStr = istDate.toISOString().split('T')[0];
+
   const weddings = await Wedding.find().sort({ order: 1 }).limit(6).lean();
-  const journals = await Journal.find().sort({ order: 1 }).limit(3).lean();
+  
+  // Only fetch published journals (date <= today)
+  const journals = await Journal.find({
+      $or: [
+          { date: { $lte: todayStr } },
+          { date: null },
+          { date: "" },
+          { date: { $exists: false } }
+      ]
+  }).sort({ date: -1 }).limit(3).lean();
 
   const homeData = {
     hero: siteContent?.home?.hero || siteContent?.hero || {},

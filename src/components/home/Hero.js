@@ -19,7 +19,7 @@ export default function Hero({ content }) {
     const xText = useTransform(scrollYProgress, [0, 1], ["0%", "-40%"]);
 
     return (
-        <section ref={containerRef} className="relative h-[100dvh] w-full flex items-center justify-center overflow-hidden">
+        <section ref={containerRef} className="relative h-[100svh] w-full flex items-center justify-center overflow-hidden">
             {/* Background Media with Parallax */}
             <motion.div style={{ y: yBg }} className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-black/60 z-10" />
@@ -67,7 +67,7 @@ export default function Hero({ content }) {
                     </p>
                 </div>
 
-                <h1 className="font-heading text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-12 uppercase">
+                <h1 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-12 uppercase">
                     <span className="block reveal-text">
                         <span className="reveal-inner-anim inline-block">{titleLine1 || "VISIONARY"}</span>
                     </span>

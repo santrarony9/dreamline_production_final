@@ -36,6 +36,7 @@
     font-family: 'Instrument Sans', sans-serif;
     overflow-x: hidden;
     transition: background-color 0.5s ease, color 0.5s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .font-heading {
@@ -55,6 +56,15 @@
 ::-webkit-scrollbar-thumb {
   background: var(--gold);
   border-radius: 10px;
+}
+
+/* Hide Scrollbar Utility */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Creative Loader */
@@ -183,7 +193,7 @@
 }
 
 .animate-scroll-left {
-  animation: scrollLeft 60s linear infinite;
+  animation: scrollLeft 30s linear infinite;
 }
 
 .text-outline-thin {

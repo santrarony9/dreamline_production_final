@@ -278,7 +278,7 @@ export default function ContactPage() {
                             <div>
                                 <h5 className="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Contact</h5>
                                 <a href={`tel:${contact.phone || "+918240054002"}`} className="block text-lg font-bold hover:text-[#c5a059] transition-colors">{contact.phone || "+91 82400 54002"}</a>
-                                <a href={`mailto:${contact.email || "santrarony9@gmail.com"}`} className="block text-lg font-bold hover:text-[#c5a059] transition-colors">{contact.email || "santrarony9@gmail.com"}</a>
+                                <a href={`mailto:${contact.email || "info.dreamlineproduction@gmail.com"}`} className="block text-lg font-bold hover:text-[#c5a059] transition-colors">{contact.email || "info.dreamlineproduction@gmail.com"}</a>
                             </div>
                         </div>
                     </div>

@@ -41,7 +41,11 @@ function HomeEditorContent() {
                 reviews: data.reviews || { list: [] },
                 quote: data.quote || { text: "", backgroundImage: "" },
                 partners: data.partners || [],
-                services: data.services || [],
+                services: data.services?.length > 0 ? data.services : [
+                    { number: "01", category: "wedding", title: "LUXURY WEDDINGS", priceHint: "Premium Packages Start at ₹85,000", subcategories: [] },
+                    { number: "02", category: "commercial", title: "COMMERCIAL ADS", priceHint: "Full Production & Scripting", subcategories: [] },
+                    { number: "03", category: "tech", title: "TECH", priceHint: "Web & Digital Solutions", subcategories: [] }
+                ],
                 splitGallery: rawData.splitGallery || data.splitGallery || []
             });
         } catch (err) {

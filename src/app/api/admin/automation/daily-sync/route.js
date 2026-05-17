@@ -17,7 +17,12 @@ export async function GET(request) {
         const authHeader = request.headers.get("Authorization");
         const bearerSecret = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
         
-        if (process.env.AUTOMATION_SECRET && secret !== process.env.AUTOMATION_SECRET && bearerSecret !== process.env.AUTOMATION_SECRET) {
+        const isAuthorized = 
+            (!process.env.AUTOMATION_SECRET && !process.env.CRON_SECRET) || 
+            (secret && secret === process.env.AUTOMATION_SECRET) || 
+            (bearerSecret && (bearerSecret === process.env.AUTOMATION_SECRET || bearerSecret === process.env.CRON_SECRET));
+        
+        if (!isAuthorized) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -52,9 +57,17 @@ export async function GET(request) {
         }
 
         // Ensure we always have a valid image URL for Google Business Profile
-        const imageUrl = (post.image && post.image.startsWith('http')) 
+        let imageUrl = (post.image && post.image.startsWith('http')) 
             ? post.image 
             : FALLBACK_IMAGE;
+
+        // Auto-compress the image via our high-performance JPG proxy if it's hosted on S3 or Unsplash
+        // This keeps the size under 2MB and guarantees a valid .jpg extension path for Google's API validation rules
+        const isOptimizable = imageUrl.includes('dreamlinepro.s3') || imageUrl.includes('unsplash.com');
+        if (isOptimizable) {
+            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com';
+            imageUrl = `${siteUrl}/api/images/cover.jpg?url=${encodeURIComponent(imageUrl)}`;
+        }
 
         const postSummary = stripHtml(post.excerpt || post.content).substring(0, 1500);
         const publicUrl = `https://dreamlineproduction.com/journal/${post._id || post.id}`;

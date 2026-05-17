@@ -13,11 +13,43 @@ export default function VideoModal() {
             setVideoUrl(url);
             setTitle(videoTitle);
             setIsOpen(true);
+
+            // Add hash to window URL so browser's native back button closes the modal
+            if (typeof window !== "undefined" && !window.location.hash.includes("watch")) {
+                window.location.hash = "watch";
+            }
+        };
+
+        const handleHashChange = () => {
+            if (typeof window !== "undefined" && !window.location.hash.includes("watch")) {
+                setIsOpen(false);
+            }
+        };
+
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape") {
+                handleClose();
+            }
         };
 
         window.addEventListener("openVideo", handleOpen);
-        return () => window.removeEventListener("openVideo", handleOpen);
+        window.addEventListener("hashchange", handleHashChange);
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("openVideo", handleOpen);
+            window.removeEventListener("hashchange", handleHashChange);
+            window.removeEventListener("keydown", handleKeyDown);
+        };
     }, []);
+
+    const handleClose = () => {
+        if (typeof window !== "undefined" && window.location.hash.includes("watch")) {
+            window.history.back();
+        } else {
+            setIsOpen(false);
+        }
+    };
 
     if (!isOpen || !videoUrl) return null;
 
@@ -42,22 +74,27 @@ export default function VideoModal() {
     return (
         <div
             className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-500"
-            onClick={() => setIsOpen(false)}
+            onClick={handleClose}
         >
+            {/* Highly visible, premium, laptop-friendly close button */}
             <button
-                className="absolute top-10 right-10 text-white text-4xl interactive hover:text-[#c5a059] transition-colors"
-                onClick={() => setIsOpen(false)}
+                className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-3 bg-black/60 hover:bg-black/90 border border-white/10 px-5 py-2.5 rounded-full text-white text-xs font-black uppercase tracking-widest hover:text-[#c5a059] transition-all z-50 group backdrop-blur-md shadow-2xl interactive"
+                onClick={handleClose}
             >
-                &times;
+                <span>Close Player</span>
+                <span className="w-5 h-5 flex items-center justify-center rounded-full bg-white/10 group-hover:bg-[#c5a059]/20 group-hover:text-[#c5a059] transition-colors text-[10px]">
+                    ✕
+                </span>
             </button>
 
-            <div className="w-[90%] max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl relative" onClick={e => e.stopPropagation()}>
+            <div className="w-[90%] max-w-6xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-300" onClick={e => e.stopPropagation()}>
                 {isYouTube || isVimeo ? (
                     <iframe
                         src={embedUrl}
                         className="w-full h-full border-0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowFullScreen
+                        sandbox="allow-scripts allow-same-origin allow-presentation allow-popups allow-popups-to-escape-sandbox"
                         referrerPolicy="strict-origin-when-cross-origin"
                     />
                 ) : (

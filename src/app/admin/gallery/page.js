@@ -10,6 +10,7 @@ export default function GalleryAdmin() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState("");
+    const [draggedIndex, setDraggedIndex] = useState(null);
 
     useEffect(() => {
         fetchProjects();
@@ -62,6 +63,26 @@ export default function GalleryAdmin() {
         setProjects(projects.filter((_, i) => i !== index));
     };
 
+    // Drag and Drop sorting logic
+    const handleDragStart = (e, index) => {
+        setDraggedIndex(index);
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", index);
+    };
+
+    const handleDragEnter = (index) => {
+        if (draggedIndex === null || draggedIndex === index) return;
+        const newProjects = [...projects];
+        const draggedItem = newProjects[draggedIndex];
+        
+        // Swap positions in the array dynamically
+        newProjects.splice(draggedIndex, 1);
+        newProjects.splice(index, 0, draggedItem);
+        
+        setDraggedIndex(index);
+        setProjects(newProjects);
+    };
+
     if (loading) return <div className="text-gray-500 uppercase text-[10px] font-bold tracking-widest">Loading production archives...</div>;
 
     return (
@@ -70,6 +91,7 @@ export default function GalleryAdmin() {
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Portfolio</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Master <span className="text-gray-700">Gallery.</span></h1>
+                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Hold and drag any card by its thumbnail image to reorder the showcase instantly.</p>
                 </div>
                 <button
                     onClick={addProject}
@@ -81,14 +103,36 @@ export default function GalleryAdmin() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((proj, i) => (
-                    <div key={i} className="bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden group hover:border-[#c5a059]/30 transition-all">
-                        <div className="aspect-video relative bg-white/2 overflow-hidden">
+                    <div 
+                        key={i} 
+                        className={`bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden group hover:border-[#c5a059]/30 transition-all relative ${draggedIndex === i ? "opacity-25 scale-[0.98] border-[#c5a059]/50 shadow-inner" : ""}`}
+                    >
+                        <div 
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, i)}
+                            onDragOver={(e) => e.preventDefault()}
+                            onDragEnter={() => handleDragEnter(i)}
+                            onDragEnd={() => setDraggedIndex(null)}
+                            className="aspect-video relative bg-white/2 overflow-hidden select-none cursor-grab active:cursor-grabbing z-10"
+                        >
+                            {/* Drag Indicator Overlay */}
+                            <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md text-[9px] font-black uppercase text-white/50 group-hover:text-[#c5a059] px-3 py-1.5 rounded-full border border-white/10 transition-colors pointer-events-none">
+                                <span>⋮⋮</span>
+                                <span className="text-[8px] tracking-widest font-black">Hold & Drag</span>
+                            </div>
+
                             {proj.img ? (
-                                <img src={proj.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={proj.title} />
+                                <img 
+                                    src={proj.img} 
+                                    draggable="false" 
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none select-none" 
+                                    alt={proj.title} 
+                                />
                             ) : (
-                                <div className="flex items-center justify-center h-full text-[10px] text-gray-700 uppercase font-black tracking-widest">No Visual Asset</div>
+                                <div className="flex items-center justify-center h-full text-[10px] text-gray-700 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
                             )}
-                            <div className="absolute top-4 right-4 flex gap-2">
+                            
+                            <div className="absolute top-4 right-4 flex gap-2 z-30" onClick={(e) => e.stopPropagation()}>
                                 <select
                                     value={proj.type}
                                     onChange={(e) => updateProject(i, "type", e.target.value)}

@@ -5,7 +5,22 @@ import Link from "next/link";
 
 export default async function JournalPage() {
     await dbConnect();
-    const journals = await Journal.find().sort({ date: -1 }).lean();
+    
+    // Get today's date in IST format (YYYY-MM-DD)
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    const now = new Date();
+    const istDate = new Date(now.getTime() + istOffset);
+    const todayStr = istDate.toISOString().split('T')[0];
+
+    // Only show posts that have a date <= today, or have no date set
+    const journals = await Journal.find({
+        $or: [
+            { date: { $lte: todayStr } },
+            { date: null },
+            { date: "" },
+            { date: { $exists: false } }
+        ]
+    }).sort({ date: -1 }).lean();
 
     return (
         <main className="bg-black pt-32 min-h-screen">
@@ -27,7 +42,7 @@ export default async function JournalPage() {
                     ) : (
                         journals.map((post) => (
                             <article key={post._id.toString()} className="blog-card rounded-3xl group interactive">
-                                <Link href={`/journal/${post._id.toString()}`} className="block h-full">
+                                <Link href={`/journal/${post.id || post._id.toString()}`} className="block h-full">
                                     <div className="h-64 overflow-hidden relative">
                                         <img
                                             src={post.image || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}

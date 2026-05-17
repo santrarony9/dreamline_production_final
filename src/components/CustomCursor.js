@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export default function CustomCursor() {
+    const pathname = usePathname();
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
 
@@ -21,43 +23,41 @@ export default function CustomCursor() {
             cursorY.set(e.clientY);
         };
 
-        const handleMouseEnter = (e) => {
-            const cursorData = e.target.closest('[data-cursor]')?.getAttribute('data-cursor');
-            if (cursorData) {
-                setCursorVariant("text");
-                setCursorText(cursorData);
+        // Event delegation for interactive hovers - 100% CPU-safe, zero loop!
+        const handleMouseOver = (e) => {
+            const target = e.target.closest(".interactive, [data-cursor]");
+            if (target) {
+                const cursorData = target.getAttribute("data-cursor");
+                if (cursorData) {
+                    setCursorVariant("text");
+                    setCursorText(cursorData);
+                }
             }
         };
 
-        const handleMouseLeave = () => {
-            setCursorVariant("default");
-            setCursorText("");
+        const handleMouseOut = (e) => {
+            const target = e.target.closest(".interactive, [data-cursor]");
+            if (target) {
+                setCursorVariant("default");
+                setCursorText("");
+            }
         };
 
         window.addEventListener("mousemove", moveCursor);
+        window.addEventListener("mouseover", handleMouseOver);
+        window.addEventListener("mouseout", handleMouseOut);
 
-        // Attach to specific elements using MutationObserver or just live query
-        const attachListeners = () => {
-            const interatables = document.querySelectorAll(".interactive, [data-cursor]");
-            interatables.forEach((el) => {
-                el.removeEventListener("mouseenter", handleMouseEnter);
-                el.removeEventListener("mouseleave", handleMouseLeave);
-                el.addEventListener("mouseenter", handleMouseEnter);
-                el.addEventListener("mouseleave", handleMouseLeave);
-            });
-        };
-
-        // Premium Global Intersection Observer for Animations (keep existing logic)
+        // Premium Global Intersection Observer for Animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("in-view");
                 }
             });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+        }, { threshold: 0, rootMargin: "0px 0px -50px 0px" });
 
         const attachObserver = () => {
-            const majesticElements = document.querySelectorAll("h1, h2, .premium-card, section");
+            const majesticElements = document.querySelectorAll("h1, h2, .premium-card, .blog-card, .reveal");
             majesticElements.forEach(el => {
                 if (!el.classList.contains("reveal-inner") && !el.querySelector('.reveal-inner') && !el.classList.contains("reveal-up")) {
                     el.classList.add("reveal-up");
@@ -66,35 +66,23 @@ export default function CustomCursor() {
             });
         };
 
-        attachListeners();
+        // Run once on page mount / navigation path change
         attachObserver();
-
-        // Setup MutationObserver to catch dynamically added interactive elements
-        const mutationObserver = new MutationObserver(() => {
-            attachListeners();
-            attachObserver();
-        });
-
-        mutationObserver.observe(document.body, { childList: true, subtree: true });
 
         return () => {
             window.removeEventListener("mousemove", moveCursor);
+            window.removeEventListener("mouseover", handleMouseOver);
+            window.removeEventListener("mouseout", handleMouseOut);
             observer.disconnect();
-            mutationObserver.disconnect();
-            const interatables = document.querySelectorAll(".interactive, [data-cursor]");
-            interatables.forEach((el) => {
-                el.removeEventListener("mouseenter", handleMouseEnter);
-                el.removeEventListener("mouseleave", handleMouseLeave);
-            });
         };
-    }, [cursorX, cursorY]);
+    }, [pathname, cursorX, cursorY]);
 
     const variants = {
         default: {
-            opacity: 1,
-            height: 10,
-            width: 10,
-            backgroundColor: "#c5a059",
+            opacity: 0,
+            height: 0,
+            width: 0,
+            backgroundColor: "transparent",
             mixBlendMode: "normal"
         },
         text: {
