@@ -134,7 +134,7 @@ export default function GalleryAdmin() {
                             key={i} 
                             className={`bg-[#0a0a0a] border rounded-3xl overflow-hidden group transition-all duration-300 relative ${
                                 isDragging 
-                                    ? "opacity-20 scale-[0.97] border-white/5 shadow-inner pointer-events-none" 
+                                    ? "opacity-20 scale-[0.97] border-white/5 shadow-inner" 
                                     : isOver 
                                         ? "border-[#c5a059] shadow-[0_0_30px_rgba(197,160,89,0.25)] scale-[1.02] z-20" 
                                         : "border-white/5 hover:border-[#c5a059]/30"
