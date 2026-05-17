@@ -12,6 +12,7 @@ export default function GalleryAdmin() {
     const [message, setMessage] = useState("");
     const [draggedIndex, setDraggedIndex] = useState(null);
     const [dragOverIndex, setDragOverIndex] = useState(null);
+    const [isCompact, setIsCompact] = useState(false);
 
     useEffect(() => {
         fetchProjects();
@@ -75,6 +76,15 @@ export default function GalleryAdmin() {
         e.preventDefault(); // Required to allow drop
         if (draggedIndex === index) return;
         setDragOverIndex(index);
+
+        // Smart edge auto-scroll for laptop/small screen dragging
+        const scrollThreshold = 120;
+        const scrollSpeed = 12;
+        if (e.clientY < scrollThreshold) {
+            window.scrollBy(0, -scrollSpeed);
+        } else if (e.clientY > window.innerHeight - scrollThreshold) {
+            window.scrollBy(0, scrollSpeed);
+        }
     };
 
     const handleDragLeave = (index) => {
@@ -110,18 +120,36 @@ export default function GalleryAdmin() {
 
     return (
         <div className="space-y-12 pb-32">
-            <header className="flex justify-between items-end">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-8">
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Portfolio</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Master <span className="text-gray-700">Gallery.</span></h1>
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Hold and drag any card by its thumbnail, then drop it on another card to reorder instantly.</p>
+                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Hold and drag thumbnails to rearrange. Toggle Compact Mode to view all cards without scrolling.</p>
                 </div>
-                <button
-                    onClick={addProject}
-                    className="bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10"
-                >
-                    + Add Project
-                </button>
+                <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                    {/* View Mode Toggle Switch */}
+                    <div className="flex gap-1 bg-white/5 p-1 rounded-full border border-white/10">
+                        <button 
+                            onClick={() => setIsCompact(false)}
+                            className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${!isCompact ? "bg-[#c5a059] text-black shadow-md" : "text-gray-400 hover:text-white"}`}
+                        >
+                            Detailed View
+                        </button>
+                        <button 
+                            onClick={() => setIsCompact(true)}
+                            className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${isCompact ? "bg-[#c5a059] text-black shadow-md" : "text-gray-400 hover:text-white"}`}
+                        >
+                            Compact Reorder Mode
+                        </button>
+                    </div>
+
+                    <button
+                        onClick={addProject}
+                        className="bg-[#c5a059] text-black px-8 py-3.5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10 active:scale-95"
+                    >
+                        + Add Project
+                    </button>
+                </div>
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -129,6 +157,64 @@ export default function GalleryAdmin() {
                     const isDragging = draggedIndex === i;
                     const isOver = dragOverIndex === i;
                     
+                    if (isCompact) {
+                        return (
+                            <div 
+                                key={i} 
+                                className={`bg-[#0a0a0a] border rounded-2xl overflow-hidden group transition-all duration-300 relative ${
+                                    isDragging 
+                                        ? "opacity-20 scale-[0.97] border-white/5 shadow-inner" 
+                                        : isOver 
+                                            ? "border-[#c5a059] shadow-[0_0_30px_rgba(197,160,89,0.25)] scale-[1.02] z-20" 
+                                            : "border-white/5 hover:border-[#c5a059]/30"
+                                }`}
+                            >
+                                <div 
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(e, i)}
+                                    onDragOver={(e) => handleDragOver(e, i)}
+                                    onDragLeave={() => handleDragLeave(i)}
+                                    onDrop={(e) => handleDrop(e, i)}
+                                    onDragEnd={() => { setDraggedIndex(null); setDragOverIndex(null); }}
+                                    className="aspect-video relative bg-white/2 overflow-hidden select-none cursor-grab active:cursor-grabbing z-10"
+                                >
+                                    {/* Drag / Drop Indicator Overlay */}
+                                    {isOver ? (
+                                        <div className="absolute inset-0 bg-black/85 backdrop-blur-md z-20 flex flex-col items-center justify-center gap-2 border-2 border-dashed border-[#c5a059] transition-all">
+                                            <span className="text-xl font-black text-[#c5a059]">➔</span>
+                                            <span className="text-[8px] tracking-[0.2em] font-black uppercase text-[#c5a059]">Drop Here</span>
+                                        </div>
+                                    ) : (
+                                        <div className="absolute top-3 left-3 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md text-[8px] font-black uppercase text-white/50 group-hover:text-[#c5a059] px-2.5 py-1 rounded-full border border-white/10 transition-colors pointer-events-none">
+                                            <span>⋮⋮</span>
+                                            <span className="text-[7px] tracking-widest font-black">Hold & Drag</span>
+                                        </div>
+                                    )}
+
+                                    {proj.img ? (
+                                        <img 
+                                            src={proj.img} 
+                                            draggable="false" 
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none select-none" 
+                                            alt={proj.title} 
+                                        />
+                                    ) : (
+                                        <div className="flex items-center justify-center h-full text-[9px] text-gray-700 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
+                                    )}
+                                    
+                                    <div className="absolute top-3 right-3 flex gap-1 z-30" onClick={(e) => e.stopPropagation()}>
+                                        <span className="bg-black/80 backdrop-blur-md text-[8px] font-black uppercase text-[#c5a059] px-2.5 py-1 rounded-full border border-white/10">
+                                            {proj.type}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="p-4 border-t border-white/5">
+                                    <h3 className="text-xs font-black text-white uppercase truncate tracking-wider">{proj.title || "Untitled Project"}</h3>
+                                </div>
+                            </div>
+                        );
+                    }
+
                     return (
                         <div 
                             key={i} 
