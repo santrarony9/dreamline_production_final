@@ -11,6 +11,7 @@ export default function GalleryAdmin() {
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState("");
     const [draggedIndex, setDraggedIndex] = useState(null);
+    const [dragOverIndex, setDragOverIndex] = useState(null);
 
     useEffect(() => {
         fetchProjects();
@@ -70,16 +71,38 @@ export default function GalleryAdmin() {
         e.dataTransfer.setData("text/plain", index);
     };
 
-    const handleDragEnter = (index) => {
-        if (draggedIndex === null || draggedIndex === index) return;
+    const handleDragOver = (e, index) => {
+        e.preventDefault(); // Required to allow drop
+        if (draggedIndex === index) return;
+        setDragOverIndex(index);
+    };
+
+    const handleDragLeave = (index) => {
+        if (dragOverIndex === index) {
+            setDragOverIndex(null);
+        }
+    };
+
+    const handleDrop = (e, targetIndex) => {
+        e.preventDefault();
+        if (draggedIndex === null) return;
+        
+        const sourceIndex = draggedIndex;
+        
+        // Reset states immediately to prevent style residue
+        setDraggedIndex(null);
+        setDragOverIndex(null);
+        
+        if (sourceIndex === targetIndex) return;
+
         const newProjects = [...projects];
-        const draggedItem = newProjects[draggedIndex];
+        const draggedItem = newProjects[sourceIndex];
         
-        // Swap positions in the array dynamically
-        newProjects.splice(draggedIndex, 1);
-        newProjects.splice(index, 0, draggedItem);
+        // Remove from source position
+        newProjects.splice(sourceIndex, 1);
+        // Insert at target position
+        newProjects.splice(targetIndex, 0, draggedItem);
         
-        setDraggedIndex(index);
         setProjects(newProjects);
     };
 
@@ -91,7 +114,7 @@ export default function GalleryAdmin() {
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Portfolio</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Master <span className="text-gray-700">Gallery.</span></h1>
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Hold and drag any card by its thumbnail image to reorder the showcase instantly.</p>
+                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Hold and drag any card by its thumbnail, then drop it on another card to reorder instantly.</p>
                 </div>
                 <button
                     onClick={addProject}
@@ -102,100 +125,119 @@ export default function GalleryAdmin() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {projects.map((proj, i) => (
-                    <div 
-                        key={i} 
-                        className={`bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden group hover:border-[#c5a059]/30 transition-all relative ${draggedIndex === i ? "opacity-25 scale-[0.98] border-[#c5a059]/50 shadow-inner" : ""}`}
-                    >
+                {projects.map((proj, i) => {
+                    const isDragging = draggedIndex === i;
+                    const isOver = dragOverIndex === i;
+                    
+                    return (
                         <div 
-                            draggable
-                            onDragStart={(e) => handleDragStart(e, i)}
-                            onDragOver={(e) => e.preventDefault()}
-                            onDragEnter={() => handleDragEnter(i)}
-                            onDragEnd={() => setDraggedIndex(null)}
-                            className="aspect-video relative bg-white/2 overflow-hidden select-none cursor-grab active:cursor-grabbing z-10"
+                            key={i} 
+                            className={`bg-[#0a0a0a] border rounded-3xl overflow-hidden group transition-all duration-300 relative ${
+                                isDragging 
+                                    ? "opacity-20 scale-[0.97] border-white/5 shadow-inner pointer-events-none" 
+                                    : isOver 
+                                        ? "border-[#c5a059] shadow-[0_0_30px_rgba(197,160,89,0.25)] scale-[1.02] z-20" 
+                                        : "border-white/5 hover:border-[#c5a059]/30"
+                            }`}
                         >
-                            {/* Drag Indicator Overlay */}
-                            <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md text-[9px] font-black uppercase text-white/50 group-hover:text-[#c5a059] px-3 py-1.5 rounded-full border border-white/10 transition-colors pointer-events-none">
-                                <span>⋮⋮</span>
-                                <span className="text-[8px] tracking-widest font-black">Hold & Drag</span>
-                            </div>
-
-                            {proj.img ? (
-                                <img 
-                                    src={proj.img} 
-                                    draggable="false" 
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none select-none" 
-                                    alt={proj.title} 
-                                />
-                            ) : (
-                                <div className="flex items-center justify-center h-full text-[10px] text-gray-700 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
-                            )}
-                            
-                            <div className="absolute top-4 right-4 flex gap-2 z-30" onClick={(e) => e.stopPropagation()}>
-                                <select
-                                    value={proj.type}
-                                    onChange={(e) => updateProject(i, "type", e.target.value)}
-                                    className="bg-black/80 backdrop-blur-md text-[10px] font-black uppercase text-[#c5a059] px-3 py-1 rounded-full border border-white/10 outline-none cursor-pointer"
-                                >
-                                    <option value="commercial">Commercial</option>
-                                    <option value="wedding">Wedding</option>
-                                    <option value="music">Music</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="p-8 space-y-6">
-                            <input
-                                type="text"
-                                value={proj.title}
-                                onChange={(e) => updateProject(i, "title", e.target.value)}
-                                placeholder="Project Title"
-                                className="w-full bg-transparent text-xl font-black text-white outline-none focus:text-[#c5a059] transition-colors uppercase tracking-tight"
-                            />
-
-                            <div className="space-y-4 pt-4 border-t border-white/5">
-                                <div className="space-y-4">
-                                    <ImageUploader
-                                        currentImage={proj.img}
-                                        recommendedSize="Thumbnail URL (Recommended: 1920x1080)"
-                                        onUploadSuccess={(url) => updateProject(i, "img", url)}
-                                    />
-                                    {proj.img && (
-                                        <button type="button" onClick={() => updateProject(i, "img", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
-                                    )}
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Master Video (YouTube/Direct)</label>
-                                    <input
-                                        type="text"
-                                        value={proj.videoUrl}
-                                        onChange={(e) => updateProject(i, "videoUrl", e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-[10px] text-[#c5a059] outline-none"
-                                        placeholder="https://..."
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <ImageUploader
-                                        currentImage={proj.hoverVideo}
-                                        recommendedSize="Hover Preview Video (Direct .mp4)"
-                                        onUploadSuccess={(url) => updateProject(i, "hoverVideo", url)}
-                                    />
-                                    {proj.hoverVideo && (
-                                        <button type="button" onClick={() => updateProject(i, "hoverVideo", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors mt-2">Clear Asset</button>
-                                    )}
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={() => removeProject(i)}
-                                className="w-full py-3 bg-red-500/5 text-red-500/30 hover:bg-red-500 hover:text-white rounded-xl font-black uppercase text-[10px] tracking-widest transition-all mt-4"
+                            <div 
+                                draggable
+                                onDragStart={(e) => handleDragStart(e, i)}
+                                onDragOver={(e) => handleDragOver(e, i)}
+                                onDragLeave={() => handleDragLeave(i)}
+                                onDrop={(e) => handleDrop(e, i)}
+                                onDragEnd={() => { setDraggedIndex(null); setDragOverIndex(null); }}
+                                className="aspect-video relative bg-white/2 overflow-hidden select-none cursor-grab active:cursor-grabbing z-10"
                             >
-                                Delete Archive
-                            </button>
+                                {/* Drag / Drop Indicator Overlay */}
+                                {isOver ? (
+                                    <div className="absolute inset-0 bg-black/85 backdrop-blur-md z-20 flex flex-col items-center justify-center gap-2 border-2 border-dashed border-[#c5a059] transition-all">
+                                        <span className="text-2xl font-black text-[#c5a059]">➔</span>
+                                        <span className="text-[10px] tracking-[0.2em] font-black uppercase text-[#c5a059]">Drop to Insert Here</span>
+                                    </div>
+                                ) : (
+                                    <div className="absolute top-4 left-4 z-20 flex items-center gap-2 bg-black/80 backdrop-blur-md text-[9px] font-black uppercase text-white/50 group-hover:text-[#c5a059] px-3 py-1.5 rounded-full border border-white/10 transition-colors pointer-events-none">
+                                        <span>⋮⋮</span>
+                                        <span className="text-[8px] tracking-widest font-black">Hold & Drag</span>
+                                    </div>
+                                )}
+
+                                {proj.img ? (
+                                    <img 
+                                        src={proj.img} 
+                                        draggable="false" 
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none select-none" 
+                                        alt={proj.title} 
+                                    />
+                                ) : (
+                                    <div className="flex items-center justify-center h-full text-[10px] text-gray-700 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
+                                )}
+                                
+                                <div className="absolute top-4 right-4 flex gap-2 z-30" onClick={(e) => e.stopPropagation()}>
+                                    <select
+                                        value={proj.type}
+                                        onChange={(e) => updateProject(i, "type", e.target.value)}
+                                        className="bg-black/80 backdrop-blur-md text-[10px] font-black uppercase text-[#c5a059] px-3 py-1 rounded-full border border-white/10 outline-none cursor-pointer"
+                                    >
+                                        <option value="commercial">Commercial</option>
+                                        <option value="wedding">Wedding</option>
+                                        <option value="music">Music</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="p-8 space-y-6">
+                                <input
+                                    type="text"
+                                    value={proj.title}
+                                    onChange={(e) => updateProject(i, "title", e.target.value)}
+                                    placeholder="Project Title"
+                                    className="w-full bg-transparent text-xl font-black text-white outline-none focus:text-[#c5a059] transition-colors uppercase tracking-tight"
+                                />
+
+                                <div className="space-y-4 pt-4 border-t border-white/5">
+                                    <div className="space-y-4">
+                                        <ImageUploader
+                                            currentImage={proj.img}
+                                            recommendedSize="Thumbnail URL (Recommended: 1920x1080)"
+                                            onUploadSuccess={(url) => updateProject(i, "img", url)}
+                                        />
+                                        {proj.img && (
+                                            <button type="button" onClick={() => updateProject(i, "img", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
+                                        )}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] uppercase font-black text-gray-600 tracking-widest pl-1">Master Video (YouTube/Direct)</label>
+                                        <input
+                                            type="text"
+                                            value={proj.videoUrl}
+                                            onChange={(e) => updateProject(i, "videoUrl", e.target.value)}
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-[10px] text-[#c5a059] outline-none"
+                                            placeholder="https://..."
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <ImageUploader
+                                            currentImage={proj.hoverVideo}
+                                            recommendedSize="Hover Preview Video (Direct .mp4)"
+                                            onUploadSuccess={(url) => updateProject(i, "hoverVideo", url)}
+                                        />
+                                        {proj.hoverVideo && (
+                                            <button type="button" onClick={() => updateProject(i, "hoverVideo", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors mt-2">Clear Asset</button>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => removeProject(i)}
+                                    className="w-full py-3 bg-red-500/5 text-red-500/30 hover:bg-red-500 hover:text-white rounded-xl font-black uppercase text-[10px] tracking-widest transition-all mt-4"
+                                >
+                                    Delete Archive
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
 
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-12 md:right-12 md:left-auto md:translate-x-0 z-[100] flex items-center gap-4 md:gap-6 bg-black/80 backdrop-blur-xl border border-[#c5a059]/30 p-3 md:p-4 rounded-full shadow-2xl w-[90%] md:w-auto justify-center md:justify-start">
