@@ -33,6 +33,16 @@ export async function generateMetadata() {
     const siteContent = await getSiteContent();
     const globalSeo = siteContent?.global?.seo || {};
 
+    let keywordsList = globalSeo.keywords || "Wedding Photographer Kolkata, Best Cinematic Films Kolkata, Luxury Wedding Photography Bengal";
+    
+    // Proactive Local SEO Safety: Always ensure core search keywords exist in Meta Tags
+    const coreKeywords = ["Wedding Photographer Kolkata", "Best Cinematic Films Kolkata"];
+    coreKeywords.forEach(kw => {
+      if (!keywordsList.toLowerCase().includes(kw.toLowerCase())) {
+        keywordsList = `${kw}, ${keywordsList}`;
+      }
+    });
+
     return {
       metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com'),
       title: {
@@ -40,7 +50,7 @@ export async function generateMetadata() {
         template: `%s | ${globalSeo.title || "Dreamline Production"}`
       },
       description: globalSeo.description || "Kolkata's premier cinematic house. Specializing in luxury weddings and commercial films across India. Preserving emotions through a visionary lens.",
-      keywords: globalSeo.keywords || "Wedding Photographer Kolkata, Best Cinematic Films Kolkata, Luxury Wedding Photography Bengal",
+      keywords: keywordsList,
       openGraph: {
         title: globalSeo.title || "Dreamline Production | The Art of Cinematic Storytelling",
         description: globalSeo.description || "Kolkata's premier cinematic house. Specializing in luxury weddings and commercial films across India.",
