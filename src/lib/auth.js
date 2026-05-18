@@ -43,7 +43,9 @@ export const authOptions = {
 
                 // 3. Enforce 2FA if configured for the matching account
                 if (active2faSecret) {
-                    if (!otp) {
+                    const isOtpEmpty = !otp || otp === "undefined" || otp === "null" || otp.trim() === "";
+                    
+                    if (isOtpEmpty) {
                         throw new Error("2FA_REQUIRED");
                     }
 
