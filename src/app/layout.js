@@ -6,7 +6,6 @@ import AuthProvider from "@/context/AuthProvider";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import SmoothScroll from "@/components/global/SmoothScroll";
 import MediaProtection from "@/components/global/MediaProtection";
-import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -48,7 +47,7 @@ export async function generateMetadata() {
         siteName: "Dreamline Production",
         images: [
           {
-            url: globalSeo.ogImage || "/logo.png",
+            url: globalSeo.ogImage || "/logo-banner.png",
             width: 1200,
             height: 630,
           }
@@ -59,7 +58,7 @@ export async function generateMetadata() {
         card: "summary_large_image",
         title: globalSeo.title || "Dreamline Production | The Art of Cinematic Storytelling",
         description: globalSeo.description || "Kolkata's premier cinematic house specializing in luxury weddings and commercial films.",
-        images: [globalSeo.ogImage || "/logo.png"],
+        images: [globalSeo.ogImage || "/logo-banner.png"],
       },
       icons: {
         icon: globalSeo.favicon || "/favicon.png",
@@ -108,7 +107,7 @@ export default async function RootLayout({ children }) {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Dreamline Production",
-      "image": seo.ogImage || "https://dreamlineproduction.com/logo.png",
+      "image": seo.ogImage || "https://dreamlineproduction.com/logo-banner.png",
       "description": seo.description || "Dreamline Production is a premier cinematic visual house in Kolkata.",
       "@id": "https://dreamlineproduction.com",
       "url": "https://dreamlineproduction.com",
@@ -167,7 +166,6 @@ export default async function RootLayout({ children }) {
                 adsId={siteContent?.global?.google?.adsConversionId}
                 adsLabel={siteContent?.global?.google?.adsConversionLabel}
               />
-              <CustomCursor />
               <PublicLayoutWrapper siteContent={siteContent}>
                 {children}
               </PublicLayoutWrapper>

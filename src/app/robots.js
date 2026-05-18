@@ -4,11 +4,20 @@ export default function robots() {
                          process.env.VERCEL_ENV === 'production';
 
     return {
-        rules: {
-            userAgent: '*',
-            allow: isProduction ? '/' : [],
-            disallow: isProduction ? ['/admin/', '/api/'] : '/',
-        },
+        rules: [
+            {
+                // Always allow social sharing bots to scrape content for high-fidelity link previews
+                userAgent: ['facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'WhatsApp'],
+                allow: '/',
+                disallow: ['/admin/', '/api/'],
+            },
+            {
+                // General rule for all other search engines (Google, Bing, etc.)
+                userAgent: '*',
+                allow: isProduction ? '/' : [],
+                disallow: isProduction ? ['/admin/', '/api/'] : '/',
+            }
+        ],
         sitemap: `https://dreamlineproduction.com/sitemap.xml`,
     };
 }
