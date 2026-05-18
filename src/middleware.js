@@ -3,8 +3,16 @@ import { NextResponse } from "next/server";
 
 export default withAuth(
   function middleware(req) {
-    const res = NextResponse.next();
+    const host = req.headers.get("host") || "";
     
+    // Automatically redirect all .co.in traffic to the primary .com domain (301 Permanent Redirect)
+    if (host.includes("dreamlineproduction.co.in")) {
+      const url = req.nextUrl.clone();
+      url.host = "www.dreamlineproduction.com";
+      return NextResponse.redirect(url, 301);
+    }
+
+    const res = NextResponse.next();
     return res;
   },
   {
