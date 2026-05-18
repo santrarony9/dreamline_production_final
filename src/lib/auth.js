@@ -12,36 +12,50 @@ export const authOptions = {
             async authorize(credentials) {
                 const adminUser = process.env.ADMIN_USER;
                 const adminPass = process.env.ADMIN_PASS;
-                const twofaSecret = process.env.ADMIN_2FA_SECRET;
+                const admin2fa = process.env.ADMIN_2FA_SECRET;
 
-                if (!adminUser || !adminPass) {
-                    console.error("ADMIN_USER or ADMIN_PASS not set");
+                const maintUser = process.env.MAINT_USER;
+                const maintPass = process.env.MAINT_PASS;
+                const maint2fa = process.env.MAINT_2FA_SECRET;
+
+                const username = credentials?.username?.trim();
+                const password = credentials?.password;
+                const otp = credentials?.otp;
+
+                let authenticatedUser = null;
+                let active2faSecret = null;
+
+                // 1. Validate Master Admin Credentials
+                if (adminUser && adminPass && username === adminUser.trim() && password === adminPass.trim()) {
+                    authenticatedUser = { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com" };
+                    active2faSecret = admin2fa;
+                } 
+                // 2. Validate Maintenance Credentials
+                else if (maintUser && maintPass && username === maintUser.trim() && password === maintPass.trim()) {
+                    authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com" };
+                    active2faSecret = maint2fa;
+                }
+
+                // If credentials didn't match either account, deny entry
+                if (!authenticatedUser) {
                     return null;
                 }
 
-                // First validate username and password
-                if (
-                    credentials?.username?.trim() !== adminUser?.trim() ||
-                    credentials?.password !== adminPass?.trim()
-                ) {
-                    return null;
-                }
-
-                // If credentials match and 2FA secret is set, enforce TOTP verification
-                if (twofaSecret) {
-                    if (!credentials?.otp) {
+                // 3. Enforce 2FA if configured for the matching account
+                if (active2faSecret) {
+                    if (!otp) {
                         throw new Error("2FA_REQUIRED");
                     }
 
                     const { verifyTOTP } = await import("./totp");
-                    const isValidOtp = verifyTOTP(credentials.otp, twofaSecret);
+                    const isValidOtp = verifyTOTP(otp, active2faSecret);
                     
                     if (!isValidOtp) {
                         throw new Error("INVALID_2FA");
                     }
                 }
 
-                return { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com" };
+                return authenticatedUser;
             }
         })
     ],
