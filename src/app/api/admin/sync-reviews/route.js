@@ -48,7 +48,8 @@ export async function POST() {
             text: r.text,
             rating: r.rating,
             initial: r.author_name.charAt(0),
-            role: "Verified Google Reviewer"
+            role: "Verified Google Reviewer",
+            avatar: r.profile_photo_url || null
         }));
 
         // Update the content model

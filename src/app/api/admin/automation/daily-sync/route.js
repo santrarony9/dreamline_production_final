@@ -11,16 +11,22 @@ function stripHtml(html) {
 
 export async function GET(request) {
     try {
-        // Security: Check for a secret key to prevent unauthorized triggers
+        // Security: Accept Vercel's native cron header OR a manual secret key
         const { searchParams } = new URL(request.url);
         const secret = searchParams.get("secret");
         const authHeader = request.headers.get("Authorization");
         const bearerSecret = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+        // Vercel's cron system sends this header automatically on all cron invocations
+        const isVercelCron = request.headers.get("x-vercel-cron") === "1";
         
         const isAuthorized = 
+            isVercelCron ||  // Always allow Vercel's own cron system
             (!process.env.AUTOMATION_SECRET && !process.env.CRON_SECRET) || 
             (secret && secret === process.env.AUTOMATION_SECRET) || 
-            (bearerSecret && (bearerSecret === process.env.AUTOMATION_SECRET || bearerSecret === process.env.CRON_SECRET));
+            (bearerSecret && (
+                bearerSecret === process.env.AUTOMATION_SECRET || 
+                bearerSecret === process.env.CRON_SECRET
+            ));
         
         if (!isAuthorized) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
