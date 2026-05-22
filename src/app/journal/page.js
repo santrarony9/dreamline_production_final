@@ -3,6 +3,16 @@ import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import Link from "next/link";
 
+export async function generateMetadata() {
+    return {
+        title: "Journal — Photography Insights & Cinematic Stories",
+        description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
+        alternates: {
+            canonical: 'https://dreamlineproduction.com/journal',
+        },
+    };
+}
+
 export default async function JournalPage() {
     await dbConnect();
     

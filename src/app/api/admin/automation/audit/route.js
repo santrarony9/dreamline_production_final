@@ -20,9 +20,12 @@ export async function GET(request) {
         await dbConnect();
 
 
-        const today = new Date().toISOString().split('T')[0];
-        const yesterdayDate = new Date();
-        yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+        // Use IST date to match journal post dates (which are stored in IST context)
+        const now = new Date();
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istNow = new Date(now.getTime() + istOffset);
+        const today = istNow.toISOString().split('T')[0];
+        const yesterdayDate = new Date(istNow.getTime() - 24 * 60 * 60 * 1000);
         const yesterday = yesterdayDate.toISOString().split('T')[0];
 
         // 1. Fetch Data

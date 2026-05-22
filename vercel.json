@@ -24,14 +24,6 @@
         {
             "path": "/api/admin/automation/daily-sync",
             "schedule": "30 3 * * *"
-        },
-        {
-            "path": "/api/admin/gbp/post",
-            "schedule": "35 3 * * *"
-        },
-        {
-            "path": "/api/admin/automation/audit",
-            "schedule": "30 4 * * *"
         }
     ]
 }

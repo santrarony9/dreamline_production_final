@@ -1,100 +1,55 @@
-# Dreamline Production — AI Context File
+# Dreamline Production — Kolkata's Premier Cinematic Production House
 
-## Who We Are
-Dreamline Production is a premier cinematic visual house based in Kolkata, India. Established in 2010, we specialize in high-end wedding photography, corporate ad films, and commercial visual storytelling. We are known for our cinematic approach, using advanced lighting and color grading techniques to create film-like visuals.
+> Dreamline Production is a full-service cinematic production house based in Kolkata, India. Founded by Rony Santra with over 15 years of experience, we offer corporate films, ad films, luxury wedding photography & cinematography, podcast production, line production, drone videography, 3D area mapping, 2D animation, live streaming, and professional interview setups for news channels and media agencies. We serve clients across all of India.
 
-## What We Do
-- **Wedding Photography & Cinematography**: We document weddings with a cinematic flair, focusing on candid moments, storytelling, and premium editing.
-- **Corporate & Commercial Films**: We produce high-quality ad films, product shoots, and corporate documentaries for brands.
-- **Visual Storytelling**: Our expertise extends to music videos, short films, and portfolio shoots for models and actors.
+## Core Services
 
-## Key Facts
-- **Location**: Haridevpur, Kolkata, West Bengal.
-- **Experience**: Over 15 years in the industry.
-- **Reputation**: Rated 4.9/5 stars based on 150+ reviews across Google and Justdial.
-- **Contact**: santrarony9@gmail.com | +91 82400 54002
+### Corporate & Commercial
+- [Corporate Films & Ad Films](/commercial): End-to-end corporate film production — concept, scripting, shooting, editing, color grading. Brand campaigns, product videos, and corporate documentaries for companies like TATA Trust, L&T, and Carlsberg.
+- [Podcast Production](/services/podcast): Complete podcast production including studio setup, multi-camera recording, professional audio engineering, editing, and post-production for video podcasts.
+- [Line Production](/services/line-production): Full on-ground production support in Kolkata and eastern India — crew hiring, location scouting, equipment, permits, transportation, and logistics for ad agencies, international crews, and film teams.
+- [News Channel & Agency Interviews](/services/interviews): Professional interview setups for national and international media. Broadcast-ready camera crews, lighting, audio. Regular work with Al Jazeera, ABP Network, TV Today, and other major media organizations.
+
+### Technology & Visual Effects
+- [Drone Videography & Aerial Shoots](/tech): Professional drone video for real estate, construction, events, and commercial projects. Cinematic aerial footage with DGCA-certified pilots.
+- [3D Area Mapping & Visualization](/tech): 3D mapping for construction sites, real estate visualization, architectural walkthroughs, and land survey mapping using drone data.
+- [2D Animation & Motion Graphics](/tech): Motion graphics, explainer videos, animated logos, title sequences, and promotional animations for brands and businesses.
+
+### Weddings & Events
+- [Luxury Wedding Photography & Cinematography](/luxury): Cinematic wedding documentation with candid photography, storytelling, drone coverage, and premium editing. Both-side wedding packages start from ₹40,000 per day. Fully customizable packages.
+- [Corporate Event Coverage & Live Streaming](/services/corporate): Professional event photography, conference coverage, corporate headshots, and live streaming & broadcast services.
+- [Fashion Photography](/services/fashion): Professional fashion shoots for portfolios, brands, and designers.
+
+## Why Choose Dreamline Production
+- Over 15 years of industry experience in cinematic production
+- 500+ weddings captured across India
+- 4.9/5 star rating on Google
+- Trusted by major brands and media organizations: TATA Trust, L&T, ABP Network, Al Jazeera, TV Today, BookMyShow, Carlsberg, Conneqt
+- Full-service production house — from corporate films to podcasts to drone mapping
+- Available anywhere in India for projects and destination work
+- Line production partner for agencies and international crews in eastern India
+- GST registered (GSTIN: 19EILPS2898F1ZE), MSME certified (WB-18-0018671)
+
+## Contact Information
+- **Studio**: 85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082, West Bengal, India
+- **Phone**: +91 82400 54002
+- **Email**: info.dreamlineproduction@gmail.com
 - **Website**: https://dreamlineproduction.com
+- **Booking**: https://dreamlineproduction.com/contact
 
----
+## Key Pages
+- [Home](https://dreamlineproduction.com/): Overview of services and featured work
+- [About Us](/about): Our story, founder Rony Santra, team, 15-year journey, and philosophy
+- [Commercial Works](/commercial): Corporate films, ad films, and brand content portfolio
+- [Luxury Weddings](/luxury): Wedding photography and cinematography portfolio
+- [Tech Services](/tech): Drone, 3D mapping, and 2D animation services
+- [Journal](/journal): Production insights, behind-the-scenes stories, and industry articles
+- [FAQ](/faq): Common questions about services, pricing, and booking
+- [Contact](/contact): Discuss your project — inquiries and booking
+- [Company Details](/company-details): Legal identity, GST, MSME, and business registration
 
-## Technical Architecture
+## Service Areas
+Based in Kolkata, West Bengal, India. Available for projects, line production, and destination work across all of India including Mumbai, Delhi, Goa, Rajasthan, Bangalore, Hyderabad, Chennai, and international locations.
 
-### Stack
-- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS 4, Framer Motion
-- **Backend**: Next.js API Routes (serverless on Vercel), Express.js legacy server (`/server/server.js`)
-- **Database**: MongoDB Atlas via Mongoose
-- **Storage**: AWS S3 (`dreamlinepro` bucket, `ap-south-2` region) — images auto-converted to WebP via Sharp
-- **Auth**: NextAuth.js with Credentials provider, JWT sessions (7-day), httpOnly cookies
-- **Hosting**: Vercel (production)
-
-### Project Structure
-```
-Final/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── page.js             # Homepage (ISR 10 min + on-demand revalidation)
-│   │   ├── about/page.js       # About page
-│   │   ├── luxury/page.js      # Luxury weddings page
-│   │   ├── commercial/page.js  # Commercial works page
-│   │   ├── journal/            # Journal/blog pages (list + [id] detail)
-│   │   ├── wedding/[id]/       # Individual wedding detail
-│   │   ├── tech/               # Tech portfolio page
-│   │   ├── contact/            # Contact page
-│   │   ├── admin/              # Admin panel (protected by middleware)
-│   │   │   ├── home/page.js    # Home content editor
-│   │   │   ├── about/page.js   # About content editor
-│   │   │   ├── gallery/page.js # Project gallery editor
-│   │   │   ├── weddings/page.js# Wedding CRUD
-│   │   │   ├── journal/page.js # Journal CRUD
-│   │   │   ├── luxury/page.js  # Luxury page editor
-│   │   │   ├── global/page.js  # Global settings (SEO, contact, social)
-│   │   │   └── login/page.js   # Admin login
-│   │   ├── api/
-│   │   │   ├── auth/[...nextauth]/route.js  # NextAuth config
-│   │   │   ├── content/route.js     # GET/POST site content (+ on-demand revalidation)
-│   │   │   ├── weddings/route.js    # CRUD weddings (+ on-demand revalidation)
-│   │   │   ├── journals/route.js    # CRUD journals (+ on-demand revalidation)
-│   │   │   ├── bookings/route.js    # POST booking inquiry (with input validation)
-│   │   │   ├── upload/route.js      # Server-side upload (Sharp optimization)
-│   │   │   ├── upload/presigned/route.js # Pre-signed S3 URL for direct browser upload
-│   │   │   ├── revalidate/route.js  # On-demand ISR revalidation endpoint
-│   │   │   ├── tracking/view/route.js # Page view analytics
-│   │   │   └── tech/route.js        # Tech projects CRUD (with SSRF protection)
-│   │   ├── layout.js           # Root layout (SEO, JSON-LD, Google Analytics)
-│   │   ├── sitemap.js          # Dynamic sitemap generation
-│   │   └── robots.js           # Robots.txt config
-│   ├── components/
-│   │   ├── admin/ImageUploader.js  # S3 upload component (presigned URL flow)
-│   │   ├── home/               # Homepage section components
-│   │   ├── global/             # SmoothScroll, MediaProtection
-│   │   ├── Navbar.js, Footer.js, Preloader.js, CustomCursor.js
-│   │   └── PublicLayoutWrapper.js
-│   ├── models/                 # Mongoose models
-│   │   ├── Content.js          # Single-document site content (huge schema)
-│   │   ├── Wedding.js, Journal.js, Booking.js, TechProject.js, Analytics.js
-│   ├── lib/mongodb.js          # Cached MongoDB connection
-│   ├── middleware.js           # NextAuth middleware (protects /admin/*)
-│   └── context/                # ThemeContext, AuthProvider
-├── server/                     # Legacy Express server (not used on Vercel)
-├── api/                        # Legacy API config files
-├── next.config.mjs             # Next.js config (images, security headers)
-├── vercel.json                 # Vercel deployment config
-└── public/                     # Static assets (llms.txt, logo, sitemap.xml)
-```
-
-### Key Patterns
-- **Upload Flow**: `ImageUploader.js` → `/api/upload/presigned` (gets presigned S3 URL) → browser PUTs directly to S3. Both routes require `export const runtime = 'nodejs'`.
-- **Content Model**: A single MongoDB document holds ALL site content (home, about, luxury, commercial sections). Admin edits are saved via `$set` updates.
-- **ISR + On-Demand Revalidation**: Pages use `revalidate = 600` (10 min) as fallback. Admin save operations call `revalidatePath()` to clear cache immediately.
-- **Security**: Auth requires env vars (`NEXTAUTH_SECRET`, `ADMIN_USER`, `ADMIN_PASS`). Security headers (HSTS, X-Frame-Options, etc.) configured in `next.config.mjs`. Booking API uses explicit field extraction. Tech API has SSRF protection.
-
-### Required Environment Variables (Vercel)
-- `NEXTAUTH_SECRET` — Random 32+ char string for JWT signing
-- `NEXTAUTH_URL` — `https://dreamlineproduction.com`
-- `ADMIN_USER` — Admin username
-- `ADMIN_PASS` — Admin password
-- `MONGODB_URI` — MongoDB Atlas connection string
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` — S3 credentials
-- `AWS_REGION` — `ap-south-2`
-- `AWS_S3_BUCKET_NAME` — `dreamlinepro`
-- `NEXT_PUBLIC_SITE_URL` — `https://dreamlineproduction.com`
+## Operating Hours
+Monday to Sunday: 9:00 AM — 9:00 PM (IST)
