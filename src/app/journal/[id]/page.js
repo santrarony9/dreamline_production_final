@@ -4,7 +4,7 @@ import Journal from "@/models/Journal";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export async function generateMetadata({ params }) {
     await dbConnect();
@@ -98,7 +98,7 @@ export default async function JournalDetailPage({ params }) {
                 <div className="max-w-4xl mx-auto">
                     <div
                         className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed text-lg"
-                        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                     />
 
                     <div className="mt-20 pt-12 border-t border-white/5 flex justify-between items-center">

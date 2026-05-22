@@ -1,5 +1,5 @@
 import Image from "next/image";
-import DOMPurify from "isomorphic-dompurify";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export default function Expertise({ expertise }) {
     const { heading, description, image, servicesList } = expertise || {};
@@ -34,7 +34,7 @@ export default function Expertise({ expertise }) {
                             </p>
                             <h2
                                 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-8 uppercase break-words hyphens-none"
-                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(heading || "LUXURY<br/>EMOTION<br/>STORYTELLING.") }}
+                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(heading || "LUXURY<br/>EMOTION<br/>STORYTELLING.") }}
                             />
                             <p className="text-gray-500 text-lg max-w-xl leading-relaxed">
                                 {description || "Dreamline Production moves away from \"standard shots.\" We build cinematic experiences that preserve the soul of the event, treated with high-end color grading and sound design."}
