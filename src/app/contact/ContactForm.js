@@ -214,7 +214,7 @@ export default function ContactForm({ globalData }) {
                                 ></iframe>
                             ) : (
                                 <iframe
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(contact.address || "85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road. Kolkata 700082")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082")}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                                     width="100%"
                                     height="100%"
                                     style={{ border: 0, filter: 'grayscale(100%) invert(100%) contrast(80%)' }}
@@ -226,7 +226,7 @@ export default function ContactForm({ globalData }) {
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
-                            <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(contact.address || "85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road. Kolkata 700082")}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group interactive">
+                            <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082")}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group interactive">
                                 <svg className="w-5 h-5 text-[#c5a059] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
                                 </svg>
@@ -257,7 +257,7 @@ export default function ContactForm({ globalData }) {
                             <div>
                                 <h5 className="text-[10px] uppercase font-bold text-gray-500 tracking-widest mb-4">Studio Location</h5>
                                 <address className="not-italic text-lg font-bold leading-relaxed">
-                                    {contact.address || "85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road. Kolkata 700082"}
+                                    {contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}
                                 </address>
                             </div>
                             <div>

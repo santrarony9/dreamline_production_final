@@ -19,7 +19,7 @@ export default function LetsCreate({ global }) {
                     <div>
                         <h4 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">LOCATION</h4>
                         <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug">
-                            {contact.address || "85, Tilottama Plaza, First Floor Kolkata 700082, West Bengal"}
+                            {contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}
                         </address>
                     </div>
 

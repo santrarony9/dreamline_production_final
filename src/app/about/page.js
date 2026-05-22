@@ -342,7 +342,7 @@ export default async function AboutPage() {
                             <div className="grid sm:grid-cols-2 gap-8 text-[11px] font-black uppercase tracking-widest">
                                 <div className="space-y-2">
                                     <p className="text-gray-600">Registered Office</p>
-                                    <p className="text-white">{aboutData.details?.address || "85, Tilottama Plaza, Kolkata 700082"}</p>
+                                    <p className="text-white">{aboutData.details?.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}</p>
                                 </div>
                                 <div className="space-y-2">
                                     <p className="text-gray-600">Official GST No.</p>

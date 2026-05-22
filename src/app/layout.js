@@ -171,7 +171,7 @@ export default async function RootLayout({ children }) {
       "email": contact.email || "info.dreamlineproduction@gmail.com",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": contact.address?.split('.')[0] || "85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
+        "streetAddress": (contact.address || "").includes(", Kolkata") ? contact.address.split(", Kolkata")[0] : "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
         "addressLocality": "Kolkata",
         "addressRegion": "West Bengal",
         "postalCode": "700082",

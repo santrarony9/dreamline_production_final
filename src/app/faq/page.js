@@ -57,7 +57,7 @@ const faqs = [
     },
     {
         question: "How can I contact Dreamline Production to discuss a project?",
-        answer: "You can reach us through multiple channels: Call or WhatsApp at +91 82400 54002, email us at info.dreamlineproduction@gmail.com, or fill out the inquiry form on our website at dreamlineproduction.com/contact. Our studio is located at 85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082. We're available 7 days a week, 9 AM to 9 PM."
+        answer: "You can reach us through multiple channels: Call or WhatsApp at +91 82400 54002, email us at info.dreamlineproduction@gmail.com, or fill out the inquiry form on our website at dreamlineproduction.com/contact. Our studio is located at 85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082. We're available 7 days a week, 9 AM to 9 PM."
     },
     {
         question: "What is the best production house in Kolkata?",

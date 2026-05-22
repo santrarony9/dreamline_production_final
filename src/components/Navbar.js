@@ -183,7 +183,7 @@ export default function Navbar({ initialServices }) {
 
                 <div className="p-10 mb-8">
                     <a 
-                        href="tel:8240054002" 
+                        href="tel:+918240054002" 
                         className="w-full py-5 flex items-center justify-center gap-3 bg-[#c5a059] text-black font-black text-sm tracking-[0.2em] uppercase rounded-full hover:bg-white transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

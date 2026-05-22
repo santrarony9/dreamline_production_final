@@ -2,6 +2,7 @@ import Link from "next/link";
 
 export default function Footer({ siteContent }) {
     const socialLinks = siteContent?.global?.social || {};
+    const contact = siteContent?.global?.contact || {};
     
     const platforms = [
         { id: 'instagram', label: 'IG', link: socialLinks.instagram || "https://instagram.com/dreamlineproduction" },
@@ -41,7 +42,7 @@ export default function Footer({ siteContent }) {
                     {/* Contact & Social Section */}
                     <div className="lg:text-right space-y-6">
                         <div className="text-[10px] font-black text-white/50 flex flex-col sm:flex-row lg:justify-end gap-2 sm:gap-6 uppercase tracking-widest">
-                            <span>+91 82400 54002</span>
+                            <a href={`tel:${contact.phone || "+918240054002"}`} className="hover:text-[#c5a059] transition-colors">{contact.phone || "+91 82400 54002"}</a>
                             <span className="hidden sm:inline">|</span>
                             <span>Kolkata, WB</span>
                         </div>

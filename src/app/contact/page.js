@@ -38,7 +38,7 @@ export default async function ContactPage() {
             "email": globalData?.contact?.email || "info.dreamlineproduction@gmail.com",
             "address": {
                 "@type": "PostalAddress",
-                "streetAddress": "85 Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
+                "streetAddress": (globalData?.contact?.address || "").includes(", Kolkata") ? globalData.contact.address.split(", Kolkata")[0] : "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
                 "addressLocality": "Kolkata",
                 "addressRegion": "West Bengal",
                 "postalCode": "700082",
