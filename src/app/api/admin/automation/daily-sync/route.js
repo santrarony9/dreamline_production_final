@@ -157,6 +157,10 @@ async function sendToWebhookFallback(post, log) {
     const payload = {
         type: 'JOURNAL_POST',
         action: 'AUTOMATED_SYNC',
+        title: post.title,           // Added flat field for Make.com
+        summary: postSummary,        // Added flat field for Make.com
+        sourceUrl: imageUrl,         // Added flat field for Make.com
+        url: publicUrl,              // Added flat field for Make.com
         post: {
             _id: post._id,
             title: post.title,
@@ -175,7 +179,7 @@ async function sendToWebhookFallback(post, log) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(10000)
     });
 
     if (!response.ok) {
@@ -217,8 +221,8 @@ async function postWithRetry(post, log) {
             return { success: true, ...result };
         } catch (err) {
             log(`[DailySync] ❌ Webhook fallback also failed: ${err.message}`);
-            // One more retry after 3s
-            await sleep(3000);
+            // One more retry after 2s
+            await sleep(2000);
             try {
                 log(`[DailySync] Retrying webhook (last attempt)...`);
                 const result = await sendToWebhookFallback(post, log);
