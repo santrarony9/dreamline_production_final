@@ -1,0 +1,33 @@
+name: Daily Google Business Post
+
+on:
+  schedule:
+    # Runs at 9:00 AM IST (3:30 AM UTC) every day
+    - cron: '30 3 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from GitHub Actions tab
+
+jobs:
+  daily-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger Daily Sync
+        run: |
+          echo "Triggering daily sync at $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            "https://dreamlineproduction.com/api/admin/automation/daily-sync?secret=${{ secrets.AUTOMATION_SECRET }}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+          
+          if [ "$HTTP_CODE" -ge 400 ]; then
+            echo "::error::Daily sync failed with status $HTTP_CODE"
+            exit 1
+          fi
+          
+          echo "✅ Daily sync completed successfully"
