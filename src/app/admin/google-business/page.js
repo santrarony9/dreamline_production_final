@@ -6,14 +6,21 @@ import axios from "axios";
 export default function GoogleBusinessAdmin() {
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState(null);
+    const [pendingPosts, setPendingPosts] = useState([]);
 
     useEffect(() => {
         const fetchSettings = async () => {
             try {
-                const res = await axios.get("/api/content");
+                const [res, journalsRes] = await Promise.all([
+                    axios.get("/api/content"),
+                    axios.get("/api/journals")
+                ]);
                 setSettings(res.data?.global?.google || {});
+                const posts = journalsRes.data || [];
+                const pending = posts.filter(p => p.googleBusinessSync !== 'SYNCED');
+                setPendingPosts(pending);
             } catch (err) {
-                console.error("Failed to fetch settings");
+                console.error("Failed to fetch settings or journals");
             } finally {
                 setLoading(false);
             }
@@ -34,14 +41,23 @@ export default function GoogleBusinessAdmin() {
         try {
             if (sourceId) {
                 await axios.post("/api/admin/automation/sync", { sourceId, sourceType });
+                setPendingPosts(prev => prev.filter(p => p._id !== sourceId));
+            } else {
+                if (pendingPosts.length === 0) {
+                    alert("No pending posts to sync!");
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+                for (const post of pendingPosts.slice(0, 30)) {
+                    await axios.post("/api/admin/automation/sync", { sourceId: post._id, sourceType: 'JOURNAL' });
+                }
+                setPendingPosts(prev => prev.slice(30));
             }
-            setTimeout(() => {
-                alert(msg + "\n\nModification Status: Post has been rewritten with local keywords and optimized for Google Maps.");
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }, 1000);
+            alert(msg);
         } catch (err) {
-            alert("Sync failed. Check API credentials.");
+            alert("Sync failed. Please check logs.");
+        } finally {
             btn.innerText = originalText;
             btn.disabled = false;
         }
@@ -110,25 +126,31 @@ export default function GoogleBusinessAdmin() {
                 <section className="lg:col-span-8 bg-[#0a0a0a] border border-white/5 rounded-3xl p-8">
                     <div className="flex justify-between items-center mb-8 pb-6 border-b border-white/5">
                         <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Upcoming Google Posts</h3>
-                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">30 Items in Queue</span>
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{pendingPosts.length} Items in Queue</span>
                     </div>
 
                     <div className="space-y-4">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="flex items-center justify-between p-5 bg-white/2 rounded-2xl border border-white/5 group hover:border-[#c5a059]/30 transition-all">
+                        {pendingPosts.length === 0 && (
+                            <div className="text-center text-[10px] text-gray-500 font-bold uppercase tracking-widest py-10">No pending posts</div>
+                        )}
+                        {pendingPosts.map((post) => (
+                            <div key={post._id} className="flex items-center justify-between p-5 bg-white/2 rounded-2xl border border-white/5 group hover:border-[#c5a059]/30 transition-all">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-zinc-800 rounded-lg overflow-hidden">
-                                        <div className="w-full h-full bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center text-[10px] text-gray-500 font-black">IMG</div>
+                                    <div className="w-12 h-12 bg-zinc-800 rounded-lg overflow-hidden relative">
+                                        {post.image ? (
+                                            <img src={post.image} alt="Cover" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center text-[10px] text-gray-500 font-black">IMG</div>
+                                        )}
                                     </div>
                                     <div>
-                                        <p className="text-[11px] font-bold text-white uppercase tracking-tight">Luxury Wedding at ITC Royal Bengal</p>
-                                        <p className="text-[9px] text-[#c5a059] font-black uppercase tracking-widest">Scheduled for: May {15 + i}, 2026</p>
+                                        <p className="text-[11px] font-bold text-white uppercase tracking-tight">{post.title}</p>
+                                        <p className="text-[9px] text-[#c5a059] font-black uppercase tracking-widest">Scheduled for: {post.date}</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                    <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 transition-colors">✏️</button>
                                     <button 
-                                        onClick={(e) => handleSync(e, "Post synchronized to Google Business successfully!")}
+                                        onClick={(e) => handleSync(e, "Post synchronized to Google Business successfully!", post._id, "JOURNAL")}
                                         className="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-white hover:bg-[#c5a059] hover:text-black transition-all interactive"
                                     >
                                         Post Now
@@ -140,10 +162,10 @@ export default function GoogleBusinessAdmin() {
                     
                     <div className="mt-8 pt-6 border-t border-white/5 text-center">
                          <button 
-                            onClick={(e) => handleSync(e, "30 Posts added to the Google Business Queue! They will be posted daily.")}
+                            onClick={(e) => handleSync(e, "Bulk Sync completed successfully!")}
                             className="bg-white/5 hover:bg-white/10 border border-white/10 px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all interactive"
                         >
-                            Bulk Sync 30 Recent Posts
+                            Bulk Sync Recent Posts
                         </button>
                     </div>
                 </section>

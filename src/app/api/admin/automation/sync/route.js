@@ -42,15 +42,39 @@ export async function POST(req) {
             media: postData.coverImage || postData.image
         };
 
-        // 3. Logic to Push to Google Business API (Placeholder for actual API call)
-        // In production, this would hit: https://mybusiness.googleapis.com/v4/accounts/{accountId}/locations/{locationId}/localPosts
+        // 3. Logic to Push to Google Business API / Webhook
+        const webhookUrl = process.env.AUTOMATION_WEBHOOK_URL;
+        if (webhookUrl) {
+            try {
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: `${sourceType}_POST`,
+                        action: 'MANUAL_SYNC',
+                        title: postData.title,
+                        summary: finalGooglePost.summary,
+                        sourceUrl: finalGooglePost.media || "",
+                        url: finalGooglePost.callToAction.url,
+                        post: postData
+                    })
+                });
+            } catch (err) {
+                console.error("Webhook trigger failed:", err.message);
+            }
+        }
         
-        console.log("GOOGLE_OPTIMIZED_POST_GENERATED:", finalGooglePost);
+        // 4. Update Database Status
+        if (sourceType === 'WEDDING') {
+            await Wedding.findByIdAndUpdate(sourceId, { googleBusinessSync: 'SYNCED' });
+        } else {
+            await Journal.findByIdAndUpdate(sourceId, { googleBusinessSync: 'SYNCED' });
+        }
 
         return NextResponse.json({ 
             success: true, 
             optimizedPost: finalGooglePost,
-            message: "Website post has been successfully modified and optimized for Google Business SEO."
+            message: "Website post has been successfully synced to Google Business."
         });
 
     } catch (error) {
