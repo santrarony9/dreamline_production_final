@@ -1,6 +1,30 @@
 {
     "framework": "nextjs",
     "outputDirectory": ".next",
+    "redirects": [
+        {
+            "source": "/:path*",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "dreamlineproduction.co.in"
+                }
+            ],
+            "destination": "https://dreamlineproduction.com/:path*",
+            "permanent": true
+        },
+        {
+            "source": "/:path*",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "www.dreamlineproduction.co.in"
+                }
+            ],
+            "destination": "https://dreamlineproduction.com/:path*",
+            "permanent": true
+        }
+    ],
     "headers": [
         {
             "source": "/(.*)",
@@ -26,4 +50,5 @@
             "schedule": "30 3 * * *"
         }
     ]
-}
+}
+

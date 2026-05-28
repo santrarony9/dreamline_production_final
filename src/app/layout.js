@@ -152,7 +152,7 @@ export default async function RootLayout({ children }) {
         "@type": "ContactPoint",
         "telephone": contact.phone || "+91 82400 54002",
         "contactType": "customer service",
-        "email": contact.email || "info.dreamlineproduction@gmail.com",
+        "email": contact.email || "support@dreamlineproduction.com",
         "availableLanguage": ["English", "Hindi", "Bengali"],
         "areaServed": "IN"
       },
@@ -168,7 +168,7 @@ export default async function RootLayout({ children }) {
       "description": "Dreamline Production is Kolkata's premier cinematic production house. We offer corporate films, ad films, luxury wedding photography & cinematography, podcast production, line production for agencies and channels, drone videography, 3D area mapping, 2D animation, live streaming, and professional interview setups for news channels like Al Jazeera, ABP Network, and TV Today. 15+ years of experience across India.",
       "url": "https://dreamlineproduction.com",
       "telephone": contact.phone || "+91 82400 54002",
-      "email": contact.email || "info.dreamlineproduction@gmail.com",
+      "email": contact.email || "support@dreamlineproduction.com",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": (contact.address || "").includes(", Kolkata") ? contact.address.split(", Kolkata")[0] : "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",

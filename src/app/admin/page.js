@@ -238,6 +238,13 @@ export default async function AdminDashboard() {
                             <p className="text-[9px] text-gray-500 font-bold uppercase">SEO & Social links</p>
                         </div>
                     </a>
+                    <a href="/admin/diagnostics" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🔧</div>
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-white">Diagnostics</p>
+                            <p className="text-[9px] text-gray-500 font-bold uppercase">Automation Fallback</p>
+                        </div>
+                    </a>
                 </div>
             </section>
 

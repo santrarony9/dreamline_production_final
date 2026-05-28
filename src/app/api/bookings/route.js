@@ -4,6 +4,18 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import axios from "axios";
+import nodemailer from "nodemailer";
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || "465"),
+    secure: true, // true for 465 (SSL/TLS)
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    },
+});
+
 
 export async function POST(req) {
     try {
@@ -39,6 +51,30 @@ export async function POST(req) {
 
         // Save to database with sanitized data only
         const booking = await Booking.create(bookingData);
+
+        // 3. Email Notification via MilesWeb SMTP
+        if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+            try {
+                const mailOptions = {
+                    from: `"Dreamline Inquiry" <${process.env.SMTP_USER}>`,
+                    to: process.env.EMAIL_TO || process.env.SMTP_USER,
+                    subject: `🌟 New Inquiry from ${bookingData.firstName} ${bookingData.lastName}`,
+                    text: `New Inquiry Details:\n\nName: ${bookingData.firstName} ${bookingData.lastName}\nEmail: ${bookingData.email}\nPhone: ${bookingData.phone}\nService: ${bookingData.serviceType}\nDate: ${bookingData.eventDate}\nVision: ${bookingData.vision}`,
+                    html: `
+                        <h3>New Inquiry Details</h3>
+                        <p><strong>Name:</strong> ${bookingData.firstName} ${bookingData.lastName}</p>
+                        <p><strong>Email:</strong> ${bookingData.email}</p>
+                        <p><strong>Phone:</strong> ${bookingData.phone}</p>
+                        <p><strong>Service:</strong> ${bookingData.serviceType}</p>
+                        <p><strong>Date:</strong> ${bookingData.eventDate}</p>
+                        <p><strong>Vision:</strong> ${bookingData.vision}</p>
+                    `,
+                };
+                await transporter.sendMail(mailOptions);
+            } catch (mailErr) {
+                console.error("Nodemailer failed to send email:", mailErr.message);
+            }
+        }
 
         // 1. WhatsApp Business API (New Method)
         if (process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_ID) {

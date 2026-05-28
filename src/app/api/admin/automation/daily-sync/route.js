@@ -157,10 +157,10 @@ async function sendToWebhookFallback(post, log) {
     const payload = {
         type: 'JOURNAL_POST',
         action: 'AUTOMATED_SYNC',
-        title: post.title,           // Added flat field for Make.com
-        summary: postSummary,        // Added flat field for Make.com
-        sourceUrl: imageUrl,         // Added flat field for Make.com
-        url: publicUrl,              // Added flat field for Make.com
+        title: post.title,
+        summary: postSummary,
+        sourceUrl: imageUrl,
+        url: publicUrl,
         post: {
             _id: post._id,
             title: post.title,

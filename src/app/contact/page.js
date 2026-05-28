@@ -35,7 +35,7 @@ export default async function ContactPage() {
             "@type": "ProfessionalService",
             "name": "Dreamline Production",
             "telephone": globalData?.contact?.phone || "+91 82400 54002",
-            "email": globalData?.contact?.email || "info.dreamlineproduction@gmail.com",
+            "email": globalData?.contact?.email || "support@dreamlineproduction.com",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": (globalData?.contact?.address || "").includes(", Kolkata") ? globalData.contact.address.split(", Kolkata")[0] : "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
