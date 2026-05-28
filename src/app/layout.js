@@ -337,7 +337,7 @@ export default async function RootLayout({ children }) {
             <SmoothScroll>
               <MediaProtection />
               <AnalyticsTracker 
-                gaId={siteContent?.global?.google?.analyticsId} 
+                gaId={siteContent?.global?.google?.analyticsId || "G-PVN6GR4RRK"} 
                 adsId={siteContent?.global?.google?.adsConversionId}
                 adsLabel={siteContent?.global?.google?.adsConversionLabel}
               />
