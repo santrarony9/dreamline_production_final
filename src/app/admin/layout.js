@@ -31,7 +31,7 @@ export default function AdminLayout({ children }) {
         {
             title: "Portfolio & Studio",
             items: [
-                { label: "Service Builder", path: "/admin/services", icon: "🗂️" },
+                { label: "Services & Categories", path: "/admin/services", icon: "🗂️" },
                 { label: "Galleries", path: "/admin/gallery", icon: "🎬" },
                 { label: "Weddings", path: "/admin/weddings", icon: "💍" },
                 { label: "Commercial", path: "/admin/commercial", icon: "🎥" },

@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
+import ServicePage from "@/models/ServicePage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -69,6 +70,25 @@ export async function POST(request) {
             { $set: updateData },
             { upsert: true, new: true, runValidators: true }
         );
+
+        // Automatically create corresponding ServicePage documents for subcategories
+        const services = updateData['home.services'] || (body.home && body.home.services) || body.services;
+        if (services && Array.isArray(services)) {
+            const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            for (const srv of services) {
+                if (srv.subcategories && Array.isArray(srv.subcategories)) {
+                    for (const sub of srv.subcategories) {
+                        if (!sub.trim()) continue;
+                        const slug = slugify(sub);
+                        await ServicePage.findOneAndUpdate(
+                            { slug },
+                            { $setOnInsert: { slug, title: sub, subtitle: "Premium Service", active: true } },
+                            { upsert: true }
+                        );
+                    }
+                }
+            }
+        }
 
         // Revalidate paths for on-demand ISR
         revalidatePath('/');

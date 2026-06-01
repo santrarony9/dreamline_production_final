@@ -146,10 +146,6 @@ async function sendToWebhookFallback(post, log) {
     }
 
     let imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
-    const isOptimizable = imageUrl.includes('dreamlinepro.s3') || imageUrl.includes('unsplash.com');
-    if (isOptimizable) {
-        imageUrl = `${SITE_URL}/api/images/cover.jpg?url=${encodeURIComponent(imageUrl)}`;
-    }
 
     const postSummary = stripHtml(post.excerpt || post.content).substring(0, 1500);
     const publicUrl = `${SITE_URL}/journal/${post._id || post.id}`;
