@@ -324,14 +324,12 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" className="overflow-x-hidden">
-      <head>
+      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}>
         {/* Inline JSON-LD for immediate crawlability by Google and AI bots */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}>
         <AuthProvider>
           <ThemeProvider>
             <SmoothScroll>
