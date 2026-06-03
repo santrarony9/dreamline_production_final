@@ -18,6 +18,8 @@ import MasterGallery from "@/components/home/MasterGallery";
 import LetsCreate from "@/components/home/LetsCreate";
 import Partners from "@/components/home/Partners";
 import Journal from "@/models/Journal";
+import StructuredData from "@/components/seo/StructuredData";
+
 
 export default async function Home() {
   await dbConnect();
@@ -78,6 +80,66 @@ export default async function Home() {
 
   return (
     <main className="bg-black">
+      <StructuredData data={{
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://dreamlineproduction.com",
+        "name": "Dreamline Production",
+        "alternateName": "Dreamline Production House",
+        "description": "Kolkata's premier wedding photography and cinematic production house. Specializing in luxury Bengali weddings, pre-wedding shoots, destination wedding films, and commercial photography across West Bengal and India.",
+        "url": "https://dreamlineproduction.com",
+        "telephone": "+91-9051966619",
+        "email": "dreamlineproduction.info@gmail.com",
+        "image": "https://dreamlineproduction.com/og-image.jpg",
+        "priceRange": "₹₹₹",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Tilottama Plaza",
+          "addressLocality": "Kolkata",
+          "addressRegion": "West Bengal",
+          "postalCode": "700001",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 22.5726,
+          "longitude": 88.3639
+        },
+        "areaServed": [
+          { "@type": "City", "name": "Kolkata" },
+          { "@type": "State", "name": "West Bengal" },
+          { "@type": "Country", "name": "India" }
+        ],
+        "serviceType": [
+          "Wedding Photography",
+          "Cinematic Wedding Films",
+          "Pre-Wedding Photography",
+          "Destination Wedding Photography",
+          "Commercial Photography",
+          "Event Photography"
+        ],
+        "sameAs": [
+          "https://www.instagram.com/dreamlineproduction",
+          "https://www.facebook.com/dreamlineproduction"
+        ],
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "opens": "09:00",
+          "closes": "21:00"
+        }
+      }} />
+      <StructuredData data={{
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Dreamline Production",
+        "url": "https://dreamlineproduction.com",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://dreamlineproduction.com/journal?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }} />
       <Hero content={homeData.hero} />
       <Marquee items={homeData.marquee} />
       <Stats stats={homeData.stats} />
