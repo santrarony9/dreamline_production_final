@@ -38,7 +38,13 @@ export default function ContactForm({ globalData }) {
 
             if (response.ok) {
                 // Trigger Google Ads Conversion
-                if (typeof window !== 'undefined' && window.reportConversion) {
+                if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+                    window.gtag('event', 'conversion', {
+                        'send_to': 'AW-17805539120/XqiwCOfFvdwbELDuq6pC',
+                        'value': 1.0,
+                        'currency': 'INR'
+                    });
+                } else if (typeof window !== 'undefined' && window.reportConversion) {
                     window.reportConversion();
                 }
 
