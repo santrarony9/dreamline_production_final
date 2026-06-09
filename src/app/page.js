@@ -134,21 +134,38 @@ export default async function Home() {
         "serviceType": [
           "Wedding Photography",
           "Best Wedding Photography in Kolkata",
+          "Marriage Photography",
+          "Wedding Videography",
           "Cinematic Wedding Films",
+          "Wedding Video Production",
+          "Candid Wedding Photography",
+          "Bridal Photography",
           "Pre-Wedding Photography",
+          "Engagement Photography",
+          "Haldi Ceremony Photography",
+          "Mehendi Photography",
+          "Reception Photography",
+          "Same Day Edit Wedding",
+          "Wedding Album Design",
           "Destination Wedding Photography",
           "Bengali Wedding Photography",
-          "Candid Wedding Photography",
           "Corporate Film Production",
           "Ad Film Production",
+          "Commercial Videography",
+          "Factory Videography",
+          "Industrial Videography",
+          "Manufacturing Unit Video",
+          "Factory Tour Video",
+          "Product Video Production",
+          "Brand Film Production",
+          "Company Profile Video",
+          "Promotional Video",
           "Podcast Production",
           "Drone Videography",
           "Line Production",
           "Event Photography",
           "Fashion Photography",
-          "Live Streaming",
-          "3D Area Mapping",
-          "2D Animation"
+          "Live Streaming"
         ],
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
@@ -159,7 +176,16 @@ export default async function Home() {
               "itemOffered": {
                 "@type": "Service",
                 "name": "Best Wedding Photography in Kolkata",
-                "description": "Top-rated luxury wedding photography and cinematography in Kolkata. Candid, cinematic, and traditional styles. Both-side packages from ₹40,000/day. 500+ weddings captured across West Bengal and India.",
+                "description": "Top-rated luxury wedding photography and cinematography in Kolkata. Candid, cinematic, and traditional styles. Bridal photography, haldi, mehendi, reception coverage, engagement shoots, same-day edits, and premium wedding albums. Both-side packages from ₹40,000/day. 500+ weddings captured across West Bengal and India.",
+                "url": "https://dreamlineproduction.com/luxury"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Wedding Video & Marriage Film Production Kolkata",
+                "description": "Best wedding videography and marriage film production in Kolkata. Cinematic wedding highlight reels, full ceremony coverage, same-day edits, and destination wedding films. Complete wedding video packages with drone coverage.",
                 "url": "https://dreamlineproduction.com/luxury"
               }
             },
@@ -169,6 +195,24 @@ export default async function Home() {
                 "@type": "Service",
                 "name": "Best Production House in Kolkata for Corporate Films",
                 "description": "Kolkata's top production house for corporate films, ad films, brand videos. Clients: TATA Trust, L&T, Carlsberg, BookMyShow.",
+                "url": "https://dreamlineproduction.com/commercial"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Factory Videography & Industrial Shoot Kolkata",
+                "description": "Professional factory videography, industrial plant shoots, manufacturing unit video production, factory tour videos, and industrial documentary filming in Kolkata and West Bengal. Trusted by TATA Trust, L&T, and major manufacturing companies.",
+                "url": "https://dreamlineproduction.com/commercial"
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Commercial Videography & Brand Films Kolkata",
+                "description": "Product videos, brand films, TV commercials, promotional videos, company profile videos, and social media video content production in Kolkata.",
                 "url": "https://dreamlineproduction.com/commercial"
               }
             },

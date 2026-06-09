@@ -90,6 +90,22 @@ const faqs = [
     {
         question: "How much does wedding photography cost in Kolkata?",
         answer: "At Dreamline Production, one of the best wedding photography studios in Kolkata, both-side wedding photography packages start from ₹40,000 per day. Packages are fully customizable and can include multiple photographers, cinematographers, drone coverage, same-day edits, photo albums, and highlight reels. For premium cinematic wedding films with full post-production, prices vary based on the number of days, locations, and deliverables. Contact Dreamline Production at +91 82400 54002 or visit dreamlineproduction.com/contact for a personalized quote."
+    },
+    {
+        question: "Does Dreamline Production offer factory videography and industrial shoots?",
+        answer: "Yes, factory videography and industrial shoots are one of our key commercial services. We produce professional factory tour videos, manufacturing process documentation, industrial safety videos, plant videography, and corporate factory profiles. Our team has experience shooting in active manufacturing environments with cinema-grade equipment. We have worked with major industrial clients including TATA Trust and L&T. Whether you need a factory tour video for your website, a manufacturing process film for investors, or an industrial safety documentary, Dreamline Production handles it end-to-end in Kolkata, West Bengal, and across India."
+    },
+    {
+        question: "Which is the best commercial videography company in Kolkata?",
+        answer: "Dreamline Production is widely recognized as the best commercial videography company in Kolkata. We produce product videos, brand films, TV commercials, promotional videos, company profile videos, testimonial videos, social media video content, and factory documentation videos. With 15+ years of experience and clients like TATA Trust, L&T, Carlsberg, BookMyShow, and Conneqt, we deliver broadcast-quality commercial video content. Our end-to-end production covers concept, scripting, shooting, editing, color grading, and delivery in all formats."
+    },
+    {
+        question: "Do you cover haldi, mehendi, reception, and engagement ceremonies?",
+        answer: "Yes, absolutely! At Dreamline Production, we provide complete wedding ceremony coverage including haldi ceremony photography, mehendi ceremony photography, sangeet coverage, reception photography, engagement photography, and ring ceremony documentation. We also offer bridal portraits, groom portraits, couple shoots, and same-day edits. Every ceremony gets the same cinematic quality and attention to detail. Our photographers specialize in capturing candid moments during these celebrations."
+    },
+    {
+        question: "Does Dreamline Production make wedding videos and highlight reels?",
+        answer: "Yes, wedding video production is one of our core specialties. We create cinematic wedding films, wedding highlight reels (2-5 minutes), teaser videos (30-60 seconds), full ceremony coverage videos, same-day edit videos played at the reception, and multi-camera wedding documentation. Every wedding video gets cinema-grade color grading, professional audio mixing, and cinematic storytelling. We are one of the best wedding videographers in Kolkata with 500+ weddings filmed."
     }
 ];
 

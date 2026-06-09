@@ -331,6 +331,39 @@ export default async function RootLayout({ children }) {
               "areaServed": ["Kolkata", "West Bengal"],
               "provider": { "@id": "https://dreamlineproduction.com/#business" }
             }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Factory Videography & Industrial Shoot in Kolkata",
+              "description": "Professional factory videography, industrial plant documentation, manufacturing unit video production, and commercial factory shoots in Kolkata and West Bengal. We produce factory tour videos, manufacturing process films, industrial safety videos, plant documentation, and corporate factory profiles for companies across India. Trusted by TATA Trust, L&T, and other major industrial clients.",
+              "url": "https://dreamlineproduction.com/commercial",
+              "areaServed": ["Kolkata", "West Bengal", "India"],
+              "provider": { "@id": "https://dreamlineproduction.com/#business" }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Commercial Videography & Brand Films in Kolkata",
+              "description": "Best commercial videography in Kolkata — product videos, brand films, TV commercials, social media video content, promotional videos, company profile videos, and testimonial videos. End-to-end video production from concept to delivery.",
+              "url": "https://dreamlineproduction.com/commercial",
+              "areaServed": ["Kolkata", "West Bengal", "India"],
+              "provider": { "@id": "https://dreamlineproduction.com/#business" }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Wedding Video & Marriage Photography in Kolkata",
+              "description": "Complete wedding video production and marriage photography in Kolkata — cinematic wedding films, wedding highlight reels, same-day edits, bridal photography, haldi ceremony, mehendi ceremony, reception photography, engagement shoots, and wedding album design. Best marriage photographer in Kolkata.",
+              "url": "https://dreamlineproduction.com/luxury",
+              "areaServed": ["Kolkata", "West Bengal", "India"],
+              "provider": { "@id": "https://dreamlineproduction.com/#business" }
+            }
           }
         ]
       },
@@ -349,36 +382,68 @@ export default async function RootLayout({ children }) {
         "Best Wedding Photography in Kolkata",
         "Best Wedding Photographer Kolkata",
         "Top 5 Wedding Photographers in Kolkata",
-        "Best Production House in Kolkata",
-        "Production House in Kolkata",
-        "Production House in West Bengal",
+        "Wedding Photographer Near Me Kolkata",
+        "Marriage Photography Kolkata",
+        "Marriage Photographer Kolkata",
+        "Wedding Video Kolkata",
+        "Wedding Videography Kolkata",
+        "Cinematic Wedding Film Kolkata",
         "Best Cinematic Wedding Films Kolkata",
         "Wedding Photography West Bengal",
         "Wedding Cinematography Kolkata",
         "Candid Wedding Photography Kolkata",
+        "Candid Photographer Kolkata",
         "Bengali Wedding Photography",
+        "Bengali Wedding Photographer",
         "Destination Wedding Photographer Kolkata",
         "Pre-Wedding Photography Kolkata",
+        "Pre-Wedding Shoot Kolkata",
+        "Bridal Photography Kolkata",
+        "Haldi Ceremony Photography Kolkata",
+        "Mehendi Photography Kolkata",
+        "Reception Photography Kolkata",
+        "Engagement Photography Kolkata",
+        "Wedding Album Design Kolkata",
+        "Same Day Edit Wedding Kolkata",
+        "Wedding Highlight Reel Kolkata",
+        "Luxury Wedding Photography West Bengal",
+        "Best Marriage Photographer West Bengal",
+        "Wedding Planner Photography Kolkata",
+        "Affordable Wedding Photography Kolkata",
+        "Best Production House in Kolkata",
+        "Production House in Kolkata",
+        "Production House in West Bengal",
+        "Best Production House West Bengal",
+        "Film Production Company Kolkata",
+        "Commercial Videography Kolkata",
+        "Commercial Video Production Kolkata",
+        "Factory Videography Kolkata",
+        "Factory Shoot Kolkata",
+        "Industrial Videography Kolkata",
+        "Industrial Photography Kolkata",
+        "Manufacturing Unit Video Kolkata",
+        "Factory Tour Video Kolkata",
+        "Plant Videography Kolkata",
+        "Factory Documentary Kolkata",
+        "Industrial Film Production Kolkata",
         "Corporate Films Kolkata",
         "Ad Film Production House Kolkata",
         "Best Ad Film Maker Kolkata",
+        "Product Video Kolkata",
+        "Brand Film Kolkata",
+        "TV Commercial Production Kolkata",
+        "Company Profile Video Kolkata",
+        "Promotional Video Kolkata",
+        "Best Photographer in Kolkata",
+        "Top Photography Studio Kolkata",
         "Podcast Studio Kolkata",
         "Line Production Kolkata",
         "Drone Videography Kolkata",
-        "3D Area Mapping Kolkata",
-        "2D Animation Studio Kolkata",
-        "Fashion Photography Kolkata",
         "Event Photography Kolkata",
-        "Live Streaming Services Kolkata",
-        "News Channel Interview Setup Kolkata",
-        "Best Photographer in Kolkata",
-        "Top Photography Studio Kolkata",
-        "Wedding Planner Photography Kolkata",
-        "Luxury Wedding Photography West Bengal",
-        "Best Production House West Bengal",
-        "Film Production Company Kolkata"
+        "Fashion Photography Kolkata",
+        "Live Streaming Services Kolkata"
       ],
-      "keywords": "best wedding photography Kolkata, production house in Kolkata, best production house in West Bengal, top 5 wedding photographer Kolkata, best cinematic wedding films Kolkata, wedding photography West Bengal, corporate film production Kolkata, ad film maker Kolkata, best photographer Kolkata, Bengali wedding photography, destination wedding photographer Kolkata, pre-wedding photography Kolkata"
+      "keywords": "best wedding photography Kolkata, wedding photographer Kolkata, marriage photography Kolkata, wedding video Kolkata, candid wedding photography Kolkata, Bengali wedding photographer, bridal photography Kolkata, pre-wedding shoot Kolkata, haldi photography Kolkata, mehendi photography Kolkata, reception photography Kolkata, engagement photography Kolkata, same day edit wedding Kolkata, wedding album Kolkata, best marriage photographer West Bengal, top 5 wedding photographer Kolkata, production house in Kolkata, best production house West Bengal, commercial videography Kolkata, factory videography Kolkata, industrial videography Kolkata, factory shoot Kolkata, manufacturing unit video, factory tour video Kolkata, plant videography, industrial film production Kolkata, corporate film production Kolkata, ad film maker Kolkata, product video Kolkata, brand film Kolkata, company profile video Kolkata, promotional video Kolkata"
     });
 
     // Schema 4: BreadcrumbList — site navigation hierarchy
