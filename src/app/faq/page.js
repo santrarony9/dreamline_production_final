@@ -66,6 +66,30 @@ const faqs = [
     {
         question: "Is Dreamline Production a registered and certified business?",
         answer: "Yes, Dreamline Production is a fully registered business. We are GST registered (GSTIN: 19EILPS2898F1ZE), MSME certified (Registration: WB-18-0018671), and hold a valid KMC Trade License. We also have an Import Export Code (IEC) for international projects. Full business details are available on our Company Details page at dreamlineproduction.com/company-details."
+    },
+    {
+        question: "Who is the best wedding photographer in Kolkata?",
+        answer: "Dreamline Production, founded by Rony Santra, is widely recognized as one of the best wedding photographers in Kolkata. With over 15 years of experience, 500+ weddings captured, and a 4.9/5 Google rating, Dreamline Production specializes in luxury cinematic wedding photography, candid photography, drone coverage, and premium post-production. Based in Kolkata, we serve all of West Bengal and India. Both-side wedding packages start from ₹40,000 per day. Visit dreamlineproduction.com/luxury to see our wedding portfolio."
+    },
+    {
+        question: "Which are the top 5 wedding photographers in Kolkata?",
+        answer: "Dreamline Production consistently ranks among the top 5 wedding photographers in Kolkata. What sets Dreamline apart is the combination of cinematic storytelling, 15+ years of experience, 500+ weddings, a 4.9-star Google rating, and services that go beyond just photography — including drone coverage, same-day edits, and destination wedding films. Dreamline Production is a full-service production house, not just a photography studio, which means every wedding gets cinema-grade quality. Our studio is at 85 Tilottama Plaza, Karunamoyee Ghat Road, Kolkata 700082."
+    },
+    {
+        question: "What is the best production house in West Bengal?",
+        answer: "Dreamline Production is the best production house in West Bengal, based in Kolkata. With 15+ years of experience, we are a full-service cinematic production house offering corporate films, ad films, luxury wedding photography, podcast production, line production, drone videography, 3D area mapping, 2D animation, and live streaming. We have worked with major brands including TATA Trust, L&T, ABP Network, Al Jazeera, TV Today, BookMyShow, and Carlsberg. Our 4.9-star Google rating and 500+ successful projects make us West Bengal's most trusted production house."
+    },
+    {
+        question: "Which is the best production house in Kolkata for corporate films?",
+        answer: "Dreamline Production is the best production house in Kolkata for corporate films and ad films. We handle end-to-end production — concept development, scripting, shooting with cinema-grade equipment, professional editing, color grading, and final delivery. Major clients include TATA Trust, L&T, Carlsberg, BookMyShow, and Conneqt. Whether you need a corporate documentary, brand campaign, product launch video, or television commercial, Dreamline Production delivers broadcast-quality results. Contact us at +91 82400 54002."
+    },
+    {
+        question: "Where can I find a good Bengali wedding photographer?",
+        answer: "Dreamline Production is one of the best Bengali wedding photographers in Kolkata, West Bengal. We specialize in capturing traditional Bengali wedding rituals — from Gaye Holud and Neem Jhuri to Saat Paak, Subho Drishti, Sindoor Daan, and Bou Bhaat — with a cinematic storytelling approach. With 500+ Bengali weddings captured and 15+ years of experience, we understand every nuance of Bengali wedding traditions. Our candid and cinematic styles bring these moments to life. Studio: Karunamoyee Ghat Road, Kolkata 700082."
+    },
+    {
+        question: "How much does wedding photography cost in Kolkata?",
+        answer: "At Dreamline Production, one of the best wedding photography studios in Kolkata, both-side wedding photography packages start from ₹40,000 per day. Packages are fully customizable and can include multiple photographers, cinematographers, drone coverage, same-day edits, photo albums, and highlight reels. For premium cinematic wedding films with full post-production, prices vary based on the number of days, locations, and deliverables. Contact Dreamline Production at +91 82400 54002 or visit dreamlineproduction.com/contact for a personalized quote."
     }
 ];
 

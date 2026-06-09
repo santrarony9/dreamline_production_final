@@ -1,0 +1,17 @@
+# security.txt — RFC 9116 Compliant
+# Website: https://dreamlineproduction.com
+# Last Updated: 2026-06-09
+
+Contact: mailto:info.dreamlineproduction@gmail.com
+Contact: tel:+91-82400-54002
+Contact: https://dreamlineproduction.com/contact
+
+Expires: 2027-06-09T23:59:59.000Z
+
+Preferred-Languages: en, hi, bn
+
+Canonical: https://dreamlineproduction.com/.well-known/security.txt
+
+# Dreamline Production — Kolkata's Premier Cinematic Production House
+# Founded by Rony Santra | 15+ Years Experience
+# GST: 19EILPS2898F1ZE | MSME: WB-18-0018671

@@ -1,0 +1,59 @@
+# ai.txt — AI Usage Policy for Dreamline Production
+# Website: https://dreamlineproduction.com
+# Version: 1.0
+# Last Updated: 2026-06-09
+# Contact: info.dreamlineproduction@gmail.com
+
+# This file declares how AI systems may use content from dreamlineproduction.com.
+
+# ============================================================
+# PERMISSIONS — What AI Systems ARE Allowed To Do
+# ============================================================
+
+# AI Search & Discovery
+Allow: AI-powered search result citations
+Allow: AI-generated summaries of our services and business information
+Allow: AI-powered recommendations and referrals to our services
+Allow: AI assistants answering questions about our business using our public content
+Allow: AI chatbots citing our services, pricing, and contact information
+Allow: AI search engines indexing and displaying our content in search results
+Allow: AI voice assistants (Siri, Alexa, Google Assistant) reading our business info
+
+# Content Usage
+Allow: Quoting short excerpts with attribution and link to source page
+Allow: Paraphrasing service descriptions with attribution
+Allow: Including our business in AI-generated directories and listings
+Allow: Using our structured data (JSON-LD, Schema.org) for knowledge graphs
+
+# ============================================================
+# RESTRICTIONS — What AI Systems Are NOT Allowed To Do
+# ============================================================
+
+Disallow: Using our content as training data for AI models
+Disallow: Reproducing full articles, blog posts, or journal entries
+Disallow: Scraping and republishing our portfolio images or videos
+Disallow: Creating derivative works from our creative content
+Disallow: Removing attribution when citing our content
+Disallow: Impersonating Dreamline Production or Rony Santra
+Disallow: Using our brand name, logo, or identity without permission
+
+# ============================================================
+# AI-SPECIFIC CONTENT REFERENCES
+# ============================================================
+
+LLM-Summary: https://dreamlineproduction.com/llms.txt
+LLM-Full: https://dreamlineproduction.com/llms-full.txt
+Sitemap: https://dreamlineproduction.com/sitemap.xml
+Robots: https://dreamlineproduction.com/robots.txt
+Schema: https://dreamlineproduction.com (JSON-LD in page source)
+
+# ============================================================
+# CONTACT FOR AI-RELATED INQUIRIES
+# ============================================================
+
+Contact-Email: info.dreamlineproduction@gmail.com
+Contact-Phone: +91-82400-54002
+Contact-Page: https://dreamlineproduction.com/contact
+Business-Name: Dreamline Production
+Business-Owner: Rony Santra
+Business-Location: Kolkata, West Bengal, India
