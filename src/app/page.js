@@ -227,14 +227,6 @@ export default async function Home() {
             }
           ]
         },
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "bestRating": "5",
-          "worstRating": "1",
-          "ratingCount": "150",
-          "reviewCount": "150"
-        },
         "knowsAbout": [
           "Best Wedding Photography in Kolkata",
           "Top 5 Wedding Photographers Kolkata",
