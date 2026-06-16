@@ -38,7 +38,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {filteredProjects.map((project) => {
+                    {filteredProjects.map((project, index) => {
                         const isWedding = project.type === "wedding";
                         const CardWrapper = isWedding ? Link : "div";
                         const wrapperProps = isWedding 
@@ -65,6 +65,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                             src={project.coverImage || project.img || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}
                                             alt={project.title}
                                             fill
+                                            priority={index < 4}
                                             className="object-cover filter grayscale-[30%] brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />
