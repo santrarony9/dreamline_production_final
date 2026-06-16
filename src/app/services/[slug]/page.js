@@ -11,8 +11,18 @@ export async function generateMetadata({ params }) {
     await dbConnect();
     const { slug } = await params;
     const page = await ServicePage.findOne({ slug }).lean();
-    const title = page?.title || "Service";
-    const description = page?.description || "Professional cinematic production services in Kolkata.";
+    
+    if (!page) {
+        const formattedSlug = slug.replace(/-/g, ' ');
+        return {
+            title: `${formattedSlug} - Coming Soon`,
+            description: `The cinematic experience for ${formattedSlug} is currently being mastered.`,
+            robots: { index: false, follow: false }
+        };
+    }
+
+    const title = page.title;
+    const description = page.description || "Professional cinematic production services in Kolkata.";
     return {
         title: title,
         description: description,

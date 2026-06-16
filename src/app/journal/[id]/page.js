@@ -18,13 +18,17 @@ export async function generateMetadata({ params }) {
         } else {
             post = await Journal.findOne({ id: id }).lean();
         }
-        if (!post) return {};
+        if (!post) return {
+            title: 'Journal Post Not Found',
+            description: 'This journal post could not be found.',
+            robots: { index: false, follow: false }
+        };
 
         // Extract a short description from the HTML content if no plain description exists
-        const plainTextDesc = post.content ? post.content.replace(/<[^>]+>/g, '').substring(0, 150) + '...' : 'Read our latest insights on film and photography.';
+        const plainTextDesc = post.content ? post.content.replace(/<[^>]+>/g, '').substring(0, 150) + '...' : `Read our latest insights about ${post.title}.`;
 
         return {
-            title: `${post.title} | Dreamline Production Kolkata`,
+            title: post.title,
             description: post.excerpt || plainTextDesc,
             openGraph: {
                 title: post.title,
