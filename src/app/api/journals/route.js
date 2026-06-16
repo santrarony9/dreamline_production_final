@@ -41,12 +41,20 @@ export async function POST(request) {
 
     await dbConnect();
     const data = await request.json();
-    const post = await Journal.create(data);
+    
+    let post;
+    if (data.id) {
+        post = await Journal.findOneAndUpdate({ id: data.id }, data, { new: true, upsert: true });
+    } else {
+        post = await Journal.create(data);
+    }
 
     // Automation Trigger: Send to Google Business Profile via Webhook
     if (process.env.AUTOMATION_WEBHOOK_URL) {
         try {
             const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
+            const postObj = post.toObject ? post.toObject() : post;
+            const slug = postObj.id || postObj._id.toString();
             await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -55,13 +63,15 @@ export async function POST(request) {
                     action: 'CREATE',
                     post: {
                         _id: post._id,
+                        id: slug,
                         title: post.title,
                         date: post.date,
                         category: post.category || "Wedding",
                         image: imageUrl,
                         summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
-                        publicUrl: `${PRODUCTION_URL}/journal/${post._id || post.id}`,
-                        excerpt: post.excerpt || stripHtml(post.content).substring(0, 300)
+                        publicUrl: `${PRODUCTION_URL}/journal/${slug}`,
+                        excerpt: post.excerpt || stripHtml(post.content).substring(0, 300),
+                        seo: post.seo || { title: "", description: "", keywords: "" }
                     }
                 })
             });
@@ -93,6 +103,8 @@ export async function PUT(request) {
         if (process.env.AUTOMATION_WEBHOOK_URL) {
             try {
                 const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
+                const postObj = post.toObject ? post.toObject() : post;
+                const slug = postObj.id || postObj._id.toString();
                 await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -101,13 +113,15 @@ export async function PUT(request) {
                         action: 'UPDATE',
                         post: {
                             _id: post._id,
+                            id: slug,
                             title: post.title,
                             date: post.date,
                             category: post.category || "Wedding",
                             image: imageUrl,
                             summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
-                            publicUrl: `${PRODUCTION_URL}/journal/${post._id || post.id}`,
-                            excerpt: post.excerpt || stripHtml(post.content).substring(0, 300)
+                            publicUrl: `${PRODUCTION_URL}/journal/${slug}`,
+                            excerpt: post.excerpt || stripHtml(post.content).substring(0, 300),
+                            seo: post.seo || { title: "", description: "", keywords: "" }
                         }
                     })
                 });

@@ -7,10 +7,29 @@ export async function generateMetadata() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
     const globalSeo = siteContent?.global?.seo || {};
+    const description = siteContent?.commercial?.hero?.description || "Elevating brands through cinematic narratives, high-fashion edits, and corporate documentaries.";
 
     return {
-        title: `Commercial Works | ${globalSeo.title || "Dreamline Production"}`,
-        description: siteContent?.commercial?.hero?.description || "Elevating brands through cinematic narratives, high-fashion edits, and corporate documentaries.",
+        title: "Commercial Photography & Films",
+        description: description,
+        alternates: {
+            canonical: 'https://dreamlineproduction.com/commercial',
+        },
+        openGraph: {
+            title: "Commercial Photography & Films",
+            description: description,
+            url: 'https://dreamlineproduction.com/commercial',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Commercial Photography & Films",
+            description: description,
+            images: ['/logo-banner.png'],
+        },
     };
 }
 

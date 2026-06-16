@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+
 import dbConnect from "@/lib/mongodb";
 import ServicePage from "@/models/ServicePage";
 import Content from "@/models/Content";
@@ -11,9 +11,29 @@ export async function generateMetadata({ params }) {
     await dbConnect();
     const { slug } = await params;
     const page = await ServicePage.findOne({ slug }).lean();
+    const title = page?.title || "Service";
+    const description = page?.description || "Professional cinematic production services in Kolkata.";
     return {
-        title: `${page?.title || "Service"} | Dreamline Production Kolkata`,
-        description: page?.description || "Professional cinematic production services in Kolkata.",
+        title: title,
+        description: description,
+        alternates: {
+            canonical: `https://dreamlineproduction.com/services/${slug}`,
+        },
+        openGraph: {
+            title: title,
+            description: description,
+            url: `https://dreamlineproduction.com/services/${slug}`,
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: title,
+            description: description,
+            images: ['/logo-banner.png'],
+        },
     };
 }
 

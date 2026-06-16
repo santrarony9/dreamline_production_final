@@ -2,10 +2,25 @@ import StructuredData from "@/components/seo/StructuredData";
 
 export async function generateMetadata() {
     return {
-        title: "FAQ — Frequently Asked Questions About Dreamline Production",
+        title: "Frequently Asked Questions",
         description: "Common questions about Dreamline Production's services — corporate films, wedding photography, podcast production, drone video, 3D mapping, 2D animation, line production, and news interviews in Kolkata.",
         alternates: {
             canonical: 'https://dreamlineproduction.com/faq',
+        },
+        openGraph: {
+            title: "Frequently Asked Questions",
+            description: "Common questions about Dreamline Production's services — corporate films, wedding photography, podcast production, drone video, 3D mapping, 2D animation, line production, and news interviews in Kolkata.",
+            url: 'https://dreamlineproduction.com/faq',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Frequently Asked Questions",
+            description: "Common questions about Dreamline Production's services — corporate films, wedding photography, podcast production, drone video, 3D mapping, 2D animation, line production, and news interviews in Kolkata.",
+            images: ['/logo-banner.png'],
         },
     };
 }

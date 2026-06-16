@@ -118,7 +118,7 @@ export default async function Home() {
         },
         "areaServed": [
           { "@type": "City", "name": "Kolkata" },
-          { "@type": "State", "name": "West Bengal" },
+          { "@type": "AdministrativeArea", "name": "West Bengal" },
           { "@type": "Country", "name": "India" },
           { "@type": "City", "name": "Howrah" },
           { "@type": "City", "name": "Salt Lake City" },
@@ -246,17 +246,6 @@ export default async function Home() {
           "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
           "opens": "09:00",
           "closes": "21:00"
-        }
-      }} />
-      <StructuredData data={{
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Dreamline Production",
-        "url": "https://dreamlineproduction.com",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://dreamlineproduction.com/journal?q={search_term_string}",
-          "query-input": "required name=search_term_string"
         }
       }} />
       <Hero content={homeData.hero} />

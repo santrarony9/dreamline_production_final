@@ -1,11 +1,29 @@
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
-export const dynamic = 'force-dynamic';
+
 
 export async function generateMetadata() {
     return {
-        title: "Company Details | Dreamline Production",
+        title: "Company Details & Registration",
         description: "Official registration, bank details, and certification information for Dreamline Production.",
+        alternates: {
+            canonical: 'https://dreamlineproduction.com/company-details',
+        },
+        openGraph: {
+            title: "Company Details & Registration",
+            description: "Official registration, bank details, and certification information for Dreamline Production.",
+            url: 'https://dreamlineproduction.com/company-details',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Company Details & Registration",
+            description: "Official registration, bank details, and certification information for Dreamline Production.",
+            images: ['/logo-banner.png'],
+        },
     };
 }
 

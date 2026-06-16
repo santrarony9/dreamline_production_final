@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import { notFound } from "next/navigation";
@@ -29,6 +29,15 @@ export async function generateMetadata({ params }) {
                 description: wedding.description || "A breathtaking luxury wedding documented with cinematic vision by Dreamline Production.",
                 images: wedding.coverImage || wedding.img ? [{ url: wedding.coverImage || wedding.img, width: 1200, height: 630 }] : [],
                 type: "video.movie",
+            },
+            alternates: {
+                canonical: `https://dreamlineproduction.com/wedding/${id}`,
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: `${wedding.title} | Luxury Wedding Film`,
+                description: wedding.description || `Experience the timeless elegance of ${wedding.title}.`,
+                images: wedding.coverImage || wedding.img ? [wedding.coverImage || wedding.img] : [],
             },
         };
     } catch (e) {

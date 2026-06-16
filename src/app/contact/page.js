@@ -5,15 +5,30 @@ import StructuredData from "@/components/seo/StructuredData";
 
 export async function generateMetadata() {
     return {
-        title: "Contact & Book — Dreamline Production Kolkata",
+        title: "Contact & Book Us",
         description: "Book your luxury wedding photography or commercial film project with Dreamline Production. Call +91 82400 54002 or visit our studio at Tilottama Plaza, Kolkata.",
         alternates: {
             canonical: 'https://dreamlineproduction.com/contact',
         },
+        openGraph: {
+            title: "Contact & Book Us",
+            description: "Book your luxury wedding photography or commercial film project with Dreamline Production. Call +91 82400 54002 or visit our studio at Tilottama Plaza, Kolkata.",
+            url: 'https://dreamlineproduction.com/contact',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Contact & Book Us",
+            description: "Book your luxury wedding photography or commercial film project with Dreamline Production. Call +91 82400 54002 or visit our studio at Tilottama Plaza, Kolkata.",
+            images: ['/logo-banner.png'],
+        },
     };
 }
 
-export const dynamic = 'force-dynamic';
+
 
 export default async function ContactPage() {
     let globalData = null;

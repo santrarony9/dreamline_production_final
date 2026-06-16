@@ -1,10 +1,11 @@
-export const dynamic = 'force-dynamic';
+
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { sanitizeHtml } from "@/lib/sanitize";
+import StructuredData from "@/components/seo/StructuredData";
 
 export async function generateMetadata({ params }) {
     await dbConnect();
@@ -37,7 +38,10 @@ export async function generateMetadata({ params }) {
                 title: post.title,
                 description: plainTextDesc,
                 images: post.image ? [post.image] : [],
-            }
+            },
+            alternates: {
+                canonical: `https://dreamlineproduction.com/journal/${id}`,
+            },
         };
     } catch (e) {
         return {};
@@ -63,6 +67,32 @@ export default async function JournalDetailPage({ params }) {
 
     return (
         <main className="bg-black pt-32 min-h-screen">
+            <StructuredData data={{
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              "headline": post.title,
+              "description": post.excerpt || post.content?.replace(/<[^>]+>/g, '').substring(0, 150),
+              "image": post.image || "https://dreamlineproduction.com/logo-banner.png",
+              "datePublished": post.date,
+              "dateModified": post.updatedAt || post.date,
+              "author": {
+                "@type": "Organization",
+                "name": "Dreamline Production",
+                "url": "https://dreamlineproduction.com"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "Dreamline Production",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://dreamlineproduction.com/logo.png"
+                }
+              },
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": `https://dreamlineproduction.com/journal/${id}`
+              }
+            }} />
             <section className="container mx-auto px-6 mb-16">
                 <Link href="/journal" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 hover:text-[#c5a059] transition-colors mb-10 group interactive">
                     <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

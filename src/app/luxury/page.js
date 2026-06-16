@@ -10,10 +10,29 @@ export async function generateMetadata() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
     const globalSeo = siteContent?.global?.seo || {};
+    const description = siteContent?.luxury?.hero?.description || "Specializing in luxury Bengali weddings and destination cinematic films across India.";
 
     return {
-        title: `Luxury Weddings | ${globalSeo.title || "Dreamline Production"}`,
-        description: siteContent?.luxury?.hero?.description || "Specializing in luxury Bengali weddings and destination cinematic films across India.",
+        title: "Luxury Wedding Photography Kolkata",
+        description: description,
+        alternates: {
+            canonical: 'https://dreamlineproduction.com/luxury',
+        },
+        openGraph: {
+            title: "Luxury Wedding Photography Kolkata",
+            description: description,
+            url: 'https://dreamlineproduction.com/luxury',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Luxury Wedding Photography Kolkata",
+            description: description,
+            images: ['/logo-banner.png'],
+        },
     };
 }
 

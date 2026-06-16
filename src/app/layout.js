@@ -1,5 +1,4 @@
 import { Instrument_Sans, Unbounded } from "next/font/google";
-export const dynamic = 'force-dynamic';
 import PublicLayoutWrapper from "@/components/PublicLayoutWrapper";
 import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/context/AuthProvider";
@@ -63,6 +62,7 @@ export async function generateMetadata() {
           }
         ],
         type: "website",
+        locale: 'en_IN',
       },
       twitter: {
         card: "summary_large_image",
@@ -83,9 +83,7 @@ export async function generateMetadata() {
           follow: true,
         },
       },
-      alternates: {
-        canonical: 'https://dreamlineproduction.com',
-      },
+
       verification: {
         google: siteContent?.global?.google?.searchConsoleId || "",
       },
@@ -101,7 +99,7 @@ export async function generateMetadata() {
     return {
       title: "Dreamline Production | Kolkata's Premier Photography & Cinematic Production House",
       description: "Dreamline Production is a premier photography and cinematic production house in Kolkata. 15+ years, 500+ weddings. Luxury wedding photography and commercial films across India.",
-      alternates: { canonical: 'https://dreamlineproduction.com' }
+
     };
   }
 }
@@ -131,7 +129,12 @@ export default async function RootLayout({ children }) {
       "name": "Dreamline Production",
       "description": seo.description || "Kolkata's premier photography and cinematic production house.",
       "publisher": { "@id": "https://dreamlineproduction.com/#organization" },
-      "inLanguage": "en-IN"
+      "inLanguage": "en-IN",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://dreamlineproduction.com/journal?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
     });
 
     // Schema 2: Organization — brand identity and social presence
@@ -212,7 +215,7 @@ export default async function RootLayout({ children }) {
       },
       "areaServed": [
         { "@type": "Country", "name": "India" },
-        { "@type": "State", "name": "West Bengal" },
+        { "@type": "AdministrativeArea", "name": "West Bengal" },
         { "@type": "City", "name": "Kolkata" },
         { "@type": "City", "name": "Howrah" },
         { "@type": "City", "name": "Salt Lake City" },

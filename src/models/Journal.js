@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const JournalSchema = new mongoose.Schema({
-    id: { type: String, unique: true },
+    id: { type: String, unique: true, sparse: true },
     title: String,
     date: String,
     category: String,

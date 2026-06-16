@@ -1,5 +1,17 @@
 import Link from "next/link";
 
+export const metadata = {
+    title: 'Refund Policy',
+    description: 'Refund and cancellation policy for Dreamline Production bookings — booking amounts, rescheduling, and quality guarantees.',
+    alternates: {
+        canonical: 'https://dreamlineproduction.com/refund-policy',
+    },
+    robots: {
+        index: false,
+        follow: true,
+    },
+};
+
 export default function RefundPolicy() {
     return (
         <main className="pt-40 pb-20 bg-black min-h-screen">

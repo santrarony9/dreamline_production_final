@@ -89,8 +89,9 @@ async function postToGBPDirect(post, log) {
     const accessToken = await getGBPAccessToken();
     log(`[GBP Direct] Access token obtained ✓`);
 
-    const postId = post._id?.toString() || post.id;
-    const publicUrl = `${SITE_URL}/journal/${postId}`;
+    const postObj = post.toObject ? post.toObject() : post;
+    const slug = postObj.id || postObj._id?.toString();
+    const publicUrl = `${SITE_URL}/journal/${slug}`;
     const summary = stripHtml(post.excerpt || post.content).substring(0, 1500) || post.title;
 
     // Build image URL via proxy for S3/Unsplash images
@@ -148,7 +149,9 @@ async function sendToWebhookFallback(post, log) {
     let imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
 
     const postSummary = stripHtml(post.excerpt || post.content).substring(0, 1500);
-    const publicUrl = `${SITE_URL}/journal/${post._id || post.id}`;
+    const postObj = post.toObject ? post.toObject() : post;
+    const slug = postObj.id || postObj._id?.toString();
+    const publicUrl = `${SITE_URL}/journal/${slug}`;
 
     const payload = {
         type: 'JOURNAL_POST',
@@ -159,13 +162,15 @@ async function sendToWebhookFallback(post, log) {
         url: publicUrl,
         post: {
             _id: post._id,
+            id: slug,
             title: post.title,
             date: post.date,
             category: post.category || "Wedding",
             image: imageUrl,
             summary: postSummary,
             publicUrl: publicUrl,
-            excerpt: post.excerpt || postSummary.substring(0, 300)
+            excerpt: post.excerpt || postSummary.substring(0, 300),
+            seo: post.seo || { title: "", description: "", keywords: "" }
         }
     };
 

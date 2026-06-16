@@ -1,5 +1,17 @@
 import Link from "next/link";
 
+export const metadata = {
+    title: 'Terms of Service',
+    description: 'Terms of service for Dreamline Production — production agreements, intellectual property, payment terms, and governing law.',
+    alternates: {
+        canonical: 'https://dreamlineproduction.com/terms',
+    },
+    robots: {
+        index: false,
+        follow: true,
+    },
+};
+
 export default function TermsOfService() {
     return (
         <main className="pt-40 pb-20 bg-black min-h-screen">

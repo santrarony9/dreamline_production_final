@@ -1,14 +1,29 @@
-export const dynamic = 'force-dynamic';
+
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import Link from "next/link";
 
 export async function generateMetadata() {
     return {
-        title: "Journal — Photography Insights & Cinematic Stories",
+        title: "Photography Journal & Stories",
         description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
         alternates: {
             canonical: 'https://dreamlineproduction.com/journal',
+        },
+        openGraph: {
+            title: "Photography Journal & Stories",
+            description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
+            url: 'https://dreamlineproduction.com/journal',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Photography Journal & Stories",
+            description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
+            images: ['/logo-banner.png'],
         },
     };
 }

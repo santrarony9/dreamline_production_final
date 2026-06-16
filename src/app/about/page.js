@@ -11,8 +11,26 @@ export async function generateMetadata() {
     const globalSeo = siteContent?.global?.seo || {};
 
     return {
-        title: `About Us | ${globalSeo.title || "Dreamline Production"}`,
+        title: "About Us — Kolkata's Premier Production House",
         description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
+        alternates: {
+            canonical: 'https://dreamlineproduction.com/about',
+        },
+        openGraph: {
+            title: "About Us — Kolkata's Premier Production House",
+            description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
+            url: 'https://dreamlineproduction.com/about',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "About Us — Kolkata's Premier Production House",
+            description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
+            images: ['/logo-banner.png'],
+        },
     };
 }
 

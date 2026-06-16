@@ -1,5 +1,17 @@
 import Link from "next/link";
 
+export const metadata = {
+    title: 'Privacy Policy',
+    description: 'Privacy policy for Dreamline Production — how we collect, use, and protect your personal information.',
+    alternates: {
+        canonical: 'https://dreamlineproduction.com/privacy-policy',
+    },
+    robots: {
+        index: false,
+        follow: true,
+    },
+};
+
 export default function PrivacyPolicy() {
     return (
         <main className="pt-40 pb-20 bg-black min-h-screen">
