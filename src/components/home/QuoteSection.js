@@ -42,20 +42,22 @@ export default function QuoteSection({ quote, backgroundImage }) {
                         "{quote || defaultQuote}"
                     </h2>
 
-                    {placeId && (
-                        <div className="flex flex-col items-center gap-3 pt-8 border-t border-white/10 max-w-xs mx-auto">
-                            <div className="flex gap-1">
-                                {[1, 2, 3, 4, 5].map((i) => (
-                                    <svg key={i} className="w-4 h-4 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                ))}
+                    <div className="min-h-[100px] flex justify-center w-full mt-8">
+                        {placeId && (
+                            <div className="flex flex-col items-center gap-3 pt-8 border-t border-white/10 max-w-xs mx-auto w-full">
+                                <div className="flex gap-1">
+                                    {[1, 2, 3, 4, 5].map((i) => (
+                                        <svg key={i} className="w-4 h-4 text-[#c5a059]" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    ))}
+                                </div>
+                                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c5a059] text-center">
+                                    Verified Google Business Rated 5.0
+                                </p>
                             </div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c5a059]">
-                                Verified Google Business Rated 5.0
-                            </p>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </motion.div>
             </div>
         </section>

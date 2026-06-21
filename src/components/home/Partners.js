@@ -36,10 +36,12 @@ export default function Partners({ partners = [] }) {
                         >
                             <div className="h-12 sm:h-16 w-32 sm:w-48 relative flex items-center justify-center transition-all duration-500 opacity-60 group-hover:opacity-100 transform group-hover:scale-110">
                                 {partner.image ? (
-                                    <img
+                                    <Image
                                         src={partner.image}
                                         alt={partner.name}
-                                        className="max-h-full max-w-full object-contain"
+                                        fill
+                                        sizes="(max-width: 640px) 128px, 192px"
+                                        className="object-contain"
                                     />
                                 ) : (
                                     <span className="text-white/40 font-black uppercase text-[10px] tracking-widest text-center">
