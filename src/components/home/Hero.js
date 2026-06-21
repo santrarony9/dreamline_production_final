@@ -43,8 +43,7 @@ export default function Hero({ content }) {
                         loop
                         muted
                         playsInline
-                        preload="auto"
-                        fetchPriority="high"
+                        preload="metadata"
                         controlsList="nodownload"
                         disablePictureInPicture
                         className="h-full w-full object-cover scale-110"

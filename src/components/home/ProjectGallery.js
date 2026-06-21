@@ -43,13 +43,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                         const CardWrapper = isWedding ? Link : "div";
                         const wrapperProps = isWedding 
                             ? { href: `/wedding/${project.id || project._id}`, "aria-label": `View wedding story ${project.title}` } 
-                            : { 
-                                onClick: () => openVideo(project.videoUrl, project.title), 
-                                "aria-label": `Play video ${project.title}`,
-                                role: "button",
-                                tabIndex: 0,
-                                onKeyDown: (e) => { if(e.key === 'Enter' || e.key === ' ') openVideo(project.videoUrl, project.title); }
-                              };
+                            : {}; // Removed onClick from wrapper
 
                         return (
                             <CardWrapper
@@ -57,6 +51,13 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                 {...wrapperProps}
                                 className="aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden relative group interactive block"
                             >
+                                {!isWedding && (
+                                    <button 
+                                        className="absolute inset-0 w-full h-full z-[50] opacity-0 cursor-pointer"
+                                        onClick={(e) => { e.preventDefault(); openVideo(project.videoUrl, project.title); }}
+                                        aria-label={`Play video ${project.title}`}
+                                    />
+                                )}
                                 <div className="absolute inset-0 w-full h-full overflow-hidden">
                                     <motion.div
                                         className="w-full h-full"
