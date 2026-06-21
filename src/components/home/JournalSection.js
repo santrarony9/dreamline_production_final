@@ -28,7 +28,7 @@ export default function JournalSection({ journals = [] }) {
                         <article key={index} className="group interactive">
                             <Link href={`/journal/${post.id}`} className="block overflow-hidden rounded-2xl mb-5 aspect-video relative">
                                 <Image
-                                    src={post.image}
+                                    src={post.image || "/logo-banner.jpg"}
                                     alt={post.title}
                                     fill
                                     className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
