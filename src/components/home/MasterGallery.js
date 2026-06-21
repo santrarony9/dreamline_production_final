@@ -53,7 +53,11 @@ export default function MasterGallery({ images = [] }) {
                                 layoutId={`gallery-img-${src}-${i}`}
                                 key={`c1-${i}`}
                                 onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-${i}` })}
-                                className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedImage({ src, id: `gallery-img-${src}-${i}` }); }}
+                                role="button"
+                                tabIndex={0}
+                                aria-label="View expanded image"
+                                className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
                                 <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
@@ -70,7 +74,11 @@ export default function MasterGallery({ images = [] }) {
                                 layoutId={`gallery-img-${src}-c2-${i}`}
                                 key={`c2-${i}`}
                                 onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-c2-${i}` })}
-                                className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedImage({ src, id: `gallery-img-${src}-c2-${i}` }); }}
+                                role="button"
+                                tabIndex={0}
+                                aria-label="View expanded image"
+                                className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
                                 <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
@@ -87,7 +95,11 @@ export default function MasterGallery({ images = [] }) {
                                 layoutId={`gallery-img-${src}-c3-${i}`}
                                 key={`c3-${i}`}
                                 onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-c3-${i}` })}
-                                className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer"
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedImage({ src, id: `gallery-img-${src}-c3-${i}` }); }}
+                                role="button"
+                                tabIndex={0}
+                                aria-label="View expanded image"
+                                className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
                                 <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
@@ -106,6 +118,11 @@ export default function MasterGallery({ images = [] }) {
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl cursor-pointer"
                         onClick={() => setSelectedImage(null)}
+                        onKeyDown={(e) => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') setSelectedImage(null); }}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Expanded image view"
+                        tabIndex={-1}
                         data-cursor="CLOSE"
                     >
                         <motion.img

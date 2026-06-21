@@ -40,20 +40,24 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredProjects.map((project, index) => {
                         const isWedding = project.type === "wedding";
-                        const CardWrapper = isWedding ? Link : "div";
-                        const wrapperProps = isWedding 
-                            ? { href: `/wedding/${project.id || project._id}`, "aria-label": `View wedding story ${project.title}` } 
-                            : {}; // Removed onClick from wrapper
+                        // Make wrapper always a layout div to prevent nested interactive elements
+                        const CardWrapper = "div";
 
                         return (
                             <CardWrapper
                                 key={project.id || project._id}
-                                {...wrapperProps}
                                 className="aspect-[4/5] bg-zinc-900 border border-white/5 overflow-hidden relative group interactive block"
                             >
-                                {!isWedding && (
+                                {/* The single interactive overlay for the entire card */}
+                                {isWedding ? (
+                                    <Link 
+                                        href={`/wedding/${project.id || project._id}`}
+                                        className="absolute inset-0 w-full h-full z-[50] cursor-pointer"
+                                        aria-label={`View wedding story ${project.title}`}
+                                    />
+                                ) : (
                                     <button 
-                                        className="absolute inset-0 w-full h-full z-[50] opacity-0 cursor-pointer"
+                                        className="absolute inset-0 w-full h-full z-[50] cursor-pointer"
                                         onClick={(e) => { e.preventDefault(); openVideo(project.videoUrl, project.title); }}
                                         aria-label={`Play video ${project.title}`}
                                     />
