@@ -43,6 +43,7 @@ export default function Hero({ content }) {
                         loop
                         muted
                         playsInline
+                        poster="/logo-banner.jpg"
                         preload="metadata"
                         controlsList="nodownload"
                         disablePictureInPicture

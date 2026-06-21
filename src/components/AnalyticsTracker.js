@@ -11,15 +11,17 @@ export default function AnalyticsTracker({ gaId, adsId, adsLabel }) {
 
     useEffect(() => {
         // Report view on route change to custom tracking
-        const reportView = async () => {
-            try {
-                await axios.post("/api/tracking/view", { 
-                    path: pathname,
-                    referrer: document.referrer 
-                });
-            } catch (err) {
-                // Silently fail
-            }
+        const reportView = () => {
+            setTimeout(async () => {
+                try {
+                    await axios.post("/api/tracking/view", { 
+                        path: pathname,
+                        referrer: document.referrer 
+                    });
+                } catch (err) {
+                    // Silently fail
+                }
+            }, 2500); // Defer by 2.5 seconds to prioritize FCP/LCP
         };
 
         // Also trigger GA pageview manually if GA is loaded
@@ -44,9 +46,9 @@ export default function AnalyticsTracker({ gaId, adsId, adsLabel }) {
                 <>
                     <Script
                         src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-                        strategy="afterInteractive"
+                        strategy="lazyOnload"
                     />
-                    <Script id="google-analytics" strategy="afterInteractive">
+                    <Script id="google-analytics" strategy="lazyOnload">
                         {`
                             window.dataLayer = window.dataLayer || [];
                             function gtag(){dataLayer.push(arguments);}
@@ -76,7 +78,7 @@ export default function AnalyticsTracker({ gaId, adsId, adsLabel }) {
 
             {/* Meta (Facebook) Pixel */}
             {fbPixelId && (
-                <Script id="facebook-pixel" strategy="afterInteractive">
+                <Script id="facebook-pixel" strategy="lazyOnload">
                     {`
                         !function(f,b,e,v,n,t,s)
                         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
