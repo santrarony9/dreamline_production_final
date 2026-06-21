@@ -13,6 +13,17 @@ export default function Navbar({ initialServices }) {
 
     const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
+    const getServiceLink = (service) => {
+        switch (service.category) {
+            case 'wedding': return '/luxury';
+            case 'commercial': return '/commercial';
+            case 'tech': return '/tech';
+            default: return `/services/${slugify(service.title || service.name || '')}`;
+        }
+    };
+
+    const getInitial = (title) => (title || 'S')[0].toUpperCase();
+
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [openSubMenu, setOpenSubMenu] = useState(null);
@@ -25,9 +36,7 @@ export default function Navbar({ initialServices }) {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    const weddingServices = services.filter(s => !s.category || s.category === "wedding");
-    const commercialServices = services.filter(s => s.category === "commercial");
-    const techServices = services.filter(s => s.category === "tech");
+
 
     return (
         <>
@@ -55,7 +64,7 @@ export default function Navbar({ initialServices }) {
                     
                     {/* SERVICES DROP */}
                     <div className="relative group/drop py-2">
-                        <button className="flex items-center gap-2 transition-colors uppercase">
+                        <button aria-label="Toggle services menu" className="flex items-center gap-2 transition-colors uppercase">
                             SERVICES
                             <svg className="w-2.5 h-2.5 opacity-40 group-hover/drop:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
@@ -64,40 +73,18 @@ export default function Navbar({ initialServices }) {
                         <div className="absolute top-full left-1/2 -translate-x-1/2 w-64 pt-6 opacity-0 translate-y-4 pointer-events-none group-hover/drop:opacity-100 group-hover/drop:translate-y-0 group-hover/drop:pointer-events-auto transition-all duration-500">
                             <div className="bg-black/95 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl text-left">
                                 <div className="grid gap-6">
-                                    <Link href="/luxury" className="flex items-center gap-4 group/item">
-                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors">
-                                            <span className="text-[10px] text-white group-hover/item:text-black">W</span>
-                                        </div>
-                                        <span className="text-[9px] group-hover:text-white">LUXURY WEDDINGS</span>
-                                    </Link>
-                                    <Link href="/commercial" className="flex items-center gap-4 group/item">
-                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors">
-                                            <span className="text-[10px] text-white group-hover/item:text-black">C</span>
-                                        </div>
-                                        <span className="text-[9px] group-hover:text-white">COMMERCIAL</span>
-                                    </Link>
-                                    <Link href="/tech" className="flex items-center gap-4 group/item">
-                                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors">
-                                            <span className="text-[10px] text-white group-hover/item:text-black">T</span>
-                                        </div>
-                                        <span className="text-[9px] group-hover:text-white">TECH</span>
-                                    </Link>
-                                    
-                                    {/* Other Dynamic Services */}
-                                    {services.length > 0 && (
-                                        <div className="pt-4 border-t border-white/5 space-y-3">
-                                            <span className="block text-[8px] text-gray-600 font-black tracking-widest uppercase">Other Solutions</span>
-                                            {services.filter(s => !['wedding', 'commercial', 'tech'].includes(s.category)).map((service, idx) => (
-                                                <Link
-                                                    key={idx}
-                                                    href={`/services/${slugify(service.title || service.name || '')}`}
-                                                    className="text-[9px] hover:text-[#c5a059] transition-colors block"
-                                                >
-                                                    {(service.title || service.name || '').toUpperCase()}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    )}
+                                    {services.map((service, idx) => (
+                                        <Link key={idx} href={getServiceLink(service)} className="flex items-center gap-4 group/item">
+                                            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover/item:bg-[#c5a059] transition-colors flex-shrink-0">
+                                                <span className="text-[10px] text-white group-hover/item:text-black">
+                                                    {getInitial(service.title || service.name)}
+                                                </span>
+                                            </div>
+                                            <span className="text-[9px] group-hover:text-white uppercase leading-tight">
+                                                {(service.title || service.name || '').toUpperCase()}
+                                            </span>
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -114,6 +101,7 @@ export default function Navbar({ initialServices }) {
                 {/* COLUMN 3: MOBILE BUTTON / DESKTOP PLACEHOLDER */}
                 <div className="flex justify-end">
                     <button
+                        aria-label="Toggle mobile menu"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
                         className="lg:hidden flex flex-col gap-1.5 relative z-[1001]"
                     >
@@ -145,25 +133,22 @@ export default function Navbar({ initialServices }) {
                     {/* Mobile Services */}
                     <div className="py-5 border-b border-white/5">
                         <button 
+                            aria-label="Toggle mobile services menu"
                             onClick={() => setOpenSubMenu(openSubMenu === 'services' ? null : 'services')}
                             className="w-full flex items-center justify-between font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors"
                         >
                             SERVICES
-                            <svg className={`w-6 h-6 transition-transform duration-300 ${openSubMenu === 'services' ? 'rotate-180 text-[#c5a059]' : 'text-white/40'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className={`w-6 h-6 transition-transform duration-300 ${openSubMenu === 'services' ? 'rotate-180 text-[#c5a059]' : 'text-white/60'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
                         <div className={`grid overflow-hidden transition-all duration-500 ${openSubMenu === 'services' ? 'grid-rows-[1fr] opacity-100 mt-6' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
                             <div className="overflow-hidden flex flex-col gap-5 pl-4 border-l-2 border-[#c5a059]/30">
-                                <Link onClick={() => setIsMenuOpen(false)} href="/luxury" className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase">LUXURY WEDDINGS</Link>
-                                <Link onClick={() => setIsMenuOpen(false)} href="/commercial" className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase">COMMERCIAL</Link>
-                                <Link onClick={() => setIsMenuOpen(false)} href="/tech" className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase">TECH</Link>
-                                
-                                {services.filter(s => !['wedding', 'commercial', 'tech'].includes(s.category)).map((service, idx) => (
+                                {services.map((service, idx) => (
                                     <Link
                                         key={idx}
                                         onClick={() => setIsMenuOpen(false)}
-                                        href={`/services/${slugify(service.title || service.name || '')}`}
+                                        href={getServiceLink(service)}
                                         className="text-[11px] font-black tracking-widest text-gray-400 hover:text-white transition-colors uppercase"
                                     >
                                         {(service.title || service.name || '').toUpperCase()}

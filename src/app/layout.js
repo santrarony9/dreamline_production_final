@@ -10,11 +10,13 @@ import "./globals.css";
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-instrument-sans",
+  display: "swap",
 });
 
 const unbounded = Unbounded({
   subsets: ["latin"],
   variable: "--font-unbounded",
+  display: "swap",
 });
 
 import dbConnect from "@/lib/mongodb";

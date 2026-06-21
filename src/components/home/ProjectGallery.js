@@ -42,8 +42,14 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                         const isWedding = project.type === "wedding";
                         const CardWrapper = isWedding ? Link : "div";
                         const wrapperProps = isWedding 
-                            ? { href: `/wedding/${project.id || project._id}` } 
-                            : { onClick: () => openVideo(project.videoUrl, project.title) };
+                            ? { href: `/wedding/${project.id || project._id}`, "aria-label": `View wedding story ${project.title}` } 
+                            : { 
+                                onClick: () => openVideo(project.videoUrl, project.title), 
+                                "aria-label": `Play video ${project.title}`,
+                                role: "button",
+                                tabIndex: 0,
+                                onKeyDown: (e) => { if(e.key === 'Enter' || e.key === ' ') openVideo(project.videoUrl, project.title); }
+                              };
 
                         return (
                             <CardWrapper

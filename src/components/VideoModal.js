@@ -75,9 +75,12 @@ export default function VideoModal() {
         <div
             className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-500"
             onClick={handleClose}
+            role="dialog"
+            aria-modal="true"
         >
             {/* Highly visible, premium, laptop-friendly close button */}
             <button
+                aria-label="Close video player"
                 className="absolute top-6 right-6 md:top-10 md:right-10 flex items-center gap-3 bg-black/60 hover:bg-black/90 border border-white/10 px-5 py-2.5 rounded-full text-white text-xs font-black uppercase tracking-widest hover:text-[#c5a059] transition-all z-50 group backdrop-blur-md shadow-2xl interactive"
                 onClick={handleClose}
             >
