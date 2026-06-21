@@ -66,6 +66,17 @@ export default function MotionGallery({
                         ))}
                     </div>
                 </div>
+
+                {/* Mobile swipe hint */}
+                <div className="flex md:hidden items-center justify-center gap-2 mt-4 opacity-40">
+                    <svg className="w-4 h-4 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                    </svg>
+                    <span className="text-[9px] font-black uppercase tracking-widest text-white">Swipe to explore</span>
+                    <svg className="w-4 h-4 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </div>
             </div>
         </section>
     );

@@ -51,7 +51,7 @@ export default function VideoVault({
                     {displayVideos.map((video, index) => (
                         <div
                             key={index}
-                            className="aspect-[9/16] md:aspect-video relative group overflow-hidden cursor-none interactive bg-neutral-900"
+                            className="aspect-[4/5] md:aspect-video relative group overflow-hidden cursor-none interactive bg-neutral-900"
                             onClick={() => openVideo(video.videoUrl, video.title)}
                         >
                             {video.image ? (
@@ -82,17 +82,17 @@ export default function VideoVault({
                             )}
 
                             {/* Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-90 transition-opacity p-8 flex flex-col justify-end">
-                                <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 md:opacity-60 group-hover:opacity-90 transition-opacity p-8 flex flex-col justify-end">
+                                <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                     {video.category}
                                 </p>
-                                <h3 className="text-white font-heading text-2xl font-black uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                                <h3 className="text-white font-heading text-2xl font-black uppercase transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
                                     {video.title}
                                 </h3>
                             </div>
 
                             {/* Play Button Icon */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm opacity-70 md:opacity-0 group-hover:opacity-100 transition-all duration-500 scale-100 md:scale-75 group-hover:scale-100">
                                 <svg className="w-6 h-6 fill-white" viewBox="0 0 24 24">
                                     <path d="M8 5v14l11-7z" />
                                 </svg>

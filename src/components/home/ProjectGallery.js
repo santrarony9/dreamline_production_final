@@ -74,7 +74,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
 
-                                <div className="absolute inset-0 p-10 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <div className="absolute inset-0 p-10 flex flex-col justify-end transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                     <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-[0.3em] mb-4">
                                         {project.type}
                                     </p>
@@ -82,7 +82,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                         {project.title}
                                     </h3>
 
-                                    <div className="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex items-center gap-3 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
                                         <div className="w-10 h-10 rounded-full border border-[#c5a059] flex items-center justify-center bg-[#c5a059]/10">
                                             {isWedding ? (
                                                 <svg className="w-4 h-4 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

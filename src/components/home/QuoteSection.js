@@ -25,7 +25,7 @@ export default function QuoteSection({ quote, backgroundImage }) {
 
     return (
         <section
-            className="relative py-12 md:py-24 flex items-center justify-center border-t border-white/5 bg-fixed bg-center bg-cover bg-no-repeat"
+            className="relative py-12 md:py-24 flex items-center justify-center border-t border-white/5 bg-scroll md:bg-fixed bg-center bg-cover bg-no-repeat"
             style={{
                 backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("${backgroundImage || defaultBg}")`
             }}

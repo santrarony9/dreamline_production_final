@@ -24,11 +24,11 @@ export default function ServicesCategories({ services }) {
                                 
                                 {/* SUBCATEGORIES LIST */}
                                 {srv.subcategories && srv.subcategories.length > 0 && (
-                                    <div className="flex flex-wrap gap-2 md:pl-20 mt-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                    <div className="flex flex-wrap gap-2 md:pl-20 mt-2 opacity-80 md:opacity-50 group-hover:opacity-100 transition-opacity">
                                         {srv.subcategories.map((sub, idx) => {
                                             const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                                             return (
-                                                <a href={`/services/${slugify(sub)}`} key={idx} className="text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
+                                                <a href={`/services/${slugify(sub)}`} key={idx} className="text-[10px] md:text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1.5 md:py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
                                                     {sub}
                                                 </a>
                                             );
@@ -36,7 +36,7 @@ export default function ServicesCategories({ services }) {
                                     </div>
                                 )}
                             </div>
-                            <div className="mt-6 md:mt-0 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                            <div className="mt-6 md:mt-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                                 <p className="text-xs text-[#c5a059] uppercase font-bold">{srv.priceHint}</p>
                             </div>
                         </div>

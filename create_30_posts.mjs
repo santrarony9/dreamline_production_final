@@ -292,9 +292,13 @@ async function main() {
             };
 
             try {
-                const created = await Journal.create(postData);
+                const created = await Journal.findOneAndUpdate(
+                    { title: postData.title },
+                    { $set: postData },
+                    { upsert: true, new: true }
+                );
                 successCount++;
-                console.log(`✅ [${successCount}/30] Created: "${postData.title}" → Scheduled: ${postData.date}`);
+                console.log(`✅ [${successCount}/30] Upserted (Created/Updated): "${postData.title}"`);
             } catch (err) {
                 failCount++;
                 console.error(`❌ [FAILED] "${postData.title}": ${err.message}`);

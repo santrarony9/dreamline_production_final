@@ -6,7 +6,7 @@ export default function JournalSection({ journals = [] }) {
     return (
         <section className="py-20 bg-[#050505] border-t border-white/5">
             <div className="container mx-auto px-6">
-                <div className="flex justify-between items-end mb-12">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
                     <div className="max-w-xl">
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
                             LATEST INSIGHTS
@@ -17,7 +17,7 @@ export default function JournalSection({ journals = [] }) {
                     </div>
                     <Link
                         href="/journal"
-                        className="text-[10px] font-black uppercase tracking-widest text-[#c5a059] border-b border-[#c5a059] pb-2 hover:text-white hover:border-white transition-all interactive"
+                        className="text-[10px] font-black uppercase tracking-widest text-[#c5a059] border-b border-[#c5a059] pb-2 hover:text-white hover:border-white transition-all interactive flex-shrink-0"
                     >
                         View All
                     </Link>
