@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 
 export default function Partners({ partners = [] }) {
@@ -18,17 +15,8 @@ export default function Partners({ partners = [] }) {
             </div>
 
             <div className="relative flex overflow-hidden">
-                <motion.div
-                    animate={{
-                        x: ["0%", "-50%"],
-                    }}
-                    transition={{
-                        duration: 60,
-                        ease: "linear",
-                        repeat: Infinity,
-                    }}
-                    className="flex whitespace-nowrap gap-12 items-center"
-                >
+                {/* Pure CSS animation instead of framer-motion to reduce JS bundle */}
+                <div className="brand-track flex whitespace-nowrap gap-12 items-center" style={{ animationDuration: '60s' }}>
                     {displayPartners.map((partner, i) => (
                         <div
                             key={i}
@@ -51,7 +39,7 @@ export default function Partners({ partners = [] }) {
                             </div>
                         </div>
                     ))}
-                </motion.div>
+                </div>
 
                 {/* Gradient Overlays for smooth fade */}
                 <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent z-10" />

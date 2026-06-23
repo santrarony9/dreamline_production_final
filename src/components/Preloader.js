@@ -13,7 +13,7 @@ export default function Preloader() {
                     clearInterval(interval);
                     setTimeout(() => {
                         setIsLoading(false);
-                    }, 1200); // Wait for transition
+                    }, 500); // Short transition
                     return 100;
                 }
                 return prev + Math.floor(Math.random() * 15) + 5;
@@ -31,11 +31,11 @@ export default function Preloader() {
             window.addEventListener('load', handleLoad);
         }
 
-        // Fail-safe: never show loader for more than 3 seconds
+        // Fail-safe: never show loader for more than 1.5 seconds
         const failSafe = setTimeout(() => {
             setProgress(100);
-            setTimeout(() => setIsLoading(false), 1200);
-        }, 3000);
+            setTimeout(() => setIsLoading(false), 500);
+        }, 1500);
 
         return () => {
             clearInterval(interval);

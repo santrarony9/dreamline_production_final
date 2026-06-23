@@ -2,21 +2,38 @@
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import Wedding from "@/models/Wedding";
+import dynamic from "next/dynamic";
 
+// Above-the-fold: static imports (needed immediately)
 import Hero from "@/components/home/Hero";
 import Marquee from "@/components/home/Marquee";
 import Stats from "@/components/home/Stats";
 import Expertise from "@/components/home/Expertise";
-import MotionGallery from "@/components/home/MotionGallery";
-import ProjectGallery from "@/components/home/ProjectGallery";
-import ReviewSlider from "@/components/home/ReviewSlider";
 import ServicesCategories from "@/components/home/ServicesCategories";
 import QuoteSection from "@/components/home/QuoteSection";
-import VideoVault from "@/components/home/VideoVault";
-import JournalSection from "@/components/home/JournalSection";
-import MasterGallery from "@/components/home/MasterGallery";
 import LetsCreate from "@/components/home/LetsCreate";
 import Partners from "@/components/home/Partners";
+
+// Below-the-fold: dynamic imports to reduce initial JS bundle (TBT optimization)
+// Each has a fixed-height skeleton to prevent CLS
+const MotionGallery = dynamic(() => import("@/components/home/MotionGallery"), {
+    loading: () => <div className="py-32 bg-black" aria-hidden="true" />,
+});
+const VideoVault = dynamic(() => import("@/components/home/VideoVault"), {
+    loading: () => <div className="py-32 bg-black" aria-hidden="true" />,
+});
+const MasterGallery = dynamic(() => import("@/components/home/MasterGallery"), {
+    loading: () => <div className="py-32 bg-[#050505]" aria-hidden="true" />,
+});
+const ProjectGallery = dynamic(() => import("@/components/home/ProjectGallery"), {
+    loading: () => <div className="py-32 bg-[#050505]" aria-hidden="true" />,
+});
+const JournalSection = dynamic(() => import("@/components/home/JournalSection"), {
+    loading: () => <div className="py-20 bg-[#050505]" aria-hidden="true" />,
+});
+const ReviewSlider = dynamic(() => import("@/components/home/ReviewSlider"), {
+    loading: () => <div className="py-32 bg-[#050505]" aria-hidden="true" />,
+});
 
 import Journal from "@/models/Journal";
 import StructuredData from "@/components/seo/StructuredData";
