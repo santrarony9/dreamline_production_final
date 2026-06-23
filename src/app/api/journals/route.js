@@ -52,29 +52,37 @@ export async function POST(request) {
     // Automation Trigger: Send to Google Business Profile via Webhook
     if (process.env.AUTOMATION_WEBHOOK_URL) {
         try {
-            const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
-            const postObj = post.toObject ? post.toObject() : post;
-            const slug = postObj.id || postObj._id.toString();
-            await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    type: 'JOURNAL_POST',
-                    action: 'CREATE',
-                    post: {
-                        _id: post._id,
-                        id: slug,
-                        title: post.title,
-                        date: post.date,
-                        category: post.category || "Wedding",
-                        image: imageUrl,
-                        summary: stripHtml(post.excerpt || post.content).substring(0, 1500),
-                        publicUrl: `${PRODUCTION_URL}/journal/${slug}`,
-                        excerpt: post.excerpt || stripHtml(post.content).substring(0, 300),
-                        seo: post.seo || { title: "", description: "", keywords: "" }
-                    }
-                })
-            });
+            // Validate: Skip webhook if essential data is missing
+            if (!post.title || post.title.trim() === '') {
+                console.warn("Webhook skipped: Post has no title, _id:", post._id);
+            } else {
+                const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
+                const postObj = post.toObject ? post.toObject() : post;
+                const slug = postObj.id || postObj._id.toString();
+                const summaryText = stripHtml(post.excerpt || post.content).substring(0, 1500) || post.title;
+                const excerptText = post.excerpt || stripHtml(post.content).substring(0, 300) || post.title;
+
+                await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        type: 'JOURNAL_POST',
+                        action: 'CREATE',
+                        post: {
+                            _id: post._id,
+                            id: slug,
+                            title: post.title,
+                            date: post.date || new Date().toISOString().split('T')[0],
+                            category: post.category || "Wedding",
+                            image: imageUrl,
+                            summary: summaryText,
+                            publicUrl: `${PRODUCTION_URL}/journal/${slug}`,
+                            excerpt: excerptText,
+                            seo: post.seo || { title: "", description: "", keywords: "" }
+                        }
+                    })
+                });
+            }
         } catch (e) {
             console.error("Automation Trigger Failed:", e.message);
         }
