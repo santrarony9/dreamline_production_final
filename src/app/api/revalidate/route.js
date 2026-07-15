@@ -2,7 +2,7 @@ import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -28,7 +28,6 @@ export async function POST(request) {
         console.log("Revalidated path:", path);
         return NextResponse.json({ revalidated: true, path });
     } catch (error) {
-        console.error("Revalidation error:", error);
-        return NextResponse.json({ error: "Revalidation failed: " + error.message }, { status: 500 });
+        return safeErrorResponse(error, "Revalidation");
     }
 }

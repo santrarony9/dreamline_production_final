@@ -12,6 +12,52 @@ export async function GET(request, { params }) {
             return new NextResponse('Missing url parameter', { status: 400 });
         }
         
+        // Domain allowlist
+        const ALLOWED_DOMAINS = [
+            "dreamlinepro.s3.ap-south-2.amazonaws.com",
+            "dreamlinepro.s3.amazonaws.com",
+            "images.unsplash.com",
+            "lh3.googleusercontent.com",
+            "maps.googleapis.com",
+        ];
+
+        try {
+            const parsedUrl = new URL(imageUrl);
+
+            // Block non-HTTPS
+            if (parsedUrl.protocol !== "https:") {
+                return new NextResponse("Only HTTPS URLs allowed", { status: 400 });
+            }
+
+            // Check domain allowlist
+            const isAllowed = ALLOWED_DOMAINS.some(
+                (domain) =>
+                    parsedUrl.hostname === domain ||
+                    parsedUrl.hostname.endsWith("." + domain)
+            );
+
+            if (!isAllowed) {
+                return new NextResponse("Domain not allowed", { status: 403 });
+            }
+
+            // Block private IPs
+            const blockedPatterns = [
+                /^localhost$/i,
+                /^127\./,
+                /^10\./,
+                /^172\.(1[6-9]|2\d|3[01])\./,
+                /^192\.168\./,
+                /^169\.254\./,
+                /^0\./,
+                /^\[::1\]/,
+            ];
+            if (blockedPatterns.some((p) => p.test(parsedUrl.hostname))) {
+                return new NextResponse("Blocked", { status: 403 });
+            }
+        } catch (e) {
+            return new NextResponse("Invalid URL", { status: 400 });
+        }
+        
         console.log(`[ImageProxy] Fetching image: ${imageUrl}`);
         
         // Fetch the raw image

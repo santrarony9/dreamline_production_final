@@ -6,6 +6,7 @@ import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 const FALLBACK_IMAGE = "https://dreamlinepro.s3.ap-south-2.amazonaws.com/1778664039968-apipu-MKS_2044.JPG";
 const PRODUCTION_URL = "https://dreamlineproduction.com";
@@ -35,61 +36,72 @@ export async function GET() {
     return NextResponse.json(journals);
 }
 
+const ALLOWED_JOURNAL_FIELDS = ["id", "title", "date", "category", "image", "content", "excerpt", "seo", "featured", "status"];
+
 export async function POST(request) {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    await dbConnect();
-    const data = await request.json();
-    
-    let post;
-    if (data.id) {
-        post = await Journal.findOneAndUpdate({ id: data.id }, data, { new: true, upsert: true });
-    } else {
-        post = await Journal.create(data);
-    }
-
-    // Automation Trigger: Send to Google Business Profile via Webhook
-    if (process.env.AUTOMATION_WEBHOOK_URL) {
-        try {
-            // Validate: Skip webhook if essential data is missing
-            if (!post.title || post.title.trim() === '') {
-                console.warn("Webhook skipped: Post has no title, _id:", post._id);
-            } else {
-                const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
-                const postObj = post.toObject ? post.toObject() : post;
-                const slug = postObj.id || postObj._id.toString();
-                const summaryText = stripHtml(post.excerpt || post.content).substring(0, 1500) || post.title;
-                const excerptText = post.excerpt || stripHtml(post.content).substring(0, 300) || post.title;
-
-                await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'JOURNAL_POST',
-                        action: 'CREATE',
-                        post: {
-                            _id: post._id,
-                            id: slug,
-                            title: post.title,
-                            date: post.date || new Date().toISOString().split('T')[0],
-                            category: post.category || "Wedding",
-                            image: imageUrl,
-                            summary: summaryText,
-                            publicUrl: `${PRODUCTION_URL}/journal/${slug}`,
-                            excerpt: excerptText,
-                            seo: post.seo || { title: "", description: "", keywords: "" }
-                        }
-                    })
-                });
-            }
-        } catch (e) {
-            console.error("Automation Trigger Failed:", e.message);
+        await dbConnect();
+        const data = await request.json();
+        
+        const sanitizedData = {};
+        for (const key of ALLOWED_JOURNAL_FIELDS) {
+            if (data[key] !== undefined) sanitizedData[key] = data[key];
         }
-    }
 
-    try { revalidatePath("/"); revalidatePath("/journal"); } catch(e) {}
-    return NextResponse.json(post);
+        let post;
+        if (sanitizedData.id) {
+            post = await Journal.findOneAndUpdate({ id: sanitizedData.id }, sanitizedData, { new: true, upsert: true });
+        } else {
+            post = await Journal.create(sanitizedData);
+        }
+
+        // Automation Trigger: Send to Google Business Profile via Webhook
+        if (process.env.AUTOMATION_WEBHOOK_URL) {
+            try {
+                // Validate: Skip webhook if essential data is missing
+                if (!post.title || post.title.trim() === '') {
+                    console.warn("Webhook skipped: Post has no title, _id:", post._id);
+                } else {
+                    const imageUrl = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
+                    const postObj = post.toObject ? post.toObject() : post;
+                    const slug = postObj.id || postObj._id.toString();
+                    const summaryText = stripHtml(post.excerpt || post.content).substring(0, 1500) || post.title;
+                    const excerptText = post.excerpt || stripHtml(post.content).substring(0, 300) || post.title;
+
+                    await fetch(process.env.AUTOMATION_WEBHOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            type: 'JOURNAL_POST',
+                            action: 'CREATE',
+                            post: {
+                                _id: post._id,
+                                id: slug,
+                                title: post.title,
+                                date: post.date || new Date().toISOString().split('T')[0],
+                                category: post.category || "Wedding",
+                                image: imageUrl,
+                                summary: summaryText,
+                                publicUrl: `${PRODUCTION_URL}/journal/${slug}`,
+                                excerpt: excerptText,
+                                seo: post.seo || { title: "", description: "", keywords: "" }
+                            }
+                        })
+                    });
+                }
+            } catch (e) {
+                console.error("Automation Trigger Failed:", e.message);
+            }
+        }
+
+        try { revalidatePath("/"); revalidatePath("/journal"); } catch(e) {}
+        return NextResponse.json(post);
+    } catch (error) {
+        return safeErrorResponse(error, "Journal POST");
+    }
 }
 
 export async function PUT(request) {
@@ -99,9 +111,15 @@ export async function PUT(request) {
 
         await dbConnect();
         const data = await request.json();
-        const { _id, id, ...updateData } = data;
+        
+        const sanitizedData = {};
+        for (const key of ALLOWED_JOURNAL_FIELDS) {
+            if (data[key] !== undefined) sanitizedData[key] = data[key];
+        }
+        
+        const targetId = data._id || data.id;
 
-        const post = await Journal.findByIdAndUpdate(_id || id, updateData, { new: true });
+        const post = await Journal.findByIdAndUpdate(targetId, sanitizedData, { new: true });
         
         if (!post) {
             return NextResponse.json({ error: "Journal post not found" }, { status: 404 });
@@ -149,13 +167,12 @@ export async function PUT(request) {
         try { 
             revalidatePath("/"); 
             revalidatePath("/journal"); 
-            revalidatePath(`/journal/${id || _id}`);
+            revalidatePath(`/journal/${targetId}`);
         } catch(e) {}
         
         return NextResponse.json(post);
     } catch (err) {
-        console.error("Journal PUT Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return safeErrorResponse(err, "Journal PUT");
     }
 }
 

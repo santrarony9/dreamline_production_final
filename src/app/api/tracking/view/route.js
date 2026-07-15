@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Analytics from "@/models/Analytics";
+import { trackingLimiter } from "@/lib/rate-limit";
 
 export async function POST(request) {
     try {
+        const { success } = trackingLimiter.check(request);
+        if (!success) {
+            return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+        }
+
         await dbConnect();
         const { path, referrer } = await request.json();
 

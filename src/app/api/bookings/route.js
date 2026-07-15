@@ -5,6 +5,8 @@ import dbConnect from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import axios from "axios";
 import nodemailer from "nodemailer";
+import { bookingLimiter } from "@/lib/rate-limit";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
@@ -16,9 +18,25 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;");
+}
 
 export async function POST(req) {
     try {
+        const { success } = bookingLimiter.check(req);
+        if (!success) {
+            return NextResponse.json(
+                { error: "Too many requests. Please try again later." },
+                { status: 429 }
+            );
+        }
+
         await dbConnect();
         const body = await req.json();
 
@@ -52,6 +70,15 @@ export async function POST(req) {
         // Save to database with sanitized data only
         const booking = await Booking.create(bookingData);
 
+        // Escape HTML for email
+        const safeFirstName = escapeHtml(bookingData.firstName);
+        const safeLastName = escapeHtml(bookingData.lastName);
+        const safeEmail = escapeHtml(bookingData.email);
+        const safePhone = escapeHtml(bookingData.phone);
+        const safeService = escapeHtml(bookingData.serviceType);
+        const safeDate = escapeHtml(bookingData.eventDate);
+        const safeVision = escapeHtml(bookingData.vision);
+
         // 3. Email Notification via MilesWeb SMTP
         if (process.env.SMTP_USER && process.env.SMTP_PASS) {
             try {
@@ -62,12 +89,12 @@ export async function POST(req) {
                     text: `New Inquiry Details:\n\nName: ${bookingData.firstName} ${bookingData.lastName}\nEmail: ${bookingData.email}\nPhone: ${bookingData.phone}\nService: ${bookingData.serviceType}\nDate: ${bookingData.eventDate}\nVision: ${bookingData.vision}`,
                     html: `
                         <h3>New Inquiry Details</h3>
-                        <p><strong>Name:</strong> ${bookingData.firstName} ${bookingData.lastName}</p>
-                        <p><strong>Email:</strong> ${bookingData.email}</p>
-                        <p><strong>Phone:</strong> ${bookingData.phone}</p>
-                        <p><strong>Service:</strong> ${bookingData.serviceType}</p>
-                        <p><strong>Date:</strong> ${bookingData.eventDate}</p>
-                        <p><strong>Vision:</strong> ${bookingData.vision}</p>
+                        <p><strong>Name:</strong> ${safeFirstName} ${safeLastName}</p>
+                        <p><strong>Email:</strong> ${safeEmail}</p>
+                        <p><strong>Phone:</strong> ${safePhone}</p>
+                        <p><strong>Service:</strong> ${safeService}</p>
+                        <p><strong>Date:</strong> ${safeDate}</p>
+                        <p><strong>Vision:</strong> ${safeVision}</p>
                     `,
                 };
                 await transporter.sendMail(mailOptions);
@@ -78,7 +105,7 @@ export async function POST(req) {
 
         // 1. WhatsApp Business API (New Method)
         if (process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_ID) {
-            const message = `🌟 New Inquiry from ${body.firstName} ${body.lastName}!\n\nEmail: ${body.email}\nPhone: ${body.phone}\nEvent: ${body.serviceType}\nDate: ${body.eventDate}\nVision: ${body.vision}`;
+            const message = `🌟 New Inquiry from ${bookingData.firstName} ${bookingData.lastName}!\n\nEmail: ${bookingData.email}\nPhone: ${bookingData.phone}\nEvent: ${bookingData.serviceType}\nDate: ${bookingData.eventDate}\nVision: ${bookingData.vision}`;
 
             try {
                 await axios.post(
@@ -104,8 +131,8 @@ export async function POST(req) {
         // 2. Legacy BhashSMS Notification (Backup/Alternative)
         if (process.env.WHATSAPP_PASS) {
             try {
-                const message = `New Inquiry: ${body.firstName} ${body.lastName} - ${body.phone} - ${body.serviceType}`;
-                await axios.get('http://bhashsms.com/api/sendmsg.php', {
+                const message = `New Inquiry: ${bookingData.firstName} ${bookingData.lastName} - ${bookingData.phone} - ${bookingData.serviceType}`;
+                await axios.get('https://bhashsms.com/api/sendmsg.php', {
                     params: {
                         user: process.env.WHATSAPP_USER || 'Rony_BW',
                         pass: process.env.WHATSAPP_PASS,
@@ -124,7 +151,6 @@ export async function POST(req) {
 
         return NextResponse.json({ success: true, data: booking }, { status: 201 });
     } catch (error) {
-        console.error("Booking error:", error);
-        return NextResponse.json({ error: "Failed to process booking" }, { status: 500 });
+        return safeErrorResponse(error, "Booking");
     }
 }

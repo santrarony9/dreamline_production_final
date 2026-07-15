@@ -22,7 +22,7 @@ const ALLOWED_TAGS = new Set([
 
 // Attributes allowed per tag (or globally with '*')
 const ALLOWED_ATTRS = {
-    '*': ['class', 'style', 'id'],
+    '*': ['class', 'id'],
     'a': ['href', 'target', 'rel', 'title'],
     'img': ['src', 'alt', 'width', 'height', 'loading'],
 };

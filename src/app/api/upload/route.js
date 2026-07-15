@@ -19,6 +19,21 @@ const s3Client = new S3Client({
 
 import sharp from "sharp";
 
+import { safeErrorResponse } from "@/lib/error-handler";
+
+const ALLOWED_MIME_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "image/avif",
+    "video/mp4",
+    "video/webm",
+    "application/pdf",
+];
+
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+
 export async function POST(request) {
     // Pass authOptions so session validation works on Vercel production
     const session = await getServerSession(authOptions);
@@ -34,6 +49,21 @@ export async function POST(request) {
             return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
         }
 
+        const contentType = file.type || "";
+        if (!ALLOWED_MIME_TYPES.includes(contentType)) {
+            return NextResponse.json(
+                { error: "File type not allowed" },
+                { status: 400 }
+            );
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+            return NextResponse.json(
+                { error: "File too large. Maximum 50MB." },
+                { status: 400 }
+            );
+        }
+
         const arrayBuffer = await file.arrayBuffer();
         let buffer = Buffer.from(arrayBuffer);
 
@@ -44,8 +74,6 @@ export async function POST(request) {
             .replace(/-+/g, '-')
             .replace(/^-|-$/g, '') || 'upload';
 
-        let contentType = file.type;
-
         // Optimization: Convert images to WebP (excluding SVGs)
         if (contentType.startsWith("image/") && !contentType.includes("svg")) {
             console.log("Optimizing image:", fileName);
@@ -54,7 +82,6 @@ export async function POST(request) {
                 .webp({ quality: 80 })
                 .toBuffer();
 
-            contentType = "image/webp";
             fileName = fileName.replace(/\.[^.]+$/, ".webp");
         }
 
@@ -65,7 +92,7 @@ export async function POST(request) {
             Bucket: bucketName,
             Key: finalFileName,
             Body: buffer,
-            ContentType: contentType,
+            ContentType: contentType.startsWith("image/") && !contentType.includes("svg") ? "image/webp" : contentType,
         });
 
         await s3Client.send(command);
@@ -88,7 +115,6 @@ export async function POST(request) {
 
         return NextResponse.json({ url });
     } catch (error) {
-        console.error("Upload error:", error);
-        return NextResponse.json({ error: "Upload failed: " + error.message }, { status: 500 });
+        return safeErrorResponse(error, "Upload");
     }
 }

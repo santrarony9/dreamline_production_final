@@ -27,12 +27,12 @@ export const authOptions = {
 
                 // 1. Validate Master Admin Credentials
                 if (adminUser && adminPass && username === adminUser.trim() && password === adminPass.trim()) {
-                    authenticatedUser = { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com" };
+                    authenticatedUser = { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com", role: "admin" };
                     active2faSecret = admin2fa;
                 } 
                 // 2. Validate Maintenance Credentials
                 else if (maintUser && maintPass && username === maintUser.trim() && password === maintPass.trim()) {
-                    authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com" };
+                    authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com", role: "maintenance" };
                     active2faSecret = maint2fa;
                 }
 
@@ -84,7 +84,16 @@ export const authOptions = {
         signIn: "/admin/login",
     },
     callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.role = user.role;
+            }
+            return token;
+        },
         async session({ session, token }) {
+            if (session?.user) {
+                session.user.role = token.role;
+            }
             return session;
         },
     },

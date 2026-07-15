@@ -3,9 +3,27 @@ import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Journal from "@/models/Journal";
 import Content from "@/models/Content";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
 
 export async function POST(req) {
     try {
+        const session = await getServerSession(authOptions);
+        const { searchParams } = new URL(req.url);
+        const secret = searchParams.get("secret");
+        const authHeader = req.headers.get("authorization");
+        const bearerSecret = authHeader?.replace("Bearer ", "");
+
+        const isAuthorized =
+            session ||
+            (process.env.AUTOMATION_SECRET &&
+                (secret === process.env.AUTOMATION_SECRET ||
+                    bearerSecret === process.env.AUTOMATION_SECRET));
+
+        if (!isAuthorized) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
         await dbConnect();
         const { sourceId, sourceType } = await req.json();
 

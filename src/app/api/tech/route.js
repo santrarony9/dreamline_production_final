@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 
 import dbConnect from "@/lib/mongodb";
 import TechProject from "@/models/TechProject";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export async function GET() {
     await dbConnect();
@@ -76,7 +77,6 @@ export async function POST(req) {
 
         return NextResponse.json(newProject, { status: 201 });
     } catch (error) {
-        console.error("TechProject Creation Error:", error);
-        return NextResponse.json({ error: "Failed to add website" }, { status: 500 });
+        return safeErrorResponse(error, "TechProject");
     }
 }

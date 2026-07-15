@@ -4,6 +4,7 @@ import Content from "@/models/Content";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export const dynamic = 'force-dynamic';
 
@@ -69,7 +70,6 @@ export async function POST() {
         });
 
     } catch (err) {
-        console.error("Sync Error:", err);
-        return NextResponse.json({ error: "Sync failed: " + err.message }, { status: 500 });
+        return safeErrorResponse(err, "Sync Reviews");
     }
 }

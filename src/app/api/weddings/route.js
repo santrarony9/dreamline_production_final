@@ -7,6 +7,10 @@ import Wedding from "@/models/Wedding";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+import { safeErrorResponse } from "@/lib/error-handler";
+
+const ALLOWED_WEDDING_FIELDS = ["id", "title", "date", "location", "videoUrl", "youtubeId", "image", "seo"];
+
 export async function GET() {
     await dbConnect();
     const weddings = await Wedding.find().sort({ date: -1 }).lean();
@@ -21,12 +25,17 @@ export async function POST(request) {
         await dbConnect();
         const data = await request.json();
         
-        // Ensure id is present as it's required by the model
-        if (!data.id) {
-            data.id = `wedding-${Date.now()}`;
+        const sanitizedData = {};
+        for (const key of ALLOWED_WEDDING_FIELDS) {
+            if (data[key] !== undefined) sanitizedData[key] = data[key];
         }
 
-        const wedding = await Wedding.create(data);
+        // Ensure id is present as it's required by the model
+        if (!sanitizedData.id) {
+            sanitizedData.id = `wedding-${Date.now()}`;
+        }
+
+        const wedding = await Wedding.create(sanitizedData);
 
         try { 
             revalidatePath("/"); 
@@ -36,8 +45,7 @@ export async function POST(request) {
         
         return NextResponse.json(wedding);
     } catch (err) {
-        console.error("POST Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return safeErrorResponse(err, "Wedding POST");
     }
 }
 
@@ -48,11 +56,17 @@ export async function PUT(request) {
 
         await dbConnect();
         const data = await request.json();
-        const { _id, id, ...updateData } = data;
+        
+        const sanitizedData = {};
+        for (const key of ALLOWED_WEDDING_FIELDS) {
+            if (data[key] !== undefined) sanitizedData[key] = data[key];
+        }
+
+        const targetId = data._id || data.id;
 
         // Use _id (mongo id) for finding the document, 
         // but keep the custom string 'id' in the update if it exists
-        const wedding = await Wedding.findByIdAndUpdate(_id || id, updateData, { new: true });
+        const wedding = await Wedding.findByIdAndUpdate(targetId, sanitizedData, { new: true });
 
         if (!wedding) {
             return NextResponse.json({ error: "Wedding film not found" }, { status: 404 });
@@ -61,14 +75,13 @@ export async function PUT(request) {
         try { 
             revalidatePath("/"); 
             revalidatePath("/luxury");
-            revalidatePath(`/wedding/${id || _id}`);
+            revalidatePath(`/wedding/${targetId}`);
             revalidatePath("/admin/weddings");
         } catch(e) {}
 
         return NextResponse.json(wedding);
     } catch (err) {
-        console.error("PUT Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return safeErrorResponse(err, "Wedding PUT");
     }
 }
 
@@ -90,7 +103,6 @@ export async function DELETE(request) {
         
         return NextResponse.json({ success: true });
     } catch (err) {
-        console.error("DELETE Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return safeErrorResponse(err, "Wedding DELETE");
     }
 }

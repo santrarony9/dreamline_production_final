@@ -7,9 +7,15 @@ import Content from "@/models/Content";
 import ServicePage from "@/models/ServicePage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
+import { contentLimiter } from "@/lib/rate-limit";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export async function GET(request) {
+    const { success } = contentLimiter.check(request);
+    if (!success) {
+        return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+
     await dbConnect();
     const { searchParams } = new URL(request.url);
     const fields = searchParams.get("fields")?.split(',').join(' ');
@@ -18,6 +24,17 @@ export async function GET(request) {
     if (fields) query.select(fields);
     
     const content = await query.lean();
+
+    if (content) {
+        // Strip sensitive fields from public response
+        if (content.global?.google) {
+            delete content.global.google.clientSecret;
+            delete content.global.google.clientId;
+            delete content.global.google.mapsApiKey;
+            delete content.global.google.refreshToken;
+        }
+    }
+
     return NextResponse.json(content || {});
 }
 
@@ -99,8 +116,7 @@ export async function POST(request) {
         
         return NextResponse.json({ success: true, data: content });
     } catch (error) {
-        console.error("API Update Error:", error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 400 });
+        return safeErrorResponse(error, "Content Update");
     }
 }
 

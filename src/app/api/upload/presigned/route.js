@@ -18,6 +18,19 @@ const s3Client = new S3Client({
     forcePathStyle: false,
 });
 
+import { safeErrorResponse } from "@/lib/error-handler";
+
+const ALLOWED_MIME_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+    "image/avif",
+    "video/mp4",
+    "video/webm",
+    "application/pdf",
+];
+
 export async function POST(request) {
     console.log("PRE-SIGNED URL REQUEST RECEIVED");
 
@@ -41,6 +54,10 @@ export async function POST(request) {
 
         if (!fileName || !fileType) {
             return NextResponse.json({ error: "Missing file details" }, { status: 400 });
+        }
+
+        if (!ALLOWED_MIME_TYPES.includes(fileType)) {
+            return NextResponse.json({ error: "File type not allowed" }, { status: 400 });
         }
 
         const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamlinepro";
@@ -85,7 +102,6 @@ export async function POST(request) {
         console.log("Presigned URL generated successfully. Public URL:", publicUrl);
         return NextResponse.json({ uploadUrl: presignedUrl, publicUrl });
     } catch (error) {
-        console.error("Presigned URL error:", error);
-        return NextResponse.json({ error: "Failed to generate upload URL: " + error.message }, { status: 500 });
+        return safeErrorResponse(error, "Presigned URL");
     }
 }

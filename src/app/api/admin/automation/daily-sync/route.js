@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
@@ -33,17 +34,18 @@ function isAuthorizedRequest(request) {
     const secret = searchParams.get("secret");
     const authHeader = request.headers.get("Authorization");
     const bearerSecret = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
-    const isVercelCron = request.headers.get("x-vercel-cron") === "1";
 
-    return (
-        isVercelCron ||
-        (!process.env.AUTOMATION_SECRET && !process.env.CRON_SECRET) ||
-        (secret && secret === process.env.AUTOMATION_SECRET) ||
-        (bearerSecret && (
-            bearerSecret === process.env.AUTOMATION_SECRET ||
-            bearerSecret === process.env.CRON_SECRET
-        ))
-    );
+    const hasValidSecret =
+        (process.env.AUTOMATION_SECRET && secret === process.env.AUTOMATION_SECRET) ||
+        (process.env.CRON_SECRET && secret === process.env.CRON_SECRET) ||
+        (process.env.AUTOMATION_SECRET && bearerSecret === process.env.AUTOMATION_SECRET) ||
+        (process.env.CRON_SECRET && bearerSecret === process.env.CRON_SECRET);
+
+    const isVercelCron =
+        process.env.VERCEL === "1" &&
+        request.headers.get("x-vercel-cron") === "1";
+
+    return hasValidSecret || isVercelCron;
 }
 
 // ── Google Business Profile: Get OAuth Access Token ──────────────────────
@@ -338,12 +340,6 @@ export async function GET(request) {
     } catch (error) {
         log(`[DailySync] 💀 FATAL: ${error.message}`);
         console.error("[DailySync] Stack:", error.stack);
-        return NextResponse.json({
-            success: false,
-            status: "ERROR",
-            error: error.message,
-            logs,
-            durationMs: Date.now() - startTime
-        }, { status: 500 });
+        return safeErrorResponse(error, "DailySync");
     }
 }
