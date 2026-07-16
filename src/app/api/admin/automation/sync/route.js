@@ -96,7 +96,7 @@ export async function POST(req) {
         });
 
     } catch (error) {
-        console.error("Sync error:", error);
-        return NextResponse.json({ error: "Sync failed" }, { status: 500 });
+        const { safeErrorResponse } = await import("@/lib/error-handler");
+        return safeErrorResponse(error, "ManualSync");
     }
 }
