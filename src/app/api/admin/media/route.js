@@ -6,6 +6,7 @@ import Content from "@/models/Content";
 import TechProject from "@/models/TechProject";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export async function GET() {
     try {
@@ -85,7 +86,6 @@ export async function GET() {
 
         return NextResponse.json(sortedImages);
     } catch (err) {
-        console.error("Media API Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return safeErrorResponse(err, "Media");
     }
 }

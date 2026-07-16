@@ -64,6 +64,10 @@ export async function PUT(request) {
 
         const targetId = data._id || data.id;
 
+        if (!targetId || !/^[0-9a-fA-F]{24}$/.test(targetId)) {
+            return NextResponse.json({ error: "Invalid wedding ID format" }, { status: 400 });
+        }
+
         // Use _id (mongo id) for finding the document, 
         // but keep the custom string 'id' in the update if it exists
         const wedding = await Wedding.findByIdAndUpdate(targetId, sanitizedData, { new: true });
@@ -92,6 +96,11 @@ export async function DELETE(request) {
 
         const url = new URL(request.url);
         const id = url.searchParams.get("id");
+        
+        if (!id || !/^[0-9a-fA-F]{24}$/.test(id)) {
+            return NextResponse.json({ error: "Invalid wedding ID format" }, { status: 400 });
+        }
+
         await dbConnect();
         await Wedding.findByIdAndDelete(id);
         

@@ -85,7 +85,6 @@ export async function GET(request, { params }) {
             }
         });
     } catch (error) {
-        console.error('[ImageProxy] Error:', error.message);
-        return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500 });
+        return new NextResponse("Internal Server Error", { status: 500 });
     }
 }

@@ -18,11 +18,6 @@ export async function GET() {
         status: "DEPRECATED",
         message: "This endpoint used the Google My Business API v4 which was shut down in 2022. " +
                  "Auto-posting is now handled by /api/admin/automation/daily-sync via the Make.com webhook. " +
-                 "Please use that endpoint instead.",
-        migrationGuide: {
-            cronEndpoint: "/api/admin/automation/daily-sync",
-            manualTrigger: "/api/admin/automation/daily-sync?secret=YOUR_SECRET",
-            dryRun: "/api/admin/automation/daily-sync?secret=YOUR_SECRET&dryRun=true"
-        }
+                 "Please use that endpoint instead."
     }, { status: 410 }); // 410 Gone
 }

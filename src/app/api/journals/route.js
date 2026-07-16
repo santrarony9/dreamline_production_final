@@ -118,6 +118,10 @@ export async function PUT(request) {
         }
         
         const targetId = data._id || data.id;
+        
+        if (!targetId || !/^[0-9a-fA-F]{24}$/.test(targetId)) {
+            return NextResponse.json({ error: "Invalid journal ID format" }, { status: 400 });
+        }
 
         const post = await Journal.findByIdAndUpdate(targetId, sanitizedData, { new: true });
         
@@ -177,13 +181,24 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-    await dbConnect();
-    await Journal.findByIdAndDelete(id);
-    try { revalidatePath("/"); revalidatePath("/journal"); } catch(e) {}
-    return NextResponse.json({ success: true });
+        const url = new URL(request.url);
+        const id = url.searchParams.get("id");
+        
+        if (!id || !/^[0-9a-fA-F]{24}$/.test(id)) {
+            return NextResponse.json({ error: "Invalid journal ID format" }, { status: 400 });
+        }
+
+        await dbConnect();
+        await Journal.findByIdAndDelete(id);
+        
+        try { revalidatePath("/"); revalidatePath("/journal"); } catch(e) {}
+        
+        return NextResponse.json({ success: true });
+    } catch (err) {
+        return safeErrorResponse(err, "Journal DELETE");
+    }
 }

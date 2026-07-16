@@ -149,7 +149,7 @@ export async function POST(req) {
         }
 
 
-        return NextResponse.json({ success: true, data: booking }, { status: 201 });
+        return NextResponse.json({ success: true, message: "Inquiry received" }, { status: 201 });
     } catch (error) {
         return safeErrorResponse(error, "Booking");
     }

@@ -21,8 +21,10 @@ export async function POST(request) {
         const now = new Date();
         const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
+        const cleanReferrer = typeof referrer === 'string' ? referrer.slice(0, 500) : '';
+
         // Detect organic google traffic
-        const isGoogle = referrer && (referrer.includes('google.com') || referrer.includes('google.co.in'));
+        const isGoogle = cleanReferrer && (cleanReferrer.includes('google.com') || cleanReferrer.includes('google.co.in'));
 
         // Increment views for the path on this day
         await Analytics.findOneAndUpdate(
@@ -38,7 +40,7 @@ export async function POST(request) {
 
         return NextResponse.json({ success: true });
     } catch (error) {
-        console.error("Tracking error:", error);
-        return NextResponse.json({ error: "Tracking failed" }, { status: 500 });
+        const { safeErrorResponse } = await import("@/lib/error-handler");
+        return safeErrorResponse(error, "Tracking");
     }
 }

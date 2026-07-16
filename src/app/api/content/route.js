@@ -20,19 +20,26 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const fields = searchParams.get("fields")?.split(',').join(' ');
     
+    if (fields && /clientSecret|clientId|mapsApiKey|refreshToken/i.test(fields)) {
+        return NextResponse.json({ error: "Invalid field selection" }, { status: 400 });
+    }
+
     const query = Content.findOne();
     if (fields) query.select(fields);
     
     const content = await query.lean();
 
     if (content) {
-        // Strip sensitive fields from public response
-        if (content.global?.google) {
-            delete content.global.google.clientSecret;
-            delete content.global.google.clientId;
-            delete content.global.google.mapsApiKey;
-            delete content.global.google.refreshToken;
-        }
+        // Deep strip sensitive fields from public response
+        const stripSensitive = (obj) => {
+            if (!obj || typeof obj !== 'object') return;
+            delete obj.clientSecret;
+            delete obj.clientId;
+            delete obj.mapsApiKey;
+            delete obj.refreshToken;
+            Object.values(obj).forEach(stripSensitive);
+        };
+        stripSensitive(content);
     }
 
     return NextResponse.json(content || {});

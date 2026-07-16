@@ -5,6 +5,7 @@ import Booking from "@/models/Booking";
 import Intelligence from "@/models/Intelligence";
 import Content from "@/models/Content";
 import Journal from "@/models/Journal";
+import { safeErrorResponse } from "@/lib/error-handler";
 
 export async function GET(request) {
     try {
@@ -13,7 +14,7 @@ export async function GET(request) {
         const authHeader = request.headers.get("Authorization");
         const bearerSecret = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
         
-        if (process.env.AUTOMATION_SECRET && secret !== process.env.AUTOMATION_SECRET && bearerSecret !== process.env.AUTOMATION_SECRET) {
+        if (!process.env.AUTOMATION_SECRET || (secret !== process.env.AUTOMATION_SECRET && bearerSecret !== process.env.AUTOMATION_SECRET)) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
@@ -120,7 +121,6 @@ export async function GET(request) {
 
         return NextResponse.json({ success: true, report });
     } catch (error) {
-        console.error("Automation error:", error);
-        return NextResponse.json({ error: "Audit failed" }, { status: 500 });
+        return safeErrorResponse(error, "Audit");
     }
 }

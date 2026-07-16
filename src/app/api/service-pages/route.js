@@ -4,6 +4,9 @@ import ServicePage from "@/models/ServicePage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { safeErrorResponse } from "@/lib/error-handler";
+
+const ALLOWED_SERVICE_PAGE_FIELDS = ["title", "subtitle", "description", "heroImage", "gallery", "videos", "active"];
 
 export async function GET() {
     await dbConnect();
@@ -21,14 +24,19 @@ export async function POST(request) {
     const body = await request.json();
     const { slug, ...updateData } = body;
 
-    if (!slug) {
-        return NextResponse.json({ error: "Slug is required" }, { status: 400 });
+    if (!slug || typeof slug !== "string") {
+        return NextResponse.json({ error: "Valid slug is required" }, { status: 400 });
+    }
+    
+    const sanitizedData = {};
+    for (const key of ALLOWED_SERVICE_PAGE_FIELDS) {
+        if (updateData[key] !== undefined) sanitizedData[key] = updateData[key];
     }
 
     try {
         const page = await ServicePage.findOneAndUpdate(
             { slug },
-            { $set: updateData },
+            { $set: sanitizedData },
             { upsert: true, new: true }
         );
 
@@ -37,7 +45,6 @@ export async function POST(request) {
         
         return NextResponse.json(page);
     } catch (err) {
-        console.error("Service Page API Error:", err);
-        return NextResponse.json({ error: err.message }, { status: 500 });
+        return safeErrorResponse(err, "ServicePage");
     }
 }
