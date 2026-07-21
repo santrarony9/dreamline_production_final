@@ -28,6 +28,13 @@ const getSiteContent = cache(async () => {
   return await Content.findOne().lean();
 });
 
+export const viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export async function generateMetadata() {
   try {
     // Fetch global SEO from database using cached function

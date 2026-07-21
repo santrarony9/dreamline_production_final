@@ -208,9 +208,9 @@ export default function ContactForm({ globalData }) {
                     <div className="space-y-12">
                         <div className="w-full h-[400px] rounded-[2rem] overflow-hidden border border-white/10 relative">
                             <div className="absolute inset-0 bg-[#c5a059] mix-blend-overlay opacity-10 pointer-events-none z-10"></div>
-                            {globalData?.google?.placeId ? (
+                            {(globalData?.google?.placeId && globalData?.google?.mapsApiKey) ? (
                                 <iframe
-                                    src={`https://www.google.com/maps/embed/v1/place?key=${globalData.google.mapsApiKey || ""}&q=place_id:${globalData.google.placeId}`}
+                                    src={`https://www.google.com/maps/embed/v1/place?key=${globalData.google.mapsApiKey}&q=place_id:${globalData.google.placeId}`}
                                     width="100%"
                                     height="100%"
                                     style={{ border: 0, filter: 'grayscale(100%) invert(100%) contrast(80%)' }}
