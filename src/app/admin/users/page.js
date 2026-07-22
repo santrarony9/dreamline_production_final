@@ -12,6 +12,7 @@ export default function UserAdmin() {
     const [creating, setCreating] = useState(false);
     const [createdUser, setCreatedUser] = useState(null);
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState("");
+    const [resendingId, setResendingId] = useState(null);
 
     useEffect(() => {
         fetchUsers();
@@ -55,6 +56,25 @@ export default function UserAdmin() {
         }
     };
 
+    const handleResendSetup = async (user) => {
+        setResendingId(user._id);
+        try {
+            const res = await axios.post("/api/users", {
+                action: "resend_setup",
+                userId: user._id
+            });
+            if (res.data.emailSent) {
+                alert(`✅ Setup invitation email successfully sent to ${user.email}!`);
+            } else {
+                alert(`⚠️ Setup link generated:\n\n${res.data.setupUrl}\n\n(Could not send email automatically: ${res.data.emailError || "Check SMTP settings"})`);
+            }
+        } catch (err) {
+            alert("Error sending setup email: " + (err.response?.data?.error || err.message));
+        } finally {
+            setResendingId(null);
+        }
+    };
+
     const handleClearCreated = () => {
         setCreatedUser(null);
         setQrCodeDataUrl("");
@@ -86,7 +106,7 @@ export default function UserAdmin() {
                 <div className="lg:col-span-1 bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 h-fit space-y-6">
                     <div>
                         <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Create New User</h3>
-                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Credentials will be emailed automatically.</p>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">An invitation email will be sent for Password & 2FA setup.</p>
                     </div>
                     
                     <form onSubmit={handleCreate} className="space-y-4">
@@ -125,12 +145,12 @@ export default function UserAdmin() {
                         </div>
 
                         <div className="space-y-1">
-                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Password (Optional)</label>
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Preset Password (Optional)</label>
                             <input
                                 type="text"
                                 value={newUser.password}
                                 onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                                placeholder="Auto-generated secure password if blank"
+                                placeholder="Leave blank to let user set password via link"
                                 className="w-full bg-white/5 border border-white/10 rounded-2xl p-3.5 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
                             />
                         </div>
@@ -156,7 +176,7 @@ export default function UserAdmin() {
                                 className="w-4 h-4 accent-[#c5a059] cursor-pointer"
                             />
                             <label htmlFor="sendEmail" className="text-[10px] font-bold uppercase tracking-widest text-gray-400 cursor-pointer">
-                                📧 Send login details to user's Email
+                                📧 Send Password & 2FA Setup Email
                             </label>
                         </div>
                         
@@ -165,12 +185,12 @@ export default function UserAdmin() {
                             disabled={creating || (!newUser.email && !newUser.username)}
                             className="w-full bg-[#c5a059] text-black p-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all disabled:opacity-50 mt-4 cursor-pointer"
                         >
-                            {creating ? "Creating Account..." : "✨ Create Account & Send Email"}
+                            {creating ? "Creating User..." : "✨ Create Account & Send Setup Email"}
                         </button>
                     </form>
                 </div>
 
-                {/* 2FA & Credentials Modal */}
+                {/* 2FA & Setup Link Modal */}
                 {createdUser && (
                     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
                         <div className="bg-[#0a0a0a] border border-[#c5a059]/30 rounded-3xl p-8 max-w-lg w-full space-y-6 shadow-2xl shadow-[#c5a059]/10 max-h-[90vh] overflow-y-auto">
@@ -188,36 +208,36 @@ export default function UserAdmin() {
                                     : "bg-amber-500/10 border-amber-500/30 text-amber-400"
                             }`}>
                                 {createdUser.emailSent 
-                                    ? `📧 Welcome email sent to ${createdUser.email}` 
+                                    ? `📧 Setup Email sent to ${createdUser.email}` 
                                     : createdUser.email 
-                                        ? `⚠️ Could not send email automatically (${createdUser.emailError || "SMTP config check required"})` 
-                                        : "⚠️ No email address provided"}
+                                        ? `⚠️ Could not send email automatically (${createdUser.emailError || "Check SMTP settings"}). Share setup link below:` 
+                                        : "⚠️ No email address provided. Share setup link below:"}
                             </div>
 
-                            {/* Generated Password Callout */}
-                            {createdUser.generatedPassword && (
-                                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl space-y-1 text-center">
-                                    <span className="text-[9px] uppercase font-black text-gray-500 tracking-widest">Auto-Generated Password</span>
-                                    <p className="text-lg font-mono text-[#c5a059] font-bold tracking-widest">{createdUser.generatedPassword}</p>
+                            {/* Setup Link Callout */}
+                            {createdUser.setupUrl && (
+                                <div className="bg-white/5 border border-white/10 p-4 rounded-2xl space-y-2 text-center">
+                                    <span className="text-[9px] uppercase font-black text-gray-500 tracking-widest">Direct Account Setup Link</span>
+                                    <p className="text-xs font-mono text-[#c5a059] font-bold tracking-wide select-all break-all">{createdUser.setupUrl}</p>
                                 </div>
                             )}
 
                             {/* 2FA QR Code & Secret */}
                             <div className="space-y-4 pt-2 border-t border-white/10">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-center text-[#c5a059]">🔒 2FA Authentication Setup</h4>
+                                <h4 className="text-xs font-black uppercase tracking-widest text-center text-[#c5a059]">🔒 2FA Authentication Key</h4>
                                 <p className="text-gray-400 text-[10px] text-center font-bold uppercase tracking-widest leading-relaxed">
-                                    Scan this QR code with Google Authenticator or Authy. <br/>This code is shown <span className="text-red-400">ONCE</span>.
+                                    Scan QR code with <strong>Google Authenticator</strong> or <strong>Authy</strong>:
                                 </p>
                                 
                                 {qrCodeDataUrl && (
                                     <div className="flex justify-center bg-white p-4 rounded-2xl w-fit mx-auto">
-                                        <img src={qrCodeDataUrl} alt="2FA QR Code" className="w-44 h-44" />
+                                        <img src={qrCodeDataUrl} alt="2FA QR Code" className="w-40 h-40" />
                                     </div>
                                 )}
 
                                 <div className="text-center space-y-1">
-                                    <p className="text-[9px] uppercase font-black text-gray-500 tracking-widest">Manual Setup Key</p>
-                                    <p className="text-white font-mono bg-white/5 p-3 rounded-xl tracking-[0.2em] text-xs font-bold">{createdUser.twoFactorSecret}</p>
+                                    <p className="text-[9px] uppercase font-black text-gray-500 tracking-widest">Manual Setup Secret Key</p>
+                                    <p className="text-white font-mono bg-white/5 p-3 rounded-xl tracking-[0.2em] text-xs font-bold select-all">{createdUser.twoFactorSecret}</p>
                                 </div>
                             </div>
 
@@ -225,7 +245,7 @@ export default function UserAdmin() {
                                 onClick={handleClearCreated}
                                 className="w-full bg-[#c5a059] text-black p-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all cursor-pointer"
                             >
-                                I Have Saved These Credentials
+                                Done / Close Modal
                             </button>
                         </div>
                     </div>
@@ -253,18 +273,39 @@ export default function UserAdmin() {
                                                 <span className="text-[8px] bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/20 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">
                                                     {u.role || "admin"}
                                                 </span>
+                                                {u.isConfigured ? (
+                                                    <span className="text-[8px] bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">
+                                                        Active
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-[8px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-black uppercase tracking-widest">
+                                                        Pending Setup
+                                                    </span>
+                                                )}
                                             </div>
                                             <p className="text-xs text-gray-400 font-mono">{u.email || "No email listed"}</p>
                                             <p className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Username: <span className="text-gray-300 font-mono">{u.username}</span></p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => handleDelete(u._id)}
-                                        className="text-red-500/50 hover:text-red-500 text-xs font-black uppercase tracking-widest px-4 py-2 rounded-xl border border-red-500/10 hover:border-red-500/30 hover:bg-red-500/10 transition-all self-end sm:self-center"
-                                        title="Delete User"
-                                    >
-                                        🗑️ Delete
-                                    </button>
+                                    <div className="flex items-center gap-2 self-end sm:self-center">
+                                        {u.email && (
+                                            <button
+                                                onClick={() => handleResendSetup(u)}
+                                                disabled={resendingId === u._id}
+                                                className="text-[#c5a059] hover:bg-[#c5a059]/10 text-[9px] font-black uppercase tracking-widest px-3 py-2 rounded-xl border border-[#c5a059]/30 transition-all disabled:opacity-50"
+                                                title="Resend Account Setup Email"
+                                            >
+                                                {resendingId === u._id ? "Sending..." : "📧 Resend Setup Email"}
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => handleDelete(u._id)}
+                                            className="text-red-500/50 hover:text-red-500 text-xs font-black uppercase tracking-widest px-3 py-2 rounded-xl border border-red-500/10 hover:border-red-500/30 hover:bg-red-500/10 transition-all"
+                                            title="Delete User"
+                                        >
+                                            🗑️
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>

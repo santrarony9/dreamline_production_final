@@ -6,7 +6,7 @@ import crypto from "crypto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";
-import { sendUserWelcomeEmail } from "@/lib/mailer";
+import { sendAccountSetupEmail, sendUserWelcomeEmail } from "@/lib/mailer";
 
 // Only "admin" roles (like the Master Admin) should access these routes.
 const isAdmin = (session) => session?.user?.role === "admin";
@@ -19,7 +19,7 @@ export async function GET(request) {
 
     try {
         await dbConnect();
-        // Return users without exposing the hashed passwords
+        // Return users without exposing passwords or full setup tokens
         const users = await User.find({}, { password: 0 }).sort({ createdAt: -1 });
         return NextResponse.json(users);
     } catch (error) {
@@ -36,6 +36,57 @@ export async function POST(request) {
     try {
         await dbConnect();
         const body = await request.json();
+
+        // Check if this is a "Resend Setup Email" request
+        if (body.action === "resend_setup") {
+            const { userId } = body;
+            const user = await User.findById(userId);
+            if (!user) {
+                return NextResponse.json({ error: "User not found" }, { status: 404 });
+            }
+
+            // Generate new setup token valid for 48 hours
+            const setupToken = crypto.randomBytes(24).toString("hex");
+            const setupTokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+            // Re-generate TOTP Secret if not already configured
+            if (!user.twoFactorSecret) {
+                const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+                let totpSecret = '';
+                const bytes = crypto.randomBytes(32);
+                for (let i = 0; i < 32; i++) {
+                    totpSecret += alphabet[bytes[i] % alphabet.length];
+                }
+                user.twoFactorSecret = totpSecret;
+            }
+
+            user.setupToken = setupToken;
+            user.setupTokenExpiry = setupTokenExpiry;
+            await user.save();
+
+            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dreamlineproduction.com";
+            const setupUrl = `${siteUrl}/admin/setup-account?token=${setupToken}`;
+
+            let emailResult = { success: false };
+            if (user.email) {
+                emailResult = await sendAccountSetupEmail({
+                    name: user.name || user.username,
+                    email: user.email,
+                    username: user.username,
+                    setupUrl,
+                    role: user.role
+                });
+            }
+
+            return NextResponse.json({
+                success: true,
+                emailSent: emailResult.success,
+                emailError: emailResult.reason || null,
+                setupUrl
+            });
+        }
+
+        // --- Standard User Creation ---
         let { name, email, username, password, role, sendEmail = true } = body;
 
         name = (name || "").trim();
@@ -51,12 +102,6 @@ export async function POST(request) {
             return NextResponse.json({ error: "Email address or Username is required" }, { status: 400 });
         }
 
-        // Auto-generate password if not provided
-        let rawPassword = password;
-        if (!rawPassword) {
-            rawPassword = crypto.randomBytes(6).toString("hex"); // 12 char random password
-        }
-
         // Check for existing user with same username or email
         const queryConditions = [];
         if (username) queryConditions.push({ username });
@@ -68,16 +113,24 @@ export async function POST(request) {
             return NextResponse.json({ error: `${conflictField} already exists in database.` }, { status: 400 });
         }
 
-        // Hash the password securely
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(rawPassword, salt);
+        // Generate setup token valid for 48 hours
+        const setupToken = crypto.randomBytes(24).toString("hex");
+        const setupTokenExpiry = new Date(Date.now() + 48 * 60 * 60 * 1000);
 
-        // Generate a random Base32 TOTP Secret (32 chars)
+        // Generate Base32 TOTP Secret
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
         let totpSecret = '';
         const bytes = crypto.randomBytes(32);
         for (let i = 0; i < 32; i++) {
             totpSecret += alphabet[bytes[i] % alphabet.length];
+        }
+
+        let hashedPassword = "";
+        let rawPassword = password;
+
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            hashedPassword = await bcrypt.hash(password, salt);
         }
 
         const newUser = await User.create({
@@ -86,23 +139,28 @@ export async function POST(request) {
             username,
             password: hashedPassword,
             role: role || 'admin',
-            twoFactorSecret: totpSecret
+            twoFactorSecret: totpSecret,
+            setupToken,
+            setupTokenExpiry,
+            isConfigured: !!password
         });
 
-        // Send Welcome Email if requested & email is provided
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dreamlineproduction.com";
+        const setupUrl = `${siteUrl}/admin/setup-account?token=${setupToken}`;
+
+        // Send Setup Invitation Email if email is provided
         let emailResult = { success: false };
         if (sendEmail && email) {
-            emailResult = await sendUserWelcomeEmail({
+            emailResult = await sendAccountSetupEmail({
                 name: name || username,
                 email,
                 username,
-                password: rawPassword,
-                twoFactorSecret: totpSecret,
+                setupUrl,
                 role: newUser.role
             });
         }
 
-        // Response object (without hashed password)
+        // Response object
         const userResponse = {
             _id: newUser._id,
             name: newUser.name,
@@ -111,7 +169,7 @@ export async function POST(request) {
             role: newUser.role,
             createdAt: newUser.createdAt,
             twoFactorSecret: totpSecret,
-            generatedPassword: password ? null : rawPassword,
+            setupUrl,
             emailSent: emailResult.success,
             emailError: emailResult.reason || null
         };

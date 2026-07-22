@@ -20,8 +20,7 @@ const UserSchema = new mongoose.Schema({
         minlength: 3
     },
     password: { 
-        type: String, 
-        required: true 
+        type: String
     },
     role: { 
         type: String, 
@@ -31,6 +30,17 @@ const UserSchema = new mongoose.Schema({
     twoFactorSecret: {
         type: String,
         default: ""
+    },
+    setupToken: {
+        type: String,
+        default: ""
+    },
+    setupTokenExpiry: {
+        type: Date
+    },
+    isConfigured: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true });
 
