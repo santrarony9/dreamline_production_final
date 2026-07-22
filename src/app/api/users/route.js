@@ -6,6 +6,7 @@ import crypto from "crypto";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";
+import { sendUserWelcomeEmail } from "@/lib/mailer";
 
 // Only "admin" roles (like the Master Admin) should access these routes.
 const isAdmin = (session) => session?.user?.role === "admin";
@@ -34,20 +35,42 @@ export async function POST(request) {
 
     try {
         await dbConnect();
-        const { username, password, role } = await request.json();
+        const body = await request.json();
+        let { name, email, username, password, role, sendEmail = true } = body;
 
-        if (!username || !password) {
-            return NextResponse.json({ error: "Username and password are required" }, { status: 400 });
+        name = (name || "").trim();
+        email = (email || "").trim().toLowerCase();
+        username = (username || "").trim().toLowerCase();
+
+        // If username not provided, default to email username prefix
+        if (!username && email) {
+            username = email.split("@")[0].replace(/[^a-z0-9_]/g, "");
         }
 
-        const existingUser = await User.findOne({ username });
+        if (!email && !username) {
+            return NextResponse.json({ error: "Email address or Username is required" }, { status: 400 });
+        }
+
+        // Auto-generate password if not provided
+        let rawPassword = password;
+        if (!rawPassword) {
+            rawPassword = crypto.randomBytes(6).toString("hex"); // 12 char random password
+        }
+
+        // Check for existing user with same username or email
+        const queryConditions = [];
+        if (username) queryConditions.push({ username });
+        if (email) queryConditions.push({ email });
+
+        const existingUser = await User.findOne({ $or: queryConditions });
         if (existingUser) {
-            return NextResponse.json({ error: "Username already exists" }, { status: 400 });
+            const conflictField = existingUser.username === username ? "Username" : "Email address";
+            return NextResponse.json({ error: `${conflictField} already exists in database.` }, { status: 400 });
         }
 
         // Hash the password securely
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const hashedPassword = await bcrypt.hash(rawPassword, salt);
 
         // Generate a random Base32 TOTP Secret (32 chars)
         const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
@@ -58,19 +81,39 @@ export async function POST(request) {
         }
 
         const newUser = await User.create({
+            name,
+            email,
             username,
             password: hashedPassword,
             role: role || 'admin',
             twoFactorSecret: totpSecret
         });
 
-        // Don't return the password, but DO return the TOTP secret so the admin can scan it ONCE
+        // Send Welcome Email if requested & email is provided
+        let emailResult = { success: false };
+        if (sendEmail && email) {
+            emailResult = await sendUserWelcomeEmail({
+                name: name || username,
+                email,
+                username,
+                password: rawPassword,
+                twoFactorSecret: totpSecret,
+                role: newUser.role
+            });
+        }
+
+        // Response object (without hashed password)
         const userResponse = {
             _id: newUser._id,
+            name: newUser.name,
+            email: newUser.email,
             username: newUser.username,
             role: newUser.role,
             createdAt: newUser.createdAt,
-            twoFactorSecret: totpSecret
+            twoFactorSecret: totpSecret,
+            generatedPassword: password ? null : rawPassword,
+            emailSent: emailResult.success,
+            emailError: emailResult.reason || null
         };
 
         return NextResponse.json(userResponse, { status: 201 });

@@ -38,15 +38,25 @@ export const authOptions = {
                     authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com", role: "maintenance" };
                     active2faSecret = maint2fa;
                 }
-                // 3. Check Database for Users
+                // 3. Check Database for Users (by username OR email)
                 else {
                     await dbConnect();
-                    const normalizedUsername = username ? username.toLowerCase() : "";
-                    const dbUser = await User.findOne({ username: normalizedUsername });
+                    const normalizedIdentifier = username ? username.toLowerCase() : "";
+                    const dbUser = await User.findOne({
+                        $or: [
+                            { username: normalizedIdentifier },
+                            { email: normalizedIdentifier }
+                        ]
+                    });
                     if (dbUser) {
                         const isValidPassword = await bcrypt.compare(password, dbUser.password);
                         if (isValidPassword) {
-                            authenticatedUser = { id: dbUser._id.toString(), name: dbUser.username, email: `${dbUser.username}@dreamline.com`, role: dbUser.role };
+                            authenticatedUser = {
+                                id: dbUser._id.toString(),
+                                name: dbUser.name || dbUser.username,
+                                email: dbUser.email || `${dbUser.username}@dreamline.com`,
+                                role: dbUser.role
+                            };
                             active2faSecret = dbUser.twoFactorSecret;
                         }
                     }
