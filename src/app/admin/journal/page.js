@@ -62,7 +62,8 @@ export default function JournalAdmin() {
             category: "INSIGHT",
             image: "",
             content: "",
-            excerpt: ""
+            excerpt: "",
+            seo: { title: "", description: "", keywords: "" }
         });
     };
 
@@ -348,10 +349,10 @@ export default function JournalAdmin() {
 
     return (
         <div className="space-y-12 pb-32">
-            <header className="flex justify-between items-end">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
                 <div>
-                    <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Narratives</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">The <span className="text-gray-700">Journal.</span></h1>
+                    <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Blog Posts</h2>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">The <span className="text-gray-500">Blog.</span></h1>
                 </div>
                 <div className="flex gap-4">
                     <button
@@ -379,7 +380,7 @@ export default function JournalAdmin() {
                                 {post.image ? (
                                     <img src={post.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt={post.title} />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-700 font-black uppercase">Missing Asset</div>
+                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-500 font-black uppercase">Missing Asset</div>
                                 )}
                             </div>
                             <div className="p-8 flex-1 flex flex-col">
@@ -449,8 +450,27 @@ export default function JournalAdmin() {
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Brief Excerpt (SEO Summary)</label>
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Brief Excerpt (Summary)</label>
                                 <textarea value={editingPost.excerpt} onChange={(e) => setEditingPost({ ...editingPost, excerpt: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059] h-20 text-sm font-light" />
+                            </div>
+
+                            {/* SEO Settings */}
+                            <div className="bg-[#111] border border-[#c5a059]/20 rounded-3xl p-8 space-y-6">
+                                <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">🔍 SEO Settings (Crucial for Ranking)</h3>
+                                <div className="space-y-4">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Meta Title</label>
+                                        <input type="text" value={editingPost.seo?.title || ""} onChange={(e) => setEditingPost({ ...editingPost, seo: { ...editingPost.seo, title: e.target.value } })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059] text-sm font-bold" placeholder="e.g. Best Bengali Wedding Photography Trends 2026 | Dreamline" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Meta Description</label>
+                                        <textarea value={editingPost.seo?.description || ""} onChange={(e) => setEditingPost({ ...editingPost, seo: { ...editingPost.seo, description: e.target.value } })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059] h-20 text-sm font-light" placeholder="e.g. Discover the top Bengali wedding photography trends dominating Kolkata in 2026..." />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Meta Keywords</label>
+                                        <input type="text" value={editingPost.seo?.keywords || ""} onChange={(e) => setEditingPost({ ...editingPost, seo: { ...editingPost.seo, keywords: e.target.value } })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059] text-sm font-bold" placeholder="e.g. bengali wedding photography kolkata, wedding trends 2026" />
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="space-y-4">
@@ -478,3 +498,4 @@ export default function JournalAdmin() {
         </div>
     );
 }
+

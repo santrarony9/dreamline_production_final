@@ -1,4 +1,7 @@
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import dbConnect from "@/lib/mongodb";
+import User from "@/models/User";
 
 export const authOptions = {
     providers: [
@@ -35,8 +38,21 @@ export const authOptions = {
                     authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com", role: "maintenance" };
                     active2faSecret = maint2fa;
                 }
+                // 3. Check Database for Users
+                else {
+                    await dbConnect();
+                    const normalizedUsername = username ? username.toLowerCase() : "";
+                    const dbUser = await User.findOne({ username: normalizedUsername });
+                    if (dbUser) {
+                        const isValidPassword = await bcrypt.compare(password, dbUser.password);
+                        if (isValidPassword) {
+                            authenticatedUser = { id: dbUser._id.toString(), name: dbUser.username, email: `${dbUser.username}@dreamline.com`, role: dbUser.role };
+                            active2faSecret = dbUser.twoFactorSecret;
+                        }
+                    }
+                }
 
-                // If credentials didn't match either account, deny entry
+                // If credentials didn't match any account, deny entry
                 if (!authenticatedUser) {
                     return null;
                 }

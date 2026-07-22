@@ -54,7 +54,7 @@ export default function GlobalSettings() {
         <div className="space-y-12 max-w-5xl">
             <header>
                 <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Configuration</h2>
-                <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Global <span className="text-gray-700">Settings.</span></h1>
+                <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Global <span className="text-gray-500">Settings.</span></h1>
             </header>
 
             <form onSubmit={handleSave} className="space-y-8 bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl">
@@ -331,3 +331,4 @@ export default function GlobalSettings() {
         </div>
     );
 }
+

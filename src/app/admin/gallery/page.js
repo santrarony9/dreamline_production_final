@@ -123,7 +123,7 @@ export default function GalleryAdmin() {
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-white/5 pb-8">
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Portfolio</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Master <span className="text-gray-700">Gallery.</span></h1>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Master <span className="text-gray-500">Gallery.</span></h1>
                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-1">Hold and drag thumbnails to rearrange. Toggle Compact Mode to view all cards without scrolling.</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
@@ -199,7 +199,7 @@ export default function GalleryAdmin() {
                                             alt={proj.title} 
                                         />
                                     ) : (
-                                        <div className="flex items-center justify-center h-full text-[9px] text-gray-700 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
+                                        <div className="flex items-center justify-center h-full text-[9px] text-gray-500 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
                                     )}
                                     
                                     <div className="absolute top-3 right-3 flex gap-1 z-30" onClick={(e) => e.stopPropagation()}>
@@ -256,7 +256,7 @@ export default function GalleryAdmin() {
                                         alt={proj.title} 
                                     />
                                 ) : (
-                                    <div className="flex items-center justify-center h-full text-[10px] text-gray-700 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
+                                    <div className="flex items-center justify-center h-full text-[10px] text-gray-500 uppercase font-black tracking-widest select-none pointer-events-none">No Visual Asset</div>
                                 )}
                                 
                                 <div className="absolute top-4 right-4 flex gap-2 z-30" onClick={(e) => e.stopPropagation()}>
@@ -339,3 +339,4 @@ export default function GalleryAdmin() {
         </div>
     );
 }
+

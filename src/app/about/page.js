@@ -9,27 +9,36 @@ export async function generateMetadata() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
     const globalSeo = siteContent?.global?.seo || {};
+    const pageSeo = siteContent?.about?.seo || {};
+
+    const title = pageSeo.title || "About Us — Kolkata's Premier Production House";
+    const description = pageSeo.description || "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.";
+    
+    const pKeywords = pageSeo.keywords ? pageSeo.keywords.split(',').map(k => k.trim()) : [];
+    const gKeywords = globalSeo.keywords ? globalSeo.keywords.split(',').map(k => k.trim()) : [];
+    const keywords = [...new Set([...pKeywords, ...gKeywords])].filter(Boolean).join(', ');
 
     return {
-        title: "About Us — Kolkata's Premier Production House",
-        description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
+        title: title,
+        description: description,
+        keywords: keywords,
         alternates: {
             canonical: 'https://dreamlineproduction.com/about',
         },
         openGraph: {
-            title: "About Us — Kolkata's Premier Production House",
-            description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
+            title: title,
+            description: description,
             url: 'https://dreamlineproduction.com/about',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
-            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+            images: [{ url: pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png', width: 1200, height: 630 }],
         },
         twitter: {
             card: 'summary_large_image',
-            title: "About Us — Kolkata's Premier Production House",
-            description: "Learn more about Dreamline Production, a leading wedding photography and cinematic film house in Kolkata.",
-            images: ['/logo-banner.png'],
+            title: title,
+            description: description,
+            images: [pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png'],
         },
     };
 }

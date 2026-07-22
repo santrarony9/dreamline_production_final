@@ -7,28 +7,37 @@ export async function generateMetadata() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
     const globalSeo = siteContent?.global?.seo || {};
-    const description = siteContent?.commercial?.hero?.description || "Elevating brands through cinematic narratives, high-fashion edits, and corporate documentaries.";
+    const pageSeo = siteContent?.commercial?.seo || {};
+
+    const fallbackDesc = siteContent?.commercial?.hero?.description || "Elevating brands through cinematic narratives, high-fashion edits, and corporate documentaries.";
+    const title = pageSeo.title || "Commercial Photography & Films";
+    const description = pageSeo.description || fallbackDesc;
+
+    const pKeywords = pageSeo.keywords ? pageSeo.keywords.split(',').map(k => k.trim()) : [];
+    const gKeywords = globalSeo.keywords ? globalSeo.keywords.split(',').map(k => k.trim()) : [];
+    const keywords = [...new Set([...pKeywords, ...gKeywords])].filter(Boolean).join(', ');
 
     return {
-        title: "Commercial Photography & Films",
+        title: title,
         description: description,
+        keywords: keywords,
         alternates: {
             canonical: 'https://dreamlineproduction.com/commercial',
         },
         openGraph: {
-            title: "Commercial Photography & Films",
+            title: title,
             description: description,
             url: 'https://dreamlineproduction.com/commercial',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
-            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+            images: [{ url: pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png', width: 1200, height: 630 }],
         },
         twitter: {
             card: 'summary_large_image',
-            title: "Commercial Photography & Films",
+            title: title,
             description: description,
-            images: ['/logo-banner.png'],
+            images: [pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png'],
         },
     };
 }

@@ -72,10 +72,10 @@ export default async function AdminDashboard() {
 
     return (
         <div className="space-y-12">
-            <header className="flex justify-between items-end">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Overview</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">System <span className="text-gray-700">Health.</span></h1>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">System <span className="text-gray-500">Health.</span></h1>
                 </div>
                 <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest border border-white/5 px-4 py-2 rounded-full">
                     Live Feed • {new Date().toLocaleTimeString()}
@@ -131,8 +131,8 @@ export default async function AdminDashboard() {
                     ))}
                 </div>
                 <div className="flex justify-between mt-4 border-t border-white/5 pt-4">
-                    <span className="text-[9px] text-gray-700 font-black uppercase tracking-widest">{dailyReach[0].label}</span>
-                    <span className="text-[9px] text-gray-700 font-black uppercase tracking-widest">{dailyReach[dailyReach.length - 1].label}</span>
+                    <span className="text-[9px] text-gray-500 font-black uppercase tracking-widest">{dailyReach[0].label}</span>
+                    <span className="text-[9px] text-gray-500 font-black uppercase tracking-widest">{dailyReach[dailyReach.length - 1].label}</span>
                 </div>
             </section>
 
@@ -313,3 +313,4 @@ export default async function AdminDashboard() {
         </div>
     );
 }
+

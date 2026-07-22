@@ -38,6 +38,43 @@ const ReviewSlider = dynamic(() => import("@/components/home/ReviewSlider"), {
 import Journal from "@/models/Journal";
 import StructuredData from "@/components/seo/StructuredData";
 
+export async function generateMetadata() {
+    await dbConnect();
+    const siteContent = await Content.findOne().lean();
+    const globalSeo = siteContent?.global?.seo || {};
+    const pageSeo = siteContent?.home?.seo || {};
+
+    const fallbackTitle = "Dreamline Production | Kolkata's Premier Photography & Cinematic Production House";
+    const fallbackDesc = "Dreamline Production is Kolkata's premier photography and cinematic production house. 15+ years of experience, 500+ weddings captured. Luxury wedding photography, commercial ad films, and visual storytelling across India.";
+    
+    const title = pageSeo.title || fallbackTitle;
+    const description = pageSeo.description || fallbackDesc;
+
+    const pKeywords = pageSeo.keywords ? pageSeo.keywords.split(',').map(k => k.trim()) : [];
+    const gKeywords = globalSeo.keywords ? globalSeo.keywords.split(',').map(k => k.trim()) : [];
+    const keywords = [...new Set([...pKeywords, ...gKeywords])].filter(Boolean).join(', ');
+
+    return {
+        title: title,
+        description: description,
+        keywords: keywords,
+        openGraph: {
+            title: title,
+            description: description,
+            url: 'https://dreamlineproduction.com/',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: title,
+            description: description,
+            images: [pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png'],
+        },
+    };
+}
 
 export default async function Home() {
   await dbConnect();

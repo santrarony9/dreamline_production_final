@@ -92,7 +92,7 @@ function HomeEditorContent() {
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Cinematography</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Front <span className="text-gray-700">Office.</span></h1>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Front <span className="text-gray-500">Office.</span></h1>
                 </div>
                 <div className="flex flex-wrap gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/5">
                     {tabs.map((tab) => (
@@ -988,3 +988,4 @@ export default function HomeEditor() {
         </Suspense>
     );
 }
+

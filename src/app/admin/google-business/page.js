@@ -67,10 +67,10 @@ export default function GoogleBusinessAdmin() {
 
     return (
         <div className="space-y-12">
-            <header className="flex justify-between items-end">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Social Sync</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Google <span className="text-gray-700">Business.</span></h1>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Google <span className="text-gray-500">Business.</span></h1>
                 </div>
                 <div className="flex gap-4">
                      <div className="text-[10px] text-green-500 font-bold uppercase tracking-widest border border-green-500/20 bg-green-500/5 px-4 py-2 rounded-full flex items-center gap-2">
@@ -173,3 +173,4 @@ export default function GoogleBusinessAdmin() {
         </div>
     );
 }
+

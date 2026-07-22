@@ -56,7 +56,7 @@ export default function CommercialEditor() {
         <div className="space-y-12 max-w-6xl pb-32">
             <header>
                 <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Cinematography</h2>
-                <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Commercial <span className="text-gray-700">Works.</span></h1>
+                <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Commercial <span className="text-gray-500">Works.</span></h1>
             </header>
 
             <form onSubmit={handleSave} className="space-y-10">
@@ -113,3 +113,4 @@ export default function CommercialEditor() {
         </div>
     );
 }
+

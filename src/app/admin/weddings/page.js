@@ -75,10 +75,10 @@ export default function WeddingAdmin() {
 
     return (
         <div className="space-y-12 pb-32">
-            <header className="flex justify-between items-end">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
                 <div>
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Heritage</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Wedding <span className="text-gray-700">Films.</span></h1>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Wedding <span className="text-gray-500">Films.</span></h1>
                 </div>
                 <button
                     onClick={startNewWedding}
@@ -213,3 +213,4 @@ export default function WeddingAdmin() {
         </div>
     );
 }
+

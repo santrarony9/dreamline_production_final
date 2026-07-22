@@ -35,6 +35,12 @@ const ContentSchema = new mongoose.Schema({
         }
     },
     home: {
+        seo: {
+            title: { type: String, default: "" },
+            description: { type: String, default: "" },
+            keywords: { type: String, default: "" },
+            ogImage: { type: String, default: "" }
+        },
         hero: {
             titleLine1: { type: String, default: "Visionary" },
             titleLine2: { type: String, default: "Cinema." },
@@ -99,6 +105,12 @@ const ContentSchema = new mongoose.Schema({
         }]
     },
     luxury: {
+        seo: {
+            title: { type: String, default: "" },
+            description: { type: String, default: "" },
+            keywords: { type: String, default: "" },
+            ogImage: { type: String, default: "" }
+        },
         hero: {
             titleLine1: { type: String, default: "The Heritage" },
             titleLine2: { type: String, default: "Collection." },
@@ -113,6 +125,12 @@ const ContentSchema = new mongoose.Schema({
         sparkCarousel: [String]
     },
     commercial: {
+        seo: {
+            title: { type: String, default: "" },
+            description: { type: String, default: "" },
+            keywords: { type: String, default: "" },
+            ogImage: { type: String, default: "" }
+        },
         hero: {
             titleLine1: { type: String, default: "Commercial" },
             titleLine2: { type: String, default: "Stories." },
@@ -120,6 +138,12 @@ const ContentSchema = new mongoose.Schema({
         }
     },
     about: {
+        seo: {
+            title: { type: String, default: "" },
+            description: { type: String, default: "" },
+            keywords: { type: String, default: "" },
+            ogImage: { type: String, default: "" }
+        },
         hero: {
             subtitle: { type: String, default: "Est. 2010 • Govt. Registered" },
             titleLine1: { type: String, default: "TRUSTED PRODUCTION" },

@@ -19,6 +19,8 @@ export default function AdminLayout({ children }) {
             items: [
                 { label: "Dashboard", path: "/admin", icon: "📊" },
                 { label: "Global Settings", path: "/admin/global", icon: "🌐" },
+                { label: "User Management", path: "/admin/users", icon: "👥" },
+                { label: "SEO & Meta Data", path: "/admin/seo", icon: "🔍" },
             ]
         },
         {
@@ -42,7 +44,7 @@ export default function AdminLayout({ children }) {
         {
             title: "Operations",
             items: [
-                { label: "Journal", path: "/admin/journal", icon: "📝" },
+                { label: "Blog", path: "/admin/journal", icon: "📝" },
                 { label: "Inquiries", path: "/admin/bookings", icon: "📅" },
             ]
         }
@@ -105,7 +107,7 @@ export default function AdminLayout({ children }) {
                 <nav className="flex-1 p-6 space-y-8 overflow-y-auto mt-16 lg:mt-0 custom-scrollbar">
                     {navSections.map((section) => (
                         <div key={section.title} className="space-y-3">
-                            <h3 className="px-4 text-[8px] font-black uppercase tracking-[0.3em] text-gray-700">
+                            <h3 className="px-4 text-[8px] font-black uppercase tracking-[0.3em] text-gray-500">
                                 {section.title}
                             </h3>
                             <div className="space-y-1">
@@ -138,9 +140,11 @@ export default function AdminLayout({ children }) {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 transition-all duration-300 lg:ml-64 p-6 md:p-12 mt-16 lg:mt-0 w-full max-w-full overflow-x-hidden">
+            <main className="flex-1 transition-all duration-300 lg:ml-64 p-6 md:p-12 mt-16 lg:mt-0 w-full lg:w-[calc(100%-16rem)] overflow-x-hidden">
                 {children}
             </main>
         </div>
     );
 }
+
+

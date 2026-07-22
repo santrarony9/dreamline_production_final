@@ -76,7 +76,7 @@ export default function LoginPage() {
                                     type="text"
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-700 font-bold"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-500 font-bold"
                                     placeholder="info.dreamline@"
                                     required
                                 />
@@ -88,7 +88,7 @@ export default function LoginPage() {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-700 font-bold"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-500 font-bold"
                                     placeholder="••••••••"
                                     required
                                 />
@@ -103,7 +103,7 @@ export default function LoginPage() {
                                     maxLength={6}
                                     value={otp}
                                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none tracking-[0.5em] text-center text-2xl font-black transition-all placeholder:text-gray-700 placeholder:tracking-normal placeholder:text-base"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none tracking-[0.5em] text-center text-2xl font-black transition-all placeholder:text-gray-500 placeholder:tracking-normal placeholder:text-base"
                                     placeholder="000000"
                                     required
                                     autoFocus
@@ -143,9 +143,10 @@ export default function LoginPage() {
                 </form>
 
                 <div className="mt-12 text-center">
-                    <p className="text-[8px] text-gray-700 uppercase tracking-[0.5em] font-black">Authorized Access Only • System v3.0.0</p>
+                    <p className="text-[8px] text-gray-500 uppercase tracking-[0.5em] font-black">Authorized Access Only • System v3.0.0</p>
                 </div>
             </div>
         </div>
     );
 }
+

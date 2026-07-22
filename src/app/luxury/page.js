@@ -10,28 +10,37 @@ export async function generateMetadata() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
     const globalSeo = siteContent?.global?.seo || {};
-    const description = siteContent?.luxury?.hero?.description || "Specializing in luxury Bengali weddings and destination cinematic films across India.";
+    const pageSeo = siteContent?.luxury?.seo || {};
+
+    const fallbackDesc = siteContent?.luxury?.hero?.description || "Specializing in luxury Bengali weddings and destination cinematic films across India.";
+    const title = pageSeo.title || "Luxury Wedding Photography Kolkata";
+    const description = pageSeo.description || fallbackDesc;
+
+    const pKeywords = pageSeo.keywords ? pageSeo.keywords.split(',').map(k => k.trim()) : [];
+    const gKeywords = globalSeo.keywords ? globalSeo.keywords.split(',').map(k => k.trim()) : [];
+    const keywords = [...new Set([...pKeywords, ...gKeywords])].filter(Boolean).join(', ');
 
     return {
-        title: "Luxury Wedding Photography Kolkata",
+        title: title,
         description: description,
+        keywords: keywords,
         alternates: {
             canonical: 'https://dreamlineproduction.com/luxury',
         },
         openGraph: {
-            title: "Luxury Wedding Photography Kolkata",
+            title: title,
             description: description,
             url: 'https://dreamlineproduction.com/luxury',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
-            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+            images: [{ url: pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png', width: 1200, height: 630 }],
         },
         twitter: {
             card: 'summary_large_image',
-            title: "Luxury Wedding Photography Kolkata",
+            title: title,
             description: description,
-            images: ['/logo-banner.png'],
+            images: [pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png'],
         },
     };
 }
