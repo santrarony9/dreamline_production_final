@@ -21,7 +21,7 @@ export const authOptions = {
                 const maintPass = process.env.MAINT_PASS;
                 const maint2fa = process.env.MAINT_2FA_SECRET;
 
-                const username = credentials?.username?.trim();
+                const username = credentials?.username?.trim()?.toLowerCase();
                 const password = credentials?.password;
                 const otp = credentials?.otp;
 
@@ -29,12 +29,12 @@ export const authOptions = {
                 let active2faSecret = null;
 
                 // 1. Validate Master Admin Credentials
-                if (adminUser && adminPass && username === adminUser.trim() && password === adminPass.trim()) {
+                if (adminUser && adminPass && username === adminUser.trim().toLowerCase() && password === adminPass.trim()) {
                     authenticatedUser = { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com", role: "admin" };
                     active2faSecret = admin2fa;
                 } 
                 // 2. Validate Maintenance Credentials
-                else if (maintUser && maintPass && username === maintUser.trim() && password === maintPass.trim()) {
+                else if (maintUser && maintPass && username === maintUser.trim().toLowerCase() && password === maintPass.trim()) {
                     authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com", role: "maintenance" };
                     active2faSecret = maint2fa;
                 }

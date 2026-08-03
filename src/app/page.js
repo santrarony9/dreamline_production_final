@@ -4,6 +4,31 @@ import Content from "@/models/Content";
 import Wedding from "@/models/Wedding";
 import dynamic from "next/dynamic";
 
+export async function generateMetadata() {
+    return {
+        title: "Best Wedding Photographer in Kolkata | Dreamline Production",
+        description: "Dreamline Production is Kolkata's best wedding photography & videography studio. 15+ years experience, 500+ weddings. Cinematic wedding films, pre-wedding shoots & corporate films. Call +91 82400 54002.",
+        alternates: {
+            canonical: 'https://dreamlineproduction.com/',
+        },
+        openGraph: {
+            title: "Best Wedding Photographer in Kolkata | Dreamline Production",
+            description: "Kolkata's premier wedding photography & cinematic production house. 15+ years, 500+ weddings captured. Luxury wedding photography, commercial ad films, and visual storytelling across India.",
+            url: 'https://dreamlineproduction.com/',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: "Best Wedding Photographer in Kolkata | Dreamline Production",
+            description: "Kolkata's premier wedding photography & cinematic production house. 15+ years, 500+ weddings. Luxury wedding photography and commercial films across India.",
+            images: ['/logo-banner.png'],
+        },
+    };
+}
+
 // Above-the-fold: static imports (needed immediately)
 import Hero from "@/components/home/Hero";
 import Marquee from "@/components/home/Marquee";

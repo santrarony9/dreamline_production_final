@@ -81,9 +81,9 @@ export default async function JournalPage() {
                                             <span>{new Date(post.date).toLocaleDateString()}</span>
                                             <span className="text-[#c5a059]">{post.category || "Insight"}</span>
                                         </div>
-                                        <h3 className="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight text-white">
+                                        <h2 className="text-2xl font-bold mb-4 group-hover:text-[#c5a059] transition-colors leading-tight text-white">
                                             {post.title}
-                                        </h3>
+                                        </h2>
                                         <p className="text-sm text-gray-400 mb-6 font-light line-clamp-3">
                                             {post.excerpt || "Dive into the details of our latest cinematic endeavor..."}
                                         </p>

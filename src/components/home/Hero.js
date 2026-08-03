@@ -63,20 +63,28 @@ export default function Hero({ content }) {
 
 
             <div className="container mx-auto px-6 relative z-20 text-center">
+                {/* SEO: Primary h1 with target keyword — visually hidden but fully crawlable */}
+                <h1 className="sr-only">Best Bengali Wedding Photographer In Kolkata</h1>
+
                 <div className="overflow-hidden mb-4">
                     <p className="text-xs md:text-sm font-black uppercase tracking-[0.5em] text-[#c5a059] animate-fade-up">
                         {subtitle || "EST. 2010 • DREAMLINE PRODUCTION"}
                     </p>
                 </div>
 
-                <h1 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-12 uppercase">
+                <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-6 uppercase">
                     <span className="block reveal-text">
                         <span className="reveal-inner-anim inline-block">{titleLine1 || "VISIONARY"}</span>
                     </span>
                     <span className="block italic text-outline reveal-text">
                         <span className="reveal-inner-anim inline-block">{titleLine2 || "CINEMA."}</span>
                     </span>
-                </h1>
+                </h2>
+
+                {/* SEO: 2-line descriptive content for on-page relevance */}
+                <p className="text-gray-400 text-sm md:text-base max-w-3xl mx-auto mb-10 leading-relaxed">
+                    Dreamline Production is a leading wedding photography and videography studio in Kolkata, specializing in cinematic storytelling. From breathtaking wedding photography to professionally edited wedding films with advanced color grading and sound design, we preserve every emotion beautifully.
+                </p>
 
                 <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
                     <Link href={cta1Link || "/luxury"}>
