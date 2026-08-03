@@ -4,6 +4,8 @@ import ServicePage from "@/models/ServicePage";
 import Content from "@/models/Content";
 import Image from "next/image";
 import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
+import StructuredData from '@/components/seo/StructuredData';
+import Link from 'next/link';
 
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -76,12 +78,12 @@ export default async function DynamicServicePage({ params }) {
                         The cinematic experience for <span className="text-[#c5a059]">{slug.replace(/-/g, ' ')}</span> is currently being mastered.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a href={parentLink} className="w-full sm:w-auto bg-[#c5a059] text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1">
+                        <Link href={parentLink} className="w-full sm:w-auto bg-[#c5a059] text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1">
                             Back to {parentLabel}
-                        </a>
-                        <a href="/" className="w-full sm:w-auto border border-white/10 text-white/50 px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:text-white hover:border-white/30 transition-all">
+                        </Link>
+                        <Link href="/" className="w-full sm:w-auto border border-white/10 text-white/50 px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:text-white hover:border-white/30 transition-all">
                             Return Home
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </main>
@@ -90,6 +92,19 @@ export default async function DynamicServicePage({ params }) {
 
     return (
         <main className="bg-black pt-24 md:pt-32">
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": page.title,
+                "description": page.description || "Professional cinematic production services in Kolkata.",
+                "provider": {
+                    "@type": "ProfessionalService",
+                    "name": "Dreamline Production",
+                    "url": "https://dreamlineproduction.com"
+                },
+                "url": `https://dreamlineproduction.com/services/${slug}`,
+                "areaServed": ["Kolkata", "West Bengal", "India"]
+            }} />
             {/* HERO SECTION */}
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
@@ -139,6 +154,7 @@ export default async function DynamicServicePage({ params }) {
                                 <img 
                                     src={img.url} 
                                     alt={img.caption || `Gallery image ${idx}`} 
+                                    loading="lazy"
                                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
@@ -156,9 +172,9 @@ export default async function DynamicServicePage({ params }) {
                 <h2 className="font-heading text-4xl md:text-6xl font-black text-white uppercase italic mb-12 leading-tight">
                     Let's create <br /> something <span className="text-[#c5a059]">iconic.</span>
                 </h2>
-                <a href="/contact" className="inline-block px-12 py-5 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive shadow-2xl">
+                <Link href="/contact" className="inline-block px-12 py-5 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive shadow-2xl">
                     Get a Quote
-                </a>
+                </Link>
             </section>
         </main>
     );

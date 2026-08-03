@@ -2,6 +2,8 @@
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
+import StructuredData from '@/components/seo/StructuredData';
+import Link from 'next/link';
 import ProjectGallery from "@/components/home/ProjectGallery";
 import LuxuryCarousel from "@/components/luxury/LuxuryCarousel";
 import Image from "next/image";
@@ -66,6 +68,20 @@ export default async function LuxuryPage() {
 
     return (
         <main className="bg-black pt-24 md:pt-32">
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Luxury Wedding Photography in Kolkata",
+                "description": "Premium cinematic wedding photography and videography by Dreamline Production. Luxury Bengali weddings, destination weddings, pre-wedding shoots across India.",
+                "provider": {
+                    "@type": "ProfessionalService",
+                    "name": "Dreamline Production",
+                    "url": "https://dreamlineproduction.com"
+                },
+                "areaServed": ["Kolkata", "West Bengal", "India"],
+                "url": "https://dreamlineproduction.com/luxury",
+                "serviceType": ["Wedding Photography", "Wedding Cinematography", "Pre-Wedding Photography", "Destination Wedding Photography"]
+            }} />
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
@@ -118,9 +134,9 @@ export default async function LuxuryPage() {
                 <h2 className="font-heading text-3xl font-black text-white uppercase italic mb-8">
                     Plan Your <span className="text-[#c5a059]">Dream</span> Wedding.
                 </h2>
-                <a href="/contact" className="inline-block px-12 py-4 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive">
+                <Link href="/contact" className="inline-block px-12 py-4 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive">
                     Check Availability
-                </a>
+                </Link>
             </section>
         </main>
     );

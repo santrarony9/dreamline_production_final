@@ -2,6 +2,7 @@
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import Link from "next/link";
+import Image from "next/image";
 
 export async function generateMetadata() {
     return {
@@ -69,10 +70,12 @@ export default async function JournalPage() {
                             <article key={post._id.toString()} className="blog-card rounded-3xl group interactive">
                                 <Link href={`/journal/${post.id || post._id.toString()}`} className="block h-full">
                                     <div className="h-64 overflow-hidden relative">
-                                        <img
+                                        <Image
                                             src={post.image || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             alt={post.title}
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />
                                         <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
                                     </div>

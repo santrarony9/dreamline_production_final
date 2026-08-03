@@ -52,7 +52,7 @@ export default function Hero({ content }) {
                 ) : backgroundImage ? (
                     <Image
                         src={backgroundImage}
-                        alt="Hero Background"
+                        alt="Dreamline Production cinematic wedding photography studio Kolkata"
                         fill
                         priority
                         className="object-cover scale-110"

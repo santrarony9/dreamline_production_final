@@ -1,4 +1,5 @@
 import TechPage from "@/components/tech/TechPage";
+import StructuredData from '@/components/seo/StructuredData';
 
 export const metadata = {
     title: "Tech & Web Development",
@@ -24,5 +25,18 @@ export const metadata = {
 };
 
 export default function Page() {
-    return <TechPage />;
+    return (
+        <>
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Web Development & Digital Solutions Kolkata",
+                "description": "High-performance web development, UI/UX design, and digital product engineering by Dreamline Production's tech division.",
+                "provider": { "@type": "Organization", "name": "Dreamline Production", "url": "https://dreamlineproduction.com" },
+                "url": "https://dreamlineproduction.com/tech",
+                "serviceType": ["Web Development", "UI/UX Design", "Digital Product Engineering"]
+            }} />
+            <TechPage />
+        </>
+    );
 }

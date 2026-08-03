@@ -60,7 +60,7 @@ export default function MasterGallery({ images = [] }) {
                                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -81,7 +81,7 @@ export default function MasterGallery({ images = [] }) {
                                 className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -102,7 +102,7 @@ export default function MasterGallery({ images = [] }) {
                                 className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Gallery Frame" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -128,7 +128,7 @@ export default function MasterGallery({ images = [] }) {
                         <motion.img
                             layoutId={selectedImage.id}
                             src={selectedImage.src}
-                            alt="Expanded View"
+                            alt="Wedding photography detail view by Dreamline Production"
                             className="w-auto h-auto max-w-[90vw] max-h-[90vh] object-contain rounded-xl shadow-2xl"
                         />
                         <div className="absolute top-8 right-8 text-white/50 text-xs font-black uppercase tracking-widest hover:text-white transition-colors">

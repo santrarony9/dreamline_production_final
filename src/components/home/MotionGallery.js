@@ -42,7 +42,7 @@ export default function MotionGallery({
                         <div key={i} className="flex-shrink-0 w-[280px] md:w-80 h-[350px] md:h-96 mr-4 md:mx-4 rounded-3xl overflow-hidden relative group snap-center">
                             <Image 
                                 src={src} 
-                                alt={`Gallery ${i}`}
+                                alt={`Cinematic wedding photography Kolkata ${i + 1}`}
                                 fill
                                 sizes="(max-width: 768px) 280px, 320px"
                                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 md:scale-110 md:group-hover:scale-100" 
@@ -56,7 +56,7 @@ export default function MotionGallery({
                             <div key={`dup-${i}`} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group border border-white/5">
                                 <Image 
                                     src={src} 
-                                    alt={`Gallery Duplicate ${i}`}
+                                    alt={`Wedding cinematography portfolio Kolkata ${i + 1}`}
                                     fill
                                     sizes="320px"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" 

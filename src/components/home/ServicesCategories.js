@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function ServicesCategories({ services }) {
     return (
         <section id="services" className="py-16 md:py-32 bg-black text-white border-t border-white/5">
@@ -28,9 +30,9 @@ export default function ServicesCategories({ services }) {
                                         {srv.subcategories.map((sub, idx) => {
                                             const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                                             return (
-                                                <a href={`/services/${slugify(sub)}`} key={idx} className="text-[10px] md:text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1.5 md:py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
+                                                <Link href={`/services/${slugify(sub)}`} key={idx} className="text-[10px] md:text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1.5 md:py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
                                                     {sub}
-                                                </a>
+                                                </Link>
                                             );
                                         })}
                                     </div>

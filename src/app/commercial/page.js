@@ -2,6 +2,8 @@
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ProjectGallery from "@/components/home/ProjectGallery";
+import StructuredData from '@/components/seo/StructuredData';
+import Link from 'next/link';
 
 export async function generateMetadata() {
     await dbConnect();
@@ -66,6 +68,20 @@ export default async function CommercialPage() {
 
     return (
         <main className="bg-black pt-24 md:pt-32">
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "Service",
+                "name": "Commercial Film Production in Kolkata",
+                "description": "Professional corporate films, ad films, brand campaigns, and commercial videography by Dreamline Production. Trusted by TATA Trust, L&T, Carlsberg.",
+                "provider": {
+                    "@type": "ProfessionalService",
+                    "name": "Dreamline Production",
+                    "url": "https://dreamlineproduction.com"
+                },
+                "areaServed": ["Kolkata", "West Bengal", "India"],
+                "url": "https://dreamlineproduction.com/commercial",
+                "serviceType": ["Corporate Film Production", "Ad Film Production", "Brand Films", "Commercial Videography", "Factory Videography"]
+            }} />
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
@@ -84,9 +100,9 @@ export default async function CommercialPage() {
                 <h2 className="font-heading text-3xl font-black text-white uppercase italic mb-8">
                     Scale Your <span className="text-[#c5a059]">Brand</span> Identity.
                 </h2>
-                <a href="/contact" className="inline-block px-12 py-4 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive">
+                <Link href="/contact" className="inline-block px-12 py-4 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive">
                     Get a Quote
-                </a>
+                </Link>
             </section>
         </main>
     );

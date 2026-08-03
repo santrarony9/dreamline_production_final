@@ -102,9 +102,9 @@ export default function ReviewSlider({
                                         </div>
                                     )}
                                     <div>
-                                        <h4 className="font-black text-[10px] md:text-xs uppercase tracking-widest text-white">
+                                        <h3 className="font-black text-[10px] md:text-xs uppercase tracking-widest text-white">
                                             {review.author}
-                                        </h4>
+                                        </h3>
                                         <p className="text-[8px] md:text-[9px] uppercase font-bold text-white/20 tracking-widest">
                                             {review.role || "Verified Google Reviewer"}
                                         </p>

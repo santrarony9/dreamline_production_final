@@ -60,6 +60,7 @@ function getEmbedUrl(url) {
 }
 
 import WeddingGallery from "@/components/wedding/WeddingGallery";
+import StructuredData from '@/components/seo/StructuredData';
 
 export default async function WeddingDetailPage({ params }) {
     const { id } = await params;
@@ -110,6 +111,25 @@ export default async function WeddingDetailPage({ params }) {
 
     return (
         <main className="bg-black pt-32 min-h-screen">
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "CreativeWork",
+                "name": wedding.title,
+                "description": wedding.description || `Cinematic wedding film of ${wedding.title} by Dreamline Production Kolkata`,
+                "image": wedding.coverImage || wedding.img,
+                "author": {
+                    "@type": "Organization",
+                    "name": "Dreamline Production",
+                    "url": "https://dreamlineproduction.com"
+                },
+                "url": `https://dreamlineproduction.com/wedding/${id}`,
+                "dateCreated": wedding.date,
+                "locationCreated": {
+                    "@type": "Place",
+                    "name": wedding.location || "Kolkata, India"
+                },
+                "genre": "Wedding Cinematography"
+            }} />
             {/* Header Section */}
             <section className="container mx-auto px-6 mb-16 text-center">
                 <Link href="/luxury" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 hover:text-[#c5a059] transition-colors mb-10 group interactive">
@@ -145,7 +165,7 @@ export default async function WeddingDetailPage({ params }) {
                         ></iframe>
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-zinc-900 interactive group relative">
-                            <Image src={wedding.coverImage || wedding.img || allImages[0]} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt="Video Placeholder" sizes="(max-width: 768px) 100vw, 1200px" />
+                            <Image src={wedding.coverImage || wedding.img || allImages[0]} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt={`${wedding.title} cinematic wedding film by Dreamline Production`} sizes="(max-width: 768px) 100vw, 1200px" />
                             <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 z-10">
                                 <span className="text-white text-xs font-black tracking-widest uppercase">Play</span>
                             </div>

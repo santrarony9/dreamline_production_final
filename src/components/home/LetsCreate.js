@@ -17,14 +17,14 @@ export default function LetsCreate({ global }) {
 
                 <div className="space-y-10 md:space-y-16">
                     <div>
-                        <h4 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">LOCATION</h4>
+                        <h3 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">LOCATION</h3>
                         <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug">
                             {contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}
                         </address>
                     </div>
 
                     <div>
-                        <h4 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">INQUIRIES</h4>
+                        <h3 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">INQUIRIES</h3>
                         <a href={`tel:${contact.phone || "+918240054002"}`} className="text-4xl md:text-5xl font-black font-heading hover:text-[#c5a059] transition-colors">
                             {contact.phone || "+91 82400 54002"}
                         </a>
@@ -41,10 +41,12 @@ export default function LetsCreate({ global }) {
             {/* Right Image Split */}
             <div className="flex-1 relative min-h-[500px] lg:min-h-screen">
                 <div className="absolute inset-0 bg-black">
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
-                        alt="Studio Building"
-                        className="w-full h-full object-cover grayscale opacity-60"
+                        alt="Dreamline Production studio office Tilottama Plaza Kolkata"
+                        fill
+                        sizes="100vw"
+                        className="object-cover grayscale opacity-60"
                     />
                 </div>
 

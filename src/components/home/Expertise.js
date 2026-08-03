@@ -12,7 +12,7 @@ export default function Expertise({ expertise }) {
                         <div className="aspect-[4/5] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 relative bg-[#111]">
                             <Image
                                 src={image || "https://images.unsplash.com/photo-1492691523567-6170c24e5fb9?q=80&w=2070&auto=format&fit=crop"}
-                                alt="Expertise"
+                                alt="Luxury Bengali wedding cinematography by Dreamline Production Kolkata"
                                 fill
                                 className="object-cover group-hover:scale-105 transition-transform duration-1000"
                                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -50,7 +50,7 @@ export default function Expertise({ expertise }) {
                             ]).map((service, index) => (
                                 <div key={index} className="p-6 md:p-8 bg-[#151515] border border-white/5 rounded-2xl hover:border-[#c5a059] transition-all group interactive">
                                     <div className="text-[10px] font-black text-[#c5a059] mb-4">{service.number}</div>
-                                    <h4 className="font-bold text-white uppercase tracking-widest">{service.name}</h4>
+                                    <h3 className="font-bold text-white uppercase tracking-widest">{service.name}</h3>
                                 </div>
                             ))}
                         </div>

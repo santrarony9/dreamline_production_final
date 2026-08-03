@@ -4,6 +4,8 @@ import Content from "@/models/Content";
 import ReviewSlider from "@/components/home/ReviewSlider";
 import Image from "next/image";
 import { sanitizeHtml } from "@/lib/sanitize";
+import StructuredData from '@/components/seo/StructuredData';
+import Link from 'next/link';
 
 export async function generateMetadata() {
     await dbConnect();
@@ -50,6 +52,31 @@ export default async function AboutPage() {
 
     return (
         <main className="bg-black pt-24 md:pt-32">
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "AboutPage",
+                "name": "About Dreamline Production",
+                "description": "Learn about Dreamline Production, Kolkata's premier cinematic production house founded by Rony Santra.",
+                "url": "https://dreamlineproduction.com/about",
+                "mainEntity": {
+                    "@type": "Organization",
+                    "name": "Dreamline Production",
+                    "founder": {
+                        "@type": "Person",
+                        "name": "Rony Santra",
+                        "jobTitle": "Founder & Lead Cinematographer"
+                    },
+                    "foundingDate": "2010",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road",
+                        "addressLocality": "Kolkata",
+                        "addressRegion": "West Bengal",
+                        "postalCode": "700082",
+                        "addressCountry": "IN"
+                    }
+                }
+            }} />
             {/* Hero Section */}
             <section className="container mx-auto px-6 mb-20">
                 <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
@@ -104,7 +131,7 @@ export default async function AboutPage() {
                                         src={aboutData.founder.image}
                                         fill
                                         className="object-cover"
-                                        alt="Founder"
+                                        alt="Rony Santra founder Dreamline Production Kolkata"
                                         sizes="(max-width: 768px) 100vw, 400px"
                                     />
                                 ) : null}
@@ -122,7 +149,7 @@ export default async function AboutPage() {
                             <div className="flex items-end gap-4">
                                 <div className="h-[1px] w-12 bg-[#c5a059] mb-4"></div>
                                 <div>
-                                    <h4 className="font-heading text-xl font-bold text-white">Rony</h4>
+                                    <h3 className="font-heading text-xl font-bold text-white">Rony</h3>
                                     <p className="text-xs text-gray-500 uppercase tracking-widest">Founder & Creative Director</p>
                                 </div>
                             </div>
@@ -230,19 +257,19 @@ export default async function AboutPage() {
 
                             <div className="grid grid-cols-2 gap-12">
                                 <div>
-                                    <h3 className="text-5xl md:text-6xl font-black text-white mb-2">15<span className="text-[#c5a059]">+</span></h3>
+                                    <p className="text-5xl md:text-6xl font-black text-white mb-2">15<span className="text-[#c5a059]">+</span></p>
                                     <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Years Experience</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-5xl md:text-6xl font-black text-white mb-2">500<span className="text-[#c5a059]">+</span></h3>
+                                    <p className="text-5xl md:text-6xl font-black text-white mb-2">500<span className="text-[#c5a059]">+</span></p>
                                     <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Weddings Filmed</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-5xl md:text-6xl font-black text-white mb-2">100<span className="text-[#c5a059]">+</span></h3>
+                                    <p className="text-5xl md:text-6xl font-black text-white mb-2">100<span className="text-[#c5a059]">+</span></p>
                                     <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Brands Trust Us</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-5xl md:text-6xl font-black text-white mb-2">4.9</h3>
+                                    <p className="text-5xl md:text-6xl font-black text-white mb-2">4.9</p>
                                     <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">Average Rating</p>
                                 </div>
                             </div>
@@ -253,7 +280,7 @@ export default async function AboutPage() {
                                 <Image src={aboutData.bts?.videoImage || "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1600"}
                                     fill
                                     className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-                                    alt="Behind the Scenes"
+                                    alt="Behind the scenes at Dreamline Production studio Kolkata"
                                     sizes="(max-width: 768px) 100vw, 50vw" />
                                 <div className="absolute inset-0 flex items-center justify-center">
                                     <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform cursor-pointer border border-white/20">
@@ -294,7 +321,7 @@ export default async function AboutPage() {
                                     <li key={idx} className="flex items-start gap-4">
                                         <span className="text-[#c5a059] font-bold">0{idx + 1}.</span>
                                         <div>
-                                            <h4 className="font-bold uppercase text-sm mb-1 text-white">{point.title}</h4>
+                                            <h3 className="font-bold uppercase text-sm mb-1 text-white">{point.title}</h3>
                                             <p className="text-xs text-gray-500">{point.description}</p>
                                         </div>
                                     </li>
@@ -397,9 +424,9 @@ export default async function AboutPage() {
                 <p className="text-gray-400 mb-10 max-w-xl mx-auto">
                     Whether you need a corporate film, advertisement video, wedding cinematography, or digital content, Dreamline Production is ready to bring your vision to life.
                 </p>
-                <a href="/contact" className="inline-block bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1 interactive">
+                <Link href="/contact" className="inline-block bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1 interactive">
                     Contact Us
-                </a>
+                </Link>
             </section>
         </main>
     );

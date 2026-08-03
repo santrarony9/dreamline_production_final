@@ -40,8 +40,9 @@ export default function TechPage() {
                     <div className="absolute inset-0 bg-black/80 z-10" />
                     <img
                         src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=2000"
-                        alt="Tech Background"
+                        alt="Dreamline Production digital studio web development Kolkata"
                         className="w-full h-full object-cover filter grayscale"
+                        loading="lazy"
                     />
                 </motion.div>
 
