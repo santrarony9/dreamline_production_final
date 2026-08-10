@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+
 import dbConnect from "@/lib/mongodb";
 import TechProject from "@/models/TechProject";
 import { safeErrorResponse } from "@/lib/error-handler";

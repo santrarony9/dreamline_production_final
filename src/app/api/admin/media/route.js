@@ -4,6 +4,8 @@ import Wedding from "@/models/Wedding";
 import Journal from "@/models/Journal";
 import Content from "@/models/Content";
 import TechProject from "@/models/TechProject";
+
+export const dynamic = 'force-dynamic';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";

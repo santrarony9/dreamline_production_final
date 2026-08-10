@@ -3,6 +3,8 @@ import dbConnect from "@/lib/mongodb";
 import ServicePage from "@/models/ServicePage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+
+export const dynamic = 'force-dynamic';
 import { revalidatePath } from "next/cache";
 import { safeErrorResponse } from "@/lib/error-handler";
 
