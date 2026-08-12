@@ -49,12 +49,16 @@ export async function generateMetadata({ params }) {
 function getEmbedUrl(url) {
     if (!url) return null;
     if (url.includes('vimeo')) {
-        const match = url.match(/vimeo\.com\/(\d+)/);
+        const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
         return match ? `https://player.vimeo.com/video/${match[1]}?autoplay=0&title=0&byline=0&portrait=0` : null;
     }
     if (url.includes('youtube') || url.includes('youtu.be')) {
-        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([\w-]{11})/);
         return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=0&rel=0` : null;
+    }
+    if (url.includes('instagram.com')) {
+        const match = url.match(/instagram\.com\/(?:p|reel|tv)\/([^/?#&]+)/);
+        return match ? `https://www.instagram.com/p/${match[1]}/embed/` : null;
     }
     return url; // fallback
 }
