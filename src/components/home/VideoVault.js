@@ -28,6 +28,13 @@ export default function VideoVault({
 
     const displayVideos = videos && videos.length > 0 ? videos : defaultVideos;
 
+    const getYouTubeId = (url) => {
+        if (!url) return null;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    };
+
     return (
         <section className="py-16 md:py-32 bg-black overflow-hidden">
             <div className="container mx-auto px-6">
@@ -48,15 +55,19 @@ export default function VideoVault({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-                    {displayVideos.map((video, index) => (
+                    {displayVideos.map((video, index) => {
+                        const ytId = !video.image ? getYouTubeId(video.videoUrl) : null;
+                        const displayImage = video.image || (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
+
+                        return (
                         <div
                             key={index}
                             className="aspect-[4/5] md:aspect-video relative group overflow-hidden cursor-none interactive bg-neutral-900"
                             onClick={() => openVideo(video.videoUrl, video.title)}
                         >
-                            {video.image ? (
+                            {displayImage ? (
                                 <Image
-                                    src={video.image}
+                                    src={displayImage}
                                     alt={video.title}
                                     fill
                                     className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-60 group-hover:opacity-100"

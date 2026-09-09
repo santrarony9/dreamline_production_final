@@ -6,6 +6,13 @@ import { openVideo } from "@/components/VideoModal";
 export default function ServiceVideoShowcase({ videos }) {
     if (!videos || videos.length === 0) return null;
 
+    const getYouTubeId = (url) => {
+        if (!url) return null;
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    };
+
     return (
         <section className="py-24 bg-[#050505] border-y border-white/5">
             <div className="px-8 md:px-16 mb-12">
@@ -14,14 +21,18 @@ export default function ServiceVideoShowcase({ videos }) {
                 </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-8 md:px-16">
-                {videos.map((video, idx) => (
+                {videos.map((video, idx) => {
+                    const ytId = !video.thumbnail ? getYouTubeId(video.url) : null;
+                    const displayImage = video.thumbnail || (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800");
+
+                    return (
                     <div 
                         key={idx} 
                         className="group relative aspect-video bg-white/5 rounded-3xl overflow-hidden border border-white/10 cursor-pointer interactive"
                         onClick={() => openVideo(video.url, video.title)}
                     >
                         <Image 
-                            src={video.thumbnail || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800"} 
+                            src={displayImage} 
                             alt={video.title} 
                             fill 
                             className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60"
@@ -34,7 +45,7 @@ export default function ServiceVideoShowcase({ videos }) {
                             </div>
                         </div>
                     </div>
-                ))}
+                )})}
             </div>
         </section>
     );

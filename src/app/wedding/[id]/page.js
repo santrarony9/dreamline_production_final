@@ -169,7 +169,7 @@ export default async function WeddingDetailPage({ params }) {
                         ></iframe>
                     ) : (
                         <div className="w-full h-full flex items-center justify-center bg-zinc-900 interactive group relative">
-                            <Image src={wedding.coverImage || wedding.img || allImages[0]} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt={`${wedding.title} cinematic wedding film by Dreamline Production`} sizes="(max-width: 768px) 100vw, 1200px" />
+                            <Image src={wedding.coverImage || wedding.img || allImages[0] || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200"} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt={`${wedding.title} cinematic wedding film by Dreamline Production`} sizes="(max-width: 768px) 100vw, 1200px" />
                             <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 z-10">
                                 <span className="text-white text-xs font-black tracking-widest uppercase">Play</span>
                             </div>
