@@ -85,7 +85,8 @@ export default async function Home() {
   await dbConnect();
 
   // Fetch site content for the home page
-  const siteContent = await Content.findOne().lean();
+  const rawSiteContent = await Content.findOne().lean();
+  const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
   // Get today's date in IST format (YYYY-MM-DD)
   const istOffset = 5.5 * 60 * 60 * 1000;
   const now = new Date();

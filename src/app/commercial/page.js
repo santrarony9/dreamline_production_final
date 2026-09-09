@@ -47,7 +47,8 @@ export async function generateMetadata() {
 export default async function CommercialPage() {
     await dbConnect();
 
-    const siteContent = await Content.findOne().lean();
+    const rawSiteContent = await Content.findOne().lean();
+    const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
 
     // Commercial projects are currently stored in siteContent.projects in the legacy schema
     // We'll filter them here. In the future, these might move to their own model.

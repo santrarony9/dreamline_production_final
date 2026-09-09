@@ -52,7 +52,8 @@ export default async function LuxuryPage() {
 
     // Fetch weddings specifically for the luxury page
     const weddings = await Wedding.find().sort({ order: 1 }).lean();
-    const siteContent = await Content.findOne().lean();
+    const rawSiteContent = await Content.findOne().lean();
+    const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
 
     const luxuryData = JSON.parse(JSON.stringify(siteContent?.luxury || {
         title1: "The Heritage",

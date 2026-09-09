@@ -109,7 +109,8 @@ export default function VideoVault({
                                 </svg>
                             </div>
                         </div>
-                    ))}
+                    );
+                })}
                 </div>
             </div>
         </section>

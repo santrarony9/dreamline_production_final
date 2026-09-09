@@ -25,7 +25,8 @@ import { cache } from 'react';
 
 const getSiteContent = cache(async () => {
   await dbConnect();
-  return await Content.findOne().lean();
+  const content = await Content.findOne().lean();
+  return JSON.parse(JSON.stringify(content || {}));
 });
 
 export const viewport = {

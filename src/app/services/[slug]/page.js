@@ -52,8 +52,10 @@ export async function generateMetadata({ params }) {
 export default async function DynamicServicePage({ params }) {
     await dbConnect();
     const { slug } = await params;
-    const page = await ServicePage.findOne({ slug }).lean();
-    const siteContent = await Content.findOne().lean();
+    const rawPage = await ServicePage.findOne({ slug }).lean();
+    const page = rawPage ? JSON.parse(JSON.stringify(rawPage)) : null;
+    const rawSiteContent = await Content.findOne().lean();
+    const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
 
     if (!page) {
         // Fallback: Try to find which category this subcategory belongs to

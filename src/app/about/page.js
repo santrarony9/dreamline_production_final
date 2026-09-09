@@ -47,7 +47,8 @@ export async function generateMetadata() {
 
 export default async function AboutPage() {
     await dbConnect();
-    const siteContent = await Content.findOne().lean();
+    const rawSiteContent = await Content.findOne().lean();
+    const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
     const aboutData = siteContent?.about || {};
 
     return (
