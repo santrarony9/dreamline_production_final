@@ -14,6 +14,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'dreamlinepro.s3.amazonaws.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'res.cloudinary.com',
       },
       {
@@ -23,6 +27,18 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.vimeocdn.com',
       },
     ],
   },
@@ -40,11 +56,11 @@ const nextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://maps.googleapis.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: blob: https://dreamlinepro.s3.ap-south-2.amazonaws.com https://*.googleapis.com https://*.googleusercontent.com",
+              "img-src 'self' data: blob: https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://res.cloudinary.com https://image.thum.io https://images.unsplash.com https://i.ytimg.com https://img.youtube.com https://*.googleapis.com https://*.googleusercontent.com",
               "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https://www.google-analytics.com https://*.googleapis.com wss:",
-              "media-src 'self' data: blob: https://dreamlinepro.s3.ap-south-2.amazonaws.com",
-              "frame-src 'self' https://www.google.com https://maps.google.com",
+              "media-src 'self' data: blob: https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com",
+              "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://youtube.com https://player.vimeo.com https://vimeo.com",
               "frame-ancestors 'self'",
               "base-uri 'self'",
               "form-action 'self'",
