@@ -56,8 +56,8 @@ export default function VideoVault({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
                     {displayVideos.map((video, index) => {
-                        const ytId = !video.image ? getYouTubeId(video.videoUrl) : null;
-                        const displayImage = video.image || (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : null);
+                        const ytId = getYouTubeId(video.videoUrl);
+                        const displayImage = ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : video.image;
 
                         return (
                         <div

@@ -22,8 +22,8 @@ export default function ServiceVideoShowcase({ videos }) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-8 md:px-16">
                 {videos.map((video, idx) => {
-                    const ytId = !video.thumbnail ? getYouTubeId(video.url) : null;
-                    const displayImage = video.thumbnail || (ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800");
+                    const ytId = getYouTubeId(video.url);
+                    const displayImage = ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : (video.thumbnail || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800");
 
                     return (
                     <div 
