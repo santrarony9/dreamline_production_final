@@ -86,6 +86,28 @@ export async function POST(request) {
         }
 
         const finalFileName = `${Date.now()}-${fileName}`;
+        
+        // --- VPS READY: Local Storage Support ---
+        if (process.env.LOCAL_STORAGE === 'true') {
+            const fs = await import('fs/promises');
+            const path = await import('path');
+            
+            const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+            
+            // Ensure directory exists
+            try {
+                await fs.access(uploadDir);
+            } catch {
+                await fs.mkdir(uploadDir, { recursive: true });
+            }
+            
+            const filePath = path.join(uploadDir, finalFileName);
+            await fs.writeFile(filePath, buffer);
+            
+            return NextResponse.json({ url: `/uploads/${finalFileName}` });
+        }
+        // ----------------------------------------
+
         const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamlinepro";
 
         const command = new PutObjectCommand({
