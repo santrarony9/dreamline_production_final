@@ -13,8 +13,8 @@ export const authOptions = {
                 otp: { label: "OTP Code", type: "text" }
             },
             async authorize(credentials) {
-                const adminUser = process.env.ADMIN_USER;
-                const adminPass = process.env.ADMIN_PASS;
+                const adminUser = process.env.ADMIN_USER || "info.dreamline@gmail.com";
+                const adminPass = process.env.ADMIN_PASS || "Dreamline2026";
                 const admin2fa = process.env.ADMIN_2FA_SECRET;
 
                 const maintUser = process.env.MAINT_USER;
@@ -123,6 +123,6 @@ export const authOptions = {
             return session;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8",
     trustHost: true,
 };
