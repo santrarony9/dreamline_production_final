@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -19,37 +18,61 @@ export default function LoginPage() {
         setError("");
 
         try {
-            const res = await signIn("credentials", {
-                username,
-                password,
-                otp: show2fa ? otp : undefined,
-                redirect: false,
-                callbackUrl: "/admin",
+            // Step 1: Get CSRF token using relative URL (avoids localhost issue)
+            const csrfRes = await fetch("/api/auth/csrf");
+            if (!csrfRes.ok) {
+                throw new Error("Failed to initialize secure session.");
+            }
+            const { csrfToken } = await csrfRes.json();
+
+            // Step 2: Direct POST to credentials callback using relative URL
+            // This bypasses next-auth/react's signIn() which tries to fetch from
+            // http://localhost:3002 (the broken NEXTAUTH_URL) and hangs forever
+            const loginRes = await fetch("/api/auth/callback/credentials", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    username,
+                    password,
+                    otp: show2fa ? otp : "",
+                    csrfToken,
+                    json: "true",
+                }),
+                redirect: "follow",
             });
 
-            if (res?.error) {
-                // If NextAuth catches our custom error string, handle appropriately
-                if (res.error === "2FA_REQUIRED") {
-                    setShow2fa(true);
-                    setLoading(false);
-                } else if (res.error === "INVALID_2FA" || res.error.includes("INVALID_2FA")) {
-                    setError("Invalid 2FA Verification Code. Try again.");
-                    setLoading(false);
-                } else {
-                    setError("Invalid credentials. Authorized personnel only.");
-                    setLoading(false);
-                }
-            } else if (res?.ok) {
-                // Login successful — force redirect to /admin regardless of res.url
-                // (res.url may contain a broken localhost URL from misconfigured NEXTAUTH_URL on Vercel)
+            // Parse the response
+            let data;
+            try {
+                data = await loginRes.json();
+            } catch {
+                data = {};
+            }
+
+            // Check if login was successful
+            // Success: status 200 + session cookie set
+            if (loginRes.ok && !data?.error) {
+                // Force hard navigation to /admin to pick up the new session cookie
                 window.location.href = "/admin";
+                return;
+            }
+
+            // Handle specific error cases
+            const errorMsg = data?.error || "";
+
+            if (errorMsg.includes("2FA_REQUIRED")) {
+                setShow2fa(true);
+                setLoading(false);
+            } else if (errorMsg.includes("INVALID_2FA")) {
+                setError("Invalid 2FA Verification Code. Try again.");
+                setLoading(false);
             } else {
-                setError("Authentication failed. Please try again.");
+                setError("Invalid credentials. Authorized personnel only.");
                 setLoading(false);
             }
         } catch (err) {
             console.error("Login exception:", err);
-            setError("Authentication connection error.");
+            setError("Authentication connection error. Please try again.");
             setLoading(false);
         }
     };
@@ -149,10 +172,9 @@ export default function LoginPage() {
                 </form>
 
                 <div className="mt-12 text-center">
-                    <p className="text-[8px] text-gray-500 uppercase tracking-[0.5em] font-black">Authorized Access Only • System v3.0.0</p>
+                    <p className="text-[8px] text-gray-500 uppercase tracking-[0.5em] font-black">Authorized Access Only • System v3.1.0</p>
                 </div>
             </div>
         </div>
     );
 }
-
