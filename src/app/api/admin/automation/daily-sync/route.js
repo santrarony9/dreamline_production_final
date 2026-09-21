@@ -6,7 +6,7 @@ import { safeErrorResponse } from "@/lib/error-handler";
 export const dynamic = 'force-dynamic';
 export const maxDuration = 30;
 
-const FALLBACK_IMAGE = "https://dreamlinepro.s3.ap-south-2.amazonaws.com/1778664039968-apipu-MKS_2044.JPG";
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800";
 const SITE_URL = "https://dreamlineproduction.com";
 
 // ── Helpers ──────────────────────────────────────────────────────────────
@@ -98,7 +98,7 @@ async function postToGBPDirect(post, log) {
 
     // Build image URL via proxy for S3/Unsplash images
     const rawImage = (post.image && post.image.startsWith('http')) ? post.image : FALLBACK_IMAGE;
-    const imageUrl = (rawImage.includes('dreamlinepro.s3') || rawImage.includes('unsplash'))
+    const imageUrl = (rawImage.includes('dreamlinepro.s3') || rawImage.includes('unsplash') || rawImage.includes('backend.dreamlineproduction.com'))
         ? `${SITE_URL}/api/images/cover.jpg?url=${encodeURIComponent(rawImage)}`
         : rawImage;
 

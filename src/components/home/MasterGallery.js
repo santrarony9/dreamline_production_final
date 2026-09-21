@@ -7,15 +7,15 @@ export default function MasterGallery({ images = [] }) {
     const [selectedImage, setSelectedImage] = useState(null);
     // Fallback images if none provided from global content
     const defaultImages = [
-        "https://dreamlinepro.s3.ap-south-2.amazonaws.com/uploads/1772417032378-b2770244f256ecaa93033b1d-Untitled_design__5_.webp",
-        "https://dreamlinepro.s3.ap-south-2.amazonaws.com/uploads/1772417043885-3367fab3cee6eebf3ffbb0b6-Untitled_design__4_.webp",
+        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
         "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
         "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800",
-        "https://dreamlinepro.s3.ap-south-2.amazonaws.com/uploads/1771668025915-KSR839_Cover.webp",
-        "https://dreamlinepro.s3.ap-south-2.amazonaws.com/uploads/1771668027519-KSR1091_Cover.webp",
-        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
         "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=800",
-        "https://dreamlinepro.s3.ap-south-2.amazonaws.com/uploads/1771668028776-KSR1440_Cover.webp",
+        "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800",
+        "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800",
+        "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800",
+        "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800",
+        "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=800",
     ];
 
     const displayImages = images && images.length >= 6 ? images : defaultImages;

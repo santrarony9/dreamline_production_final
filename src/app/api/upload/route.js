@@ -2,23 +2,10 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 export const maxDuration = 60; // Allow up to 60s for upload + Sharp processing
 
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
-const s3Client = new S3Client({
-    region: process.env.AWS_REGION || "ap-south-2",
-    endpoint: process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT || undefined,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
-    forcePathStyle: false,
-});
-
 import sharp from "sharp";
-
 import { safeErrorResponse } from "@/lib/error-handler";
 
 const ALLOWED_MIME_TYPES = [
@@ -86,56 +73,26 @@ export async function POST(request) {
         }
 
         const finalFileName = `${Date.now()}-${fileName}`;
-        
-        // --- VPS READY: Local Storage Support ---
-        if (process.env.LOCAL_STORAGE === 'true') {
-            const fs = await import('fs/promises');
-            const path = await import('path');
-            
-            const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-            
-            // Ensure directory exists
-            try {
-                await fs.access(uploadDir);
-            } catch {
-                await fs.mkdir(uploadDir, { recursive: true });
-            }
-            
-            const filePath = path.join(uploadDir, finalFileName);
-            await fs.writeFile(filePath, buffer);
-            
-            return NextResponse.json({ url: `/uploads/${finalFileName}` });
-        }
-        // ----------------------------------------
 
-        const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamlinepro";
+        // --- VPS Local Storage (AWS S3 bypassed — bucket blocked) ---
+        const fs = await import('fs/promises');
+        const path = await import('path');
 
-        const command = new PutObjectCommand({
-            Bucket: bucketName,
-            Key: finalFileName,
-            Body: buffer,
-            ContentType: contentType.startsWith("image/") && !contentType.includes("svg") ? "image/webp" : contentType,
-        });
+        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
 
-        await s3Client.send(command);
-
-        // Determine URL format
-        let url;
-        if (process.env.NEXT_PUBLIC_CLOUDFRONT_URL) {
-            const cloudFrontUrl = process.env.NEXT_PUBLIC_CLOUDFRONT_URL.replace(/\/$/, "");
-            url = `${cloudFrontUrl}/${finalFileName}`;
-        } else if (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT) {
-            const baseEndpoint = (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT).replace(/\/$/, "");
-            if (process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN) {
-                url = `${process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN}/${finalFileName}`;
-            } else {
-                url = `${baseEndpoint}/${bucketName}/${finalFileName}`;
-            }
-        } else {
-            url = `https://${bucketName}.s3.${process.env.AWS_REGION || "ap-south-2"}.amazonaws.com/${finalFileName}`;
+        // Ensure directory exists
+        try {
+            await fs.access(uploadDir);
+        } catch {
+            await fs.mkdir(uploadDir, { recursive: true });
         }
 
-        return NextResponse.json({ url });
+        const filePath = path.join(uploadDir, finalFileName);
+        await fs.writeFile(filePath, buffer);
+
+        // Return relative URL — next.config.mjs rewrites /uploads/* to backend.dreamlineproduction.com/uploads/*
+        const publicUrl = `https://backend.dreamlineproduction.com/uploads/${finalFileName}`;
+        return NextResponse.json({ url: publicUrl });
     } catch (error) {
         return safeErrorResponse(error, "Upload");
     }

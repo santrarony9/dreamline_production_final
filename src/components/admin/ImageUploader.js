@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import axios from "axios";
 import MediaLibrary from "./MediaLibrary";
 
 export default function ImageUploader({ onUploadSuccess, currentImage, recommendedSize }) {
@@ -13,7 +12,6 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
     const fileInputRef = useRef(null);
 
     const MAX_RETRIES = 3;
-    const UPLOAD_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
 
     const handleFileChange = async (e) => {
         const file = e.target.files?.[0];
@@ -47,42 +45,14 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 setError(null);
             }
 
-            // 1. Get Pre-signed URL
-            console.log(`[Upload] Attempt ${attempt + 1}/${MAX_RETRIES}: Getting pre-signed URL for:`, file.name);
-            const presignedRes = await fetch("/api/upload/presigned", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    fileName: file.name,
-                    fileType: file.type
-                }),
-            });
+            // Direct FormData upload to VPS backend (AWS S3 bypassed)
+            console.log(`[Upload] Attempt ${attempt + 1}/${MAX_RETRIES}: Uploading directly:`, file.name);
 
-            // Handle non-JSON responses (413, 500 HTML pages, etc.)
-            let data;
-            const responseText = await presignedRes.text();
-            try {
-                data = JSON.parse(responseText);
-            } catch (e) {
-                console.error("Failed to parse JSON response:", responseText.substring(0, 200));
-                throw new Error(`Server error (Status ${presignedRes.status}). Please try again.`);
-            }
+            const formData = new FormData();
+            formData.append("file", file);
 
-            if (!presignedRes.ok) {
-                if (presignedRes.status === 401) {
-                    throw new Error("Session expired. Please refresh the page and log in again.");
-                }
-                throw new Error(data.error || `Upload preparation failed (Status ${presignedRes.status})`);
-            }
-
-            const { uploadUrl, publicUrl } = data;
-
-            // 2. Direct Upload to S3 with progress
-            console.log("[Upload] Uploading to S3...");
-            
-            // Using XMLHttpRequest for progress tracking since fetch doesn't support it easily yet
             const xhr = new XMLHttpRequest();
-            
+
             const uploadPromise = new Promise((resolve, reject) => {
                 xhr.upload.addEventListener("progress", (e) => {
                     if (e.lengthComputable) {
@@ -93,34 +63,39 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
 
                 xhr.addEventListener("load", () => {
                     if (xhr.status >= 200 && xhr.status < 300) {
-                        resolve();
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            resolve(response);
+                        } catch (e) {
+                            reject(new Error("Invalid server response"));
+                        }
+                    } else if (xhr.status === 401) {
+                        reject(new Error("Session expired. Please refresh the page and log in again."));
                     } else {
-                        // S3 returns XML error messages in the body
-                        console.error("[Upload] S3 Error Response:", xhr.responseText);
-                        reject(new Error(`S3 Upload failed (Status ${xhr.status})`));
+                        console.error("[Upload] Server Error Response:", xhr.responseText);
+                        reject(new Error(`Upload failed (Status ${xhr.status})`));
                     }
                 });
 
-                xhr.addEventListener("error", () => reject(new Error("Network error during S3 upload")));
+                xhr.addEventListener("error", () => reject(new Error("Network error during upload")));
                 xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
 
-                xhr.open("PUT", uploadUrl);
-                // CRITICAL: We must ONLY send the Content-Type header to match the pre-signed URL signature
-                xhr.setRequestHeader("Content-Type", file.type);
-                xhr.send(file);
+                xhr.open("POST", "/api/upload");
+                xhr.send(formData);
             });
 
-            // Set a generous timeout (30 minutes for large files)
-            const timeoutPromise = new Promise((_, reject) => 
+            // Timeout: 30 minutes for large files
+            const timeoutPromise = new Promise((_, reject) =>
                 setTimeout(() => {
                     xhr.abort();
                     reject(new Error("Upload timed out after 30 minutes"));
                 }, 30 * 60 * 1000)
             );
 
-            await Promise.race([uploadPromise, timeoutPromise]);
+            const result = await Promise.race([uploadPromise, timeoutPromise]);
 
-            // 3. Success
+            // Success
+            const publicUrl = result.url;
             console.log("[Upload] Success! Public URL:", publicUrl);
             onUploadSuccess(publicUrl);
             setIsUploading(false);
@@ -129,7 +104,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
         } catch (err) {
             console.error(`[Upload] Attempt ${attempt + 1} failed:`, err);
 
-            // Don't retry on auth errors or specific 403s
+            // Don't retry on auth errors
             const isAuthError = err.message?.includes("Session expired") || err.message?.includes("401");
 
             if (attempt < MAX_RETRIES - 1 && !isAuthError) {
@@ -236,7 +211,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             )}
 
             {showLibrary && (
-                <MediaLibrary 
+                <MediaLibrary
                     onClose={() => setShowLibrary(false)}
                     onSelect={(url) => {
                         onUploadSuccess(url);

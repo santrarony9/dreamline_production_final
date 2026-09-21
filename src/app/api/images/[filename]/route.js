@@ -16,6 +16,7 @@ export async function GET(request, { params }) {
         const ALLOWED_DOMAINS = [
             "dreamlinepro.s3.ap-south-2.amazonaws.com",
             "dreamlinepro.s3.amazonaws.com",
+            "backend.dreamlineproduction.com",
             "images.unsplash.com",
             "lh3.googleusercontent.com",
             "maps.googleapis.com",

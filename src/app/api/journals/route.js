@@ -8,7 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";
 
-const FALLBACK_IMAGE = "https://dreamlinepro.s3.ap-south-2.amazonaws.com/1778664039968-apipu-MKS_2044.JPG";
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800";
 const PRODUCTION_URL = "https://dreamlineproduction.com";
 
 function stripHtml(html) {

@@ -1,23 +1,10 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
-export const maxDuration = 60; // Allow up to 60s for presigned URL generation
+export const maxDuration = 60;
 
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
-const s3Client = new S3Client({
-    region: process.env.AWS_REGION || "ap-south-2",
-    endpoint: process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT || undefined,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
-    forcePathStyle: false,
-});
-
 import { safeErrorResponse } from "@/lib/error-handler";
 
 const ALLOWED_MIME_TYPES = [
@@ -31,25 +18,19 @@ const ALLOWED_MIME_TYPES = [
     "application/pdf",
 ];
 
+// Pre-signed URLs are no longer needed since AWS S3 is bypassed.
+// This endpoint now returns the direct upload URL for the FormData-based upload flow.
 export async function POST(request) {
-    console.log("PRE-SIGNED URL REQUEST RECEIVED");
+    console.log("UPLOAD URL REQUEST RECEIVED (S3 bypassed — using VPS local storage)");
 
-    // Validate AWS credentials are present
-    if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
-        console.error("Missing AWS credentials in environment variables");
-        return NextResponse.json({ error: "Server configuration error: Missing AWS credentials" }, { status: 500 });
-    }
-
-    // Pass authOptions so getServerSession works correctly on Vercel production
     const session = await getServerSession(authOptions);
     if (!session) {
-        console.log("Unauthorized request to pre-signed URL — session is null");
+        console.log("Unauthorized request — session is null");
         return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
     }
 
     try {
         const body = await request.json();
-        console.log("Request body:", body);
         const { fileName, fileType } = body;
 
         if (!fileName || !fileType) {
@@ -60,48 +41,13 @@ export async function POST(request) {
             return NextResponse.json({ error: "File type not allowed" }, { status: 400 });
         }
 
-        const bucketName = process.env.AWS_S3_BUCKET_NAME || process.env.AWS_BUCKET_NAME || "dreamlinepro";
-        const region = process.env.AWS_REGION || "ap-south-2";
-
-        // Sanitize filename: remove non-ASCII, special chars, collapse spaces
-        const sanitizedName = fileName
-            .replace(/[^\x20-\x7E]/g, '') // Remove non-ASCII (Bengali, emojis, etc.)
-            .replace(/[^a-zA-Z0-9._-]/g, '-') // Replace special chars with dash
-            .replace(/-+/g, '-') // Collapse multiple dashes
-            .replace(/^-|-$/g, ''); // Trim leading/trailing dashes
-
-        const finalFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}-${sanitizedName || 'upload'}`;
-
-        console.log("Generating presigned URL for bucket:", bucketName, "region:", region, "file:", finalFileName);
-
-        const command = new PutObjectCommand({
-            Bucket: bucketName,
-            Key: finalFileName,
-            ContentType: fileType,
+        // Return the direct upload endpoint — the ImageUploader will POST FormData here
+        return NextResponse.json({
+            uploadUrl: "/api/upload",
+            publicUrl: "pending", // Will be returned by the actual upload endpoint
+            method: "POST_FORMDATA" // Signal to the client to use FormData instead of PUT
         });
-
-        // Generate a pre-signed URL valid for 1 hour (3600 seconds)
-        const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
-
-        // Determine the final public URL
-        let publicUrl;
-        if (process.env.NEXT_PUBLIC_CLOUDFRONT_URL) {
-            const cloudFrontUrl = process.env.NEXT_PUBLIC_CLOUDFRONT_URL.replace(/\/$/, "");
-            publicUrl = `${cloudFrontUrl}/${finalFileName}`;
-        } else if (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT) {
-            const baseEndpoint = (process.env.AWS_ENDPOINT_URL_S3 || process.env.AWS_ENDPOINT).replace(/\/$/, "");
-            if (process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN) {
-                publicUrl = `${process.env.NEXT_PUBLIC_S3_CUSTOM_DOMAIN}/${finalFileName}`;
-            } else {
-                publicUrl = `${baseEndpoint}/${bucketName}/${finalFileName}`;
-            }
-        } else {
-            publicUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${finalFileName}`;
-        }
-
-        console.log("Presigned URL generated successfully. Public URL:", publicUrl);
-        return NextResponse.json({ uploadUrl: presignedUrl, publicUrl });
     } catch (error) {
-        return safeErrorResponse(error, "Presigned URL");
+        return safeErrorResponse(error, "Upload URL");
     }
 }
