@@ -24,6 +24,7 @@ export default function LoginPage() {
                 password,
                 otp: show2fa ? otp : undefined,
                 redirect: false,
+                callbackUrl: "/admin",
             });
 
             if (res?.error) {
@@ -38,8 +39,13 @@ export default function LoginPage() {
                     setError("Invalid credentials. Authorized personnel only.");
                     setLoading(false);
                 }
+            } else if (res?.ok) {
+                // Login successful — force redirect to /admin regardless of res.url
+                // (res.url may contain a broken localhost URL from misconfigured NEXTAUTH_URL on Vercel)
+                window.location.href = "/admin";
             } else {
-                router.push("/admin");
+                setError("Authentication failed. Please try again.");
+                setLoading(false);
             }
         } catch (err) {
             console.error("Login exception:", err);

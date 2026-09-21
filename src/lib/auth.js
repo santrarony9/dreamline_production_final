@@ -105,11 +105,32 @@ export const authOptions = {
                 secure: process.env.NODE_ENV === 'production',
             },
         },
+        callbackUrl: {
+            name: process.env.NODE_ENV === 'production' ? `__Secure-next-auth.callback-url` : `next-auth.callback-url`,
+            options: {
+                httpOnly: true,
+                sameSite: 'lax',
+                path: '/',
+                secure: process.env.NODE_ENV === 'production',
+            },
+        },
     },
     pages: {
         signIn: "/admin/login",
     },
     callbacks: {
+        async redirect({ url, baseUrl }) {
+            // Force production domain — fixes broken NEXTAUTH_URL=localhost:3002 on Vercel
+            const productionBase = "https://dreamlineproduction.com";
+            // If it's a relative URL, prepend production base
+            if (url.startsWith("/")) return `${productionBase}${url}`;
+            // If it points to localhost, replace with production
+            if (url.includes("localhost")) return productionBase;
+            // If it's on our domain, allow it
+            if (url.startsWith(productionBase)) return url;
+            // Default fallback
+            return productionBase;
+        },
         async jwt({ token, user }) {
             if (user) {
                 token.role = user.role;
