@@ -90,8 +90,8 @@ export async function POST(request) {
         const filePath = path.join(uploadDir, finalFileName);
         await fs.writeFile(filePath, buffer);
 
-        // Return relative URL — next.config.mjs rewrites /uploads/* to backend.dreamlineproduction.com/uploads/*
-        const publicUrl = `https://backend.dreamlineproduction.com/uploads/${finalFileName}`;
+        // Return relative URL — Vercel rewrites /uploads/* to http://backend.dreamlineproduction.com/uploads/*
+        const publicUrl = `/uploads/${finalFileName}`;
         return NextResponse.json({ url: publicUrl });
     } catch (error) {
         return safeErrorResponse(error, "Upload");
