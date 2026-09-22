@@ -486,20 +486,20 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en" className="overflow-x-hidden">
       <head>
-        {/* AI Discoverability — Link tags for LLM and AI crawler discovery */}
+        {/* AI Discoverability – Link tags for LLM and AI crawler discovery */}
         <link rel="ai-policy" href="https://dreamlineproduction.com/ai.txt" />
         <link rel="llms-txt" href="https://dreamlineproduction.com/llms.txt" />
         <link rel="llms-full-txt" href="https://dreamlineproduction.com/llms-full.txt" />
         <link rel="author" href="https://dreamlineproduction.com/about" />
         <meta name="ai-content-declaration" content="This website allows AI search engines to index and cite its content for search results and recommendations." />
         <meta name="ai-policy-url" content="https://dreamlineproduction.com/ai.txt" />
-      </head>
-      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}>
         {/* Inline JSON-LD for immediate crawlability by Google and AI bots */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+      </head>
+      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}>
         <AuthProvider>
           <ThemeProvider>
             <SmoothScroll>

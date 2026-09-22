@@ -344,6 +344,18 @@ export default async function Home() {
         sectionTitle={homeData.reviews?.sectionTitle}
         sectionSubtitle={homeData.reviews?.sectionSubtitle}
       />
+      
+      {/* 2-Line SEO Content Block */}
+      <section className="py-16 bg-[#050505] border-t border-white/5 text-center">
+        <div className="container mx-auto px-6 max-w-4xl">
+            <h2 className="sr-only">Top Cinematic Films & Wedding Photography Studio in Kolkata</h2>
+            <p className="text-gray-400 text-sm md:text-base leading-relaxed font-light">
+                Dreamline Production is Kolkata's premier cinematic production house and luxury wedding photography studio. 
+                We specialize in capturing timeless moments, offering premium wedding photography, commercial films, and tech-driven digital solutions across West Bengal and beyond.
+            </p>
+        </div>
+      </section>
+
       <LetsCreate global={siteContent?.global} />
     </main>
   );

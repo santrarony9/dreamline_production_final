@@ -131,7 +131,7 @@ export default async function JournalDetailPage({ params }) {
             <section className="container mx-auto px-6 pb-32">
                 <div className="max-w-4xl mx-auto">
                     <div
-                        className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed text-lg"
+                        className="prose prose-invert prose-gold max-w-none text-gray-300 leading-relaxed text-lg prose-h1:text-4xl prose-h1:font-black prose-h1:uppercase prose-h1:text-white prose-h1:mb-8 prose-h2:text-3xl prose-h2:font-bold prose-h2:text-white prose-h2:mb-6 prose-h3:text-2xl prose-h3:font-semibold prose-h3:mb-4"
                         dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                     />
 
