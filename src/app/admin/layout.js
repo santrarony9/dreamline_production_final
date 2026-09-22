@@ -25,9 +25,11 @@ export default function AdminLayout({ children }) {
         {
             title: "Content & Portfolios",
             items: [
-                { label: "Blog / Journal", path: "/admin/journal", icon: "📝" },
+                { label: "Blog / Journal", path: "/admin/journal", icon: "📓" },
                 { label: "Weddings", path: "/admin/weddings", icon: "💍" },
                 { label: "Commercial", path: "/admin/commercial", icon: "🎥" },
+                { label: "Tech / Web", path: "/admin/tech", icon: "💻" },
+                { label: "Luxury", path: "/admin/luxury", icon: "✨" },
                 { label: "Galleries", path: "/admin/gallery", icon: "🎬" },
             ]
         },
@@ -36,6 +38,7 @@ export default function AdminLayout({ children }) {
             items: [
                 { label: "Home Page", path: "/admin/home", icon: "🏠" },
                 { label: "About Page", path: "/admin/about", icon: "🏢" },
+                { label: "Google Business", path: "/admin/google-business", icon: "🌐" },
             ]
         }
     ];
@@ -44,6 +47,7 @@ export default function AdminLayout({ children }) {
         { label: "SEO Settings", path: "/admin/seo", icon: "🔍" },
         { label: "Users & Settings", path: "/admin/users", icon: "⚙️" },
         { label: "Global Info", path: "/admin/global", icon: "🌍" },
+        { label: "Diagnostics", path: "/admin/diagnostics", icon: "🩺" },
     ];
 
     if (pathname === "/admin/login") return <>{children}</>;
