@@ -1,4 +1,5 @@
 import Link from "next/link";
+import StructuredData from "@/components/seo/StructuredData";
 
 export const metadata = {
     title: 'Refund Policy',
@@ -12,8 +13,31 @@ export const metadata = {
     },
 };
 
+const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebPage",
+            "@id": "https://dreamlineproduction.com/refund-policy",
+            "url": "https://dreamlineproduction.com/refund-policy",
+            "name": "Refund Policy | Dreamline Production",
+            "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
+            "inLanguage": "en-IN"
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
+                { "@type": "ListItem", "position": 2, "name": "Refund Policy", "item": "https://dreamlineproduction.com/refund-policy" }
+            ]
+        }
+    ]
+};
+
 export default function RefundPolicy() {
     return (
+        <>
+        <StructuredData data={schema} />
         <main className="pt-40 pb-20 bg-black min-h-screen">
             <div className="container mx-auto px-6 max-w-4xl">
                 <header className="mb-16">
@@ -57,5 +81,6 @@ export default function RefundPolicy() {
                 </div>
             </div>
         </main>
+        </>
     );
 }

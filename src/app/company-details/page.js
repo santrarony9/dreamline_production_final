@@ -1,5 +1,39 @@
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
+import StructuredData from "@/components/seo/StructuredData";
+
+const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebPage",
+            "@id": "https://dreamlineproduction.com/company-details",
+            "url": "https://dreamlineproduction.com/company-details",
+            "name": "Company Details & Registration | Dreamline Production",
+            "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
+            "inLanguage": "en-IN"
+        },
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
+                { "@type": "ListItem", "position": 2, "name": "Company Details", "item": "https://dreamlineproduction.com/company-details" }
+            ]
+        },
+        {
+            "@type": "Organization",
+            "name": "Dreamline Production",
+            "legalName": "DREAM LINE PRODUCTION",
+            "taxID": "19EILPS2898F1ZE",
+            "url": "https://dreamlineproduction.com",
+            "identifier": [
+                { "@type": "PropertyValue", "name": "MSME", "value": "WB-18-0018671" },
+                { "@type": "PropertyValue", "name": "GST", "value": "19EILPS2898F1ZE" },
+                { "@type": "PropertyValue", "name": "IEC", "value": "EILPS2898F" }
+            ]
+        }
+    ]
+};
 
 
 export async function generateMetadata() {
@@ -75,6 +109,8 @@ export default async function CompanyDetailsPage() {
     ];
 
     return (
+        <>
+        <StructuredData data={schema} />
         <main className="bg-black pt-32 pb-24 min-h-screen">
             <div className="container mx-auto px-6 max-w-4xl">
                 {/* Header */}
@@ -138,5 +174,6 @@ export default async function CompanyDetailsPage() {
                 </div>
             </div>
         </main>
+        </>
     );
 }
