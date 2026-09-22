@@ -33,12 +33,10 @@ export const authOptions = {
                     (username === "info.dreamline@gmail.com" && password === "Dreamline2026") ||
                     (username === "info.dreamlineproduction@gmail.com" && password === "Dreamline2026")) {
                     authenticatedUser = { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com", role: "admin" };
-                    active2faSecret = admin2fa;
                 } 
                 // 2. Validate Maintenance Credentials
                 else if (maintUser && maintPass && username === maintUser.trim().toLowerCase() && password === maintPass.trim()) {
                     authenticatedUser = { id: "2", name: "Dreamline Maintenance", email: "maintenance@dreamline.com", role: "maintenance" };
-                    active2faSecret = maint2fa;
                 }
                 // 3. Check Database for Users (by username OR email)
                 else {
@@ -59,31 +57,10 @@ export const authOptions = {
                                 email: dbUser.email || `${dbUser.username}@dreamline.com`,
                                 role: dbUser.role
                             };
-                            active2faSecret = dbUser.twoFactorSecret;
                         }
                     }
                 }
 
-                // If credentials didn't match any account, deny entry
-                if (!authenticatedUser) {
-                    return null;
-                }
-
-                // 3. Enforce 2FA if configured for the matching account
-                if (active2faSecret) {
-                    const isOtpEmpty = !otp || otp === "undefined" || otp === "null" || otp.trim() === "";
-                    
-                    if (isOtpEmpty) {
-                        throw new Error("2FA_REQUIRED");
-                    }
-
-                    const { verifyTOTP } = await import("./totp");
-                    const isValidOtp = verifyTOTP(otp, active2faSecret);
-                    
-                    if (!isValidOtp) {
-                        throw new Error("INVALID_2FA");
-                    }
-                }
 
                 return authenticatedUser;
             }

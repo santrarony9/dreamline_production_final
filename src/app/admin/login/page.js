@@ -1,16 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [otp, setOtp] = useState("");
-    const [show2fa, setShow2fa] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,69 +15,55 @@ export default function LoginPage() {
         setError("");
 
         try {
-            // Step 1: Get CSRF token using relative URL (avoids localhost issue)
-            const csrfRes = await fetch("/api/auth/csrf");
+            // Get CSRF token
+            const csrfRes = await fetch("/api/auth/csrf", {
+                headers: { "Content-Type": "application/json" }
+            });
+            
             if (!csrfRes.ok) {
                 throw new Error("Failed to initialize secure session.");
             }
+            
             const { csrfToken } = await csrfRes.json();
 
-            // Step 2: Direct POST to credentials callback using relative URL
-            // This bypasses next-auth/react's signIn() which tries to fetch from
-            // http://localhost:3002 (the broken NEXTAUTH_URL) and hangs forever
+            // Direct POST to credentials callback with same-origin to send CSRF cookies
             const loginRes = await fetch("/api/auth/callback/credentials", {
                 method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                headers: { 
+                    "Content-Type": "application/x-www-form-urlencoded" 
+                },
                 body: new URLSearchParams({
                     username,
                     password,
-                    otp: show2fa ? otp : "",
                     csrfToken,
                     json: "true",
                 }),
                 redirect: "follow",
             });
 
-            // Parse the response
-            let data;
+            let data = {};
             try {
+                // If it returned JSON
                 data = await loginRes.json();
             } catch {
-                data = {};
+                // If it redirected instead
             }
 
-            // Check if login was successful
-            // Success: status 200 + session cookie set
             if (loginRes.ok && !data?.error) {
-                // Force hard navigation to /admin to pick up the new session cookie
+                // Login Success!
                 window.location.href = "/admin";
                 return;
             }
 
-            // Handle specific error cases
-            const errorMsg = data?.error || "";
-
-            if (errorMsg.includes("2FA_REQUIRED")) {
-                setShow2fa(true);
-                setLoading(false);
-            } else if (errorMsg.includes("INVALID_2FA")) {
-                setError("Invalid 2FA Verification Code. Try again.");
-                setLoading(false);
-            } else {
-                setError("Invalid credentials. Authorized personnel only.");
-                setLoading(false);
-            }
+            // Login Failed
+            setError("Invalid credentials. Authorized personnel only.");
+            setLoading(false);
+            
         } catch (err) {
             console.error("Login exception:", err);
             setError("Authentication connection error. Please try again.");
             setLoading(false);
         }
-    };
-
-    const handleBackToCredentials = () => {
-        setShow2fa(false);
-        setOtp("");
-        setError("");
     };
 
     return (
@@ -92,57 +75,53 @@ export default function LoginPage() {
                     </div>
                     <h1 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">Admin Portal</h1>
                     <p className="text-gray-500 text-xs uppercase tracking-[0.3em] font-bold">
-                        {show2fa ? "Two-Factor Authorization" : "Secure Cinema Access"}
+                        Secure Cinema Access
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {!show2fa ? (
-                        <>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest pl-1">Identifier</label>
-                                <input
-                                    type="text"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-500 font-bold"
-                                    placeholder="info.dreamline@"
-                                    required
-                                />
-                            </div>
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest pl-1">Identifier</label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-500 font-bold"
+                            placeholder="info.dreamlineproduction@gmail.com"
+                            required
+                        />
+                    </div>
 
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest pl-1">Keycode</label>
-                                <input
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-500 font-bold"
-                                    placeholder="••••••••"
-                                    required
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest pl-1">6-Digit Authenticator Code</label>
-                                <input
-                                    type="text"
-                                    maxLength={6}
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none tracking-[0.5em] text-center text-2xl font-black transition-all placeholder:text-gray-500 placeholder:tracking-normal placeholder:text-base"
-                                    placeholder="000000"
-                                    required
-                                    autoFocus
-                                />
-                                <p className="text-[9px] text-gray-500 font-medium tracking-wide leading-relaxed pt-2 pl-1 text-center">
-                                    Open your Google Authenticator or Microsoft Authenticator app to retrieve your code.
-                                </p>
-                            </div>
-                        </>
-                    )}
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest pl-1">Keycode</label>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all placeholder:text-gray-500 font-bold pr-12"
+                                placeholder="••••••••"
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors p-1"
+                                title={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                    </svg>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                )}
+                            </button>
+                        </div>
+                    </div>
 
                     {error && (
                         <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-black uppercase tracking-widest rounded-xl text-center">
@@ -156,23 +135,13 @@ export default function LoginPage() {
                             disabled={loading}
                             className="w-full bg-[#c5a059] hover:bg-white text-black font-black uppercase tracking-widest py-4 rounded-2xl transition-all shadow-xl shadow-[#c5a059]/10 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                         >
-                            {loading ? "Decrypting..." : show2fa ? "Verify & Decrypt" : "Enter Dashboard"}
+                            {loading ? "Decrypting..." : "Enter Dashboard"}
                         </button>
-
-                        {show2fa && (
-                            <button
-                                type="button"
-                                onClick={handleBackToCredentials}
-                                className="w-full bg-transparent hover:text-white text-gray-500 font-black text-[10px] uppercase tracking-widest py-2 rounded-2xl transition-all active:scale-[0.98] cursor-pointer"
-                            >
-                                ← Back to Login
-                            </button>
-                        )}
                     </div>
                 </form>
 
                 <div className="mt-12 text-center">
-                    <p className="text-[8px] text-gray-500 uppercase tracking-[0.5em] font-black">Authorized Access Only • System v3.1.0</p>
+                    <p className="text-[8px] text-gray-500 uppercase tracking-[0.5em] font-black">Authorized Access Only • System v3.2.0</p>
                 </div>
             </div>
         </div>
