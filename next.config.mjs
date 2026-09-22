@@ -54,14 +54,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   async rewrites() {
-    const rewrites = [
-      {
-        source: '/uploads/:path*',
-        destination: 'http://backend.dreamlineproduction.com/uploads/:path*',
-      }
-    ];
-
-    // Only proxy the upload endpoint if we are running on the Vercel frontend
+    // Only apply proxy rewrites if we are running on the Vercel frontend
     if (process.env.VERCEL === '1') {
       return {
         beforeFiles: [
@@ -70,11 +63,16 @@ const nextConfig = {
             destination: 'http://backend.dreamlineproduction.com/api/upload',
           }
         ],
-        fallback: rewrites
+        fallback: [
+          {
+            source: '/uploads/:path*',
+            destination: 'http://backend.dreamlineproduction.com/uploads/:path*',
+          }
+        ]
       };
     }
 
-    return rewrites;
+    return [];
   },
   async headers() {
     return [
