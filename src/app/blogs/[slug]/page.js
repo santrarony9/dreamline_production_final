@@ -7,6 +7,32 @@ import Image from "next/image";
 import { sanitizeHtml } from "@/lib/sanitize";
 import StructuredData from "@/components/seo/StructuredData";
 
+const SERVICE_LINKS = {
+  'WEDDING': [
+    { title: 'Luxury Wedding Photography', href: '/luxury', desc: 'Cinematic wedding films & candid photography' },
+    { title: 'Pre-Wedding Shoots', href: '/services/pre-wedding-photography-kolkata', desc: 'Stunning pre-wedding locations across Kolkata' },
+    { title: 'Wedding Videography', href: '/services/wedding-cinematography-kolkata', desc: 'Cinematic wedding films & highlight reels' },
+  ],
+  'COMMERCIAL': [
+    { title: 'Corporate Films', href: '/commercial', desc: 'Brand films, ad films & corporate documentaries' },
+    { title: 'Commercial Photography', href: '/commercial', desc: 'Product, fashion & commercial shoots' },
+  ],
+  'TECH': [
+    { title: 'Drone Videography', href: '/services/drone-photography-kolkata', desc: 'Aerial photography & DGCA-certified drone shoots' },
+    { title: 'Tech & Innovation Services', href: '/tech', desc: '3D mapping, animation & tech productions' },
+  ],
+  'INSIGHT': [
+    { title: 'Wedding Photography', href: '/luxury', desc: 'Luxury cinematic wedding documentation' },
+    { title: 'Commercial Production', href: '/commercial', desc: 'Corporate films & brand stories' },
+    { title: 'Our Services', href: '/services', desc: 'Full range of photography & production services' },
+  ],
+  'DEFAULT': [
+    { title: 'Wedding Photography', href: '/luxury', desc: 'Luxury cinematic wedding documentation' },
+    { title: 'Commercial Films', href: '/commercial', desc: 'Corporate films & brand stories' },
+    { title: 'Contact Us', href: '/contact', desc: 'Discuss your project with our team' },
+  ]
+};
+
 export async function generateMetadata({ params }) {
     await dbConnect();
     const { slug } = await params;
@@ -169,6 +195,24 @@ export default async function JournalDetailPage({ params }) {
                             Work with us
                         </Link>
                     </div>
+
+                    {/* Related Services - Internal Link SEO */}
+                    <section className="mt-16 pt-12 border-t border-white/5">
+                      <h2 className="text-xs font-black uppercase tracking-[0.3em] text-[#c5a059] mb-8">Explore Our Services</h2>
+                      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {(SERVICE_LINKS[post.category?.toUpperCase()] || SERVICE_LINKS['DEFAULT']).map((service, i) => (
+                          <a
+                            key={i}
+                            href={service.href}
+                            className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-2xl hover:border-[#c5a059]/40 transition-all"
+                          >
+                            <p className="text-xs font-black uppercase tracking-widest text-white group-hover:text-[#c5a059] transition-colors mb-2">{service.title}</p>
+                            <p className="text-[10px] text-gray-500 font-bold leading-relaxed">{service.desc}</p>
+                            <span className="text-[9px] text-[#c5a059] font-black uppercase tracking-widest mt-3 block">Learn More →</span>
+                          </a>
+                        ))}
+                      </div>
+                    </section>
                 </div>
             </section>
         </main>
