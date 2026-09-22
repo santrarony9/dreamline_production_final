@@ -67,6 +67,8 @@ export default function WeddingAdmin() {
             review: "",
             clientNames: "",
             images: [],
+            altText: "",
+            imageAltTexts: [],
             id: `wedding-${Date.now()}`
         });
     };
@@ -141,6 +143,16 @@ export default function WeddingAdmin() {
                                     )}
                                 </div>
                                 <div className="space-y-1">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Cover Image Alt Text (SEO)</label>
+                                    <input
+                                        type="text"
+                                        value={editingWedding.altText || ""}
+                                        onChange={(e) => setEditingWedding({ ...editingWedding, altText: e.target.value })}
+                                        placeholder="e.g. Bengali Bride in Red Saree during Sindoor Daan in Salt Lake Kolkata"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059] text-sm"
+                                    />
+                                </div>
+                                <div className="space-y-1">
                                     <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Cinematic Link</label>
                                     <input type="text" value={editingWedding.videoUrl} onChange={(e) => setEditingWedding({ ...editingWedding, videoUrl: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white outline-none focus:border-[#c5a059]" placeholder="YouTube/Vimeo Embed" />
                                 </div>
@@ -170,18 +182,32 @@ export default function WeddingAdmin() {
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
                                         {(editingWedding.images || []).map((img, index) => (
-                                            <div key={index} className="relative aspect-[3/4] rounded-xl overflow-hidden group border border-white/5">
-                                                <img src={img} className="w-full h-full object-cover" />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        const newImages = editingWedding.images.filter((_, i) => i !== index);
-                                                        setEditingWedding({ ...editingWedding, images: newImages });
+                                            <div key={index} className="flex flex-col gap-1">
+                                                <div className="relative aspect-[3/4] rounded-xl overflow-hidden group border border-white/5">
+                                                    <img src={img} className="w-full h-full object-cover" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newImages = editingWedding.images.filter((_, i) => i !== index);
+                                                            const newAltTexts = (editingWedding.imageAltTexts || []).filter((_, i) => i !== index);
+                                                            setEditingWedding({ ...editingWedding, images: newImages, imageAltTexts: newAltTexts });
+                                                        }}
+                                                        className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <span className="text-[10px] font-black uppercase text-white">Remove</span>
+                                                    </button>
+                                                </div>
+                                                <input
+                                                    type="text"
+                                                    value={(editingWedding.imageAltTexts || [])[index] || ""}
+                                                    onChange={(e) => {
+                                                        const newAltTexts = [...(editingWedding.imageAltTexts || [])];
+                                                        newAltTexts[index] = e.target.value;
+                                                        setEditingWedding({ ...editingWedding, imageAltTexts: newAltTexts });
                                                     }}
-                                                    className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                                                >
-                                                    <span className="text-[10px] font-black uppercase text-white">Remove</span>
-                                                </button>
+                                                    placeholder="Alt text…"
+                                                    className="text-[9px] text-gray-400 w-full bg-transparent border-b border-white/10 outline-none p-1"
+                                                />
                                             </div>
                                         ))}
                                         <div className="aspect-[3/4] bg-white/5 border flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">

@@ -67,8 +67,26 @@ export default async function CommercialPage() {
         type: "commercial"
     }));
 
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Dreamline Production — Cinematic Commercial Reel | Kolkata's Best Production House",
+        "description": "Watch Dreamline Production's commercial reel showcasing corporate films, brand campaigns, ad films, and cinematic productions. Trusted by TATA Trust, L&T, Carlsberg, ABP Network, Al Jazeera.",
+        "thumbnailUrl": "https://dreamlineproduction.com/logo-banner.png",
+        "uploadDate": "2024-01-01",
+        "duration": "PT2M",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Dreamline Production",
+            "logo": { "@type": "ImageObject", "url": "https://dreamlineproduction.com/logo.png" }
+        },
+        "contentUrl": "https://dreamlineproduction.com/commercial",
+        "embedUrl": "https://dreamlineproduction.com/commercial"
+    };
+
     return (
         <main className="bg-black pt-24 md:pt-32">
+            <StructuredData data={videoSchema} />
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Service",

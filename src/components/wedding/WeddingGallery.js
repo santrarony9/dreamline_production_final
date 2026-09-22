@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function WeddingGallery({ images }) {
+export default function WeddingGallery({ images, altTexts = [] }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -62,7 +62,7 @@ export default function WeddingGallery({ images }) {
                             width={800}
                             height={600}
                             className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000"
-                            alt={`Wedding Capture ${index + 1}`}
+                            alt={altTexts[index] || `Wedding Capture ${index + 1}`}
                             loading="lazy"
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />

@@ -111,6 +111,38 @@ export default async function WeddingDetailPage({ params }) {
         });
     }
 
+    // Build alt text array in the same order as allImages
+    const fallbackAlt = `${wedding.title} - Wedding Photography by Dreamline Production Kolkata`;
+    const allAltTexts = [];
+
+    // Cover image alt text
+    if (wedding.coverImage || wedding.img) {
+        allAltTexts.push(wedding.altText || fallbackAlt);
+    }
+
+    // Gallery images alt texts
+    if (wedding.images && Array.isArray(wedding.images)) {
+        wedding.images.forEach((img, idx) => {
+            if (img && !allAltTexts.includes(img)) {
+                // only push if image wasn't already in allImages (dedup check)
+                allAltTexts.push((wedding.imageAltTexts?.[idx]) || fallbackAlt);
+            }
+        });
+    }
+
+    // Chapter images — no dedicated alt text, use fallback
+    if (wedding.storyChapters && Array.isArray(wedding.storyChapters)) {
+        wedding.storyChapters.forEach(chapter => {
+            if (chapter.images) {
+                chapter.images.forEach(img => {
+                    if (img && !allImages.slice(0, allAltTexts.length).includes(img)) {
+                        allAltTexts.push(fallbackAlt);
+                    }
+                });
+            }
+        });
+    }
+
     const embedUrl = getEmbedUrl(wedding.videoUrl);
 
     return (
@@ -186,7 +218,7 @@ export default async function WeddingDetailPage({ params }) {
                         <div className="w-12 h-1 bg-[#c5a059] rounded-full"></div>
                     </div>
 
-                    <WeddingGallery images={allImages} />
+                    <WeddingGallery images={allImages} altTexts={allAltTexts} />
                 </section>
             )}
 

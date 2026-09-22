@@ -13,6 +13,8 @@ const WeddingSchema = new mongoose.Schema({
     videoUrl: { type: String },
     albumUrl: { type: String },
     images: [String],
+    altText: { type: String, default: '' },
+    imageAltTexts: [String],
     review: { type: String },
     clientNames: { type: String },
     reviews: [{
