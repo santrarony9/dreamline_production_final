@@ -467,10 +467,11 @@ export default async function RootLayout({ children }) {
         { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
         { "@type": "ListItem", "position": 2, "name": "Luxury Weddings", "item": "https://dreamlineproduction.com/luxury" },
         { "@type": "ListItem", "position": 3, "name": "Commercial", "item": "https://dreamlineproduction.com/commercial" },
-        { "@type": "ListItem", "position": 4, "name": "About", "item": "https://dreamlineproduction.com/about" },
-        { "@type": "ListItem", "position": 5, "name": "Journal", "item": "https://dreamlineproduction.com/journal" },
-        { "@type": "ListItem", "position": 6, "name": "Contact", "item": "https://dreamlineproduction.com/contact" },
-        { "@type": "ListItem", "position": 7, "name": "FAQ", "item": "https://dreamlineproduction.com/faq" }
+        { "@type": "ListItem", "position": 4, "name": "Tech & Innovation", "item": "https://dreamlineproduction.com/tech" },
+        { "@type": "ListItem", "position": 5, "name": "About", "item": "https://dreamlineproduction.com/about" },
+        { "@type": "ListItem", "position": 6, "name": "Blogs", "item": "https://dreamlineproduction.com/blogs" },
+        { "@type": "ListItem", "position": 7, "name": "Contact", "item": "https://dreamlineproduction.com/contact" },
+        { "@type": "ListItem", "position": 8, "name": "FAQ", "item": "https://dreamlineproduction.com/faq" }
       ]
     });
 

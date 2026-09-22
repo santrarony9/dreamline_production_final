@@ -3,6 +3,7 @@ import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import Link from "next/link";
 import Image from "next/image";
+import StructuredData from "@/components/seo/StructuredData";
 
 export async function generateMetadata() {
     return {
@@ -48,7 +49,33 @@ export default async function JournalPage() {
         ]
     }).sort({ date: -1 }).lean();
 
+    const blogsPageSchema = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "@id": "https://dreamlineproduction.com/blogs",
+                "url": "https://dreamlineproduction.com/blogs",
+                "name": "Photography Journal & Stories | Dreamline Production",
+                "description": "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
+                "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
+                "inLanguage": "en-IN",
+                "breadcrumb": { "@id": "https://dreamlineproduction.com/blogs/#breadcrumb" }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://dreamlineproduction.com/blogs/#breadcrumb",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
+                    { "@type": "ListItem", "position": 2, "name": "Blogs", "item": "https://dreamlineproduction.com/blogs" }
+                ]
+            }
+        ]
+    };
+
     return (
+        <>
+        <StructuredData data={blogsPageSchema} />
         <main className="bg-black pt-32 min-h-screen">
             <section className="container mx-auto px-6 mb-20 text-center">
                 <h1 className="font-heading text-6xl md:text-8xl font-black mb-8 uppercase text-white">
@@ -101,5 +128,6 @@ export default async function JournalPage() {
                 </div>
             </section>
         </main>
+        </>
     );
 }
