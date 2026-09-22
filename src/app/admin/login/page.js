@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { signIn } from "next-auth/react";
+
 export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -15,50 +17,22 @@ export default function LoginPage() {
         setError("");
 
         try {
-            // Get CSRF token
-            const csrfRes = await fetch("/api/auth/csrf", {
-                headers: { "Content-Type": "application/json" }
-            });
-            
-            if (!csrfRes.ok) {
-                throw new Error("Failed to initialize secure session.");
-            }
-            
-            const { csrfToken } = await csrfRes.json();
-
-            // Direct POST to credentials callback with same-origin to send CSRF cookies
-            const loginRes = await fetch("/api/auth/callback/credentials", {
-                method: "POST",
-                headers: { 
-                    "Content-Type": "application/x-www-form-urlencoded" 
-                },
-                body: new URLSearchParams({
-                    username,
-                    password,
-                    csrfToken,
-                    json: "true",
-                }),
-                redirect: "follow",
+            const res = await signIn("credentials", {
+                username,
+                password,
+                redirect: false,
+                callbackUrl: "/admin",
             });
 
-            let data = {};
-            try {
-                // If it returned JSON
-                data = await loginRes.json();
-            } catch {
-                // If it redirected instead
-            }
-
-            if (loginRes.ok && !data?.error) {
-                // Login Success!
+            if (res?.error) {
+                setError("Invalid credentials. Authorized personnel only.");
+                setLoading(false);
+            } else if (res?.ok) {
                 window.location.href = "/admin";
-                return;
+            } else {
+                setError("Authentication failed. Please try again.");
+                setLoading(false);
             }
-
-            // Login Failed
-            setError("Invalid credentials. Authorized personnel only.");
-            setLoading(false);
-            
         } catch (err) {
             console.error("Login exception:", err);
             setError("Authentication connection error. Please try again.");
