@@ -23,8 +23,6 @@ export default async function AdminDashboard() {
         { label: "Story Archive", value: totalJournalPosts + totalWeddings, icon: "📚" },
     ];
 
-    const recentBookings = await Booking.find().sort({ createdAt: -1 }).limit(10).lean();
-
     return (
         <div className="space-y-12">
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
@@ -108,38 +106,6 @@ export default async function AdminDashboard() {
                 </div>
             </section>
 
-            <div className="grid lg:grid-cols-12 gap-8">
-                {/* Recent Activity */}
-                <section className="lg:col-span-12 bg-[#0a0a0a] border border-white/5 rounded-3xl overflow-hidden p-8">
-                    <div className="flex justify-between items-center mb-8 border-b border-white/5 pb-6">
-                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Recent Inquiries</h3>
-                        <a href="/admin/bookings" className="text-[10px] font-bold text-gray-500 hover:text-white transition-colors">View All Inquiries →</a>
-                    </div>
-
-                    <div className="space-y-4">
-                        {recentBookings.length === 0 ? (
-                            <p className="text-gray-600 text-center py-10 uppercase text-[10px] font-bold tracking-widest">No inquiries received yet.</p>
-                        ) : (
-                            recentBookings.map((b) => (
-                                <div key={b._id.toString()} className="flex items-center justify-between p-6 bg-white/2 rounded-2xl hover:bg-white/5 transition-all group border border-transparent hover:border-white/5">
-                                    <div className="flex items-center gap-6">
-                                        <div className="w-12 h-12 rounded-full bg-[#c5a059]/10 flex items-center justify-center text-[#c5a059] font-black text-xs">
-                                            {b.firstName?.[0]}{b.lastName?.[0]}
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-white group-hover:text-[#c5a059] transition-colors">{b.firstName} {b.lastName}</p>
-                                            <p className="text-[11px] text-gray-500 uppercase tracking-widest font-black">{b.serviceType}</p>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="text-[10px] text-gray-400 font-bold mb-1">{new Date(b.eventDate).toLocaleDateString()}</p>
-                                        <span className="text-[8px] bg-white/5 px-2 py-0.5 rounded text-gray-500 font-black uppercase tracking-widest group-hover:bg-[#c5a059]/20 group-hover:text-[#c5a059] transition-all">Pending</span>
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                </section>
             </div>
         </div>
     );
