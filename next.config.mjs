@@ -10,6 +10,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'dreamlineproduction.com',
+      },
+      {
+        protocol: 'https',
         hostname: 'dreamlinepro.s3.ap-south-2.amazonaws.com',
       },
       {

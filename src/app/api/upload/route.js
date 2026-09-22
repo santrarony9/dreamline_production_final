@@ -90,8 +90,9 @@ export async function POST(request) {
         const filePath = path.join(uploadDir, finalFileName);
         await fs.writeFile(filePath, buffer);
 
-        // Return relative URL — Vercel rewrites /uploads/* to http://backend.dreamlineproduction.com/uploads/*
-        const publicUrl = `/uploads/${finalFileName}`;
+        // Return absolute URL via Vercel frontend so Next.js Image Optimization can fetch it externally.
+        // Vercel rewrites /uploads/* to http://backend.dreamlineproduction.com/uploads/*
+        const publicUrl = `https://dreamlineproduction.com/uploads/${finalFileName}`;
         return NextResponse.json({ url: publicUrl });
     } catch (error) {
         return safeErrorResponse(error, "Upload");
