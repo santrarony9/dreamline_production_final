@@ -106,7 +106,7 @@ export default function CommercialEditor() {
                         disabled={saving}
                         className="bg-[#c5a059] text-black px-12 py-4 rounded-full font-black uppercase tracking-widest hover:bg-white transition-all transform active:scale-95 disabled:opacity-50"
                     >
-                        {saving ? "Deploying..." : "Sync Commercial Page"}
+                        {saving ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
             </form>
