@@ -15,39 +15,35 @@ export default function AdminLayout({ children }) {
 
     const navSections = [
         {
-            title: "Core",
+            title: "Studio",
             items: [
                 { label: "Dashboard", path: "/admin", icon: "📊" },
-                { label: "Global Settings", path: "/admin/global", icon: "🌐" },
-                { label: "User Management", path: "/admin/users", icon: "👥" },
-                { label: "SEO & Meta Data", path: "/admin/seo", icon: "🔍" },
-            ]
-        },
-        {
-            title: "Site Content",
-            items: [
-                { label: "Home Editor", path: "/admin/home", icon: "🏠" },
-                { label: "About Page", path: "/admin/about", icon: "🏢" },
-            ]
-        },
-        {
-            title: "Portfolio & Studio",
-            items: [
+                { label: "Inquiries", path: "/admin/bookings", icon: "✉️" },
                 { label: "Services & Categories", path: "/admin/services", icon: "🗂️" },
-                { label: "Galleries", path: "/admin/gallery", icon: "🎬" },
+            ]
+        },
+        {
+            title: "Content & Portfolios",
+            items: [
+                { label: "Blog / Journal", path: "/admin/journal", icon: "📝" },
                 { label: "Weddings", path: "/admin/weddings", icon: "💍" },
                 { label: "Commercial", path: "/admin/commercial", icon: "🎥" },
-                { label: "Tech Studio", path: "/admin/tech", icon: "💻" },
-                { label: "Luxury", path: "/admin/luxury", icon: "✨" },
+                { label: "Galleries", path: "/admin/gallery", icon: "🎬" },
             ]
         },
         {
-            title: "Operations",
+            title: "Website Setup",
             items: [
-                { label: "Blog", path: "/admin/journal", icon: "📝" },
-                { label: "Inquiries", path: "/admin/bookings", icon: "📅" },
+                { label: "Home Page", path: "/admin/home", icon: "🏠" },
+                { label: "About Page", path: "/admin/about", icon: "🏢" },
             ]
         }
+    ];
+
+    const bottomNavItems = [
+        { label: "SEO Settings", path: "/admin/seo", icon: "🔍" },
+        { label: "Users & Settings", path: "/admin/users", icon: "⚙️" },
+        { label: "Global Info", path: "/admin/global", icon: "🌍" },
     ];
 
     if (pathname === "/admin/login") return <>{children}</>;
@@ -127,14 +123,35 @@ export default function AdminLayout({ children }) {
                             </div>
                         </div>
                     ))}
+
+                    <div className="mt-8 border-t border-white/5 pt-6 space-y-1">
+                        <div className="px-4 mb-2">
+                            <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">Settings & Admin</h3>
+                        </div>
+                        {bottomNavItems.map((item, i) => (
+                            <Link
+                                key={i}
+                                href={item.path}
+                                className={`
+                                    flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold transition-all
+                                    ${pathname === item.path 
+                                        ? "bg-white/10 text-white" 
+                                        : "text-gray-400 hover:text-white hover:bg-white/5"}
+                                `}
+                            >
+                                <span className="text-sm">{item.icon}</span>
+                                {item.label}
+                            </Link>
+                        ))}
+                    </div>
                 </nav>
 
-                <div className="p-6 border-t border-white/5">
+                <div className="p-6 border-t border-white/5 hidden lg:block bg-black/20">
                     <button
-                        onClick={() => signOut({ callbackUrl: "/" })}
-                        className="w-full text-left flex items-center gap-3 text-[10px] text-red-500/70 hover:text-red-500 font-bold uppercase tracking-widest px-4 py-3 rounded-xl hover:bg-red-500/10 transition-all font-sans"
+                        onClick={() => signOut({ callbackUrl: "/admin/login" })}
+                        className="w-full py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-500 text-xs font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
                     >
-                        <span>🚪</span> Logout
+                        <span>🚪</span> Sign Out
                     </button>
                 </div>
             </aside>
