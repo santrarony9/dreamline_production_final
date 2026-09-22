@@ -12,6 +12,29 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
     const projects = initialProjects || [];
     const filteredProjects = (category !== "all" || filter === "all") ? projects : projects.filter(p => p.type === filter);
 
+    const getThumbnail = (project) => {
+        const isBrokenS3 = (url) => url && url.includes('amazonaws.com');
+        let ytId = null;
+        if (project.videoUrl || project.link) {
+            const url = project.videoUrl || project.link;
+            if (url.includes('youtube.com/watch')) {
+                try { ytId = new URL(url).searchParams.get('v'); } catch(e){}
+            } else if (url.includes('youtu.be/')) {
+                ytId = url.split('youtu.be/')[1]?.split('?')[0];
+            }
+        }
+
+        if (ytId && (!project.coverImage || isBrokenS3(project.coverImage))) {
+            return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+        }
+
+        if (project.coverImage && !isBrokenS3(project.coverImage)) return project.coverImage;
+        if (project.img && !isBrokenS3(project.img)) return project.img;
+        if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+
+        return "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800";
+    };
+
     return (
         <section className="py-16 md:py-32 bg-[#050505]">
             <div className="container mx-auto px-6">
@@ -73,7 +96,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                         transition={{ duration: 1.5, ease: [0.25, 1, 0.5, 1] }}
                                     >
                                         <Image
-                                            src={project.coverImage || project.img || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}
+                                            src={getThumbnail(project)}
                                             alt={project.title}
                                             fill
                                             priority={index < 4}
