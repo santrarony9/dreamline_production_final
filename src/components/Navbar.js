@@ -14,7 +14,15 @@ export default function Navbar({ initialServices }) {
     const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     const getServiceLink = (service) => {
-        // As requested by SEO, use direct service URLs
+        // Map top-level main categories directly to their custom pages
+        const cat = service.category || '';
+        const title = (service.title || service.name || '').toLowerCase();
+        
+        if (cat === 'wedding' || title.includes('luxury') || title.includes('wedding')) return '/luxury';
+        if (cat === 'commercial' || title.includes('commercial')) return '/commercial';
+        if (cat === 'tech' || title === 'tech') return '/tech';
+
+        // As requested by SEO, use direct service URLs for others
         if (service.slug) return `/services/${service.slug}`;
         return `/services/${slugify(service.title || service.name || '')}`;
     };
