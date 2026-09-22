@@ -3,6 +3,17 @@ import Wedding from "@/models/Wedding";
 import Journal from "@/models/Journal";
 import ServicePage from "@/models/ServicePage";
 
+const LOCATION_SLUGS = [
+    "wedding-photographer-salt-lake-kolkata",
+    "wedding-photographer-new-town-kolkata",
+    "wedding-photographer-howrah",
+    "pre-wedding-shoot-kolkata",
+    "corporate-film-production-salt-lake",
+    "drone-photography-kolkata",
+    "wedding-photographer-park-street-kolkata",
+    "wedding-photographer-ballygunge-kolkata",
+];
+
 export default async function sitemap() {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com';
 
@@ -82,6 +93,14 @@ export default async function sitemap() {
         },
     ];
 
+    // Location SEO landing pages (static, no DB needed)
+    const locationRoutes = LOCATION_SLUGS.map((slug) => ({
+        url: `${baseUrl}/locations/${slug}`,
+        lastModified: new Date('2026-09-22'),
+        changeFrequency: 'monthly',
+        priority: 0.7,
+    }));
+
     try {
         // Attempt to connect to DB and fetch dynamic routes
         await dbConnect();
@@ -113,10 +132,10 @@ export default async function sitemap() {
             priority: 0.8,
         }));
 
-        return [...staticRoutes, ...weddingRoutes, ...journalRoutes, ...serviceRoutes];
+        return [...staticRoutes, ...locationRoutes, ...weddingRoutes, ...journalRoutes, ...serviceRoutes];
     } catch (error) {
         console.error("Sitemap generation error:", error);
-        // If DB fails, at least return static routes
-        return staticRoutes;
+        // If DB fails, at least return static routes + location routes
+        return [...staticRoutes, ...locationRoutes];
     }
 }
