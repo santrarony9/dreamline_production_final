@@ -9,12 +9,12 @@ export async function generateMetadata() {
         title: "Photography Journal & Stories",
         description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
         alternates: {
-            canonical: 'https://dreamlineproduction.com/journal',
+            canonical: 'https://dreamlineproduction.com/blogs',
         },
         openGraph: {
             title: "Photography Journal & Stories",
             description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
-            url: 'https://dreamlineproduction.com/journal',
+            url: 'https://dreamlineproduction.com/blogs',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
@@ -68,7 +68,7 @@ export default async function JournalPage() {
                     ) : (
                         journals.map((post) => (
                             <article key={post._id.toString()} className="blog-card rounded-3xl group interactive">
-                                <Link href={`/journal/${post.id || post._id.toString()}`} className="block h-full">
+                                <Link href={`/blogs/${post.id || post._id.toString()}`} className="block h-full">
                                     <div className="h-64 overflow-hidden relative">
                                         <Image
                                             src={post.image || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800"}

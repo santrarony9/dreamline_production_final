@@ -14,12 +14,9 @@ export default function Navbar({ initialServices }) {
     const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     const getServiceLink = (service) => {
-        switch (service.category) {
-            case 'wedding': return '/luxury';
-            case 'commercial': return '/commercial';
-            case 'tech': return '/tech';
-            default: return `/services/${slugify(service.title || service.name || '')}`;
-        }
+        // As requested by SEO, use direct service URLs
+        if (service.slug) return `/services/${service.slug}`;
+        return `/services/${slugify(service.title || service.name || '')}`;
     };
 
     const getInitial = (title) => (title || 'S')[0].toUpperCase();
@@ -40,8 +37,23 @@ export default function Navbar({ initialServices }) {
 
     return (
         <>
+            {/* SEO GMB Top Bar */}
+            <div className="hidden lg:flex w-full bg-[#c5a059] text-black text-[9px] font-black uppercase tracking-widest py-1.5 px-6 justify-center items-center z-[101]">
+                <a 
+                    href="https://goo.gl/maps/Q3C2Kj5qVjF2" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors flex items-center gap-2"
+                >
+                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    85, Tilottama Plaza, Tower 2, 1st Floor, Karunamoyee Ghat Road, Kolkata 700082
+                </a>
+            </div>
+
             <nav
-                className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-8 flex justify-between lg:grid lg:grid-cols-3 items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-6"
+                className={`fixed left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-5xl rounded-full nav-glass py-2 px-8 flex justify-between lg:grid lg:grid-cols-3 items-center transition-all duration-500 ${isScrolled ? "top-4 shadow-2xl scale-[0.98]" : "top-10"
                     }`}
                 style={{ overflow: 'visible' }}
             >
@@ -90,8 +102,8 @@ export default function Navbar({ initialServices }) {
                         </div>
                     </div>
 
-                    <Link href="/journal" className="transition-colors">
-                        JOURNAL
+                    <Link href="/blogs" className="transition-colors">
+                        BLOG
                     </Link>
                     <Link href="/contact" className="transition-colors">
                         CONTACT
@@ -158,8 +170,8 @@ export default function Navbar({ initialServices }) {
                         </div>
                     </div>
 
-                    <Link onClick={() => setIsMenuOpen(false)} href="/journal" className="py-5 border-b border-white/5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
-                        JOURNAL
+                    <Link onClick={() => setIsMenuOpen(false)} href="/blogs" className="py-5 border-b border-white/5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
+                        BLOG
                     </Link>
                     <Link onClick={() => setIsMenuOpen(false)} href="/contact" className="py-5 font-heading text-3xl font-black uppercase text-white hover:text-[#c5a059] transition-colors">
                         CONTACT

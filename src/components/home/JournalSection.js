@@ -16,7 +16,7 @@ export default function JournalSection({ journals = [] }) {
                         </h2>
                     </div>
                     <Link
-                        href="/journal"
+                        href="/blogs"
                         className="text-[10px] font-black uppercase tracking-widest text-[#c5a059] border-b border-[#c5a059] pb-2 hover:text-white hover:border-white transition-all interactive flex-shrink-0"
                     >
                         View All
@@ -26,7 +26,7 @@ export default function JournalSection({ journals = [] }) {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {journals.map((post, index) => (
                         <article key={index} className="group interactive">
-                            <Link href={`/journal/${post.id}`} className="block overflow-hidden rounded-2xl mb-5 aspect-video relative">
+                            <Link href={`/blogs/${post.id || post.slug || post._id}`} className="block overflow-hidden rounded-2xl mb-5 aspect-video relative">
                                 <Image
                                     src={post.image || "/logo-banner.jpg"}
                                     alt={post.title}
@@ -38,24 +38,21 @@ export default function JournalSection({ journals = [] }) {
                             <div className="flex gap-4 mb-3 text-[9px] font-black uppercase tracking-widest text-white/40">
                                 <span>{new Date(post.date).toLocaleDateString()}</span>
                                 <span className="text-[#c5a059]">•</span>
-                                <span>{post.category}</span>
+                                <span>{post.category || "Journal"}</span>
                             </div>
-                            <h3 className="font-heading text-xl font-black text-white hover:text-[#c5a059] transition-colors mb-4 uppercase leading-tight">
-                                <Link href={`/journal/${post.id}`}>
+                            <h3 className="font-heading text-2xl font-black text-white italic uppercase leading-tight mb-3 group-hover:text-[#c5a059] transition-colors">
+                                <Link href={`/blogs/${post.id || post.slug || post._id}`}>
                                     {post.title}
                                 </Link>
                             </h3>
-                            <p className="text-gray-500 text-[13px] leading-relaxed mb-6 line-clamp-2">
+                            <p className="text-sm text-gray-500 line-clamp-2">
                                 {post.excerpt}
                             </p>
                             <Link
-                                href={`/journal/${post.id}`}
-                                className="inline-flex items-center gap-3 group/btn"
+                                href={`/blogs/${post.id || post.slug || post._id}`}
+                                className="inline-block mt-4 text-[9px] font-black uppercase tracking-[0.3em] text-white/60 hover:text-white transition-colors"
                             >
-                                <span className="text-[9px] font-black uppercase tracking-widest text-white group-hover/btn:text-[#c5a059] transition-colors">
-                                    Read Insight
-                                </span>
-                                <div className="w-6 h-[1px] bg-white/20 group-hover/btn:w-10 group-hover/btn:bg-[#c5a059] transition-all" />
+                                Read More &rarr;
                             </Link>
                         </article>
                     ))}

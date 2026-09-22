@@ -62,6 +62,20 @@ export default function Footer({ siteContent }) {
                     </div>
                 </div>
 
+                {/* GMB Map Section */}
+                <div className="mb-12 rounded-2xl overflow-hidden border border-white/5 opacity-80 hover:opacity-100 transition-opacity">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3683.313589926456!2d88.343818!3d22.5855799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02773cbb752763%3A0xc3924f0c406de437!2sDreamline%20Production!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                        width="100%" 
+                        height="250" 
+                        style={{ border: 0 }} 
+                        allowFullScreen="" 
+                        loading="lazy" 
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Dreamline Production Kolkata Office"
+                    ></iframe>
+                </div>
+
                 {/* Legal & Bottom Row */}
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-center md:text-left">
                     <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-3 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600">
