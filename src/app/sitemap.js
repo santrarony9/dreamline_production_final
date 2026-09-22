@@ -50,8 +50,8 @@ export default async function sitemap() {
             priority: 0.5,
         },
         {
-            url: `${baseUrl}/journal`,
-            lastModified: new Date('2026-06-01'),
+            url: `${baseUrl}/blogs`,
+            lastModified: new Date('2026-09-22'),
             changeFrequency: 'weekly',
             priority: 0.7,
         },
@@ -105,32 +105,38 @@ export default async function sitemap() {
         // Attempt to connect to DB and fetch dynamic routes
         await dbConnect();
 
-        // Fetch all weddings
-        const weddings = await Wedding.find({}, '_id date updatedAt').lean();
-        const weddingRoutes = weddings.map((w) => ({
-            url: `${baseUrl}/wedding/${w._id}`,
-            lastModified: w.updatedAt || w.date || new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        }));
+        // Fetch all weddings — use custom `id` slug field, not Mongo _id
+        const weddings = await Wedding.find({}, 'id date updatedAt').lean();
+        const weddingRoutes = weddings
+            .filter(w => w.id)
+            .map((w) => ({
+                url: `${baseUrl}/wedding/${w.id}`,
+                lastModified: w.updatedAt || w.date || new Date(),
+                changeFrequency: 'monthly',
+                priority: 0.8,
+            }));
 
-        // Fetch all journals
-        const journals = await Journal.find({}, '_id date updatedAt').lean();
-        const journalRoutes = journals.map((j) => ({
-            url: `${baseUrl}/journal/${j._id}`,
-            lastModified: j.updatedAt || j.date || new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.7,
-        }));
+        // Fetch all journals — use custom `id` slug field, not Mongo _id
+        const journals = await Journal.find({}, 'id date updatedAt slug').lean();
+        const journalRoutes = journals
+            .filter(j => j.slug || j.id)
+            .map((j) => ({
+                url: `${baseUrl}/blogs/${j.slug || j.id}`,
+                lastModified: j.updatedAt || j.date || new Date(),
+                changeFrequency: 'monthly',
+                priority: 0.7,
+            }));
 
         // Fetch all services
         const services = await ServicePage.find({}, 'slug updatedAt').lean();
-        const serviceRoutes = services.map((s) => ({
-            url: `${baseUrl}/services/${s.slug}`,
-            lastModified: s.updatedAt || new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        }));
+        const serviceRoutes = services
+            .filter(s => s.slug)
+            .map((s) => ({
+                url: `${baseUrl}/services/${s.slug}`,
+                lastModified: s.updatedAt || new Date(),
+                changeFrequency: 'monthly',
+                priority: 0.8,
+            }));
 
         return [...staticRoutes, ...locationRoutes, ...weddingRoutes, ...journalRoutes, ...serviceRoutes];
     } catch (error) {
