@@ -331,7 +331,7 @@ export default function GalleryAdmin() {
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="bg-transparent text-[#c5a059] border border-[#c5a059]/30 hover:bg-[#c5a059]/10 px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                    className="bg-[#c5a059] text-black hover:bg-[#d4b06a] px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
                 >
                     {saving ? "Synchronizing..." : "Commit Gallery Changes"}
                 </button>
