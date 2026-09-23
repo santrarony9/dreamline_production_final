@@ -74,26 +74,6 @@ export const authOptions = {
     jwt: {
         maxAge: 7 * 24 * 60 * 60,
     },
-    cookies: {
-        sessionToken: {
-            name: `next-auth.session-token`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            },
-        },
-        callbackUrl: {
-            name: `next-auth.callback-url`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: process.env.NODE_ENV === 'production',
-            },
-        },
-    },
     pages: {
         signIn: "/admin/login",
     },
