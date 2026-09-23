@@ -1,6 +1,19 @@
+"use client";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function ServicesCategories({ services }) {
+    const router = useRouter();
+
+    const handleRowClick = (srv) => {
+        const cat = srv.category || '';
+        const title = (srv.title || '').toLowerCase();
+        
+        if (cat === 'wedding' || title.includes('luxury') || title.includes('wedding')) return router.push('/luxury');
+        if (cat === 'commercial' || title.includes('commercial')) return router.push('/commercial');
+        if (cat === 'tech' || title === 'tech') return router.push('/tech');
+    };
+
     return (
         <section id="services" className="py-16 md:py-32 bg-black text-white border-t border-white/5">
             <div className="container mx-auto px-6">
@@ -17,7 +30,16 @@ export default function ServicesCategories({ services }) {
                         { number: "04", title: "MUSIC VIDEOS", priceHint: "4K Narrative Visualization" },
                         { number: "05", title: "SOCIAL MEDIA", priceHint: "Reels • Portfolios • Branding" }
                     ]).map((srv, i) => (
-                        <div key={i} className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer overflow-hidden">
+                        <div 
+                            key={i} 
+                            onClick={(e) => {
+                                // prevent routing if clicking a subcategory link
+                                if (e.target.tagName !== 'A') {
+                                    handleRowClick(srv);
+                                }
+                            }}
+                            className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer overflow-hidden"
+                        >
                             <div className="flex flex-col gap-4">
                                 <div className="flex items-center gap-4 md:gap-10">
                                     <span className="text-gray-600 font-heading text-xl">{srv.number}</span>

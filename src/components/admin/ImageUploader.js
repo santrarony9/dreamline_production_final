@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import MediaLibrary from "./MediaLibrary";
 
-export default function ImageUploader({ onUploadSuccess, currentImage, recommendedSize }) {
+export default function ImageUploader({ onUploadSuccess, currentImage, recommendedSize, compact = false }) {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [error, setError] = useState(null);
@@ -121,15 +121,15 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
     };
 
     return (
-        <div className="space-y-2">
+        <div className="space-y-2 w-full">
             {recommendedSize && (
                 <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">
                     {recommendedSize}
                 </label>
             )}
 
-            <div className="flex items-center gap-2">
-                <div className="flex-1 relative">
+            <div className={`flex ${compact ? "flex-col" : "items-center"} gap-2 w-full`}>
+                <div className="flex-1 relative w-full">
                     <input
                         type="file"
                         accept="image/*,video/*"
@@ -139,24 +139,25 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
                     />
                     <div className={`
-                        w-full border-2 border-dashed rounded-2xl flex items-center justify-between p-4 transition-all
+                        w-full border-2 border-dashed rounded-2xl flex items-center justify-between transition-all
+                        ${compact ? "p-2" : "p-4"}
                         ${currentImage ? 'border-green-500/30 bg-green-500/5' : 'border-white/10 bg-white/5 hover:border-[#c5a059]/50'}
                         ${isUploading ? 'opacity-50 border-yellow-500/50 bg-yellow-500/5 cursor-wait' : ''}
                         ${error ? 'border-red-500/50 bg-red-500/5' : ''}
                     `}>
-                        <div className="flex items-center gap-3 overflow-hidden">
-                            <span className="text-xl flex-shrink-0">
+                        <div className="flex items-center gap-2 overflow-hidden w-full">
+                            <span className={`${compact ? "text-base" : "text-xl"} flex-shrink-0`}>
                                 {isUploading ? "⏳" : currentImage ? "✅" : error ? "❌" : "📁"}
                             </span>
-                            <div className="text-left overflow-hidden">
-                                <p className={`text-[10px] font-black uppercase tracking-widest ${isUploading ? 'text-yellow-500' :
+                            <div className="text-left overflow-hidden flex-1">
+                                <p className={`font-black uppercase tracking-widest truncate ${compact ? "text-[8px]" : "text-[10px]"} ${isUploading ? 'text-yellow-500' :
                                     currentImage ? 'text-green-500' :
                                         error ? 'text-red-500' : 'text-gray-400'
                                     }`}>
                                     {isUploading
-                                        ? `Uploading ${uploadProgress}%`
-                                        : error ? "Upload Failed"
-                                            : currentImage ? "Asset Linked" : "Choose File"}
+                                        ? `Upload ${uploadProgress}%`
+                                        : error ? "Failed"
+                                            : currentImage ? "Linked" : "Choose File"}
                                 </p>
                             </div>
                         </div>
@@ -168,15 +169,15 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
 
                         {/* Preview Area */}
                         {currentImage && !isUploading && (
-                            <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-xl border border-white/10 overflow-hidden bg-black flex-shrink-0 relative group/preview">
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                                <div className={`${compact ? "w-8 h-8 rounded-lg" : "w-12 h-12 rounded-xl"} border border-white/10 overflow-hidden bg-black relative group/preview`}>
                                     {currentImage.match(/\.(mp4|webm|ogg|mov)$|video/i) ? (
                                         <video src={currentImage} className="w-full h-full object-cover" muted />
                                     ) : (
                                         <img src={currentImage} className="w-full h-full object-cover" alt="Preview" />
                                     )}
                                     <a href={currentImage} target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/60 opacity-0 group-hover/preview:opacity-100 flex items-center justify-center transition-opacity">
-                                        <span className="text-[8px] text-white font-black uppercase">View</span>
+                                        <span className="text-[6px] text-white font-black uppercase">View</span>
                                     </a>
                                 </div>
                             </div>
@@ -187,23 +188,23 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 <button
                     type="button"
                     onClick={() => setShowLibrary(true)}
-                    className="h-[60px] px-6 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center gap-1 hover:bg-[#c5a059]/10 hover:border-[#c5a059]/50 transition-all group"
+                    className={`bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center gap-1 hover:bg-[#c5a059]/10 hover:border-[#c5a059]/50 transition-all group shrink-0 ${compact ? "w-full py-2 flex-row" : "h-[60px] px-6 flex-col"}`}
                     title="Open Media Library"
                 >
-                    <span className="text-xl group-hover:scale-110 transition-transform">🏛️</span>
+                    <span className={`${compact ? "text-sm" : "text-xl"} group-hover:scale-110 transition-transform`}>🏛️</span>
                     <span className="text-[8px] font-black uppercase tracking-tighter text-gray-500 group-hover:text-[#c5a059]">Vault</span>
                 </button>
             </div>
 
             {error && (
-                <div className="flex items-center justify-between">
-                    <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest pl-1">
+                <div className="flex items-center justify-between w-full">
+                    <p className="text-[8px] text-red-500 font-bold uppercase tracking-widest pl-1 truncate">
                         {error}
                     </p>
                     <button
                         type="button"
                         onClick={() => { setError(null); fileInputRef.current?.click(); }}
-                        className="text-[10px] text-[#c5a059] font-black uppercase tracking-widest hover:text-white transition-colors"
+                        className="text-[8px] text-[#c5a059] font-black uppercase tracking-widest hover:text-white transition-colors ml-2 shrink-0"
                     >
                         Retry
                     </button>

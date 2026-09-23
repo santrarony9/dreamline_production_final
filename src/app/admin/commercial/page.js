@@ -63,7 +63,7 @@ export default function CommercialEditor() {
                 {/* HERO SECTION */}
                 <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-4">
-                        <a href="/services/commercial" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
+                        <a href="/commercial" target="_blank" className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full hover:bg-[#c5a059] hover:text-black transition-all">VIEW ON WEBSITE</a>
                     </div>
                     <div>
                         <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🏠 Commercial Page Header</h3>

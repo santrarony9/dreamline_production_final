@@ -670,6 +670,7 @@ function HomeEditorContent() {
                                                 </button>
                                             ) : (
                                                 <ImageUploader
+                                                    compact={true}
                                                     onUploadSuccess={(url) => {
                                                         const newList = [...content.partners];
                                                         newList[i] = { ...newList[i], image: url };
@@ -779,6 +780,7 @@ function HomeEditorContent() {
                                         ))}
                                         <div className="aspect-square bg-white/5 border flex items-center justify-center border-dashed border-white/10 rounded-xl overflow-hidden p-2">
                                             <ImageUploader
+                                                compact={true}
                                                 onUploadSuccess={(url) => {
                                                     const newImgs = [...(content.motionArchive.images || []), url];
                                                     updateSection("motionArchive", "images", newImgs);

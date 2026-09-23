@@ -10,15 +10,15 @@ import StructuredData from "@/components/seo/StructuredData";
 const SERVICE_LINKS = {
   'WEDDING': [
     { title: 'Luxury Wedding Photography', href: '/luxury', desc: 'Cinematic wedding films & candid photography' },
-    { title: 'Pre-Wedding Shoots', href: '/services/pre-wedding-photography-kolkata', desc: 'Stunning pre-wedding locations across Kolkata' },
-    { title: 'Wedding Videography', href: '/services/wedding-cinematography-kolkata', desc: 'Cinematic wedding films & highlight reels' },
+    { title: 'Pre-Wedding Shoots', href: '/locations/pre-wedding-shoot-kolkata', desc: 'Stunning pre-wedding locations across Kolkata' },
+    { title: 'Wedding Videography', href: '/locations/wedding-photographer-salt-lake-kolkata', desc: 'Cinematic wedding films & highlight reels' },
   ],
   'COMMERCIAL': [
     { title: 'Corporate Films', href: '/commercial', desc: 'Brand films, ad films & corporate documentaries' },
     { title: 'Commercial Photography', href: '/commercial', desc: 'Product, fashion & commercial shoots' },
   ],
   'TECH': [
-    { title: 'Drone Videography', href: '/services/drone-photography-kolkata', desc: 'Aerial photography & DGCA-certified drone shoots' },
+    { title: 'Drone Videography', href: '/locations/drone-photography-kolkata', desc: 'Aerial photography & DGCA-certified drone shoots' },
     { title: 'Tech & Innovation Services', href: '/tech', desc: '3D mapping, animation & tech productions' },
   ],
   'INSIGHT': [
