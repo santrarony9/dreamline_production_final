@@ -83,6 +83,44 @@ export default async function LuxuryPage() {
                 "url": "https://dreamlineproduction.com/luxury",
                 "serviceType": ["Wedding Photography", "Wedding Cinematography", "Pre-Wedding Photography", "Destination Wedding Photography"]
             }} />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "How much does wedding photography cost in Kolkata?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Dreamline Production's wedding photography packages start from ₹40,000 per day for both-side coverage. Packages include candid photography, cinematic videography, drone coverage, and premium editing. Custom packages are available for destination weddings and multi-day events."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What is included in a wedding photography package?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Our wedding packages typically include candid and traditional photography, cinematic videography, drone aerial coverage, same-day edits, wedding highlight reels, full ceremony coverage, and premium photo/video editing with color grading. Albums and prints are available as add-ons."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Do you cover destination weddings outside Kolkata?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Yes, Dreamline Production covers destination weddings across India including Goa, Jaipur, Udaipur, Mumbai, Delhi, Darjeeling, and international locations. Travel and accommodation costs are added to the base package."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "How far in advance should I book wedding photography?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "We recommend booking 3-6 months in advance, especially during peak wedding season (November to February). Early booking ensures date availability and allows time for pre-wedding shoots and planning discussions."
+                        }
+                    }
+                ]
+            }} />
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">

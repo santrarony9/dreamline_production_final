@@ -101,6 +101,44 @@ export default async function CommercialPage() {
                 "url": "https://dreamlineproduction.com/commercial",
                 "serviceType": ["Corporate Film Production", "Ad Film Production", "Brand Films", "Commercial Videography", "Factory Videography"]
             }} />
+            <StructuredData data={{
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "How much does corporate film production cost in Kolkata?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Corporate film production costs vary based on scope, duration, and complexity. Dreamline Production offers packages for corporate profiles, ad films, product videos, and brand campaigns. Contact us for a custom quote tailored to your project requirements."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What types of commercial videos does Dreamline Production create?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "We produce corporate films, ad films, brand campaigns, product videos, TV commercials, factory videography, industrial documentation, company profile videos, testimonial videos, social media content, and promotional videos. We handle end-to-end production from concept to delivery."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Which brands have worked with Dreamline Production?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Dreamline Production has worked with major brands and organizations including TATA Trust, L&T, Carlsberg, BookMyShow, Al Jazeera, ABP Network, TV Today, and many other corporate clients across India."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Does Dreamline Production offer factory and industrial videography?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Yes, we specialize in factory videography, industrial plant documentation, manufacturing unit video production, factory tour videos, industrial safety videos, and corporate factory profiles. We serve factories across Kolkata, West Bengal, and India."
+                        }
+                    }
+                ]
+            }} />
             <section className="px-8 md:px-16 mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">

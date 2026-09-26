@@ -44,7 +44,7 @@ export default function Footer({ siteContent }) {
                         <div className="text-[10px] font-black text-white/50 flex flex-col sm:flex-row lg:justify-end gap-2 sm:gap-6 uppercase tracking-widest">
                             <a href={`tel:${contact.phone || "+918240054002"}`} className="hover:text-[#c5a059] transition-colors">{contact.phone || "+91 82400 54002"}</a>
                             <span className="hidden sm:inline">|</span>
-                            <span>Kolkata, WB</span>
+                            <a href="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9" target="_blank" rel="noopener noreferrer" className="hover:text-[#c5a059] transition-colors">Kolkata, WB</a>
                         </div>
                         <div className="flex lg:justify-end gap-3">
                             {platforms.map((p) => (

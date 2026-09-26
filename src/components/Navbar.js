@@ -48,7 +48,7 @@ export default function Navbar({ initialServices }) {
             {/* SEO GMB Top Bar */}
             <div className="hidden lg:flex w-full bg-[#c5a059] text-black text-[9px] font-black uppercase tracking-widest py-1.5 px-6 justify-center items-center z-[101]">
                 <a 
-                    href="https://goo.gl/maps/Q3C2Kj5qVjF2" 
+                    href="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="hover:text-white transition-colors flex items-center gap-2"

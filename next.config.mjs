@@ -123,6 +123,15 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/services/pre-wedding',
+        destination: '/locations/pre-wedding-shoot-kolkata',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
