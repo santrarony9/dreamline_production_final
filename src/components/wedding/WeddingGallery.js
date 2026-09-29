@@ -48,15 +48,18 @@ export default function WeddingGallery({ images, altTexts = [] }) {
         <>
             <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                 {images.map((img, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: index * 0.05 }}
-                        viewport={{ once: true }}
-                        className="break-inside-avoid rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group relative cursor-pointer"
-                        onClick={() => openLightbox(index)}
-                    >
+                    <div key={index} className="break-inside-avoid wedding-item-wrapper">
+                        <noscript>
+                            <style>{`.wedding-item-wrapper .wedding-item-motion { opacity: 1 !important; transform: none !important; }`}</style>
+                        </noscript>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: index * 0.05 }}
+                            viewport={{ once: true }}
+                            className="wedding-item-motion rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border border-white/5 bg-zinc-900 group relative cursor-pointer"
+                            onClick={() => openLightbox(index)}
+                        >
                         <Image
                             src={img}
                             width={800}
@@ -74,6 +77,7 @@ export default function WeddingGallery({ images, altTexts = [] }) {
                             </div>
                         </div>
                     </motion.div>
+                    </div>
                 ))}
             </div>
 

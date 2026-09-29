@@ -368,8 +368,8 @@ export default async function RootLayout({ children }) {
         "ratingValue": "4.9",
         "bestRating": "5",
         "worstRating": "1",
-        "ratingCount": "150",
-        "reviewCount": "150"
+        "ratingCount": "93",
+        "reviewCount": "93"
       },
       "sameAs": sameAsLinks,
       "priceRange": "₹₹₹",

@@ -47,10 +47,14 @@ export default function TechPage() {
                 </motion.div>
 
                 <div className="relative z-10 text-center px-6 mt-20">
+                    <noscript>
+                        <style>{`.tech-header-motion { opacity: 1 !important; transform: none !important; }`}</style>
+                    </noscript>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, ease: [0.165, 0.84, 0.44, 1] }}
+                        className="tech-header-motion"
                     >
                         <p className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-6">
                             DIGITAL PRODUCT STUDIO
@@ -84,15 +88,18 @@ export default function TechPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                     {websites.map((site, i) => (
-                        <motion.div
-                            key={site._id}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.8, delay: i % 2 === 0 ? 0 : 0.2 }}
-                            className="group relative"
-                        >
-                            <a href={site.domain} target="_blank" rel="noopener noreferrer" className="block">
+                        <div key={site._id} className="group relative tech-item-wrapper">
+                            <noscript>
+                                <style>{`.tech-item-wrapper .tech-item-motion { opacity: 1 !important; transform: none !important; }`}</style>
+                            </noscript>
+                            <motion.div
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-100px" }}
+                                transition={{ duration: 0.8, delay: i % 2 === 0 ? 0 : 0.2 }}
+                                className="tech-item-motion"
+                            >
+                                <a href={site.domain} target="_blank" rel="noopener noreferrer" className="block">
                                 <div
                                     className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-zinc-900 border border-white/5 relative mb-6 cursor-pointer"
                                     data-cursor="VIEW SITE"
@@ -123,6 +130,7 @@ export default function TechPage() {
                                 </MagneticButton>
                             </div>
                         </motion.div>
+                        </div>
                     ))}
                 </div>
             </section>

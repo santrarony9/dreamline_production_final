@@ -32,11 +32,14 @@ export default function QuoteSection({ quote, backgroundImage }) {
         >
             {/* Content Layer */}
             <div className="container mx-auto px-6 relative z-10 text-center">
+                <noscript>
+                    <style>{`.quote-motion { opacity: 1 !important; transform: none !important; }`}</style>
+                </noscript>
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="space-y-6"
+                    className="space-y-6 quote-motion"
                 >
                     <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-white italic leading-snug max-w-3xl mx-auto drop-shadow-2xl uppercase tracking-normal">
                         "{quote || defaultQuote}"
