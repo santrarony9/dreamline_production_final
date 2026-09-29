@@ -45,57 +45,84 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 setError(null);
             }
 
-            // Direct FormData upload to VPS backend (AWS S3 bypassed)
-            console.log(`[Upload] Attempt ${attempt + 1}/${MAX_RETRIES}: Uploading directly:`, file.name);
+            console.log(`[Upload] Attempt ${attempt + 1}/${MAX_RETRIES}: Uploading directly via chunking:`, file.name);
 
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const xhr = new XMLHttpRequest();
-
-            const uploadPromise = new Promise((resolve, reject) => {
-                xhr.upload.addEventListener("progress", (e) => {
-                    if (e.lengthComputable) {
-                        const percent = Math.round((e.loaded * 100) / e.total);
-                        setUploadProgress(percent);
-                    }
-                });
-
-                xhr.addEventListener("load", () => {
-                    if (xhr.status >= 200 && xhr.status < 300) {
-                        try {
-                            const response = JSON.parse(xhr.responseText);
-                            resolve(response);
-                        } catch (e) {
-                            reject(new Error("Invalid server response"));
-                        }
-                    } else if (xhr.status === 401) {
-                        reject(new Error("Session expired. Please refresh the page and log in again."));
-                    } else {
-                        console.error("[Upload] Server Error Response:", xhr.responseText);
-                        reject(new Error(`Upload failed (Status ${xhr.status})`));
-                    }
-                });
-
-                xhr.addEventListener("error", () => reject(new Error("Network error during upload")));
-                xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
-
-                xhr.open("POST", "/api/upload");
-                xhr.send(formData);
+            // Fetch the correct upload URL (presigned endpoint still returns the proxy endpoint if needed)
+            const presignRes = await fetch("/api/upload/presigned", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ fileName: file.name, fileType: file.type })
             });
+            if (presignRes.status === 401) throw new Error("Session expired. Please log in again.");
+            const presignData = await presignRes.json();
+            const uploadEndpoint = presignData.uploadUrl || "/api/upload";
 
-            // Timeout: 30 minutes for large files
-            const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => {
-                    xhr.abort();
-                    reject(new Error("Upload timed out after 30 minutes"));
-                }, 30 * 60 * 1000)
-            );
+            // Chunk settings: 2MB per chunk to bypass Vercel's 4.5MB Serverless limit
+            const CHUNK_SIZE = 2 * 1024 * 1024;
+            const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+            const fileId = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+            
+            let publicUrl = null;
 
-            const result = await Promise.race([uploadPromise, timeoutPromise]);
+            for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+                const start = chunkIndex * CHUNK_SIZE;
+                const end = Math.min(start + CHUNK_SIZE, file.size);
+                const chunk = file.slice(start, end);
+
+                const formData = new FormData();
+                formData.append("chunk", chunk);
+                formData.append("fileId", fileId);
+                formData.append("chunkIndex", chunkIndex.toString());
+                formData.append("totalChunks", totalChunks.toString());
+                formData.append("fileName", file.name);
+                formData.append("fileType", file.type);
+
+                const chunkPromise = new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", (e) => {
+                        if (e.lengthComputable) {
+                            const chunkPercent = (e.loaded / e.total);
+                            const overallPercent = Math.round(((chunkIndex + chunkPercent) / totalChunks) * 100);
+                            setUploadProgress(overallPercent);
+                        }
+                    });
+
+                    xhr.addEventListener("load", () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try {
+                                const response = JSON.parse(xhr.responseText);
+                                resolve(response);
+                            } catch (e) {
+                                reject(new Error("Invalid server response"));
+                            }
+                        } else if (xhr.status === 401) {
+                            reject(new Error("Session expired. Please refresh the page and log in again."));
+                        } else {
+                            console.error("[Upload] Server Error Response:", xhr.responseText);
+                            reject(new Error(`Upload failed (Status ${xhr.status})`));
+                        }
+                    });
+
+                    xhr.addEventListener("error", () => reject(new Error("Network error during upload")));
+                    xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
+
+                    xhr.open("POST", uploadEndpoint);
+                    xhr.send(formData);
+                });
+
+                // Set a timeout for EACH chunk instead of the whole file
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error("Chunk upload timed out")), 5 * 60 * 1000)
+                );
+
+                const result = await Promise.race([chunkPromise, timeoutPromise]);
+                
+                if (chunkIndex === totalChunks - 1) {
+                    publicUrl = result.url;
+                }
+            }
 
             // Success
-            const publicUrl = result.url;
             console.log("[Upload] Success! Public URL:", publicUrl);
             onUploadSuccess(publicUrl);
             setIsUploading(false);
