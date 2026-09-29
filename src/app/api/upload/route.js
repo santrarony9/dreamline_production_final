@@ -64,12 +64,16 @@ export async function POST(request) {
         // Optimization: Convert images to WebP (excluding SVGs)
         if (contentType.startsWith("image/") && !contentType.includes("svg")) {
             console.log("Optimizing image:", fileName);
-            buffer = await sharp(buffer)
-                .resize({ width: 2000, withoutEnlargement: true })
-                .webp({ quality: 80 })
-                .toBuffer();
+            try {
+                buffer = await sharp(buffer)
+                    .resize({ width: 2000, withoutEnlargement: true })
+                    .webp({ quality: 80 })
+                    .toBuffer();
 
-            fileName = fileName.replace(/\.[^.]+$/, ".webp");
+                fileName = fileName.replace(/\.[^.]+$/, ".webp");
+            } catch (err) {
+                console.error("Image optimization failed, skipping:", err);
+            }
         }
 
         const finalFileName = `${Date.now()}-${fileName}`;
