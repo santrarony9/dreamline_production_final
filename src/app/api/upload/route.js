@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
-export const maxDuration = 60; // Allow up to 60s for upload + Sharp processing
+export const maxDuration = 60;
 
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
@@ -20,7 +20,17 @@ const ALLOWED_MIME_TYPES = [
     "application/pdf",
 ];
 
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
+
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*", // Allow all origins for upload POST (or use specific domains)
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+    return NextResponse.json({}, { headers: corsHeaders });
+}
 
 export async function POST(request) {
     let isAuthenticated = false;
@@ -59,7 +69,7 @@ export async function POST(request) {
     }
 
     if (!isAuthenticated) {
-        return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
+        return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401, headers: corsHeaders });
     }
 
     try {
@@ -68,10 +78,9 @@ export async function POST(request) {
         const chunk = formData.get("chunk");
 
         if (!file && !chunk) {
-            return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+            return NextResponse.json({ error: "No file uploaded" }, { status: 400, headers: corsHeaders });
         }
 
-        // Support for chunked uploads to bypass Vercel's 4.5MB limit
         if (chunk) {
             const fileId = formData.get("fileId");
             const chunkIndex = parseInt(formData.get("chunkIndex"));
@@ -81,114 +90,81 @@ export async function POST(request) {
 
             const fsPromises = await import('fs/promises');
             const path = await import('path');
-            const os = await import('os');
+            const fs = await import('fs');
 
-            const tempDir = path.join(os.tmpdir(), 'dreamline-uploads');
-            await fsPromises.mkdir(tempDir, { recursive: true }).catch(() => {});
-            
-            const tempFilePath = path.join(tempDir, `${fileId}.tmp`);
-            const buffer = Buffer.from(await chunk.arrayBuffer());
-            
-            // Append chunk
-            if (chunkIndex === 0) {
-                await fsPromises.writeFile(tempFilePath, buffer);
-            } else {
-                await fsPromises.appendFile(tempFilePath, buffer);
-            }
+            if (!fileName) fileName = "unknown-file";
+            const safeFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, "_");
+            const tempDir = path.join(process.cwd(), 'public', 'uploads', 'temp', fileId);
+            await fsPromises.mkdir(tempDir, { recursive: true });
 
-            if (chunkIndex === totalChunks - 1) {
-                fileName = fileName.replace(/[^\x20-\x7E]/g, '').replace(/[^a-zA-Z0-9._-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'upload';
+            const chunkBuffer = Buffer.from(await chunk.arrayBuffer());
+            const chunkPath = path.join(tempDir, `${chunkIndex}`);
+            await fsPromises.writeFile(chunkPath, chunkBuffer);
 
-                const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-                await fsPromises.mkdir(uploadDir, { recursive: true }).catch(() => {});
-                
-                let finalFileName = `${Date.now()}-${fileName}`;
-                const finalPath = path.join(uploadDir, finalFileName);
-                
-                if (contentType.startsWith("image/") && !contentType.includes("svg")) {
-                    const fileBuffer = await fsPromises.readFile(tempFilePath);
-                    const optimizedBuffer = await sharp(fileBuffer)
-                        .resize({ width: 2000, withoutEnlargement: true })
-                        .webp({ quality: 80 })
-                        .toBuffer();
-                    finalFileName = finalFileName.replace(/\.[^.]+$/, ".webp");
-                    const optimizedPath = path.join(uploadDir, finalFileName);
-                    await fsPromises.writeFile(optimizedPath, optimizedBuffer);
-                    await fsPromises.unlink(tempFilePath).catch(() => {});
-                } else {
-                    await fsPromises.rename(tempFilePath, finalPath);
+            const uploadedChunks = await fsPromises.readdir(tempDir);
+            if (uploadedChunks.length === totalChunks) {
+                const finalExt = safeFileName.includes('.') ? safeFileName.substring(safeFileName.lastIndexOf('.')) : '';
+                const baseFileName = safeFileName.substring(0, safeFileName.lastIndexOf('.')) || safeFileName;
+                const finalName = `${Date.now()}-${baseFileName.substring(0, 20)}${finalExt}`;
+                const finalPath = path.join(process.cwd(), 'public', 'uploads', finalName);
+
+                const writeStream = fs.createWriteStream(finalPath);
+                for (let i = 0; i < totalChunks; i++) {
+                    const cp = path.join(tempDir, `${i}`);
+                    const data = await fsPromises.readFile(cp);
+                    writeStream.write(data);
                 }
+                writeStream.end();
 
-                const publicUrl = `https://dreamlineproduction.com/uploads/${finalFileName}`;
-                return NextResponse.json({ url: publicUrl });
+                await new Promise((resolve, reject) => {
+                    writeStream.on('finish', resolve);
+                    writeStream.on('error', reject);
+                });
+
+                await fsPromises.rm(tempDir, { recursive: true, force: true }).catch(console.error);
+
+                const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
+                const publicUrl = `${backendUrl}/uploads/${finalName}`;
+                return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
             } else {
-                return NextResponse.json({ message: "Chunk received" });
+                return NextResponse.json({ success: true, message: `Chunk ${chunkIndex} received` }, { headers: corsHeaders });
             }
         }
 
-        const contentType = file?.type || "";
-        if (!ALLOWED_MIME_TYPES.includes(contentType)) {
-            return NextResponse.json(
-                { error: "File type not allowed" },
-                { status: 400 }
-            );
+        if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+            return NextResponse.json({ error: "File type not allowed" }, { status: 400, headers: corsHeaders });
         }
 
         if (file.size > MAX_FILE_SIZE) {
-            return NextResponse.json(
-                { error: "File too large. Maximum 50MB." },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: "File size exceeds 50MB limit" }, { status: 400, headers: corsHeaders });
         }
 
-        const arrayBuffer = await file.arrayBuffer();
-        let buffer = Buffer.from(arrayBuffer);
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+        const isImage = file.type.startsWith("image/");
+        let processedBuffer = buffer;
 
-        // Sanitize filename: remove non-ASCII, special chars
-        let fileName = file.name
-            .replace(/[^\x20-\x7E]/g, '')
-            .replace(/[^a-zA-Z0-9._-]/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '') || 'upload';
-
-        // Optimization: Convert images to WebP (excluding SVGs)
-        if (contentType.startsWith("image/") && !contentType.includes("svg")) {
-            console.log("Optimizing image:", fileName);
-            try {
-                buffer = await sharp(buffer)
-                    .resize({ width: 2000, withoutEnlargement: true })
-                    .webp({ quality: 80 })
-                    .toBuffer();
-
-                fileName = fileName.replace(/\.[^.]+$/, ".webp");
-            } catch (err) {
-                console.error("Image optimization failed, skipping:", err);
-            }
+        if (isImage) {
+            processedBuffer = await sharp(buffer)
+                .resize(1920, 1920, { fit: "inside", withoutEnlargement: true })
+                .jpeg({ quality: 80, progressive: true })
+                .toBuffer();
         }
 
-        const finalFileName = `${Date.now()}-${fileName}`;
-
-        // --- VPS Local Storage (AWS S3 bypassed — bucket blocked) ---
-        const fs = await import('fs/promises');
+        const fsPromises = await import('fs/promises');
         const path = await import('path');
-
         const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+        await fsPromises.mkdir(uploadDir, { recursive: true });
 
-        // Ensure directory exists
-        try {
-            await fs.access(uploadDir);
-        } catch {
-            await fs.mkdir(uploadDir, { recursive: true });
-        }
+        const fileName = `${Date.now()}-${originalName}`;
+        const filePath = path.join(uploadDir, fileName);
+        await fsPromises.writeFile(filePath, processedBuffer);
 
-        const filePath = path.join(uploadDir, finalFileName);
-        await fs.writeFile(filePath, buffer);
-
-        // Return absolute URL via Vercel frontend so Next.js Image Optimization can fetch it externally.
-        // Vercel rewrites /uploads/* to http://backend.dreamlineproduction.com/uploads/*
-        const publicUrl = `https://dreamlineproduction.com/uploads/${finalFileName}`;
-        return NextResponse.json({ url: publicUrl });
+        const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
+        const publicUrl = `${backendUrl}/uploads/${fileName}`;
+        
+        return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
     } catch (error) {
-        return safeErrorResponse(error, "Upload");
+        return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500, headers: corsHeaders });
     }
 }
