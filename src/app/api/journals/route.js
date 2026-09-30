@@ -36,7 +36,11 @@ export async function GET() {
     return NextResponse.json(journals);
 }
 
-const ALLOWED_JOURNAL_FIELDS = ["id", "title", "date", "category", "image", "content", "excerpt", "seo", "featured", "status"];
+const ALLOWED_JOURNAL_FIELDS = [
+    "id", "title", "date", "category", "image", "content", 
+    "excerpt", "seo", "featured", "status", "order", 
+    "googleBusinessSync", "lastSyncedAt"
+];
 
 export async function POST(request) {
     try {

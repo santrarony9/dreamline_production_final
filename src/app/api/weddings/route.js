@@ -9,7 +9,12 @@ import { authOptions } from "@/lib/auth";
 
 import { safeErrorResponse } from "@/lib/error-handler";
 
-const ALLOWED_WEDDING_FIELDS = ["id", "title", "date", "location", "videoUrl", "youtubeId", "image", "seo"];
+const ALLOWED_WEDDING_FIELDS = [
+    "id", "title", "subtitle", "description", "location", "date", 
+    "coverImage", "img", "hoverVideo", "videoUrl", "albumUrl", 
+    "images", "altText", "imageAltTexts", "review", "clientNames", 
+    "reviews", "storyChapters", "vendors", "order", "seo"
+];
 
 export async function GET() {
     await dbConnect();
