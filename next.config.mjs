@@ -60,13 +60,13 @@ const nextConfig = {
         beforeFiles: [
           {
             source: '/api/upload',
-            destination: 'http://backend.dreamlineproduction.com/api/upload',
+            destination: 'https://backend.dreamlineproduction.com/api/upload',
           }
         ],
         fallback: [
           {
             source: '/uploads/:path*',
-            destination: 'http://backend.dreamlineproduction.com/uploads/:path*',
+            destination: 'https://backend.dreamlineproduction.com/uploads/:path*',
           }
         ]
       };
