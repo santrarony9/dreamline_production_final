@@ -5,8 +5,7 @@ export const maxDuration = 60;
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { getToken } from "next-auth/jwt";
-import sharp from "sharp";
+import { getToken, encode } from "next-auth/jwt";
 import { safeErrorResponse } from "@/lib/error-handler";
 
 const ALLOWED_MIME_TYPES = [
@@ -23,7 +22,7 @@ const ALLOWED_MIME_TYPES = [
 const MAX_FILE_SIZE = 50 * 1024 * 1024;
 
 const corsHeaders = {
-    "Access-Control-Allow-Origin": "*", // Allow all origins for upload POST (or use specific domains)
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
@@ -51,8 +50,16 @@ export async function POST(request) {
         }
     }
 
+    // Check for server-to-server proxy token (Vercel → VPS forwarding)
     if (!isAuthenticated) {
-        // Fallback for same-origin uploads
+        const proxySecret = request.headers.get("x-upload-proxy-secret");
+        if (proxySecret && proxySecret === (process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8")) {
+            isAuthenticated = true;
+        }
+    }
+
+    if (!isAuthenticated) {
+        // Fallback for same-origin uploads (session cookie)
         const session = await getServerSession(authOptions);
         if (session) {
             isAuthenticated = true;
@@ -69,10 +76,58 @@ export async function POST(request) {
     }
 
     if (!isAuthenticated) {
-        return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401, headers: corsHeaders });
+        return NextResponse.json(
+            { error: "Session expired. Please refresh the page and log in again." },
+            { status: 401, headers: corsHeaders }
+        );
     }
 
+    // ─── VERCEL MODE: Proxy entire request to VPS backend ───
+    // On Vercel, the filesystem is ephemeral and chunks across serverless 
+    // invocations can land on different instances. Instead of trying to handle
+    // uploads locally, we forward every chunk (and single-file uploads) to the
+    // VPS backend server-to-server. This avoids all CORS/redirect/rewrite issues.
+    if (process.env.VERCEL === '1') {
+        try {
+            const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
+            const secret = process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8";
+
+            // Read the raw request body and forward it with the same Content-Type
+            const bodyBuffer = await request.arrayBuffer();
+            const contentType = request.headers.get("content-type") || "";
+
+            const vpsRes = await fetch(`${backendUrl}/api/upload`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": contentType,
+                    "x-upload-proxy-secret": secret,
+                },
+                body: bodyBuffer,
+            });
+
+            const vpsData = await vpsRes.json();
+
+            if (!vpsRes.ok) {
+                console.error("[Upload Proxy] VPS returned error:", vpsRes.status, vpsData);
+                return NextResponse.json(
+                    { error: vpsData.error || "Upload failed on storage server" },
+                    { status: vpsRes.status, headers: corsHeaders }
+                );
+            }
+
+            return NextResponse.json(vpsData, { headers: corsHeaders });
+        } catch (err) {
+            console.error("[Upload Proxy] Error forwarding to VPS:", err);
+            return NextResponse.json(
+                { error: "Failed to reach storage server. Please try again." },
+                { status: 502, headers: corsHeaders }
+            );
+        }
+    }
+
+    // ─── VPS MODE: Handle uploads locally ───
     try {
+        const sharp = (await import("sharp")).default;
         const formData = await request.formData();
         const file = formData.get("file");
         const chunk = formData.get("chunk");
@@ -81,6 +136,7 @@ export async function POST(request) {
             return NextResponse.json({ error: "No file uploaded" }, { status: 400, headers: corsHeaders });
         }
 
+        // ── Chunked upload flow ──
         if (chunk) {
             const fileId = formData.get("fileId");
             const chunkIndex = parseInt(formData.get("chunkIndex"));
@@ -103,34 +159,50 @@ export async function POST(request) {
 
             const uploadedChunks = await fsPromises.readdir(tempDir);
             if (uploadedChunks.length === totalChunks) {
+                // All chunks received — assemble the file
                 const finalExt = safeFileName.includes('.') ? safeFileName.substring(safeFileName.lastIndexOf('.')) : '';
                 const baseFileName = safeFileName.substring(0, safeFileName.lastIndexOf('.')) || safeFileName;
-                const finalName = `${Date.now()}-${baseFileName.substring(0, 20)}${finalExt}`;
-                const finalPath = path.join(process.cwd(), 'public', 'uploads', finalName);
 
-                const writeStream = fs.createWriteStream(finalPath);
+                // Assemble chunks into a single buffer
+                const chunks = [];
                 for (let i = 0; i < totalChunks; i++) {
                     const cp = path.join(tempDir, `${i}`);
-                    const data = await fsPromises.readFile(cp);
-                    writeStream.write(data);
+                    chunks.push(await fsPromises.readFile(cp));
                 }
-                writeStream.end();
+                let assembledBuffer = Buffer.concat(chunks);
 
-                await new Promise((resolve, reject) => {
-                    writeStream.on('finish', resolve);
-                    writeStream.on('error', reject);
-                });
-
+                // Cleanup temp dir
                 await fsPromises.rm(tempDir, { recursive: true, force: true }).catch(console.error);
 
-                const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
-                const publicUrl = `${backendUrl}/uploads/${finalName}`;
+                // Process images with sharp
+                let finalFileName;
+                if (contentType && contentType.startsWith("image/") && !contentType.includes("svg")) {
+                    try {
+                        assembledBuffer = await sharp(assembledBuffer)
+                            .resize({ width: 2000, withoutEnlargement: true })
+                            .webp({ quality: 80 })
+                            .toBuffer();
+                        finalFileName = `${Date.now()}-${baseFileName.substring(0, 20)}.webp`;
+                    } catch (sharpErr) {
+                        console.error("Sharp processing failed, saving original:", sharpErr);
+                        finalFileName = `${Date.now()}-${baseFileName.substring(0, 20)}${finalExt}`;
+                    }
+                } else {
+                    finalFileName = `${Date.now()}-${baseFileName.substring(0, 20)}${finalExt}`;
+                }
+
+                const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+                await fsPromises.mkdir(uploadDir, { recursive: true });
+                await fsPromises.writeFile(path.join(uploadDir, finalFileName), assembledBuffer);
+
+                const publicUrl = `https://backend.dreamlineproduction.com/uploads/${finalFileName}`;
                 return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
             } else {
                 return NextResponse.json({ success: true, message: `Chunk ${chunkIndex} received` }, { headers: corsHeaders });
             }
         }
 
+        // ── Single-file upload flow ──
         if (!ALLOWED_MIME_TYPES.includes(file.type)) {
             return NextResponse.json({ error: "File type not allowed" }, { status: 400, headers: corsHeaders });
         }
@@ -139,16 +211,19 @@ export async function POST(request) {
             return NextResponse.json({ error: "File size exceeds 50MB limit" }, { status: 400, headers: corsHeaders });
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer());
-        const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-        const isImage = file.type.startsWith("image/");
-        let processedBuffer = buffer;
+        let buffer = Buffer.from(await file.arrayBuffer());
+        let originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
 
-        if (isImage) {
-            processedBuffer = await sharp(buffer)
-                .resize(1920, 1920, { fit: "inside", withoutEnlargement: true })
-                .jpeg({ quality: 80, progressive: true })
-                .toBuffer();
+        if (file.type.startsWith("image/") && !file.type.includes("svg")) {
+            try {
+                buffer = await sharp(buffer)
+                    .resize({ width: 2000, withoutEnlargement: true })
+                    .webp({ quality: 80 })
+                    .toBuffer();
+                originalName = originalName.replace(/\.[^.]+$/, ".webp");
+            } catch (sharpErr) {
+                console.error("Sharp processing failed, saving original:", sharpErr);
+            }
         }
 
         const fsPromises = await import('fs/promises');
@@ -156,15 +231,13 @@ export async function POST(request) {
         const uploadDir = path.join(process.cwd(), 'public', 'uploads');
         await fsPromises.mkdir(uploadDir, { recursive: true });
 
-        const fileName = `${Date.now()}-${originalName}`;
-        const filePath = path.join(uploadDir, fileName);
-        await fsPromises.writeFile(filePath, processedBuffer);
+        const finalFileName = `${Date.now()}-${originalName}`;
+        await fsPromises.writeFile(path.join(uploadDir, finalFileName), buffer);
 
-        const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
-        const publicUrl = `${backendUrl}/uploads/${fileName}`;
-        
+        const publicUrl = `https://backend.dreamlineproduction.com/uploads/${finalFileName}`;
         return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
     } catch (error) {
+        console.error("[Upload VPS] Error:", error);
         return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500, headers: corsHeaders });
     }
 }

@@ -57,12 +57,6 @@ const nextConfig = {
     // Only apply proxy rewrites if we are running on the Vercel frontend
     if (process.env.VERCEL === '1') {
       return {
-        beforeFiles: [
-          {
-            source: '/api/upload',
-            destination: 'https://backend.dreamlineproduction.com/api/upload',
-          }
-        ],
         fallback: [
           {
             source: '/uploads/:path*',
