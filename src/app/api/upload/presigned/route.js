@@ -22,10 +22,12 @@ const ALLOWED_MIME_TYPES = [
 export async function POST(request) {
     console.log("UPLOAD URL REQUEST RECEIVED — returning direct VPS upload URL with token");
 
-    const session = await getServerSession(authOptions);
-    if (!session) {
+    const { getToken } = await import("next-auth/jwt");
+    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8" });
+    if (!token) {
         return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
     }
+    const session = { user: token };
 
     try {
         const body = await request.json();

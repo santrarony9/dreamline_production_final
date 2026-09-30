@@ -17,18 +17,21 @@ export default function LoginPage() {
         setError("");
 
         try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const callbackUrl = urlParams.get("callbackUrl") || "/admin";
+
             const res = await signIn("credentials", {
                 username,
                 password,
                 redirect: false,
-                callbackUrl: "/admin",
+                callbackUrl,
             });
 
             if (res?.error) {
                 setError("Invalid credentials. Authorized personnel only.");
                 setLoading(false);
             } else if (res?.ok) {
-                window.location.href = "/admin";
+                window.location.href = callbackUrl;
             } else {
                 setError("Authentication failed. Please try again.");
                 setLoading(false);
