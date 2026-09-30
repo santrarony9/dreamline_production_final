@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Preloader from "./Preloader";
 import VideoModal from "./VideoModal";
+import WhatsAppButton from "./WhatsAppButton";
 
 export default function PublicLayoutWrapper({ children, siteContent }) {
     const pathname = usePathname();
@@ -21,6 +22,7 @@ export default function PublicLayoutWrapper({ children, siteContent }) {
             <Navbar initialServices={siteContent?.services || siteContent?.home?.services} />
             {children}
             <Footer siteContent={siteContent} />
+            <WhatsAppButton phoneNumber={siteContent?.global?.contact?.phone || "+918240054002"} />
         </>
     );
 }

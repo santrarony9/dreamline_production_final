@@ -18,9 +18,19 @@ export default function LetsCreate({ global }) {
                 <div className="space-y-10 md:space-y-16">
                     <div>
                         <h3 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">LOCATION</h3>
-                        <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug">
-                            {contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}
-                        </address>
+                        <a
+                            href="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-[#c5a059] transition-colors group"
+                        >
+                            <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug group-hover:text-[#c5a059] transition-colors">
+                                {contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}
+                            </address>
+                            <span className="text-[9px] uppercase tracking-widest text-[#c5a059]/60 font-black mt-2 block">
+                                📍 View on Google Maps →
+                            </span>
+                        </a>
                     </div>
 
                     <div>
@@ -51,17 +61,22 @@ export default function LetsCreate({ global }) {
                 </div>
 
                 {/* Decorative Center Dot/Label */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="text-center group">
-                        <div className="w-24 h-24 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm relative pointer-events-auto cursor-pointer hover:border-[#c5a059] hover:bg-[#c5a059]/10 transition-all">
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <a
+                        href="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-center group"
+                    >
+                        <div className="w-24 h-24 rounded-full border border-white/20 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm relative cursor-pointer hover:border-[#c5a059] hover:bg-[#c5a059]/10 transition-all">
                             <svg className="w-8 h-8 text-white group-hover:text-[#c5a059] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
                         </div>
-                        <h3 className="font-heading font-black text-2xl uppercase tracking-tighter">VISIT THE SUITE</h3>
+                        <h3 className="font-heading font-black text-2xl uppercase tracking-tighter group-hover:text-[#c5a059] transition-colors">VISIT THE SUITE</h3>
                         <p className="text-[10px] uppercase tracking-[0.2em] text-white/50 font-bold mt-2">APPOINTMENT ONLY</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         </section>

@@ -53,7 +53,7 @@ export default function Footer({ siteContent }) {
                                     href={p.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="w-10 h-10 sm:w-8 sm:h-8 rounded-full border border-white/10 flex items-center justify-center text-[10px] font-bold hover:border-[#c5a059] hover:text-[#c5a059] transition-all interactive"
+                                    className="px-6 py-3 rounded-full border border-white/20 flex items-center justify-center text-[11px] tracking-widest font-black hover:border-[#c5a059] hover:text-[#c5a059] hover:bg-white/5 transition-all interactive"
                                 >
                                     {p.label}
                                 </a>
