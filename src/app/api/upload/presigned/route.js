@@ -50,9 +50,8 @@ export async function POST(request) {
             secret: secret,
         });
 
-        const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
         return NextResponse.json({
-            uploadUrl: `${backendUrl}/api/upload`,
+            uploadUrl: "/api/upload",
             method: "POST_FORMDATA",
             token: uploadToken
         });
