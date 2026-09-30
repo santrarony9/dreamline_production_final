@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
-export const maxDuration = 60;
+export const maxDuration = 10;
 
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
@@ -18,10 +18,10 @@ const ALLOWED_MIME_TYPES = [
     "application/pdf",
 ];
 
-// Pre-signed URLs are no longer needed since AWS S3 is bypassed.
-// This endpoint now returns the direct upload URL for the FormData-based upload flow.
+// This endpoint authenticates the user on Vercel, then returns the direct VPS upload URL.
+// The browser then uploads the file DIRECTLY to the VPS, bypassing Vercel's 4.5MB body limit.
 export async function POST(request) {
-    console.log("UPLOAD URL REQUEST RECEIVED (S3 bypassed — using VPS local storage)");
+    console.log("UPLOAD URL REQUEST RECEIVED — returning direct VPS upload URL");
 
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -41,11 +41,12 @@ export async function POST(request) {
             return NextResponse.json({ error: "File type not allowed" }, { status: 400 });
         }
 
-        // Return the direct upload endpoint — the ImageUploader will POST FormData here
+        // Return the DIRECT VPS backend upload URL so the browser bypasses Vercel entirely.
+        // This avoids Vercel's 4.5MB request body limit and proxy timeout issues.
+        const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
         return NextResponse.json({
-            uploadUrl: "/api/upload",
-            publicUrl: "pending", // Will be returned by the actual upload endpoint
-            method: "POST_FORMDATA" // Signal to the client to use FormData instead of PUT
+            uploadUrl: `${backendUrl}/api/upload`,
+            method: "POST_FORMDATA"
         });
     } catch (error) {
         return safeErrorResponse(error, "Upload URL");
