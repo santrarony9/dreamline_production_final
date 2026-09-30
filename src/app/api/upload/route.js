@@ -23,26 +23,38 @@ const ALLOWED_MIME_TYPES = [
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
 
 export async function POST(request) {
-    // Attempt standard getServerSession first
     let isAuthenticated = false;
-    const session = await getServerSession(authOptions);
-    
-    if (session) {
-        isAuthenticated = true;
-    } else {
-        // Fallback: Manually check for JWT token.
-        // This is needed because Vercel proxies HTTPS to HTTP, causing NextAuth to look for the wrong cookie name
+
+    // Check for Authorization header first (cross-origin upload token)
+    const authHeader = request.headers.get("authorization");
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+        const tokenString = authHeader.substring(7);
         try {
-            const token = await getToken({ 
-                req: request, 
-                secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8",
-                secureCookie: true // Force checking the __Secure- prefix since the original request to Vercel was HTTPS
-            });
-            if (token) {
+            const { decode } = await import("next-auth/jwt");
+            const secret = process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8";
+            const decoded = await decode({ token: tokenString, secret });
+            if (decoded && decoded.uploadAuth && decoded.exp > Math.floor(Date.now() / 1000)) {
                 isAuthenticated = true;
             }
         } catch (e) {
-            console.error("Token verification error:", e);
+            console.error("JWT verification error:", e);
+        }
+    }
+
+    if (!isAuthenticated) {
+        // Fallback for same-origin uploads
+        const session = await getServerSession(authOptions);
+        if (session) {
+            isAuthenticated = true;
+        } else {
+            try {
+                const token = await getToken({ 
+                    req: request, 
+                    secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8",
+                    secureCookie: true
+                });
+                if (token) isAuthenticated = true;
+            } catch (e) {}
         }
     }
 

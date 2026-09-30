@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";
+import { encode } from "next-auth/jwt";
 
 const ALLOWED_MIME_TYPES = [
     "image/jpeg",
@@ -18,14 +19,11 @@ const ALLOWED_MIME_TYPES = [
     "application/pdf",
 ];
 
-// This endpoint authenticates the user on Vercel, then returns the direct VPS upload URL.
-// The browser then uploads the file DIRECTLY to the VPS, bypassing Vercel's 4.5MB body limit.
 export async function POST(request) {
-    console.log("UPLOAD URL REQUEST RECEIVED — returning direct VPS upload URL");
+    console.log("UPLOAD URL REQUEST RECEIVED — returning direct VPS upload URL with token");
 
     const session = await getServerSession(authOptions);
     if (!session) {
-        console.log("Unauthorized request — session is null");
         return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
     }
 
@@ -41,12 +39,22 @@ export async function POST(request) {
             return NextResponse.json({ error: "File type not allowed" }, { status: 400 });
         }
 
-        // Return the DIRECT VPS backend upload URL so the browser bypasses Vercel entirely.
-        // This avoids Vercel's 4.5MB request body limit and proxy timeout issues.
+        // Generate a temporary upload token using next-auth/jwt
+        const secret = process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8";
+        const uploadToken = await encode({
+            token: { 
+                uploadAuth: true, 
+                user: session.user?.email,
+                exp: Math.floor(Date.now() / 1000) + 60 * 60 // 1 hour expiration
+            },
+            secret: secret,
+        });
+
         const backendUrl = process.env.BACKEND_URL || "https://backend.dreamlineproduction.com";
         return NextResponse.json({
             uploadUrl: `${backendUrl}/api/upload`,
-            method: "POST_FORMDATA"
+            method: "POST_FORMDATA",
+            token: uploadToken
         });
     } catch (error) {
         return safeErrorResponse(error, "Upload URL");

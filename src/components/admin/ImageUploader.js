@@ -107,6 +107,9 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                     xhr.addEventListener("abort", () => reject(new Error("Upload aborted")));
 
                     xhr.open("POST", uploadEndpoint);
+                    if (presignData.token) {
+                        xhr.setRequestHeader("Authorization", `Bearer ${presignData.token}`);
+                    }
                     xhr.send(formData);
                 });
 
