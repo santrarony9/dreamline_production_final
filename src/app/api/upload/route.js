@@ -34,27 +34,27 @@ export async function OPTIONS() {
 export async function POST(request) {
     let isAuthenticated = false;
 
-    // Check for Authorization header first (cross-origin upload token)
+    // Check for Authorization header first (cross-origin upload token or Vercel proxy)
     const authHeader = request.headers.get("authorization");
     if (authHeader && authHeader.startsWith("Bearer ")) {
         const tokenString = authHeader.substring(7);
-        try {
-            const { decode } = await import("next-auth/jwt");
-            const secret = process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8";
-            const decoded = await decode({ token: tokenString, secret });
-            if (decoded && decoded.uploadAuth && decoded.exp > Math.floor(Date.now() / 1000)) {
-                isAuthenticated = true;
-            }
-        } catch (e) {
-            console.error("JWT verification error:", e);
-        }
-    }
-
-    // Check for server-to-server proxy token (Vercel → VPS forwarding)
-    if (!isAuthenticated) {
-        const proxySecret = request.headers.get("x-upload-proxy-secret");
-        if (proxySecret && proxySecret === (process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8")) {
+        
+        // 1. Check for server-to-server proxy token (Vercel → VPS forwarding)
+        if (tokenString === "PROXY_DREAMLINE_2026_xyz123_SUPER_SECRET") {
             isAuthenticated = true;
+        } 
+        // 2. Check for client-side JWT upload token
+        else {
+            try {
+                const { decode } = await import("next-auth/jwt");
+                const secret = process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8";
+                const decoded = await decode({ token: tokenString, secret });
+                if (decoded && decoded.uploadAuth && decoded.exp > Math.floor(Date.now() / 1000)) {
+                    isAuthenticated = true;
+                }
+            } catch (e) {
+                console.error("JWT verification error:", e);
+            }
         }
     }
 
@@ -100,7 +100,7 @@ export async function POST(request) {
                 method: "POST",
                 headers: {
                     "Content-Type": contentType,
-                    "x-upload-proxy-secret": secret,
+                    "Authorization": "Bearer PROXY_DREAMLINE_2026_xyz123_SUPER_SECRET",
                 },
                 body: bodyBuffer,
             });
