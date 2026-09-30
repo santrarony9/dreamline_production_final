@@ -7,6 +7,8 @@ export default function GoogleBusinessAdmin() {
     const [loading, setLoading] = useState(true);
     const [settings, setSettings] = useState(null);
     const [pendingPosts, setPendingPosts] = useState([]);
+    const [reviewSyncStatus, setReviewSyncStatus] = useState(null);
+    const [reviewSyncMsg, setReviewSyncMsg] = useState('');
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -31,6 +33,21 @@ export default function GoogleBusinessAdmin() {
     const handleAuthorize = () => {
         alert("SYSTEM ACTION: Google Business API requires a 'Client ID' and 'Secret' from your Google Cloud Console. I will now redirect you to Global Settings to enter them.");
         window.location.href = "/admin/global?tab=SEO";
+    };
+
+    const handleSyncReviews = async () => {
+        setReviewSyncStatus('syncing');
+        setReviewSyncMsg('Fetching latest reviews from Google...');
+        try {
+            const res = await axios.post("/api/admin/sync-reviews");
+            const { count, averageRating, totalReviews } = res.data;
+            setReviewSyncStatus('success');
+            setReviewSyncMsg(`Synced ${count} reviews · ${averageRating}/5 · ${totalReviews} total`);
+        } catch (err) {
+            setReviewSyncStatus('error');
+            const errMsg = err.response?.data?.error || "Check your Google Maps API Key in Global Settings.";
+            setReviewSyncMsg(errMsg);
+        }
     };
 
     const handleSync = async (e, msg, sourceId = null, sourceType = 'JOURNAL') => {
@@ -119,6 +136,41 @@ export default function GoogleBusinessAdmin() {
                                 </div>
                             </label>
                         </div>
+                    </div>
+
+                    {/* Google Reviews Sync */}
+                    <div className="bg-[#0a0a0a] border border-[#c5a059]/20 rounded-3xl p-8">
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-2">Google Reviews</h3>
+                        <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-6">Auto-pull latest reviews from GMB</p>
+
+                        <button
+                            onClick={handleSyncReviews}
+                            disabled={reviewSyncStatus === 'syncing'}
+                            className={`w-full py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] transition-all interactive
+                                ${reviewSyncStatus === 'syncing'
+                                    ? 'bg-yellow-500/10 border border-yellow-500/30 text-yellow-500 cursor-wait'
+                                    : reviewSyncStatus === 'success'
+                                        ? 'bg-green-500/10 border border-green-500/30 text-green-500'
+                                        : reviewSyncStatus === 'error'
+                                            ? 'bg-red-500/10 border border-red-500/30 text-red-400'
+                                            : 'bg-white/5 border border-white/10 text-white hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059]'
+                                }`}
+                        >
+                            {reviewSyncStatus === 'syncing' ? '⏳ Syncing...' : '⭐ Sync Google Reviews'}
+                        </button>
+
+                        {reviewSyncMsg && (
+                            <p className={`text-[9px] font-bold uppercase tracking-widest mt-3 text-center ${
+                                reviewSyncStatus === 'success' ? 'text-green-500' :
+                                reviewSyncStatus === 'error' ? 'text-red-400' : 'text-yellow-500'
+                            }`}>
+                                {reviewSyncMsg}
+                            </p>
+                        )}
+
+                        <p className="text-[8px] text-gray-600 text-center uppercase font-bold mt-4">
+                            Requires Maps API Key in Global Settings
+                        </p>
                     </div>
                 </section>
 
