@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -19,6 +19,44 @@ export default function MasterGallery({ images = [] }) {
     ];
 
     const displayImages = images && images.length >= 6 ? images : defaultImages;
+
+    // Use hash routing for modal back button support
+    useEffect(() => {
+        const handleHashChange = () => {
+            if (typeof window !== "undefined" && !window.location.hash.includes("gallery")) {
+                setSelectedImage(null);
+            }
+        };
+
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape") {
+                handleClose();
+            }
+        };
+
+        window.addEventListener("hashchange", handleHashChange);
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("hashchange", handleHashChange);
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+
+    const handleOpen = (img) => {
+        setSelectedImage(img);
+        if (typeof window !== "undefined" && !window.location.hash.includes("gallery")) {
+            window.location.hash = "gallery";
+        }
+    };
+
+    const handleClose = () => {
+        if (typeof window !== "undefined" && window.location.hash.includes("gallery")) {
+            window.history.back();
+        } else {
+            setSelectedImage(null);
+        }
+    };
 
     // Split images into 3 columns for the vertical slider effect
     const col1 = displayImages.filter((_, i) => i % 3 === 0);
@@ -52,8 +90,8 @@ export default function MasterGallery({ images = [] }) {
                             <motion.div
                                 layoutId={`gallery-img-${src}-${i}`}
                                 key={`c1-${i}`}
-                                onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-${i}` })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedImage({ src, id: `gallery-img-${src}-${i}` }); }}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-${i}` })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-${i}` }); }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label="View expanded image"
@@ -73,8 +111,8 @@ export default function MasterGallery({ images = [] }) {
                             <motion.div
                                 layoutId={`gallery-img-${src}-c2-${i}`}
                                 key={`c2-${i}`}
-                                onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-c2-${i}` })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedImage({ src, id: `gallery-img-${src}-c2-${i}` }); }}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c2-${i}` })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c2-${i}` }); }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label="View expanded image"
@@ -94,8 +132,8 @@ export default function MasterGallery({ images = [] }) {
                             <motion.div
                                 layoutId={`gallery-img-${src}-c3-${i}`}
                                 key={`c3-${i}`}
-                                onClick={() => setSelectedImage({ src, id: `gallery-img-${src}-c3-${i}` })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedImage({ src, id: `gallery-img-${src}-c3-${i}` }); }}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c3-${i}` })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c3-${i}` }); }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label="View expanded image"
@@ -117,8 +155,8 @@ export default function MasterGallery({ images = [] }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl cursor-pointer"
-                        onClick={() => setSelectedImage(null)}
-                        onKeyDown={(e) => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') setSelectedImage(null); }}
+                        onClick={handleClose}
+                        onKeyDown={(e) => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') handleClose(); }}
                         role="dialog"
                         aria-modal="true"
                         aria-label="Expanded image view"
