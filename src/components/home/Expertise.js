@@ -9,7 +9,7 @@ export default function Expertise({ expertise }) {
             <div className="container mx-auto px-6">
                 <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
                     <div className="relative group">
-                        <div className="aspect-[4/5] rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 relative bg-[#111]">
+                        <div className="aspect-[4/5] rounded-3xl overflow-hidden transition-all duration-1000 relative bg-[#111]">
                             <Image
                                 src={image || "https://images.unsplash.com/photo-1492691523567-6170c24e5fb9?q=80&w=2070&auto=format&fit=crop"}
                                 alt="Luxury Bengali wedding cinematography by Dreamline Production Kolkata"
