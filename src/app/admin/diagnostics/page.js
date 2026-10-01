@@ -49,7 +49,7 @@ export default function DiagnosticsPage() {
                             Use this tool to manually trigger the daily sync and view the raw Make.com webhook response. This helps diagnose mapping errors or API failures.
                         </p>
                     </div>
-                    <button 
+                    <button type="button" 
                         onClick={triggerSync}
                         disabled={loading}
                         className="bg-[#c5a059] hover:bg-white text-black text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-full transition-colors disabled:opacity-50"

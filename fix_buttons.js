@@ -1,29 +1,26 @@
 const fs = require('fs');
-
-const walkSync = function(dir) {
-  let filelist = [];
-  fs.readdirSync(dir).forEach(file => {
-    const p = dir + '/' + file;
-    if (fs.statSync(p).isDirectory()) filelist = filelist.concat(walkSync(p));
-    else if (p.endsWith('.js')) filelist.push(p);
-  });
-  return filelist;
+const path = require('path');
+const walk = d => {
+    let r = [];
+    fs.readdirSync(d).forEach(f => {
+        f = path.join(d, f);
+        if (fs.statSync(f).isDirectory()) r = r.concat(walk(f));
+        else if (f.endsWith('.js')) r.push(f);
+    });
+    return r;
 };
-
-const files = walkSync('./src/app/admin');
-let changed = [];
-files.forEach(f => {
-  let c = fs.readFileSync(f, 'utf8');
-  let newC = c.replace(/\{saving \? "Deploying\.\.\." : "Sync.*?"\}/g, '{saving ? "Saving..." : "Save Changes"}');
-  
-  // Let's also check for specific hardcoded ones just in case
-  newC = newC.replace(/"Sync Commercial Page"/g, '"Save Changes"');
-  newC = newC.replace(/"Sync Home Page"/g, '"Save Changes"');
-  newC = newC.replace(/"Sync About Page"/g, '"Save Changes"');
-  
-  if (c !== newC) {
-    fs.writeFileSync(f, newC);
-    changed.push(f);
-  }
+walk('src/app/admin').forEach(file => {
+    let content = fs.readFileSync(file, 'utf8');
+    let changed = false;
+    content = content.replace(/<button([^>]*?)>/g, (match, p1) => {
+        if (!p1.includes('type=')) {
+            changed = true;
+            return `<button type="button"${p1}>`;
+        }
+        return match;
+    });
+    if (changed) {
+        fs.writeFileSync(file, content);
+        console.log('Fixed', file);
+    }
 });
-console.log('Changed files:', changed);

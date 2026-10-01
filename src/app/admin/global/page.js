@@ -320,7 +320,7 @@ export default function GlobalSettings() {
             {/* Sticky Save Bar */}
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-12 md:right-12 md:left-auto md:translate-x-0 z-[100] flex items-center gap-4 md:gap-6 bg-black/80 backdrop-blur-xl border border-[#c5a059]/30 p-3 md:p-4 rounded-full shadow-2xl w-[90%] md:w-auto justify-center md:justify-start animate-in fade-in slide-in-from-bottom-4 duration-300">
                 {message && <p className={`text-[10px] font-black uppercase tracking-widest px-4 ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
-                <button
+                <button type="button"
                     onClick={() => handleSave()}
                     disabled={saving}
                     className="bg-[#c5a059] text-black hover:bg-[#d4b06a] px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"

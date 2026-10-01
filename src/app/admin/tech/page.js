@@ -99,7 +99,7 @@ export default function AdminTech() {
                                 <div className="aspect-[16/10] relative bg-black">
                                     <img src={project.img} alt={project.title} className="w-full h-full object-cover" />
                                     <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <button
+                                        <button type="button"
                                             onClick={() => handleDelete(project._id)}
                                             className="bg-red-500 text-white px-4 py-2 rounded uppercase text-[10px] font-black tracking-widest hover:bg-red-600 transition-colors"
                                         >

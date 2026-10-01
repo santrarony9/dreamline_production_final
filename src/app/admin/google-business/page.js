@@ -110,7 +110,7 @@ export default function GoogleBusinessAdmin() {
                                     <p className="text-[9px] text-gray-500 font-bold uppercase">Dreamline Production</p>
                                 </div>
                             </div>
-                            <button 
+                            <button type="button" 
                                 onClick={handleAuthorize}
                                 className="w-full bg-[#c5a059] text-black py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-white transition-all interactive shadow-lg shadow-[#c5a059]/10"
                             >
@@ -143,7 +143,7 @@ export default function GoogleBusinessAdmin() {
                         <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-2">Google Reviews</h3>
                         <p className="text-[9px] text-gray-500 uppercase font-bold tracking-widest mb-6">Auto-pull latest reviews from GMB</p>
 
-                        <button
+                        <button type="button"
                             onClick={handleSyncReviews}
                             disabled={reviewSyncStatus === 'syncing'}
                             className={`w-full py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] transition-all interactive
@@ -201,7 +201,7 @@ export default function GoogleBusinessAdmin() {
                                     </div>
                                 </div>
                                 <div className="flex gap-2">
-                                    <button 
+                                    <button type="button" 
                                         onClick={(e) => handleSync(e, "Post synchronized to Google Business successfully!", post._id, "JOURNAL")}
                                         className="bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest text-white hover:bg-[#c5a059] hover:text-black transition-all interactive"
                                     >
@@ -213,7 +213,7 @@ export default function GoogleBusinessAdmin() {
                     </div>
                     
                     <div className="mt-8 pt-6 border-t border-white/5 text-center">
-                         <button 
+                         <button type="button" 
                             onClick={(e) => handleSync(e, "Bulk Sync completed successfully!")}
                             className="bg-white/5 hover:bg-white/10 border border-white/10 px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white transition-all interactive"
                         >

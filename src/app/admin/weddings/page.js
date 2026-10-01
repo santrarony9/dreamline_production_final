@@ -82,7 +82,7 @@ export default function WeddingAdmin() {
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Heritage</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Wedding <span className="text-gray-500">Films.</span></h1>
                 </div>
-                <button
+                <button type="button"
                     onClick={startNewWedding}
                     className="bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10"
                 >
@@ -98,7 +98,7 @@ export default function WeddingAdmin() {
                             <div className="aspect-video relative overflow-hidden">
                                 <img src={w.coverImage || w.img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" alt={w.title} />
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button onClick={() => setEditingWedding(w)} className="bg-white text-black p-4 rounded-full font-black uppercase text-[10px] tracking-widest hover:scale-110 transition-transform">Edit Narrative</button>
+                                    <button type="button" onClick={() => setEditingWedding(w)} className="bg-white text-black p-4 rounded-full font-black uppercase text-[10px] tracking-widest hover:scale-110 transition-transform">Edit Narrative</button>
                                 </div>
                             </div>
                             <div className="p-8 flex-1 flex flex-col justify-between">
@@ -106,7 +106,7 @@ export default function WeddingAdmin() {
                                     <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-tight">{w.title}</h3>
                                     <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{w.location} • {new Date(w.date).getFullYear()}</p>
                                 </div>
-                                <button onClick={() => deleteWedding(w._id)} className="text-[10px] font-black text-red-500/30 hover:text-red-500 uppercase tracking-widest text-left mt-8 transition-colors">Decommission Film</button>
+                                <button type="button" onClick={() => deleteWedding(w._id)} className="text-[10px] font-black text-red-500/30 hover:text-red-500 uppercase tracking-widest text-left mt-8 transition-colors">Decommission Film</button>
                             </div>
                         </div>
                     ))}
@@ -119,7 +119,7 @@ export default function WeddingAdmin() {
                     <div className="max-w-4xl mx-auto">
                         <div className="flex justify-between items-center mb-12">
                             <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Film <span className="text-[#c5a059]">Narrative.</span></h2>
-                            <button onClick={() => setEditingWedding(null)} className="text-gray-500 hover:text-white transition-colors uppercase text-[10px] font-black tracking-widest">Abort Edit</button>
+                            <button type="button" onClick={() => setEditingWedding(null)} className="text-gray-500 hover:text-white transition-colors uppercase text-[10px] font-black tracking-widest">Abort Edit</button>
                         </div>
 
                         <form onSubmit={handleSave} className="space-y-8">

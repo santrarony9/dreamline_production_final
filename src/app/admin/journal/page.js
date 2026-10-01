@@ -355,14 +355,14 @@ export default function JournalAdmin() {
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">The <span className="text-gray-500">Blog.</span></h1>
                 </div>
                 <div className="flex gap-4">
-                    <button
+                    <button type="button"
                         onClick={generate30DayStrategy}
                         disabled={saving}
                         className="border border-[#c5a059]/30 text-[#c5a059] px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-[#c5a059] hover:text-black transition-all"
                     >
                         {saving ? (generationProgress > 0 ? `Creating ${generationProgress}/30...` : "Preparing...") : "✨ Generate 30-Day Strategy"}
                     </button>
-                    <button
+                    <button type="button"
                         onClick={startNewPost}
                         className="bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10"
                     >
@@ -399,8 +399,8 @@ export default function JournalAdmin() {
                                 <p className="text-xs text-gray-400 line-clamp-3 mb-8">{post.excerpt || "No summary available."}</p>
 
                                 <div className="mt-auto flex justify-between items-center pt-6 border-t border-white/5">
-                                    <button onClick={() => setEditingPost(post)} className="text-[10px] font-black text-[#c5a059] uppercase tracking-widest hover:text-white transition-colors">Edit Content</button>
-                                    <button onClick={() => deletePost(post._id)} className="text-[10px] font-black text-red-500/30 hover:text-red-500 uppercase tracking-widest transition-colors">Delete</button>
+                                    <button type="button" onClick={() => setEditingPost(post)} className="text-[10px] font-black text-[#c5a059] uppercase tracking-widest hover:text-white transition-colors">Edit Content</button>
+                                    <button type="button" onClick={() => deletePost(post._id)} className="text-[10px] font-black text-red-500/30 hover:text-red-500 uppercase tracking-widest transition-colors">Delete</button>
                                 </div>
                             </div>
                         </div>
@@ -414,7 +414,7 @@ export default function JournalAdmin() {
                     <div className="max-w-5xl mx-auto space-y-12">
                         <div className="flex justify-between items-center border-b border-white/5 pb-8">
                             <h2 className="text-2xl font-black text-white uppercase tracking-tighter">Drafting <span className="text-[#c5a059]">Insight.</span></h2>
-                            <button onClick={() => setEditingPost(null)} className="text-gray-500 hover:text-white transition-colors uppercase text-[10px] font-black tracking-widest">Discard Draft</button>
+                            <button type="button" onClick={() => setEditingPost(null)} className="text-gray-500 hover:text-white transition-colors uppercase text-[10px] font-black tracking-widest">Discard Draft</button>
                         </div>
 
                         <form onSubmit={handleSave} className="space-y-12 pb-32">

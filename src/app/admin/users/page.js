@@ -241,7 +241,7 @@ export default function UserAdmin() {
                                 </div>
                             </div>
 
-                            <button
+                            <button type="button"
                                 onClick={handleClearCreated}
                                 className="w-full bg-[#c5a059] text-black p-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all cursor-pointer"
                             >
@@ -289,7 +289,7 @@ export default function UserAdmin() {
                                     </div>
                                     <div className="flex items-center gap-2 self-end sm:self-center">
                                         {u.email && (
-                                            <button
+                                            <button type="button"
                                                 onClick={() => handleResendSetup(u)}
                                                 disabled={resendingId === u._id}
                                                 className="text-[#c5a059] hover:bg-[#c5a059]/10 text-[9px] font-black uppercase tracking-widest px-3 py-2 rounded-xl border border-[#c5a059]/30 transition-all disabled:opacity-50"
@@ -298,7 +298,7 @@ export default function UserAdmin() {
                                                 {resendingId === u._id ? "Sending..." : "📧 Resend Setup Email"}
                                             </button>
                                         )}
-                                        <button
+                                        <button type="button"
                                             onClick={() => handleDelete(u._id)}
                                             className="text-red-500/50 hover:text-red-500 text-xs font-black uppercase tracking-widest px-3 py-2 rounded-xl border border-red-500/10 hover:border-red-500/30 hover:bg-red-500/10 transition-all"
                                             title="Delete User"

@@ -42,7 +42,7 @@ export default function BookingsAdmin() {
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Communications</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Inquiry <span className="text-gray-500">Vault.</span></h1>
                 </div>
-                <button
+                <button type="button"
                     onClick={fetchBookings}
                     className="text-[10px] font-black text-white uppercase tracking-widest border border-white/10 px-6 py-2 rounded-full hover:bg-white/5 transition-all"
                 >
@@ -83,7 +83,7 @@ export default function BookingsAdmin() {
                                 >
                                     WhatsApp Reply →
                                 </a>
-                                <button
+                                <button type="button"
                                     onClick={() => deleteBooking(b._id)}
                                     className="text-[10px] font-black text-red-500/50 hover:text-red-500 uppercase tracking-widest transition-colors"
                                 >

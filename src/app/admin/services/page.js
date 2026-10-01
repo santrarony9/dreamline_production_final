@@ -47,11 +47,17 @@ export default function ServicesAdmin() {
             // Populate subcategories for Build Pages sidebar
             const allSubcats = [];
             fetchedContent.services.forEach(s => {
-                (s.subcategories || []).forEach(sub => {
-                    if (!allSubcats.find(x => x.name === sub)) {
-                        allSubcats.push({ name: sub, slug: slugify(sub) });
+                if (!s.subcategories || s.subcategories.length === 0) {
+                    if (s.title && !allSubcats.find(x => x.name === s.title)) {
+                        allSubcats.push({ name: s.title, slug: slugify(s.title) });
                     }
-                });
+                } else {
+                    s.subcategories.forEach(sub => {
+                        if (!allSubcats.find(x => x.name === sub)) {
+                            allSubcats.push({ name: sub, slug: slugify(sub) });
+                        }
+                    });
+                }
             });
             setServices(allSubcats);
 
@@ -76,7 +82,11 @@ export default function ServicesAdmin() {
         setSelectedSlug(slug);
         const existing = servicePages.find(p => p.slug === slug);
         if (existing) {
-            setFormData(existing);
+            setFormData({
+                ...existing,
+                gallery: existing.gallery || [],
+                videos: existing.videos || []
+            });
         } else {
             const serviceName = services.find(s => s.slug === slug)?.name || "";
             setFormData({
@@ -140,7 +150,7 @@ export default function ServicesAdmin() {
                     </div>
                     
                     <div className="flex flex-wrap gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/5 w-fit">
-                        <button
+                        <button type="button"
                             onClick={() => setActiveTab("MANAGE_CATEGORIES")}
                             className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === "MANAGE_CATEGORIES"
                                 ? "bg-[#c5a059] text-black shadow-lg"
@@ -149,7 +159,7 @@ export default function ServicesAdmin() {
                         >
                             <span>🗂️</span> Manage Categories
                         </button>
-                        <button
+                        <button type="button"
                             onClick={() => setActiveTab("BUILD_PAGES")}
                             className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${activeTab === "BUILD_PAGES"
                                 ? "bg-[#c5a059] text-black shadow-lg"
@@ -351,8 +361,13 @@ export default function ServicesAdmin() {
                                 {services.map((s, idx) => (
                                     <button
                                         key={idx}
-                                        onClick={() => handleSelectPage(s.slug)}
-                                        className={`w-full text-left p-4 rounded-2xl border transition-all ${
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            handleSelectPage(s.slug);
+                                        }}
+                                        className={`w-full text-left p-4 rounded-2xl border transition-all relative z-10 ${
                                             selectedSlug === s.slug 
                                             ? "bg-[#c5a059] border-[#c5a059] text-black" 
                                             : "bg-white/5 border-white/5 hover:border-white/20 text-white/60 hover:text-white"
@@ -432,7 +447,7 @@ export default function ServicesAdmin() {
                                         <div className="space-y-4">
                                             {formData.videos.map((vid, idx) => (
                                                 <div key={idx} className="bg-black border border-white/5 p-6 rounded-3xl grid grid-cols-1 md:grid-cols-2 gap-4 relative">
-                                                    <button onClick={() => setFormData({...formData, videos: formData.videos.filter((_, i) => i !== idx)})} className="absolute top-4 right-4 text-red-500 hover:text-white transition-colors">
+                                                    <button type="button" onClick={() => setFormData({...formData, videos: formData.videos.filter((_, i) => i !== idx)})} className="absolute top-4 right-4 text-red-500 hover:text-white transition-colors">
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
                                                     </button>
                                                     <div className="space-y-2">
@@ -463,7 +478,7 @@ export default function ServicesAdmin() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            <button 
+                                            <button type="button" 
                                                 onClick={() => setFormData({...formData, videos: [...formData.videos, {title: "", url: ""}]})}
                                                 className="w-full border border-dashed border-white/10 py-4 rounded-3xl text-[9px] font-black uppercase tracking-widest text-gray-600 hover:text-[#c5a059] transition-all"
                                             >
@@ -478,7 +493,7 @@ export default function ServicesAdmin() {
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                                             {formData.gallery.map((img, idx) => (
                                                 <div key={idx} className="bg-black border border-white/5 p-4 rounded-2xl space-y-3 relative group">
-                                                    <button onClick={() => setFormData({...formData, gallery: formData.gallery.filter((_, i) => i !== idx)})} className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                                    <button type="button" onClick={() => setFormData({...formData, gallery: formData.gallery.filter((_, i) => i !== idx)})} className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10">
                                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
                                                     </button>
                                                     <div className="aspect-square bg-white/5 rounded-xl overflow-hidden relative border border-white/5">
@@ -493,7 +508,7 @@ export default function ServicesAdmin() {
                                                     </div>
                                                 </div>
                                             ))}
-                                            <button 
+                                            <button type="button" 
                                                 onClick={() => setFormData({...formData, gallery: [...formData.gallery, {url: "", caption: ""}]})}
                                                 className="aspect-square flex flex-col items-center justify-center border border-dashed border-white/10 rounded-2xl text-[9px] font-black uppercase tracking-widest text-gray-600 hover:text-[#c5a059] transition-all"
                                             >
@@ -505,7 +520,7 @@ export default function ServicesAdmin() {
                                     {/* SAVE & DELETE ACTIONS */}
                                     <div className="fixed bottom-10 right-10 z-[100] flex gap-4">
                                         {servicePages.find(p => p.slug === selectedSlug) && (
-                                            <button 
+                                            <button type="button" 
                                                 onClick={async () => {
                                                     if (confirm("Are you sure you want to delete this page configuration? This will NOT remove the category from the homepage, only the media/content on this sub-page.")) {
                                                         try {
@@ -522,7 +537,7 @@ export default function ServicesAdmin() {
                                                 Delete Page Config
                                             </button>
                                         )}
-                                        <button 
+                                        <button type="button" 
                                             onClick={handleSavePage}
                                             className="bg-[#c5a059] text-black font-black uppercase tracking-[0.2em] px-12 py-5 rounded-full shadow-[0_20px_50px_rgba(197,160,89,0.3)] hover:scale-105 active:scale-95 transition-all text-xs"
                                         >

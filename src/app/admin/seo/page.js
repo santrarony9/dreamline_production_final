@@ -83,7 +83,7 @@ export default function SEOAdmin() {
                     <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Search Engine</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">SEO <span className="text-gray-500">Hub.</span></h1>
                 </div>
-                <button
+                <button type="button"
                     onClick={handleSave}
                     disabled={saving}
                     className="bg-[#c5a059] text-black px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10"
@@ -95,7 +95,7 @@ export default function SEOAdmin() {
             {/* Tabs */}
             <div className="flex flex-wrap gap-2 border-b border-white/5 pb-4">
                 {tabs.map((tab) => (
-                    <button
+                    <button type="button"
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`px-6 py-3 rounded-xl font-black uppercase tracking-widest text-[10px] transition-all ${

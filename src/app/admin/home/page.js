@@ -96,7 +96,7 @@ function HomeEditorContent() {
                 </div>
                 <div className="flex flex-wrap gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/5">
                     {tabs.map((tab) => (
-                        <button
+                        <button type="button"
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab.id

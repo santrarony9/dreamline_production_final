@@ -129,13 +129,13 @@ export default function GalleryAdmin() {
                 <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
                     {/* View Mode Toggle Switch */}
                     <div className="flex gap-1 bg-white/5 p-1 rounded-full border border-white/10">
-                        <button 
+                        <button type="button" 
                             onClick={() => setIsCompact(false)}
                             className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${!isCompact ? "bg-[#c5a059] text-black shadow-md" : "text-gray-400 hover:text-white"}`}
                         >
                             Detailed View
                         </button>
-                        <button 
+                        <button type="button" 
                             onClick={() => setIsCompact(true)}
                             className={`px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest transition-all ${isCompact ? "bg-[#c5a059] text-black shadow-md" : "text-gray-400 hover:text-white"}`}
                         >
@@ -143,7 +143,7 @@ export default function GalleryAdmin() {
                         </button>
                     </div>
 
-                    <button
+                    <button type="button"
                         onClick={addProject}
                         className="bg-[#c5a059] text-black px-8 py-3.5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white transition-all shadow-lg shadow-[#c5a059]/10 active:scale-95"
                     >
@@ -314,7 +314,7 @@ export default function GalleryAdmin() {
                                     </div>
                                 </div>
 
-                                <button
+                                <button type="button"
                                     onClick={() => removeProject(i)}
                                     className="w-full py-3 bg-red-500/5 text-red-500/30 hover:bg-red-500 hover:text-white rounded-xl font-black uppercase text-[10px] tracking-widest transition-all mt-4"
                                 >
@@ -328,7 +328,7 @@ export default function GalleryAdmin() {
 
             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-12 md:right-12 md:left-auto md:translate-x-0 z-[100] flex items-center gap-4 md:gap-6 bg-black/80 backdrop-blur-xl border border-[#c5a059]/30 p-3 md:p-4 rounded-full shadow-2xl w-[90%] md:w-auto justify-center md:justify-start">
                 {message && <p className={`text-[10px] font-black uppercase tracking-widest px-4 ${message.includes("Error") ? "text-red-500" : "text-[#c5a059]"}`}>{message}</p>}
-                <button
+                <button type="button"
                     onClick={handleSave}
                     disabled={saving}
                     className="bg-[#c5a059] text-black hover:bg-[#d4b06a] px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"

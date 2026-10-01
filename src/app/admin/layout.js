@@ -62,7 +62,7 @@ export default function AdminLayout({ children }) {
                     </div>
                     <h1 className="text-xs font-black uppercase tracking-tighter">Dreamline</h1>
                 </div>
-                <button
+                <button type="button"
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                     className="p-2 bg-white/5 rounded-lg border border-white/10"
                 >
@@ -151,7 +151,7 @@ export default function AdminLayout({ children }) {
                 </nav>
 
                 <div className="p-6 border-t border-white/5 hidden lg:block bg-black/20">
-                    <button
+                    <button type="button"
                         onClick={() => signOut({ callbackUrl: "/admin/login" })}
                         className="w-full py-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-500 text-xs font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
                     >
