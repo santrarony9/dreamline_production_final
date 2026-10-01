@@ -468,7 +468,7 @@ export default async function RootLayout({ children }) {
     : { "@context": "https://schema.org", "@type": "WebSite", "name": "Dreamline Production", "url": "https://dreamlineproduction.com" };
 
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="en" className="overflow-x-hidden w-full max-w-[100vw]">
       <head>
         {/* AI Discoverability – Link tags for LLM and AI crawler discovery */}
         <link rel="ai-policy" href="https://dreamlineproduction.com/ai.txt" />
@@ -483,7 +483,7 @@ export default async function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden`}>
+      <body className={`${instrumentSans.variable} ${unbounded.variable} antialiased overflow-x-hidden w-full max-w-[100vw]`}>
         <AuthProvider>
           <ThemeProvider>
             <SmoothScroll>
