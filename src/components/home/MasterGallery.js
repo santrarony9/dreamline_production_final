@@ -125,12 +125,18 @@ export default function MasterGallery({ images = [] }) {
                         tabIndex={-1}
                         data-cursor="CLOSE"
                     >
-                        <motion.img
+                        <motion.div
                             layoutId={selectedImage.id}
-                            src={selectedImage.src}
-                            alt="Wedding photography detail view by Dreamline Production"
-                            className="w-auto h-auto max-w-[90vw] max-h-[90vh] object-contain rounded-xl shadow-2xl"
-                        />
+                            className="relative w-[90vw] h-[90vh] max-w-7xl"
+                        >
+                            <Image 
+                                src={selectedImage.src} 
+                                alt="Wedding photography detail view by Dreamline Production"
+                                fill
+                                className="object-contain rounded-xl shadow-2xl"
+                                sizes="90vw"
+                            />
+                        </motion.div>
                         <div className="absolute top-8 right-8 text-white/50 text-xs font-black uppercase tracking-widest hover:text-white transition-colors">
                             Close [X]
                         </div>
