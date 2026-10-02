@@ -363,14 +363,6 @@ export default async function RootLayout({ children }) {
           }
         ]
       },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "bestRating": "5",
-        "worstRating": "1",
-        "ratingCount": "93",
-        "reviewCount": "93"
-      },
       "sameAs": sameAsLinks,
       "priceRange": "₹₹₹",
       "slogan": "Kolkata's No.1 Production House — Best Wedding Photography & Corporate Films in West Bengal",

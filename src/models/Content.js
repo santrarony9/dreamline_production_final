@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const ContentSchema = new mongoose.Schema({
     global: {
         contact: {
-            address: { type: String, default: "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082" },
+            address: { type: String, default: "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082" },
             phone: { type: String, default: "+91 82400 54002" },
             email: { type: String, default: "support@dreamlineproduction.com" }
         },
