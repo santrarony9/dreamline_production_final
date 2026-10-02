@@ -91,3 +91,80 @@ export async function GET() {
         return safeErrorResponse(err, "Media");
     }
 }
+
+
+const scrubObject = (obj, targetUrl) => {
+    let modified = false;
+    if (Array.isArray(obj)) {
+        for (let i = obj.length - 1; i >= 0; i--) {
+            if (obj[i] === targetUrl) {
+                obj.splice(i, 1);
+                modified = true;
+            } else if (typeof obj[i] === 'object' && obj[i] !== null) {
+                if (scrubObject(obj[i], targetUrl)) modified = true;
+            }
+        }
+    } else if (typeof obj === 'object' && obj !== null) {
+        for (let key in obj) {
+            if (obj[key] === targetUrl) {
+                obj[key] = '';
+                modified = true;
+            } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                if (scrubObject(obj[key], targetUrl)) modified = true;
+            }
+        }
+    }
+    return modified;
+};
+
+export async function DELETE(request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+        const { url } = await request.json();
+        if (!url) return NextResponse.json({ error: "No URL provided" }, { status: 400 });
+
+        await dbConnect();
+
+        // 1. Scrub Content
+        let content = await Content.findOne();
+        if (content) {
+            const contentObj = content.toObject();
+            if (scrubObject(contentObj, url)) {
+                await Content.updateOne({ _id: content._id }, contentObj);
+            }
+        }
+
+        // 2. Scrub Weddings
+        const weddings = await Wedding.find();
+        for (let w of weddings) {
+            const wObj = w.toObject();
+            if (scrubObject(wObj, url)) {
+                await Wedding.updateOne({ _id: w._id }, wObj);
+            }
+        }
+
+        // 3. Scrub Journals
+        const journals = await Journal.find();
+        for (let j of journals) {
+            const jObj = j.toObject();
+            if (scrubObject(jObj, url)) {
+                await Journal.updateOne({ _id: j._id }, jObj);
+            }
+        }
+
+        // 4. Scrub TechProjects
+        const techProjects = await TechProject.find();
+        for (let t of techProjects) {
+            const tObj = t.toObject();
+            if (scrubObject(tObj, url)) {
+                await TechProject.updateOne({ _id: t._id }, tObj);
+            }
+        }
+
+        return NextResponse.json({ success: true, message: "Asset removed from database references." });
+    } catch (err) {
+        return safeErrorResponse(err, "Delete Media");
+    }
+}

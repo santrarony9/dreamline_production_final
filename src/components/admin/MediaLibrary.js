@@ -23,6 +23,18 @@ export default function MediaLibrary({ onSelect, onClose }) {
         }
     };
 
+        const handleDelete = async (e, url) => {
+        e.stopPropagation();
+        if (!window.confirm(Are you sure you want to scrub this image from the database? It will be removed from all pages.)) return;
+        try {
+            await axios.delete(/api/admin/media, { data: { url } });
+            setImages(prev => prev.filter(img => img !== url));
+        } catch (err) {
+            console.error(err);
+            alert(Failed to scrub asset.);
+        }
+    };
+
     const filteredImages = images.filter(img => 
         img.toLowerCase().includes(search.toLowerCase())
     );
@@ -65,6 +77,17 @@ export default function MediaLibrary({ onSelect, onClose }) {
                                     onClick={() => onSelect(img)}
                                     className="aspect-square bg-white/5 border border-white/5 rounded-2xl overflow-hidden group relative hover:border-[#c5a059]/50 transition-all transform active:scale-95"
                                 >
+                                                                        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                        <button 
+                                            onClick={(e) => handleDelete(e, img)}
+                                            className="bg-red-500/90 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
+                                            title="Scrub from database"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    </div>
                                     <img src={img} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="Media" />
                                     <div className="absolute inset-0 bg-[#c5a059]/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <span className="text-[9px] font-black uppercase text-black bg-white px-3 py-1 rounded-full">Select Asset</span>
