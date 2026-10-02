@@ -25,13 +25,13 @@ export default function MediaLibrary({ onSelect, onClose }) {
 
         const handleDelete = async (e, url) => {
         e.stopPropagation();
-        if (!window.confirm(Are you sure you want to scrub this image from the database? It will be removed from all pages.)) return;
+        if (!window.confirm('Are you sure you want to scrub this image from the database? It will be removed from all pages.')) return;
         try {
-            await axios.delete(/api/admin/media, { data: { url } });
+            await axios.delete('/api/admin/media', { data: { url } });
             setImages(prev => prev.filter(img => img !== url));
         } catch (err) {
             console.error(err);
-            alert(Failed to scrub asset.);
+            alert('Failed to scrub asset.');
         }
     };
 
