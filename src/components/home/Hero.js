@@ -72,7 +72,7 @@ export default function Hero({ content }) {
                     </p>
                 </div>
 
-                <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-6 uppercase break-words md:break-normal">
+                <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-black text-white leading-[1.1] md:leading-tight tracking-tighter mb-6 uppercase break-words md:break-normal pb-2 md:pb-4">
                     <span className="block reveal-text">
                         <span className="reveal-inner-anim inline-block">{titleLine1 || "VISIONARY"}</span>
                     </span>

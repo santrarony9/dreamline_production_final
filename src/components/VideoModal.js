@@ -105,7 +105,7 @@ export default function VideoModal() {
                 )}
 
                 <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
-                    <h3 className="text-white font-heading text-xl font-black uppercase tracking-widest leading-none">
+                    <h3 className="text-white font-heading text-xl font-black uppercase tracking-widest leading-none pb-2 md:pb-4">
                         {title}
                     </h3>
                 </div>

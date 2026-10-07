@@ -11,7 +11,7 @@ export default function JournalSection({ journals = [] }) {
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
                             LATEST INSIGHTS
                         </p>
-                        <h2 className="font-heading text-4xl md:text-6xl font-black text-white italic leading-tight">
+                        <h2 className="font-heading text-4xl md:text-6xl font-black text-white italic leading-tight pb-2 md:pb-4">
                             The <span className="text-[#c5a059]">Journal.</span>
                         </h2>
                     </div>
@@ -40,7 +40,7 @@ export default function JournalSection({ journals = [] }) {
                                 <span className="text-[#c5a059]">•</span>
                                 <span>{post.category || "Journal"}</span>
                             </div>
-                            <h3 className="font-heading text-2xl font-black text-white italic uppercase leading-tight mb-3 group-hover:text-[#c5a059] transition-colors">
+                            <h3 className="font-heading text-2xl font-black text-white italic uppercase leading-tight mb-3 group-hover:text-[#c5a059] transition-colors pb-2 md:pb-4">
                                 <Link href={`/blogs/${post.id || post.slug || post._id}`}>
                                     {post.title}
                                 </Link>

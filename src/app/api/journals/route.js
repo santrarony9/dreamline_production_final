@@ -56,6 +56,10 @@ export async function POST(request) {
         }
 
         let post;
+        if (!sanitizedData.id && sanitizedData.title) {
+            sanitizedData.id = sanitizedData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+
         if (sanitizedData.id) {
             post = await Journal.findOneAndUpdate({ id: sanitizedData.id }, sanitizedData, { new: true, upsert: true });
         } else {

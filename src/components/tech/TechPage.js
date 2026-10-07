@@ -59,7 +59,7 @@ export default function TechPage() {
                         <p className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-6">
                             DIGITAL PRODUCT STUDIO
                         </p>
-                        <h1 className="font-heading text-5xl sm:text-7xl md:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-none mb-6">
+                        <h1 className="font-heading text-5xl sm:text-7xl md:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-none mb-6 pb-2 md:pb-4">
                             TECH<span className="text-[#c5a059]">.</span>
                         </h1>
                         <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-400 font-medium">

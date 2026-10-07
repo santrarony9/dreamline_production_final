@@ -136,7 +136,7 @@ export default async function JournalDetailPage({ params }) {
                         <span>{new Date(post.date).toLocaleDateString()}</span>
                         <span className="text-[#c5a059]">{post.category || "Insight"}</span>
                     </div>
-                    <h1 className="font-heading text-4xl md:text-6xl font-black mb-12 leading-tight text-white uppercase">
+                    <h1 className="font-heading text-4xl md:text-6xl font-black mb-12 leading-tight text-white uppercase pb-2 md:pb-4">
                         {post.title}
                     </h1>
                 </div>

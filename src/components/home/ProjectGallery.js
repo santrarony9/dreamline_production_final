@@ -112,7 +112,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                     <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-[0.3em] mb-4">
                                         {project.type}
                                     </p>
-                                    <h3 className="text-white font-heading text-2xl font-black uppercase leading-tight mb-6">
+                                    <h3 className="text-white font-heading text-2xl font-black uppercase leading-tight mb-6 pb-2 md:pb-4">
                                         {project.title}
                                     </h3>
 
