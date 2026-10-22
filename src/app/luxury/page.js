@@ -63,7 +63,7 @@ export default async function LuxuryPage() {
 
     const serializedWeddings = weddings.map(w => ({
         ...JSON.parse(JSON.stringify(w)),
-        id: w._id.toString(),
+        id: w.id || w._id.toString(),
         type: "wedding"
     }));
 

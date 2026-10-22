@@ -5,6 +5,33 @@ import Link from "next/link";
 import StructuredData from "@/components/seo/StructuredData";
 
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const STATIC_SERVICES = [
+    {
+        _id: 'static-rice-ceremony',
+        slug: 'rice-ceremony-photography-kolkata',
+        title: 'Rice Ceremony / Annaprashan Photography',
+        description: 'Documenting baby rice ceremonies across Kolkata with candid moments, family blessings, and traditional rituals.'
+    },
+    {
+        _id: 'static-video-agency',
+        slug: 'video-production-agency-kolkata',
+        title: 'Video Production Agency Kolkata',
+        description: 'End-to-end commercial video production, brand films, music videos, and cinematic visual campaigns.'
+    },
+    {
+        _id: 'static-drone-photo',
+        slug: 'drone-photography-kolkata',
+        title: 'Drone Photography & Aerial Videography',
+        description: 'DGCA-certified aerial shoots for grand weddings, properties, corporate events, and commercial projects.'
+    },
+    {
+        _id: 'static-pre-wedding',
+        slug: 'pre-wedding-shoot-kolkata',
+        title: 'Cinematic Pre-Wedding Shoots',
+        description: 'Creative couple photoshoots at iconic Kolkata backdrops like Princep Ghat, Victoria Memorial, and Eco Park.'
+    }
+];
+
 
 export const metadata = {
     title: "Our Services — Dreamline Production | Wedding Photography, Corporate Films & More",
@@ -57,7 +84,7 @@ export default async function ServicesPage() {
     const rawContent = await Content.findOne().lean();
     const services = rawContent?.home?.services || [];
 
-    const serializedServicePages = JSON.parse(JSON.stringify(servicePages));
+    const serializedServicePages = [...STATIC_SERVICES, ...JSON.parse(JSON.stringify(servicePages))];
 
     return (
         <main className="bg-black pt-24 md:pt-32">

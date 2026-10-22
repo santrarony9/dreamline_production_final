@@ -5,13 +5,17 @@ import { useRouter } from 'next/navigation';
 export default function ServicesCategories({ services }) {
     const router = useRouter();
 
-    const handleRowClick = (srv) => {
+    const getServiceLink = (srv) => {
         const cat = srv.category || '';
         const title = (srv.title || '').toLowerCase();
-        
-        if (cat === 'wedding' || title.includes('luxury') || title.includes('wedding')) return router.push('/luxury');
-        if (cat === 'commercial' || title.includes('commercial')) return router.push('/commercial');
-        if (cat === 'tech' || title === 'tech') return router.push('/tech');
+        if (cat === 'wedding' || title.includes('luxury') || title.includes('wedding')) return '/luxury';
+        if (cat === 'commercial' || title.includes('commercial')) return '/commercial';
+        if (cat === 'tech' || title === 'tech') return '/tech';
+        return '/services';
+    };
+
+    const handleRowClick = (srv) => {
+        router.push(getServiceLink(srv));
     };
 
     return (
@@ -41,10 +45,10 @@ export default function ServicesCategories({ services }) {
                             className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer overflow-hidden"
                         >
                             <div className="flex flex-col gap-4">
-                                <div className="flex items-center gap-4 md:gap-10">
+                                <Link href={getServiceLink(srv)} className="flex items-center gap-4 md:gap-10 group/link">
                                     <span className="text-gray-600 font-heading text-xl">{srv.number}</span>
-                                    <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase">{srv.title}</h3>
-                                </div>
+                                    <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase group-hover/link:text-[#c5a059]">{srv.title}</h3>
+                                </Link>
                                 
                                 {/* SUBCATEGORIES LIST */}
                                 {srv.subcategories && srv.subcategories.length > 0 && (

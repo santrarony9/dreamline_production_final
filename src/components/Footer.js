@@ -22,7 +22,7 @@ export default function Footer({ siteContent }) {
                             </span>
                         </Link>
                         <p className="text-gray-500 text-xs max-w-sm leading-relaxed">
-                            Kolkata's premier cinematic house & Pan-India luxury storyteller. Premium weddings and commercial films since 2010.
+                            Kolkata&apos;s premier cinematic house &amp; Pan-India luxury storyteller. Premium weddings, commercial films, and aerial productions since 2010.
                         </p>
                         <div className="pt-2">
                             <span className="text-[9px] font-black uppercase tracking-widest text-white/40 border border-white/10 px-2 py-1 rounded">GST: 19EILPS2898F1ZE</span>
@@ -30,12 +30,15 @@ export default function Footer({ siteContent }) {
                     </div>
 
                     {/* Navigation Section */}
-                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-6 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
                         <Link href="/" className="hover:text-white transition-colors interactive">Home</Link>
                         <Link href="/about" className="hover:text-white transition-colors interactive">History</Link>
                         <Link href="/luxury" className="hover:text-white transition-colors interactive">Luxury Weddings</Link>
                         <Link href="/commercial" className="hover:text-white transition-colors interactive">Commercial</Link>
+                        <Link href="/services" className="hover:text-white transition-colors interactive">Services</Link>
+                        <Link href="/blogs" className="hover:text-white transition-colors interactive">Journal</Link>
                         <Link href="/tech" className="hover:text-white transition-colors interactive">Tech</Link>
+                        <Link href="/faq" className="hover:text-white transition-colors interactive">FAQ</Link>
                         <Link href="/contact" className="hover:text-white transition-colors interactive text-[#c5a059]">Inquire</Link>
                     </div>
 
@@ -62,14 +65,32 @@ export default function Footer({ siteContent }) {
                     </div>
                 </div>
 
-
+                {/* Local SEO & Kolkata Service Areas */}
+                <div className="pt-8 border-t border-white/5 mb-8">
+                    <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#c5a059] mb-4">
+                        Kolkata Locations &amp; Studios
+                    </p>
+                    <div className="flex flex-wrap gap-x-6 gap-y-2 text-[10px] font-bold text-gray-500">
+                        <Link href="/locations/wedding-photographer-salt-lake-kolkata" className="hover:text-white transition-colors">Wedding Photographer Salt Lake</Link>
+                        <Link href="/locations/wedding-photographer-new-town-kolkata" className="hover:text-white transition-colors">Wedding Photographer New Town</Link>
+                        <Link href="/locations/wedding-photographer-howrah" className="hover:text-white transition-colors">Wedding Photographer Howrah</Link>
+                        <Link href="/locations/wedding-photographer-park-street-kolkata" className="hover:text-white transition-colors">Park Street Kolkata</Link>
+                        <Link href="/locations/wedding-photographer-ballygunge-kolkata" className="hover:text-white transition-colors">Ballygunge South Kolkata</Link>
+                        <Link href="/locations/pre-wedding-shoot-kolkata" className="hover:text-white transition-colors">Pre-Wedding Shoot Kolkata</Link>
+                        <Link href="/locations/drone-photography-kolkata" className="hover:text-white transition-colors">Drone Photography Kolkata</Link>
+                        <Link href="/locations/corporate-film-production-salt-lake" className="hover:text-white transition-colors">Corporate Films Salt Lake</Link>
+                        <Link href="/services/rice-ceremony-photography-kolkata" className="hover:text-white transition-colors">Annaprashan / Rice Ceremony</Link>
+                        <Link href="/services/video-production-agency-kolkata" className="hover:text-white transition-colors">Video Production Agency</Link>
+                        <Link href="/locations" className="text-[#c5a059] hover:underline">All Kolkata Locations &rarr;</Link>
+                    </div>
+                </div>
 
                 {/* Legal & Bottom Row */}
                 <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-center md:text-left">
                     <div className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-3 text-[9px] font-black uppercase tracking-[0.3em] text-gray-600">
                         <Link href="/privacy-policy" className="hover:text-[#c5a059] transition-colors">Privacy Policy</Link>
                         <Link href="/terms" className="hover:text-[#c5a059] transition-colors">Terms of Service</Link>
-                        <Link href="/refund-policy" className="hover:text-[#c5a059] transition-colors">Refund & Cancellation</Link>
+                        <Link href="/refund-policy" className="hover:text-[#c5a059] transition-colors">Refund &amp; Cancellation</Link>
                         <Link href="/company-details" className="hover:text-[#c5a059] transition-colors text-white/80 font-black">Company Details</Link>
                     </div>
                     <p className="text-[9px] text-gray-700 uppercase tracking-[0.3em] font-bold">

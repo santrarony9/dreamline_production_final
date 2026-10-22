@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Drone Photography & Videography Services in Kolkata",
   description: "Capture stunning aerial visuals with professional drone photography and videography services in Kolkata for events, properties, weddings, and brands.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/drone-photography-kolkata/" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/drone-photography-kolkata" },
   openGraph: {
     title: "Drone Photography & Videography Services in Kolkata",
     description: "Capture stunning aerial visuals with professional drone photography and videography services in Kolkata for events, properties, weddings, and brands.",
-    url: "https://dreamlineproduction.com/services/drone-photography-kolkata/",
+    url: "https://dreamlineproduction.com/services/drone-photography-kolkata",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',

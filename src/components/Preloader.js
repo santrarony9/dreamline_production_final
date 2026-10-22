@@ -4,8 +4,25 @@ import { useEffect, useState } from 'react';
 export default function Preloader() {
     const [progress, setProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [isBot, setIsBot] = useState(false);
 
     useEffect(() => {
+        // SEO Fix: Detect search engine bots and skip preloader entirely.
+        // Googlebot uses headless Chromium with JS enabled, so <noscript> is ignored.
+        // This ensures Googlebot sees page content immediately (no 1.5s LCP penalty).
+        const botPattern = /Googlebot|bingbot|Baiduspider|YandexBot|DuckDuckBot|Slurp|Sogou|ia_archiver|AdsBot-Google|Mediapartners-Google|Storebot-Google|GoogleOther|ChatGPT-User|OAI-SearchBot|PerplexityBot|Claude-Web|Applebot/i;
+        if (botPattern.test(navigator.userAgent)) {
+            setIsBot(true);
+            setIsLoading(false);
+            return;
+        }
+
+        // Human users: only show preloader once per session
+        if (sessionStorage.getItem('dreamline_preloaded')) {
+            setIsLoading(false);
+            return;
+        }
+
         // Increment progress randomly to simulate loading
         const interval = setInterval(() => {
             setProgress((prev) => {
@@ -13,12 +30,13 @@ export default function Preloader() {
                     clearInterval(interval);
                     setTimeout(() => {
                         setIsLoading(false);
-                    }, 500); // Short transition
+                        sessionStorage.setItem('dreamline_preloaded', '1');
+                    }, 400); // Short transition
                     return 100;
                 }
-                return prev + Math.floor(Math.random() * 15) + 5;
+                return prev + Math.floor(Math.random() * 20) + 8;
             });
-        }, 150);
+        }, 100);
 
         // If window is fully loaded, force it to 100
         const handleLoad = () => {
@@ -31,11 +49,14 @@ export default function Preloader() {
             window.addEventListener('load', handleLoad);
         }
 
-        // Fail-safe: never show loader for more than 1.5 seconds
+        // Fail-safe: never show loader for more than 1.0 second
         const failSafe = setTimeout(() => {
             setProgress(100);
-            setTimeout(() => setIsLoading(false), 500);
-        }, 1500);
+            setTimeout(() => {
+                setIsLoading(false);
+                sessionStorage.setItem('dreamline_preloaded', '1');
+            }, 400);
+        }, 1000);
 
         return () => {
             clearInterval(interval);
@@ -44,7 +65,7 @@ export default function Preloader() {
         };
     }, []);
 
-    if (!isLoading) return null;
+    if (!isLoading || isBot) return null;
 
     return (
         <>

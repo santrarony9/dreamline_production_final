@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Video Production Agency in Kolkata | Commercial Videography",
   description: "Create cinematic videos with a professional production agency in Kolkata. From concept and filming to editing and colour grading, get complete production support.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/video-production-agency-kolkata/" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/video-production-agency-kolkata" },
   openGraph: {
     title: "Video Production Agency in Kolkata | Commercial Videography",
     description: "Create cinematic videos with a professional production agency in Kolkata. From concept and filming to editing and colour grading, get complete production support.",
-    url: "https://dreamlineproduction.com/services/video-production-agency-kolkata/",
+    url: "https://dreamlineproduction.com/services/video-production-agency-kolkata",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',

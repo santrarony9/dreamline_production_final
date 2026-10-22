@@ -124,6 +124,16 @@ const nextConfig = {
         destination: '/locations/pre-wedding-shoot-kolkata',
         permanent: true,
       },
+      {
+        source: '/journal',
+        destination: '/blogs',
+        permanent: true,
+      },
+      {
+        source: '/journal/:slug*',
+        destination: '/blogs/:slug*',
+        permanent: true,
+      },
     ];
   },
 };

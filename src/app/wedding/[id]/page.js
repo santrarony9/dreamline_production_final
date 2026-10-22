@@ -1,7 +1,7 @@
 
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import mongoose from "mongoose";
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }) {
                 type: "video.movie",
             },
             alternates: {
-                canonical: `https://dreamlineproduction.com/wedding/${id}`,
+                canonical: `https://dreamlineproduction.com/wedding/${wedding.id || id}`,
             },
             twitter: {
                 card: 'summary_large_image',
@@ -85,6 +85,11 @@ export default async function WeddingDetailPage({ params }) {
     }
 
     if (!wedding) return notFound();
+
+    // SEO: Permanent redirect MongoDB _id to clean canonical slug
+    if (wedding.id && id !== wedding.id) {
+        redirect(`/wedding/${wedding.id}`);
+    }
 
     // Collect explicitly uploaded gallery images, and merge with legacy chapters
     let allImages = [];

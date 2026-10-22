@@ -6,6 +6,7 @@ import Image from "next/image";
 import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
 import StructuredData from '@/components/seo/StructuredData';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -58,6 +59,7 @@ export default async function DynamicServicePage({ params }) {
     const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
 
     if (!page) {
+        return notFound();
         // Fallback: Try to find which category this subcategory belongs to
         const categoryMatch = (siteContent?.home?.services || []).find(s => 
             (s.subcategories || []).some(sub => slugify(sub) === slug)

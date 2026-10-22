@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Rice Ceremony Photographer in Kolkata | Annaprashan Photography",
   description: "Preserve your Bengali Annaprashan memories with professional photography in Kolkata. Capture every ritual, family blessing, baby smile, and precious moment naturally.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata/" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata" },
   openGraph: {
     title: "Rice Ceremony Photographer in Kolkata | Annaprashan Photography",
     description: "Preserve your Bengali Annaprashan memories with professional photography in Kolkata. Capture every ritual, family blessing, baby smile, and precious moment naturally.",
-    url: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata/",
+    url: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',

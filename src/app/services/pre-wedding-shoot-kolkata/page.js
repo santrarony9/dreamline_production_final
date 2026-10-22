@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Cinematic Pre-Wedding Photography Kolkata | Plan Your Shoot",
   description: "Plan a memorable couple pre-wedding shoot in Kolkata with creative themes, beautiful locations, and natural photography. Capture the chemistry that makes you unique.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata/" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata" },
   openGraph: {
     title: "Cinematic Pre-Wedding Photography Kolkata | Plan Your Shoot",
     description: "Plan a memorable couple pre-wedding shoot in Kolkata with creative themes, beautiful locations, and natural photography. Capture the chemistry that makes you unique.",
-    url: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata/",
+    url: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',

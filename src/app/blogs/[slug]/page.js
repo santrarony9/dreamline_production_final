@@ -1,7 +1,7 @@
 
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -70,7 +70,7 @@ export async function generateMetadata({ params }) {
                 images: post.image ? [post.image] : [],
             },
             alternates: {
-                canonical: `https://dreamlineproduction.com/blogs/${slug}`,
+                canonical: `https://dreamlineproduction.com/blogs/${post.id || post.slug || slug}`,
             },
         };
     } catch (e) {
@@ -94,6 +94,11 @@ export default async function JournalDetailPage({ params }) {
     }
 
     if (!post) return notFound();
+
+    // SEO: Permanent redirect MongoDB _id or legacy slugs to clean canonical slug
+    if (post.id && slug !== post.id) {
+        redirect(`/blogs/${post.id}`);
+    }
 
     return (
         <main className="bg-black pt-32 min-h-screen">
