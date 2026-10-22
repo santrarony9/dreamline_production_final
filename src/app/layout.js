@@ -81,9 +81,16 @@ export async function generateMetadata() {
         images: [globalSeo.ogImage || "/logo-banner.png"],
       },
       icons: {
-        icon: globalSeo.favicon || "/favicon.png",
-        shortcut: globalSeo.favicon || "/favicon.png",
-        apple: globalSeo.favicon || "/favicon.png",
+        icon: [
+          { url: globalSeo.favicon || "/favicon.ico" },
+          { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+          { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
+          { url: "/favicon.png", sizes: "512x512", type: "image/png" },
+        ],
+        shortcut: globalSeo.favicon || "/favicon.ico",
+        apple: [
+          { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+        ],
       },
       robots: {
         index: true,
