@@ -15,10 +15,16 @@ export default function MotionGallery({
         "https://images.unsplash.com/photo-1510076857177-7470076d4098?auto=format&fit=crop&w=800"
     ];
 
-    const displayImages = images && images.length > 0 ? images : defaultImages;
-    // The original code used scrollingImages, but the edit implies using displayImages directly and duplicating it in JSX.
-    // Let's keep the original scrollingImages logic for consistency with the infinite scroll effect.
-    const scrollingImages = [...displayImages, ...displayImages];
+    const baseImages = images && images.length > 0 ? images : defaultImages;
+
+    // Ensure at least 6 images in the base sequence so wide screens remain seamlessly filled
+    let trackList = [...baseImages];
+    while (trackList.length < 6) {
+        trackList = [...trackList, ...baseImages];
+    }
+
+    // Exact 2x duplicate for seamless infinite -50% translateX loop
+    const scrollingImages = [...trackList, ...trackList];
 
     return (
         <section className="py-16 md:py-32 bg-black overflow-hidden border-t border-white/5">
@@ -36,46 +42,23 @@ export default function MotionGallery({
                 </p>
             </div>
 
-            <div className="relative w-full">
-                <div className="flex md:animate-scroll-left hover:pause overflow-x-auto md:overflow-hidden snap-x snap-mandatory hide-scrollbar pb-8 md:pb-0 px-6 md:px-0">
-                    {displayImages.map((src, i) => (
-                        <div key={i} className="flex-shrink-0 w-[280px] md:w-80 h-[350px] md:h-96 mr-4 md:mx-4 rounded-3xl overflow-hidden relative group snap-center">
+            <div className="relative w-full overflow-hidden select-none">
+                <div className="flex w-max animate-scroll-left hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+                    {scrollingImages.map((src, i) => (
+                        <div 
+                            key={i} 
+                            className="flex-shrink-0 w-[280px] md:w-80 h-[350px] md:h-96 mx-3 md:mx-4 rounded-3xl overflow-hidden relative group border border-white/5 cursor-pointer bg-neutral-950"
+                        >
                             <Image 
                                 src={src} 
-                                alt={`Cinematic wedding photography Kolkata ${i + 1}`}
+                                alt={`Cinematic wedding photography Kolkata ${(i % trackList.length) + 1}`}
                                 fill
                                 sizes="(max-width: 768px) 280px, 320px"
-                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 md:scale-110 md:group-hover:scale-100" 
+                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 md:scale-105 md:group-hover:scale-100" 
                                 loading="lazy"
                             />
                         </div>
                     ))}
-                    {/* Duplicate for infinite effect on desktop */}
-                    <div className="hidden md:flex">
-                        {displayImages.map((src, i) => (
-                            <div key={`dup-${i}`} className="flex-shrink-0 w-80 h-96 mx-4 rounded-3xl overflow-hidden relative group border border-white/5">
-                                <Image 
-                                    src={src} 
-                                    alt={`Wedding cinematography portfolio Kolkata ${i + 1}`}
-                                    fill
-                                    sizes="320px"
-                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-110 group-hover:scale-100" 
-                                    loading="lazy"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Mobile swipe hint */}
-                <div className="flex md:hidden items-center justify-center gap-2 mt-4 opacity-40">
-                    <svg className="w-4 h-4 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                    </svg>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-white">Swipe to explore</span>
-                    <svg className="w-4 h-4 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
                 </div>
             </div>
         </section>

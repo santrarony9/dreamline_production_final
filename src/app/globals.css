@@ -193,7 +193,18 @@
 }
 
 .animate-scroll-left {
-  animation: scrollLeft 30s linear infinite;
+  animation: scrollLeft 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll-left:hover,
+.animate-scroll-left:active {
+  animation-play-state: paused;
+}
+
+@utility animate-scroll-left {
+  animation: scrollLeft 45s linear infinite;
+  will-change: transform;
 }
 
 .text-outline-thin {
