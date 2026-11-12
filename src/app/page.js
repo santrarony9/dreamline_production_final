@@ -56,6 +56,14 @@ export async function generateMetadata() {
     const gKeywords = globalSeo.keywords ? globalSeo.keywords.split(',').map(k => k.trim()) : [];
     const keywords = [...new Set([...pKeywords, ...gKeywords])].filter(Boolean).join(', ');
 
+    const rawOgImage = pageSeo.ogImage || globalSeo.ogImage || 'https://dreamlineproduction.com/logo-banner.png';
+    const cleanOgImage = (rawOgImage && !rawOgImage.includes('unsplash.com'))
+        ? rawOgImage
+        : 'https://dreamlineproduction.com/logo-banner.png';
+    const ogImageUrl = cleanOgImage.startsWith('http')
+        ? cleanOgImage
+        : `https://dreamlineproduction.com${cleanOgImage.startsWith('/') ? '' : '/'}${cleanOgImage}`;
+
     return {
         title: title,
         description: description,
@@ -70,13 +78,18 @@ export async function generateMetadata() {
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
-            images: [{ url: pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png', width: 1200, height: 630 }],
+            images: [{
+                url: ogImageUrl,
+                width: 1000,
+                height: 1000,
+                alt: 'Dreamline Production — Photography, VFX & Animation',
+            }],
         },
         twitter: {
-            card: 'summary_large_image',
+            card: 'summary',
             title: title,
             description: description,
-            images: [pageSeo.ogImage || globalSeo.ogImage || '/logo-banner.png'],
+            images: [ogImageUrl],
         },
     };
 }

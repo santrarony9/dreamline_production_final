@@ -65,19 +65,20 @@ export async function generateMetadata() {
         siteName: "Dreamline Production",
         images: [
           {
-            url: globalSeo.ogImage || "/logo-banner.png",
-            width: 1200,
-            height: 630,
+            url: (globalSeo.ogImage && !globalSeo.ogImage.includes('unsplash.com')) ? globalSeo.ogImage : "https://dreamlineproduction.com/logo-banner.png",
+            width: 1000,
+            height: 1000,
+            alt: "Dreamline Production - Photography, VFX and Animation",
           }
         ],
         type: "website",
         locale: 'en_IN',
       },
       twitter: {
-        card: "summary_large_image",
+        card: "summary",
         title: globalSeo.title || "Dreamline Production | Kolkata's Premier Photography & Cinematic Production House",
         description: globalSeo.description || "Kolkata's premier photography studio. Luxury weddings and commercial films across India.",
-        images: [globalSeo.ogImage || "/logo-banner.png"],
+        images: [(globalSeo.ogImage && !globalSeo.ogImage.includes('unsplash.com')) ? globalSeo.ogImage : "https://dreamlineproduction.com/logo-banner.png"],
       },
       icons: {
         icon: [
