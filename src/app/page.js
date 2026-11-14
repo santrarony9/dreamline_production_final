@@ -362,41 +362,48 @@ export default async function Home() {
           }
         ]
       }} />
-      <Hero content={homeData.hero} />
-      <Marquee items={homeData.marquee} />
-      <Stats stats={homeData.stats} />
-      <Partners partners={homeData.partners} />
-      {/* Quote Section with forced data refresh logic */}
-      <QuoteSection 
-        key={`quote-${homeData?.quote?.backgroundImage || 'default'}`}
-        quote={homeData?.quote?.text} 
-        backgroundImage={homeData?.quote?.backgroundImage} 
-      />
-      {/* Debug marker: {homeData?.quote?.backgroundImage ? 'Custom Image Loaded' : 'Using Fallback'} */}
-      <Expertise expertise={homeData.expertise} />
-      <ServicesCategories services={homeData.services} />
-      <MotionGallery 
-        images={homeData.motionArchive?.images} 
-        title={homeData.motionArchive?.title}
-        subtitle={homeData.motionArchive?.subtitle}
-        description={homeData.motionArchive?.description}
-      />
-      <VideoVault 
-        videos={siteContent?.videoVault} 
-        title={homeData.motionArchive?.title === "The Motion" ? "CINEMATIC REEL" : homeData.motionArchive?.title}
-        subtitle={homeData.motionArchive?.subtitle === "Archive." ? "Video Vault." : homeData.motionArchive?.subtitle}
-        description={homeData.motionArchive?.description}
-      />
-      <MasterGallery images={siteContent?.splitGallery} />
-      <ProjectGallery initialProjects={allProjects} />
-      <JournalSection journals={serializedJournals} />
-      <ReviewSlider 
-        reviews={homeData.reviews?.list} 
-        averageRating={homeData.reviews?.averageRating}
-        totalReviewsText={homeData.reviews?.totalReviewsText}
-        sectionTitle={homeData.reviews?.sectionTitle}
-        sectionSubtitle={homeData.reviews?.sectionSubtitle}
-      />
+      {/* Sections controlled via Admin Dashboard visibility toggles */}
+      {(siteContent?.home?.sections?.hero !== false) && <Hero content={homeData.hero} />}
+      {(siteContent?.home?.sections?.marquee !== false) && <Marquee items={homeData.marquee} />}
+      {(siteContent?.home?.sections?.stats !== false) && <Stats stats={homeData.stats} />}
+      {(siteContent?.home?.sections?.partners !== false) && <Partners partners={homeData.partners} />}
+      {(siteContent?.home?.sections?.quote !== false) && (
+        <QuoteSection 
+          key={`quote-${homeData?.quote?.backgroundImage || 'default'}`}
+          quote={homeData?.quote?.text} 
+          backgroundImage={homeData?.quote?.backgroundImage} 
+        />
+      )}
+      {(siteContent?.home?.sections?.expertise !== false) && <Expertise expertise={homeData.expertise} />}
+      {(siteContent?.home?.sections?.services !== false) && <ServicesCategories services={homeData.services} />}
+      {(siteContent?.home?.sections?.motionArchive !== false) && (
+        <MotionGallery 
+          images={homeData.motionArchive?.images} 
+          title={homeData.motionArchive?.title}
+          subtitle={homeData.motionArchive?.subtitle}
+          description={homeData.motionArchive?.description}
+        />
+      )}
+      {(siteContent?.home?.sections?.videoVault !== false) && (
+        <VideoVault 
+          videos={siteContent?.videoVault} 
+          title={homeData.motionArchive?.title === "The Motion" ? "CINEMATIC REEL" : homeData.motionArchive?.title}
+          subtitle={homeData.motionArchive?.subtitle === "Archive." ? "Video Vault." : homeData.motionArchive?.subtitle}
+          description={homeData.motionArchive?.description}
+        />
+      )}
+      {(siteContent?.home?.sections?.splitGallery !== false) && <MasterGallery images={siteContent?.splitGallery} />}
+      {(siteContent?.home?.sections?.projects !== false) && <ProjectGallery initialProjects={allProjects} />}
+      {(siteContent?.home?.sections?.journal !== false) && <JournalSection journals={serializedJournals} />}
+      {(siteContent?.home?.sections?.reviews !== false) && (
+        <ReviewSlider 
+          reviews={homeData.reviews?.list} 
+          averageRating={homeData.reviews?.averageRating}
+          totalReviewsText={homeData.reviews?.totalReviewsText}
+          sectionTitle={homeData.reviews?.sectionTitle}
+          sectionSubtitle={homeData.reviews?.sectionSubtitle}
+        />
+      )}
       
       {/* 2-Line SEO Content Block */}
       <section className="py-16 bg-[#050505] border-t border-white/5 text-center">
@@ -409,7 +416,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <LetsCreate global={siteContent?.global} />
+      {(siteContent?.home?.sections?.letsCreate !== false) && <LetsCreate global={siteContent?.global} />}
     </main>
   );
 }

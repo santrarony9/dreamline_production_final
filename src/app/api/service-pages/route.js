@@ -42,8 +42,9 @@ export async function POST(request) {
             { upsert: true, new: true }
         );
 
-        // Revalidate the dynamic page
-        revalidatePath(`/services/${slug}`);
+        // Revalidate the service pages with trailing slash
+        revalidatePath(`/services/${slug}/`);
+        revalidatePath('/services/');
         
         return NextResponse.json(page);
     } catch (err) {

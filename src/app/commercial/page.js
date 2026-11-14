@@ -12,7 +12,8 @@ export async function generateMetadata() {
     const pageSeo = siteContent?.commercial?.seo || {};
 
     const fallbackDesc = siteContent?.commercial?.hero?.description || "Elevating brands through cinematic narratives, high-fashion edits, and corporate documentaries.";
-    const title = pageSeo.title || "Commercial Photography & Films";
+    const rawTitle = pageSeo.title || "Commercial Photography & Corporate Films";
+    const title = rawTitle.replace(/\s*\|\s*Dreamline Production.*$/i, '').trim();
     const description = pageSeo.description || fallbackDesc;
 
     const pKeywords = pageSeo.keywords ? pageSeo.keywords.split(',').map(k => k.trim()) : [];

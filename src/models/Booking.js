@@ -1,14 +1,20 @@
 import mongoose from 'mongoose';
 
 const BookingSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    phone: String,
-    email: String,
-    eventDate: String,
-    serviceType: String,
-    vision: String,
-    status: { type: String, default: 'pending' },
+    firstName: { type: String, required: true },
+    lastName: { type: String, default: '' },
+    phone: { type: String, required: true },
+    email: { type: String, default: '' },
+    eventDate: { type: String, default: '' },
+    serviceType: { type: String, default: 'Wedding' },
+    vision: { type: String, default: '' },
+    message: { type: String, default: '' },
+    notes: { type: String, default: '' },
+    status: { 
+        type: String, 
+        enum: ['pending', 'contacted', 'confirmed', 'completed', 'cancelled'], 
+        default: 'pending' 
+    },
     createdAt: { type: Date, default: Date.now }
 });
 

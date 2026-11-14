@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Cinematic Pre-Wedding Photography Kolkata | Plan Your Shoot",
   description: "Plan a memorable couple pre-wedding shoot in Kolkata with creative themes, beautiful locations, and natural photography. Capture the chemistry that makes you unique.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata/" },
   openGraph: {
     title: "Cinematic Pre-Wedding Photography Kolkata | Plan Your Shoot",
     description: "Plan a memorable couple pre-wedding shoot in Kolkata with creative themes, beautiful locations, and natural photography. Capture the chemistry that makes you unique.",
-    url: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata",
+    url: "https://dreamlineproduction.com/services/pre-wedding-shoot-kolkata/",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',
@@ -22,6 +22,13 @@ export default function ServicePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does a pre-wedding shoot in Kolkata cost?", "acceptedAnswer": {"@type": "Answer", "text": "The cost of a pre-wedding shoot in Kolkata depends on the number of hours, locations, number of outfits, photography style, and services included."}}, {"@type": "Question", "name": "Which locations are best for pre-wedding photography in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Kolkata offers many options for pre-wedding photography, including heritage areas, modern cityscapes, gardens, cafes, and private locations."}}, {"@type": "Question", "name": "How early should we book a pre-wedding shoot photographer?", "acceptedAnswer": {"@type": "Answer", "text": "Ideally, couples should book their pre-wedding shoot photographer at least 1\u20132 months in advance."}}, {"@type": "Question", "name": "Can we choose our own concept for a pre-wedding photoshoot?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, you can share your ideas, favourite locations, outfits, or references for the pre-wedding photoshoot."}}, {"@type": "Question", "name": "How long does a couple pre-wedding shoot usually take?", "acceptedAnswer": {"@type": "Answer", "text": "A couple pre-wedding shoot can take anywhere from a few hours to a full day."}}]}) }} />
       <main className="bg-black pt-32 min-h-screen text-white">
         <section className="container mx-auto px-6 max-w-4xl pb-32">
+          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
+            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#c5a059]">Pre-Wedding Shoot Kolkata</span>
+          </nav>
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
             
       <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8"><span className="text-[#c5a059]">Pre-Wedding</span> Photographer in Kolkata</h1>

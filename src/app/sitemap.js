@@ -15,97 +15,100 @@ const LOCATION_SLUGS = [
 ];
 
 const STATIC_SERVICE_SLUGS = [
-    "rice-ceremony-photography-kolkata",
-    "video-production-agency-kolkata",
+    "wedding-photography-kolkata",
+    "corporate-photography-kolkata",
+    "drone-videography-kolkata",
     "drone-photography-kolkata",
     "pre-wedding-shoot-kolkata",
+    "rice-ceremony-photography-kolkata",
+    "video-production-agency-kolkata",
 ];
 
 export default async function sitemap() {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com';
 
-    // Base static routes
+    // Base static routes (with trailing slash matching next.config trailingSlash: true)
     const staticRoutes = [
         {
-            url: baseUrl,
+            url: `${baseUrl}/`,
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 1.0,
         },
         {
-            url: `${baseUrl}/about`,
+            url: `${baseUrl}/about/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/luxury`,
+            url: `${baseUrl}/luxury/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/commercial`,
+            url: `${baseUrl}/commercial/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/services`,
+            url: `${baseUrl}/services/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/locations`,
+            url: `${baseUrl}/locations/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/contact`,
+            url: `${baseUrl}/contact/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'yearly',
             priority: 0.7,
         },
         {
-            url: `${baseUrl}/blogs`,
+            url: `${baseUrl}/blogs/`,
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/faq`,
+            url: `${baseUrl}/faq/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'monthly',
             priority: 0.7,
         },
         {
-            url: `${baseUrl}/tech`,
+            url: `${baseUrl}/tech/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'monthly',
             priority: 0.6,
         },
         {
-            url: `${baseUrl}/company-details`,
+            url: `${baseUrl}/company-details/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'yearly',
             priority: 0.4,
         },
         {
-            url: `${baseUrl}/privacy-policy`,
+            url: `${baseUrl}/privacy-policy/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'yearly',
             priority: 0.3,
         },
         {
-            url: `${baseUrl}/terms`,
+            url: `${baseUrl}/terms/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'yearly',
             priority: 0.3,
         },
         {
-            url: `${baseUrl}/refund-policy`,
+            url: `${baseUrl}/refund-policy/`,
             lastModified: new Date('2026-01-01'),
             changeFrequency: 'yearly',
             priority: 0.3,
@@ -114,18 +117,18 @@ export default async function sitemap() {
 
     // Location SEO landing pages
     const locationRoutes = LOCATION_SLUGS.map((slug) => ({
-        url: `${baseUrl}/locations/${slug}`,
+        url: `${baseUrl}/locations/${slug}/`,
         lastModified: new Date('2026-10-22'),
         changeFrequency: 'monthly',
         priority: 0.8,
     }));
 
-    // Static specialized service pages
+    // Static specialized service pages (standardized /services/service-name/ structure)
     const staticServiceRoutes = STATIC_SERVICE_SLUGS.map((slug) => ({
-        url: `${baseUrl}/services/${slug}`,
+        url: `${baseUrl}/services/${slug}/`,
         lastModified: new Date('2026-10-22'),
         changeFrequency: 'monthly',
-        priority: 0.8,
+        priority: 0.9,
     }));
 
     try {
@@ -137,7 +140,7 @@ export default async function sitemap() {
         const weddingRoutes = weddings
             .filter(w => w.id)
             .map((w) => ({
-                url: `${baseUrl}/wedding/${w.id}`,
+                url: `${baseUrl}/wedding/${w.id}/`,
                 lastModified: w.updatedAt || w.date || new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.8,
@@ -148,7 +151,7 @@ export default async function sitemap() {
         const journalRoutes = journals
             .filter(j => (j.slug || j.id) && !j.title?.includes('Series'))
             .map((j) => ({
-                url: `${baseUrl}/blogs/${j.slug || j.id}`,
+                url: `${baseUrl}/blogs/${j.slug || j.id}/`,
                 lastModified: j.updatedAt || j.date || new Date(),
                 changeFrequency: 'weekly',
                 priority: 0.8,
@@ -159,7 +162,7 @@ export default async function sitemap() {
         const dynamicServiceRoutes = services
             .filter(s => s.slug && s.slug !== 'pre-wedding' && !STATIC_SERVICE_SLUGS.includes(s.slug))
             .map((s) => ({
-                url: `${baseUrl}/services/${s.slug}`,
+                url: `${baseUrl}/services/${s.slug}/`,
                 lastModified: s.updatedAt || new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.8,

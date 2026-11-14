@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { openVideo } from "@/components/VideoModal";
+import { getVideoThumbnail, normalizeVideoUrl } from "@/lib/media";
 
 export default function VideoVault({ 
     videos = [], 
@@ -9,34 +10,40 @@ export default function VideoVault({
     subtitle = "Video Vault.", 
     description = "15+ Years of Frames" 
 }) {
-    // No local state needed for activeVideo anymore
-    
     const defaultVideos = [
         {
-            title: "Royal Grandeur",
-            category: "Wedding Cinema",
-            image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
-            videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
+            title: "News Documentary | BRUT",
+            category: "Commercial & Line Production",
+            image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80",
+            videoUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4"
         },
         {
-            title: "Neon Pulse",
-            category: "Music Video",
-            image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800",
-            videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4"
+            title: "News Documentary | TRT World",
+            category: "Global Broadcast",
+            image: "",
+            videoUrl: "https://youtube.com/watch?v=YCZNkMz9CS4"
+        },
+        {
+            title: "Onam Celebration",
+            category: "Cultural Commercial",
+            image: "",
+            videoUrl: "https://youtube.com/watch?v=-2PV88RyiI0"
         }
     ];
 
-    const displayVideos = videos && videos.length > 0 ? videos : defaultVideos;
-
-    const getYouTubeId = (url) => {
-        if (!url) return null;
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
-    };
+    const rawVideos = videos && videos.length > 0 ? videos : defaultVideos;
+    const displayVideos = rawVideos.map(v => {
+        const fullUrl = normalizeVideoUrl(v.videoUrl || "https://www.youtube.com/watch?v=ScMzIvxBSi4");
+        const thumb = getVideoThumbnail(fullUrl, v.image, 'documentary');
+        return {
+            ...v,
+            videoUrl: fullUrl,
+            displayImage: thumb
+        };
+    });
 
     return (
-        <section className="py-16 md:py-32 bg-black overflow-hidden">
+        <section className="py-16 md:py-32 bg-black overflow-hidden border-t border-white/5">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-20 gap-8">
                     <div className="max-w-2xl">
@@ -54,63 +61,41 @@ export default function VideoVault({
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-                    {displayVideos.map((video, index) => {
-                        const ytId = getYouTubeId(video.videoUrl);
-                        const displayImage = ytId ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg` : video.image;
-
-                        return (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {displayVideos.map((video, index) => (
                         <div
                             key={index}
-                            className="aspect-[4/5] md:aspect-video relative group overflow-hidden cursor-none interactive bg-neutral-900"
+                            className="aspect-[16/10] relative group overflow-hidden cursor-pointer interactive bg-neutral-950 rounded-2xl border border-white/10 hover:border-[#c5a059]/50 transition-all duration-500 shadow-xl"
                             onClick={() => openVideo(video.videoUrl, video.title)}
                         >
-                            {displayImage ? (
-                                <Image
-                                    src={displayImage}
-                                    alt={video.title}
-                                    fill
-                                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000 opacity-60 group-hover:opacity-100"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                />
-                            ) : (
-                                // Fallback: If no image, try to show the video itself as a muted preview if it's a direct link
-                                video.videoUrl?.match(/\.(mp4|webm|ogg|mov)$|video/i) ? (
-                                    <video 
-                                        src={video.videoUrl} 
-                                        muted 
-                                        loop 
-                                        playsInline 
-                                        className="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-opacity duration-700"
-                                        onMouseOver={e => e.target.play()}
-                                        onMouseOut={e => {e.target.pause(); e.target.currentTime = 0;}}
-                                    />
-                                ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-neutral-900">
-                                        <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">No Preview</span>
-                                    </div>
-                                )
-                            )}
+                            <Image
+                                src={video.displayImage}
+                                alt={video.title}
+                                fill
+                                className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-70 group-hover:opacity-100"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            />
 
-                            {/* Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 md:opacity-60 group-hover:opacity-90 transition-opacity p-8 flex flex-col justify-end">
-                                <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-2 transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                    {video.category}
+                            {/* Play Button Icon */}
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                                <div className="w-14 h-14 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#c5a059] group-hover:scale-110 group-hover:bg-[#c5a059] group-hover:text-black transition-all duration-300 shadow-2xl">
+                                    <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {/* Gradient Overlay & Info */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-90 group-hover:opacity-80 transition-opacity p-6 flex flex-col justify-end z-10">
+                                <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-widest mb-1">
+                                    {video.category || "Commercial"}
                                 </p>
-                                <h3 className="text-white font-heading text-2xl font-black uppercase transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                                <h3 className="text-white font-heading text-lg md:text-xl font-black uppercase line-clamp-2">
                                     {video.title}
                                 </h3>
                             </div>
-
-                            {/* Play Button Icon */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center backdrop-blur-sm opacity-70 md:opacity-0 group-hover:opacity-100 transition-all duration-500 scale-100 md:scale-75 group-hover:scale-100">
-                                <svg className="w-6 h-6 fill-white" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                            </div>
                         </div>
-                    );
-                })}
+                    ))}
                 </div>
             </div>
         </section>

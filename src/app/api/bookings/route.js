@@ -7,11 +7,13 @@ import axios from "axios";
 import nodemailer from "nodemailer";
 import { bookingLimiter } from "@/lib/rate-limit";
 import { safeErrorResponse } from "@/lib/error-handler";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || "465"),
-    secure: true, // true for 465 (SSL/TLS)
+    secure: true,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -25,6 +27,25 @@ function escapeHtml(str) {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#x27;");
+}
+
+export async function GET(req) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        await dbConnect();
+        const { searchParams } = new URL(req.url);
+        const status = searchParams.get("status");
+        const query = status && status !== "all" ? { status } : {};
+
+        const bookings = await Booking.find(query).sort({ createdAt: -1 }).lean();
+        return NextResponse.json(bookings);
+    } catch (error) {
+        return safeErrorResponse(error, "Get Bookings");
+    }
 }
 
 export async function POST(req) {
@@ -41,21 +62,21 @@ export async function POST(req) {
         const body = await req.json();
 
         // Input validation — only allow expected fields (prevent mass assignment)
-        const { firstName, lastName, phone, email, eventDate, serviceType, vision, website } = body;
+        const { firstName, lastName, phone, email, eventDate, serviceType, vision, message, website } = body;
 
         // Honeypot check: If 'website' is filled, it's likely a bot.
         if (website) {
             console.log("Spam detected via honeypot field.");
-            return NextResponse.json({ success: true, message: "Inquiry received" }, { status: 201 }); // Return success to deceive the bot
+            return NextResponse.json({ success: true, message: "Inquiry received" }, { status: 201 });
         }
 
-
-        if (!firstName || !lastName || !phone) {
+        if (!firstName || !phone) {
             return NextResponse.json({ error: "Name and phone are required" }, { status: 400 });
         }
 
         // Sanitize input lengths to prevent DB abuse
         const sanitize = (str, maxLen = 200) => String(str || "").slice(0, maxLen).trim();
+        const finalVision = sanitize(vision || message, 1000);
 
         const bookingData = {
             firstName: sanitize(firstName, 100),
@@ -63,8 +84,10 @@ export async function POST(req) {
             phone: sanitize(phone, 20),
             email: sanitize(email, 150),
             eventDate: sanitize(eventDate, 30),
-            serviceType: sanitize(serviceType, 100),
-            vision: sanitize(vision, 1000),
+            serviceType: sanitize(serviceType, 100) || 'Wedding Photography',
+            vision: finalVision,
+            message: finalVision,
+            status: 'pending'
         };
 
         // Save to database with sanitized data only
@@ -79,7 +102,7 @@ export async function POST(req) {
         const safeDate = escapeHtml(bookingData.eventDate);
         const safeVision = escapeHtml(bookingData.vision);
 
-        // 3. Email Notification via MilesWeb SMTP
+        // 1. Email Notification via SMTP
         if (process.env.SMTP_USER && process.env.SMTP_PASS) {
             try {
                 const mailOptions = {
@@ -103,9 +126,9 @@ export async function POST(req) {
             }
         }
 
-        // 1. WhatsApp Business API (New Method)
+        // 2. WhatsApp Business API (New Method)
         if (process.env.WHATSAPP_TOKEN && process.env.WHATSAPP_PHONE_ID) {
-            const message = `🌟 New Inquiry from ${bookingData.firstName} ${bookingData.lastName}!\n\nEmail: ${bookingData.email}\nPhone: ${bookingData.phone}\nEvent: ${bookingData.serviceType}\nDate: ${bookingData.eventDate}\nVision: ${bookingData.vision}`;
+            const waMsg = `🌟 New Inquiry from ${bookingData.firstName} ${bookingData.lastName}!\n\nEmail: ${bookingData.email}\nPhone: ${bookingData.phone}\nEvent: ${bookingData.serviceType}\nDate: ${bookingData.eventDate}\nVision: ${bookingData.vision}`;
 
             try {
                 await axios.post(
@@ -114,7 +137,7 @@ export async function POST(req) {
                         messaging_product: "whatsapp",
                         to: process.env.FOR_PHONE || "918240054002",
                         type: "text",
-                        text: { body: message }
+                        text: { body: waMsg }
                     },
                     {
                         headers: {
@@ -128,29 +151,64 @@ export async function POST(req) {
             }
         }
 
-        // 2. Legacy BhashSMS Notification (Backup/Alternative)
-        if (process.env.WHATSAPP_PASS) {
-            try {
-                const message = `New Inquiry: ${bookingData.firstName} ${bookingData.lastName} - ${bookingData.phone} - ${bookingData.serviceType}`;
-                await axios.get('https://bhashsms.com/api/sendmsg.php', {
-                    params: {
-                        user: process.env.WHATSAPP_USER || 'Rony_BW',
-                        pass: process.env.WHATSAPP_PASS,
-                        sender: process.env.WHATSAPP_SENDER || 'BUZWAP',
-                        phone: process.env.WHATSAPP_ADMIN_PHONE || '8240054002',
-                        text: message,
-                        priority: 'wa',
-                        stype: 'normal'
-                    }
-                });
-            } catch (legacyErr) {
-                console.error("Legacy WhatsApp notification failed:", legacyErr.message);
-            }
-        }
-
-
-        return NextResponse.json({ success: true, message: "Inquiry received" }, { status: 201 });
+        return NextResponse.json({ success: true, message: "Inquiry received", id: booking._id }, { status: 201 });
     } catch (error) {
         return safeErrorResponse(error, "Booking");
+    }
+}
+
+export async function PATCH(req) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        await dbConnect();
+        const body = await req.json();
+        const { id, status, notes } = body;
+
+        if (!id) {
+            return NextResponse.json({ error: "Booking ID is required" }, { status: 400 });
+        }
+
+        const update = {};
+        if (status) update.status = status;
+        if (notes !== undefined) update.notes = notes;
+
+        const updated = await Booking.findByIdAndUpdate(id, { $set: update }, { new: true });
+        if (!updated) {
+            return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true, booking: updated });
+    } catch (error) {
+        return safeErrorResponse(error, "Update Booking");
+    }
+}
+
+export async function DELETE(req) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        await dbConnect();
+        const { searchParams } = new URL(req.url);
+        const id = searchParams.get("id");
+
+        if (!id) {
+            return NextResponse.json({ error: "Booking ID is required" }, { status: 400 });
+        }
+
+        const deleted = await Booking.findByIdAndDelete(id);
+        if (!deleted) {
+            return NextResponse.json({ error: "Booking not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true, message: "Booking removed" });
+    } catch (error) {
+        return safeErrorResponse(error, "Delete Booking");
     }
 }

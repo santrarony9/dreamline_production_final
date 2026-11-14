@@ -61,16 +61,29 @@ export async function POST(request) {
     // Top-level fields
     const topLevelFields = [
         'about', 'luxury', 'commercial', 'contact', 'social', 'footer', 
-        'splitGallery', 'videoVault', 'global', 'projects'
+        'splitGallery', 'videoVault', 'projects'
     ];
     topLevelFields.forEach(field => {
         if (body[field] !== undefined) updateData[field] = body[field];
     });
 
+    // If 'global' is provided as an object, merge its sub-properties using dot notation
+    if (body.global && typeof body.global === 'object') {
+        Object.keys(body.global).forEach(key => {
+            if (body.global[key] && typeof body.global[key] === 'object' && !Array.isArray(body.global[key])) {
+                Object.keys(body.global[key]).forEach(subKey => {
+                    updateData[`global.${key}.${subKey}`] = body.global[key][subKey];
+                });
+            } else {
+                updateData[`global.${key}`] = body.global[key];
+            }
+        });
+    }
+
     // Home-nested fields
     const homeFields = [
         'hero', 'services', 'partners', 'marquee', 'stats', 
-        'expertise', 'motionArchive', 'reviews', 'quote'
+        'expertise', 'motionArchive', 'reviews', 'quote', 'sections'
     ];
     
     // If 'home' itself is provided as an object, we can merge its properties

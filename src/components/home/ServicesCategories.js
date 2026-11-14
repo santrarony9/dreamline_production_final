@@ -5,13 +5,28 @@ import { useRouter } from 'next/navigation';
 export default function ServicesCategories({ services }) {
     const router = useRouter();
 
+    const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    const getSubcategoryLink = (sub) => {
+        const clean = (sub || '').toLowerCase().trim();
+        if (clean.includes('pre-wedding')) return '/services/pre-wedding-shoot-kolkata/';
+        if (clean.includes('cinematic film') || clean.includes('wedding')) return '/services/wedding-photography-kolkata/';
+        if (clean.includes('corporate')) return '/services/corporate-photography-kolkata/';
+        if (clean.includes('drone')) return '/services/drone-videography-kolkata/';
+        if (clean.includes('brand film') || clean.includes('brand promotion')) return '/services/brand-promotion-kolkata/';
+        if (clean.includes('ad film')) return '/services/commercial-ad-films-kolkata/';
+        if (clean.includes('3d')) return '/services/3d-area-mapping-kolkata/';
+        if (clean.includes('2d') || clean.includes('animation')) return '/services/2d-animation-kolkata/';
+        return `/services/${slugify(clean)}/`;
+    };
+
     const getServiceLink = (srv) => {
         const cat = srv.category || '';
         const title = (srv.title || '').toLowerCase();
-        if (cat === 'wedding' || title.includes('luxury') || title.includes('wedding')) return '/luxury';
-        if (cat === 'commercial' || title.includes('commercial')) return '/commercial';
-        if (cat === 'tech' || title === 'tech') return '/tech';
-        return '/services';
+        if (cat === 'wedding' || title.includes('luxury') || title.includes('wedding')) return '/services/wedding-photography-kolkata/';
+        if (cat === 'commercial' || title.includes('commercial')) return '/services/video-production-agency-kolkata/';
+        if (cat === 'tech' || title === 'tech') return '/services/drone-videography-kolkata/';
+        return '/services/';
     };
 
     const handleRowClick = (srv) => {
@@ -54,9 +69,8 @@ export default function ServicesCategories({ services }) {
                                 {srv.subcategories && srv.subcategories.length > 0 && (
                                     <div className="flex flex-wrap gap-2 md:pl-20 mt-2 opacity-80 md:opacity-50 group-hover:opacity-100 transition-opacity">
                                         {srv.subcategories.map((sub, idx) => {
-                                            const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                                             return (
-                                                <Link href={`/services/${slugify(sub)}`} key={idx} className="text-[10px] md:text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1.5 md:py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
+                                                <Link href={getSubcategoryLink(sub)} key={idx} className="text-[10px] md:text-[9px] font-black uppercase tracking-[0.2em] border border-white/20 px-3 py-1.5 md:py-1 rounded-full whitespace-nowrap hover:bg-[#c5a059] hover:text-black transition-colors">
                                                     {sub}
                                                 </Link>
                                             );

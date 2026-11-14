@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Rice Ceremony Photographer in Kolkata | Annaprashan Photography",
   description: "Preserve your Bengali Annaprashan memories with professional photography in Kolkata. Capture every ritual, family blessing, baby smile, and precious moment naturally.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata/" },
   openGraph: {
     title: "Rice Ceremony Photographer in Kolkata | Annaprashan Photography",
     description: "Preserve your Bengali Annaprashan memories with professional photography in Kolkata. Capture every ritual, family blessing, baby smile, and precious moment naturally.",
-    url: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata",
+    url: "https://dreamlineproduction.com/services/rice-ceremony-photography-kolkata/",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',
@@ -22,6 +22,13 @@ export default function ServicePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does rice ceremony photography cost in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "The cost depends on event duration, venue, photography style, number of photographers, and deliverables."}}, {"@type": "Question", "name": "What does a rice ceremony photography package include?", "acceptedAnswer": {"@type": "Answer", "text": "A package may include candid photography, traditional portraits, baby photographs, family pictures, ritual coverage, and edited images."}}, {"@type": "Question", "name": "Can you cover a Bengali Annaprashan ceremony at home?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, Annaprashan ceremonies held at home can be covered."}}, {"@type": "Question", "name": "When should I book baby rice ceremony photography?", "acceptedAnswer": {"@type": "Answer", "text": "It is better to book your photographer a few weeks in advance, especially during busy wedding and festive seasons."}}, {"@type": "Question", "name": "Can grandparents and family members be included in the photographs?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. Family members are an important part of an Annaprashan celebration."}}]}) }} />
       <main className="bg-black pt-32 min-h-screen text-white">
         <section className="container mx-auto px-6 max-w-4xl pb-32">
+          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
+            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#c5a059]">Rice Ceremony Photography Kolkata</span>
+          </nav>
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
             
       <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8"><span className="text-[#c5a059]">Rice Ceremony</span> Photography in Kolkata</h1>

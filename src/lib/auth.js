@@ -79,16 +79,15 @@ export const authOptions = {
     },
     callbacks: {
         async redirect({ url, baseUrl }) {
-            // Force production domain — fixes broken NEXTAUTH_URL=localhost:3002 on Vercel
-            const productionBase = "https://dreamlineproduction.com";
-            // If it's a relative URL, prepend production base
-            if (url.startsWith("/")) return `${productionBase}${url}`;
-            // If it points to localhost, replace with production
-            if (url.includes("localhost")) return productionBase;
-            // If it's on our domain, allow it
-            if (url.startsWith(productionBase)) return url;
-            // Default fallback
-            return productionBase;
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`;
+            // Allows callback URLs on the same origin
+            try {
+                if (new URL(url).origin === new URL(baseUrl).origin) return url;
+            } catch {
+                // ignore
+            }
+            return baseUrl;
         },
         async jwt({ token, user }) {
             if (user) {

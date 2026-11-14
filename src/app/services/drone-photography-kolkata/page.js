@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Drone Photography & Videography Services in Kolkata",
   description: "Capture stunning aerial visuals with professional drone photography and videography services in Kolkata for events, properties, weddings, and brands.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/drone-photography-kolkata" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/drone-photography-kolkata/" },
   openGraph: {
     title: "Drone Photography & Videography Services in Kolkata",
     description: "Capture stunning aerial visuals with professional drone photography and videography services in Kolkata for events, properties, weddings, and brands.",
-    url: "https://dreamlineproduction.com/services/drone-photography-kolkata",
+    url: "https://dreamlineproduction.com/services/drone-photography-kolkata/",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',
@@ -22,6 +22,13 @@ export default function ServicePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is included in drone photography services in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Drone photography services generally include aerial image capture, flight planning, camera operation, and professionally selected images."}}, {"@type": "Question", "name": "Can drone videography be used for weddings and pre-wedding shoots?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, drone videography can add cinematic aerial views to weddings and pre-wedding shoots."}}, {"@type": "Question", "name": "Do I need permission for a drone shoot in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Drone operations in India are subject to applicable DGCA rules, airspace restrictions, and permissions where required."}}, {"@type": "Question", "name": "How long does a professional drone shoot take?", "acceptedAnswer": {"@type": "Answer", "text": "The duration depends on the project, location, number of shots, weather, and coverage required."}}, {"@type": "Question", "name": "Can drone photography be combined with regular photography?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, combining aerial and ground-level photography can create a more complete visual story."}}]}) }} />
       <main className="bg-black pt-32 min-h-screen text-white">
         <section className="container mx-auto px-6 max-w-4xl pb-32">
+          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
+            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#c5a059]">Drone Photography Kolkata</span>
+          </nav>
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
             
       <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8">Drone <span className="text-[#c5a059]">Photography & Videography</span> Services in Kolkata</h1>

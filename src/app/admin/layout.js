@@ -37,6 +37,7 @@ export default function AdminLayout({ children }) {
             title: "Website Setup",
             items: [
                 { label: "Home Page", path: "/admin/home", icon: "🏠" },
+                { label: "Navigation & Banner", path: "/admin/navigation", icon: "🧭" },
                 { label: "About Page", path: "/admin/about", icon: "🏢" },
                 { label: "Google Business", path: "/admin/google-business", icon: "🌐" },
             ]

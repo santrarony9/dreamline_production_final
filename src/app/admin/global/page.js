@@ -194,6 +194,169 @@ export default function GlobalSettings() {
                     </div>
                 </section>
 
+                {/* Google Business Profile & Google Maps Integration */}
+                <section className="space-y-6 pt-4 border-t border-white/5">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div className="flex items-center gap-3 mb-1">
+                                <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">📍 Google Business Profile &amp; Google Maps</h3>
+                                <span className="text-[8px] bg-green-500/10 border border-green-500/20 text-green-400 px-2 py-0.5 rounded font-black tracking-widest uppercase">Live on Header &amp; Footer</span>
+                            </div>
+                            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
+                                Manage the verified business location, clickable header address, footer interactive map, and directions.
+                            </p>
+                        </div>
+                        <label className="flex items-center gap-2 cursor-pointer bg-white/5 border border-white/10 px-3 py-2 rounded-xl hover:bg-white/10 transition-colors">
+                            <input
+                                type="checkbox"
+                                checked={content.google?.mapEnabled !== false}
+                                onChange={(e) => updateNested("google", "mapEnabled", e.target.checked)}
+                                className="w-4 h-4 accent-[#c5a059]"
+                            />
+                            <span className="text-[10px] font-black uppercase text-gray-300 tracking-wider">Enable Map in Footer</span>
+                        </label>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Official Business Name</label>
+                            <input
+                                type="text"
+                                value={content.google?.businessName || content.company?.name || ""}
+                                onChange={(e) => {
+                                    updateNested("google", "businessName", e.target.value);
+                                    updateNested("company", "name", e.target.value);
+                                }}
+                                placeholder="e.g. Dreamline Production"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Shown in Header, Footer, and GMB location badges.</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Verified Business Address</label>
+                            <input
+                                type="text"
+                                value={content.contact?.address || ""}
+                                onChange={(e) => updateNested("contact", "address", e.target.value)}
+                                placeholder="85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Displayed in the header address bar and footer studio card.</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Google Business Profile URL (GMB Link)</label>
+                            <input
+                                type="url"
+                                value={content.google?.profileUrl || ""}
+                                onChange={(e) => updateNested("google", "profileUrl", e.target.value)}
+                                placeholder="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Opened when visitors click the address in the header or footer.</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Google Maps Location URL (Full Place URL)</label>
+                            <input
+                                type="url"
+                                value={content.google?.mapsUrl || ""}
+                                onChange={(e) => updateNested("google", "mapsUrl", e.target.value)}
+                                placeholder="https://www.google.com/maps/place/Dreamline+Production/..."
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Full Google Maps link used for 'Open in Maps'.</p>
+                        </div>
+
+                        <div className="space-y-2 md:col-span-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">
+                                Google Maps Embed Code / Iframe / Embed URL
+                            </label>
+                            <textarea
+                                value={content.google?.embedCode || ""}
+                                onChange={(e) => updateNested("google", "embedCode", e.target.value)}
+                                placeholder="Paste iframe code (e.g. <iframe src=...) OR Google Maps Embed URL"
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-mono h-24"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">
+                                Paste the Google Maps &lt;iframe&gt; embed snippet or direct embed URL. Used to render the interactive map in the footer.
+                            </p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Get Directions URL</label>
+                            <input
+                                type="url"
+                                value={content.google?.directionsUrl || ""}
+                                onChange={(e) => updateNested("google", "directionsUrl", e.target.value)}
+                                placeholder="https://www.google.com/maps/dir/?api=1&destination=..."
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Triggered by 'Get Directions' buttons in header and footer.</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Google Reviews / Write Review URL</label>
+                            <input
+                                type="url"
+                                value={content.google?.reviewsUrl || ""}
+                                onChange={(e) => updateNested("google", "reviewsUrl", e.target.value)}
+                                placeholder="https://search.google.com/local/writereview?placeid=..."
+                                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                            />
+                            <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Links directly to your Google Business reviews write/view page.</p>
+                        </div>
+                    </div>
+
+                    {/* Live Map Preview */}
+                    <div className="mt-4 p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059] flex items-center gap-2">
+                                <span>🗺️</span>
+                                <span>Live Google Maps Embed Preview</span>
+                            </span>
+                            <div className="flex flex-wrap gap-2 text-[9px] font-bold">
+                                {content.google?.profileUrl && (
+                                    <a href={content.google.profileUrl} target="_blank" rel="noopener noreferrer" className="text-[#c5a059] hover:underline">
+                                        Test GMB Link ↗
+                                    </a>
+                                )}
+                                {content.google?.directionsUrl && (
+                                    <>
+                                        <span className="text-gray-600">|</span>
+                                        <a href={content.google.directionsUrl} target="_blank" rel="noopener noreferrer" className="text-[#c5a059] hover:underline">
+                                            Test Directions ↗
+                                        </a>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="w-full h-64 rounded-xl overflow-hidden border border-white/10 bg-black">
+                            {content.google?.embedCode ? (
+                                <iframe
+                                    src={
+                                        content.google.embedCode.includes("<iframe")
+                                            ? (content.google.embedCode.match(/src=["']([^"']+)["']/i)?.[1] || content.google.embedCode)
+                                            : content.google.embedCode
+                                    }
+                                    title="Map Preview"
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center text-xs text-gray-500 font-bold uppercase tracking-widest">
+                                    No Map Embed Code Provided
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </section>
+
                 {/* Google Suite Integration */}
                 <section className="space-y-6 pt-4">
                     <div>

@@ -163,6 +163,13 @@ export default function robots() {
                 disallow: '/',
             },
 
+            // Primary Search Engine Crawlers — Explicitly Allowed
+            {
+                userAgent: ['Googlebot', 'Googlebot-Image', 'Googlebot-Video', 'Googlebot-News', 'Bingbot', 'DuckDuckBot'],
+                allow: '/',
+                disallow: ['/admin/', '/api/'],
+            },
+
             // Social sharing bots — always allow for link previews
             {
                 userAgent: ['facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'WhatsApp'],

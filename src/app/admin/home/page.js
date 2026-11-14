@@ -46,7 +46,23 @@ function HomeEditorContent() {
                     { number: "02", category: "commercial", title: "COMMERCIAL ADS", priceHint: "Full Production & Scripting", subcategories: [] },
                     { number: "03", category: "tech", title: "TECH", priceHint: "Web & Digital Solutions", subcategories: [] }
                 ],
-                splitGallery: rawData.splitGallery || data.splitGallery || []
+                splitGallery: rawData.splitGallery || data.splitGallery || [],
+                sections: data.sections || {
+                    hero: true,
+                    marquee: true,
+                    stats: true,
+                    partners: true,
+                    quote: true,
+                    expertise: true,
+                    services: true,
+                    motionArchive: true,
+                    videoVault: true,
+                    splitGallery: true,
+                    projects: true,
+                    journal: true,
+                    reviews: true,
+                    letsCreate: true
+                }
             });
         } catch (err) {
             console.error(err);
@@ -78,6 +94,16 @@ function HomeEditorContent() {
         }));
     };
 
+    const toggleSection = (sectionKey) => {
+        setContent(prev => ({
+            ...prev,
+            sections: {
+                ...(prev.sections || {}),
+                [sectionKey]: prev.sections?.[sectionKey] === false ? true : false
+            }
+        }));
+    };
+
     if (loading) return <div className="text-gray-500 uppercase text-[10px] font-bold tracking-widest">Decoding cinema data...</div>;
 
     const tabs = [
@@ -85,6 +111,7 @@ function HomeEditorContent() {
         { id: "BRAND", label: "Brand Identity", icon: "🏛️" },
         { id: "SOCIAL", label: "Social Proof", icon: "⭐" },
         { id: "GALLERY", label: "Visual Archives", icon: "🎞️" },
+        { id: "SECTIONS", label: "Page Sections", icon: "👁️" },
     ];
 
     return (
@@ -963,6 +990,69 @@ function HomeEditorContent() {
                                         />
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* SECTIONS TAB */}
+                {activeTab === "SECTIONS" && (
+                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-3xl space-y-6">
+                            <div>
+                                <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">
+                                    👁️ Homepage Section Visibility
+                                </h3>
+                                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">
+                                    Toggle sections on or off to control what appears on the public homepage. Click any card to switch its status.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {[
+                                    { key: "hero", label: "Hero Banner", desc: "Top cinematic video/photo backdrop with brand titles" },
+                                    { key: "marquee", label: "Scrolling Headlines", desc: "Horizontal ticker tape of news and awards" },
+                                    { key: "stats", label: "Metric Counters", desc: "500+ weddings, 15+ years experience cards" },
+                                    { key: "partners", label: "Client Logos", desc: "Al Jazeera, Tata Trust, ABP Network, BookMyShow" },
+                                    { key: "quote", label: "Artistic Quote", desc: "Full-width background quote by Ansel Adams" },
+                                    { key: "expertise", label: "Expertise Focus", desc: "3 core craft pillars and camera setup summary" },
+                                    { key: "services", label: "Category Cards", desc: "Wedding, Commercial & Tech offerings list" },
+                                    { key: "motionArchive", label: "Motion Gallery Strip", desc: "Horizontal marquee reel of film frames" },
+                                    { key: "videoVault", label: "Video Vault Reel", desc: "Direct video player grid with luxury play controls" },
+                                    { key: "splitGallery", label: "Master Gallery", desc: "3-column interactive masonry lightbox gallery" },
+                                    { key: "projects", label: "Portfolio Grid", desc: "Interactive project showcase with category filters" },
+                                    { key: "journal", label: "Journal Insights", desc: "Latest blog stories and behind-the-scenes articles" },
+                                    { key: "reviews", label: "Client Reviews", desc: "Google 4.9-star ratings and verified client testimonials" },
+                                    { key: "letsCreate", label: "Footer CTA (Let's Create)", desc: "Bottom full-width inquiry banner with direct WhatsApp" }
+                                ].map((sec) => {
+                                    const isEnabled = content.sections?.[sec.key] !== false;
+                                    return (
+                                        <div
+                                            key={sec.key}
+                                            onClick={() => toggleSection(sec.key)}
+                                            className={`p-5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-4 select-none ${
+                                                isEnabled
+                                                    ? "bg-white/[0.03] border-white/10 hover:border-[#c5a059]/40"
+                                                    : "bg-red-500/[0.03] border-red-500/20 opacity-60 hover:opacity-100"
+                                            }`}
+                                        >
+                                            <div className="space-y-1">
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`w-2 h-2 rounded-full ${isEnabled ? "bg-emerald-400 shadow-[0_0_8px_#34d399]" : "bg-red-500"}`}></span>
+                                                    <h4 className="text-xs font-black uppercase text-white tracking-wider">{sec.label}</h4>
+                                                </div>
+                                                <p className="text-[10px] text-gray-500 font-medium leading-relaxed">{sec.desc}</p>
+                                            </div>
+                                            <div className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest flex-shrink-0 transition-all ${
+                                                isEnabled
+                                                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                                    : "bg-red-500/10 text-red-400 border border-red-500/20"
+                                            }`}>
+                                                {isEnabled ? "Visible" : "Hidden"}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>

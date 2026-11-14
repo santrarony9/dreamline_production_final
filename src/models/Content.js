@@ -13,6 +13,7 @@ const ContentSchema = new mongoose.Schema({
             youtube: { type: String, default: "" }
         },
         company: {
+            name: { type: String, default: "Dreamline Production" },
             registrationNo: { type: String, default: "WB-PR-00XXXXXX" },
             establishedYear: { type: String, default: "2010" }
         },
@@ -24,17 +25,58 @@ const ContentSchema = new mongoose.Schema({
             favicon: { type: String, default: "/favicon.ico" }
         },
         google: {
+            businessName: { type: String, default: "Dreamline Production" },
+            profileUrl: { type: String, default: "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9" },
+            mapsUrl: { type: String, default: "https://www.google.com/maps/place/Dreamline+Production/@22.4850486,88.3313873,17z/data=!4m6!3m5!1s0x3a027090db628e8f:0x3b8514dce7da523b!8m2!3d22.4850486!4d88.3339622!16s%2Fg%2F11hb2thsvp" },
+            embedCode: { type: String, default: "" },
+            directionsUrl: { type: String, default: "https://www.google.com/maps/dir/?api=1&destination=Dreamline+Production,+85,+Tilottama+Plaza,+Tower+2,+First+Floor,+Karunamoyee+Ghat+Road,+Kolkata,+West+Bengal+700082&destination_place_id=ChIJj45i25BwAjoRO1La59wUhTs" },
+            reviewsUrl: { type: String, default: "https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs" },
+            mapEnabled: { type: Boolean, default: true },
             analyticsId: { type: String, default: "" },
             searchConsoleId: { type: String, default: "" },
             mapsApiKey: { type: String, default: "" },
-            placeId: { type: String, default: "" },
+            placeId: { type: String, default: "ChIJj45i25BwAjoRO1La59wUhTs" },
             clientId: { type: String, default: "" },
             clientSecret: { type: String, default: "" },
             adsConversionId: { type: String, default: "" },
             adsConversionLabel: { type: String, default: "" }
+        },
+        announcement: {
+            enabled: { type: Boolean, default: true },
+            badge: { type: String, default: "STUDIO HQ" },
+            text: { type: String, default: "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082" },
+            link: { type: String, default: "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9" }
+        },
+        navigation: {
+            cta: {
+                label: { type: String, default: "INQUIRE NOW" },
+                href: { type: String, default: "/contact" },
+                enabled: { type: Boolean, default: true }
+            },
+            items: [{
+                label: String,
+                href: String,
+                order: Number
+            }]
         }
     },
     home: {
+        sections: {
+            hero: { type: Boolean, default: true },
+            marquee: { type: Boolean, default: true },
+            stats: { type: Boolean, default: true },
+            partners: { type: Boolean, default: true },
+            quote: { type: Boolean, default: true },
+            expertise: { type: Boolean, default: true },
+            services: { type: Boolean, default: true },
+            motionArchive: { type: Boolean, default: true },
+            videoVault: { type: Boolean, default: true },
+            splitGallery: { type: Boolean, default: true },
+            projects: { type: Boolean, default: true },
+            journal: { type: Boolean, default: true },
+            reviews: { type: Boolean, default: true },
+            letsCreate: { type: Boolean, default: true }
+        },
         seo: {
             title: { type: String, default: "" },
             description: { type: String, default: "" },

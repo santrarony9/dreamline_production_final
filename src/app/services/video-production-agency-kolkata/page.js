@@ -5,11 +5,11 @@ import Link from 'next/link';
 export const metadata = {
   title: "Video Production Agency in Kolkata | Commercial Videography",
   description: "Create cinematic videos with a professional production agency in Kolkata. From concept and filming to editing and colour grading, get complete production support.",
-  alternates: { canonical: "https://dreamlineproduction.com/services/video-production-agency-kolkata" },
+  alternates: { canonical: "https://dreamlineproduction.com/services/video-production-agency-kolkata/" },
   openGraph: {
     title: "Video Production Agency in Kolkata | Commercial Videography",
     description: "Create cinematic videos with a professional production agency in Kolkata. From concept and filming to editing and colour grading, get complete production support.",
-    url: "https://dreamlineproduction.com/services/video-production-agency-kolkata",
+    url: "https://dreamlineproduction.com/services/video-production-agency-kolkata/",
     siteName: 'Dreamline Production',
     locale: 'en_IN',
     type: 'website',
@@ -22,6 +22,13 @@ export default function ServicePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What services does a video production agency in Kolkata offer?", "acceptedAnswer": {"@type": "Answer", "text": "A video production agency can handle concept planning, scripting, filming, lighting, sound, editing, colour grading, motion graphics and final delivery."}}, {"@type": "Question", "name": "How much does video production cost in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Video production costs depend on the concept, shoot duration, locations, crew, equipment, talent, editing and post-production requirements."}}, {"@type": "Question", "name": "Can you produce commercial videos for businesses?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, commercial videos can be created for businesses across industries."}}, {"@type": "Question", "name": "Do you provide music video production in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, music video production can cover concept development, location planning, cinematography, direction, editing and colour grading."}}, {"@type": "Question", "name": "Can I visit your studio before booking a project?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, visiting the studio can help you understand the production setup, discuss your requirements and share your creative ideas with the team."}}]}) }} />
       <main className="bg-black pt-32 min-h-screen text-white">
         <section className="container mx-auto px-6 max-w-4xl pb-32">
+          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
+            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
+            <span className="mx-2">/</span>
+            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
+            <span className="mx-2">/</span>
+            <span className="text-[#c5a059]">Video Production Agency Kolkata</span>
+          </nav>
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
             
       <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8">Video <span className="text-[#c5a059]">Production Agency</span> in Kolkata</h1>

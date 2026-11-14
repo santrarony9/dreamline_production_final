@@ -55,7 +55,7 @@ export async function generateMetadata() {
       metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com'),
       title: {
         default: globalSeo.title || "Dreamline Production | Kolkata's Premier Photography & Cinematic Production House",
-        template: `%s | ${globalSeo.title || "Dreamline Production"}`
+        template: "%s | Dreamline Production"
       },
       description: globalSeo.description || "Dreamline Production is Kolkata's premier photography and cinematic production house. 15+ years of experience, 500+ weddings captured. Luxury wedding photography, commercial ad films, and visual storytelling across India.",
       keywords: keywordsList,

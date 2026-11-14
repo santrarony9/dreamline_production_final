@@ -3,10 +3,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { getSafeImageUrl } from "@/lib/media";
 
 export default function QuoteSection({ quote, backgroundImage }) {
     const defaultQuote = "We don't take pictures with a camera. We bring to the act of photography all the books we have read, the movies we have seen, the music we have heard.";
-    const defaultBg = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1920&q=80";
+    const safeBg = getSafeImageUrl(backgroundImage, 'quote');
     const [placeId, setPlaceId] = useState("");
 
     useEffect(() => {
@@ -25,9 +26,9 @@ export default function QuoteSection({ quote, backgroundImage }) {
 
     return (
         <section
-            className="relative py-12 md:py-24 flex items-center justify-center border-t border-white/5 bg-scroll md:bg-fixed bg-center bg-cover bg-no-repeat"
+            className="relative py-16 md:py-28 flex items-center justify-center border-t border-white/5 bg-scroll md:bg-fixed bg-center bg-cover bg-no-repeat"
             style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("${backgroundImage || defaultBg}")`
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.85)), url("${safeBg}")`
             }}
         >
             {/* Content Layer */}

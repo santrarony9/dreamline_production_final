@@ -19,7 +19,7 @@ export default function PublicLayoutWrapper({ children, siteContent }) {
         <>
             <Preloader />
             <VideoModal />
-            <Navbar initialServices={siteContent?.services || siteContent?.home?.services} />
+            <Navbar siteContent={siteContent} initialServices={siteContent?.services || siteContent?.home?.services} />
             {children}
             <Footer siteContent={siteContent} />
             <WhatsAppButton phoneNumber={siteContent?.global?.contact?.phone || "+918240054002"} />

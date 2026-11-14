@@ -187,7 +187,10 @@ export async function POST(request) {
                 await fsPromises.mkdir(uploadDir, { recursive: true });
                 await fsPromises.writeFile(path.join(uploadDir, finalFileName), assembledBuffer);
 
-                const publicUrl = `https://backend.dreamlineproduction.com/uploads/${finalFileName}`;
+                const baseStorageUrl = (process.env.LOCAL_STORAGE === 'true' || !process.env.BACKEND_URL) 
+                    ? '' 
+                    : process.env.BACKEND_URL.replace(/\/$/, '');
+                const publicUrl = `${baseStorageUrl}/uploads/${finalFileName}`;
                 return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
             } else {
                 return NextResponse.json({ success: true, message: `Chunk ${chunkIndex} received` }, { headers: corsHeaders });
@@ -226,7 +229,10 @@ export async function POST(request) {
         const finalFileName = `${Date.now()}-${originalName}`;
         await fsPromises.writeFile(path.join(uploadDir, finalFileName), buffer);
 
-        const publicUrl = `https://backend.dreamlineproduction.com/uploads/${finalFileName}`;
+        const baseStorageUrl = (process.env.LOCAL_STORAGE === 'true' || !process.env.BACKEND_URL) 
+            ? '' 
+            : process.env.BACKEND_URL.replace(/\/$/, '');
+        const publicUrl = `${baseStorageUrl}/uploads/${finalFileName}`;
         return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
     } catch (error) {
         console.error("[Upload VPS] Error:", error);

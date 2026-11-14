@@ -6,14 +6,14 @@ import Image from "next/image";
 import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
 import StructuredData from '@/components/seo/StructuredData';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export async function generateMetadata({ params }) {
     await dbConnect();
     const { slug } = await params;
-    const page = await ServicePage.findOne({ slug }).lean();
+    const page = await ServicePage.findOne({ $or: [{ slug }, { aliases: slug }] }).lean();
     
     if (!page) {
         const formattedSlug = slug.replace(/-/g, ' ');
@@ -26,16 +26,17 @@ export async function generateMetadata({ params }) {
 
     const title = page.title;
     const description = page.description || "Professional cinematic production services in Kolkata.";
+    const canonicalSlug = page.slug || slug;
     return {
         title: title,
         description: description,
         alternates: {
-            canonical: `https://dreamlineproduction.com/services/${slug}`,
+            canonical: `https://dreamlineproduction.com/services/${canonicalSlug}/`,
         },
         openGraph: {
             title: title,
             description: description,
-            url: `https://dreamlineproduction.com/services/${slug}`,
+            url: `https://dreamlineproduction.com/services/${canonicalSlug}/`,
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
@@ -53,46 +54,20 @@ export async function generateMetadata({ params }) {
 export default async function DynamicServicePage({ params }) {
     await dbConnect();
     const { slug } = await params;
-    const rawPage = await ServicePage.findOne({ slug }).lean();
+    const rawPage = await ServicePage.findOne({ $or: [{ slug }, { aliases: slug }] }).lean();
     const page = rawPage ? JSON.parse(JSON.stringify(rawPage)) : null;
-    const rawSiteContent = await Content.findOne().lean();
-    const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
 
     if (!page) {
         return notFound();
-        // Fallback: Try to find which category this subcategory belongs to
-        const categoryMatch = (siteContent?.home?.services || []).find(s => 
-            (s.subcategories || []).some(sub => slugify(sub) === slug)
-        );
-        
-        const parentCategory = categoryMatch?.category || "home";
-        const parentLink = parentCategory === "wedding" ? "/luxury" : parentCategory === "commercial" ? "/commercial" : parentCategory === "tech" ? "/tech" : "/";
-        const parentLabel = parentCategory === "wedding" ? "Luxury Weddings" : parentCategory === "commercial" ? "Commercial Showcase" : parentCategory === "tech" ? "Tech Divisions" : "Home";
-
-        return (
-            <main className="bg-black min-h-screen flex items-center justify-center pt-32 px-6">
-                <div className="text-center max-w-2xl">
-                    <div className="mb-8 relative inline-block">
-                        <h1 className="text-[#c5a059] font-heading font-black text-6xl md:text-8xl uppercase tracking-tighter opacity-20">404</h1>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <h2 className="text-white font-black text-2xl md:text-3xl uppercase tracking-widest whitespace-nowrap">NOT READY</h2>
-                        </div>
-                    </div>
-                    <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px] mb-12 leading-relaxed">
-                        The cinematic experience for <span className="text-[#c5a059]">{slug.replace(/-/g, ' ')}</span> is currently being mastered.
-                    </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link href={parentLink} className="w-full sm:w-auto bg-[#c5a059] text-black px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all transform hover:-translate-y-1">
-                            Back to {parentLabel}
-                        </Link>
-                        <Link href="/" className="w-full sm:w-auto border border-white/10 text-white/50 px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-widest hover:text-white hover:border-white/30 transition-all">
-                            Return Home
-                        </Link>
-                    </div>
-                </div>
-            </main>
-        );
     }
+
+    // Permanent 301 redirect if accessed via an alias or non-canonical slug
+    if (page.slug && page.slug !== slug) {
+        redirect(`/services/${page.slug}/`);
+    }
+
+    const rawSiteContent = await Content.findOne().lean();
+    const siteContent = JSON.parse(JSON.stringify(rawSiteContent || {}));
 
     return (
         <main className="bg-black pt-24 md:pt-32">
@@ -106,11 +81,18 @@ export default async function DynamicServicePage({ params }) {
                     "name": "Dreamline Production",
                     "url": "https://dreamlineproduction.com"
                 },
-                "url": `https://dreamlineproduction.com/services/${slug}`,
+                "url": `https://dreamlineproduction.com/services/${page.slug || slug}/`,
                 "areaServed": ["Kolkata", "West Bengal", "India"]
             }} />
             {/* HERO SECTION */}
             <section className="px-8 md:px-16 mb-20">
+                <nav aria-label="Breadcrumb" className="mb-6 text-xs font-bold uppercase tracking-widest text-gray-500">
+                    <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
+                    <span className="mx-2">/</span>
+                    <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
+                    <span className="mx-2">/</span>
+                    <span className="text-[#c5a059]">{page.title}</span>
+                </nav>
                 <div className="max-w-4xl">
                     <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">
                         {page.subtitle || "Service Specialty"}

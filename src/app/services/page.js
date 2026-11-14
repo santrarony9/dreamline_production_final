@@ -7,16 +7,22 @@ import StructuredData from "@/components/seo/StructuredData";
 const slugify = (text) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 const STATIC_SERVICES = [
     {
-        _id: 'static-rice-ceremony',
-        slug: 'rice-ceremony-photography-kolkata',
-        title: 'Rice Ceremony / Annaprashan Photography',
-        description: 'Documenting baby rice ceremonies across Kolkata with candid moments, family blessings, and traditional rituals.'
+        _id: 'static-wedding-photo',
+        slug: 'wedding-photography-kolkata',
+        title: 'Wedding Photography in Kolkata',
+        description: 'Luxury candid wedding photography and 4K cinematic wedding cinema capturing timeless Bengali traditions and memories.'
     },
     {
-        _id: 'static-video-agency',
-        slug: 'video-production-agency-kolkata',
-        title: 'Video Production Agency Kolkata',
-        description: 'End-to-end commercial video production, brand films, music videos, and cinematic visual campaigns.'
+        _id: 'static-corporate-photo',
+        slug: 'corporate-photography-kolkata',
+        title: 'Corporate Photography & Films',
+        description: 'End-to-end corporate video production, executive headshots, brand documentaries, and industrial facility shoots.'
+    },
+    {
+        _id: 'static-drone-video',
+        slug: 'drone-videography-kolkata',
+        title: 'Drone Videography in Kolkata',
+        description: 'DGCA-certified 4K aerial cinematography for luxury weddings, commercial projects, architecture, and live events.'
     },
     {
         _id: 'static-drone-photo',
@@ -29,20 +35,31 @@ const STATIC_SERVICES = [
         slug: 'pre-wedding-shoot-kolkata',
         title: 'Cinematic Pre-Wedding Shoots',
         description: 'Creative couple photoshoots at iconic Kolkata backdrops like Princep Ghat, Victoria Memorial, and Eco Park.'
+    },
+    {
+        _id: 'static-rice-ceremony',
+        slug: 'rice-ceremony-photography-kolkata',
+        title: 'Rice Ceremony / Annaprashan Photography',
+        description: 'Documenting baby rice ceremonies across Kolkata with candid moments, family blessings, and traditional rituals.'
+    },
+    {
+        _id: 'static-video-agency',
+        slug: 'video-production-agency-kolkata',
+        title: 'Video Production Agency Kolkata',
+        description: 'End-to-end commercial video production, brand films, music videos, and cinematic visual campaigns.'
     }
 ];
-
 
 export const metadata = {
     title: "Our Services — Dreamline Production | Wedding Photography, Corporate Films & More",
     description: "Explore all services by Dreamline Production, Kolkata's premier cinematic production house. Wedding photography, corporate films, ad films, drone videography, podcast production, line production, and more.",
     alternates: {
-        canonical: "https://dreamlineproduction.com/services",
+        canonical: "https://dreamlineproduction.com/services/",
     },
     openGraph: {
         title: "Our Services — Dreamline Production",
         description: "Wedding photography, corporate films, ad films, drone videography, podcast production, and more from Kolkata's top production house.",
-        url: "https://dreamlineproduction.com/services",
+        url: "https://dreamlineproduction.com/services/",
         type: "website",
     },
 };
@@ -93,13 +110,13 @@ export default async function ServicesPage() {
                 "@type": "CollectionPage",
                 "name": "Services — Dreamline Production",
                 "description": "All professional photography, videography, and production services offered by Dreamline Production in Kolkata.",
-                "url": "https://dreamlineproduction.com/services",
+                "url": "https://dreamlineproduction.com/services/",
                 "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
                 "breadcrumb": {
                     "@type": "BreadcrumbList",
                     "itemListElement": [
-                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
-                        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://dreamlineproduction.com/services" }
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com/" },
+                        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://dreamlineproduction.com/services/" }
                     ]
                 }
             }} />
@@ -157,7 +174,7 @@ export default async function ServicesPage() {
                         {serializedServicePages.map((sp) => (
                             <Link
                                 key={sp._id}
-                                href={`/services/${sp.slug}`}
+                                href={`/services/${sp.slug}/`}
                                 className="group bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:border-[#c5a059]/20 transition-all"
                             >
                                 <h3 className="text-sm font-black text-white uppercase tracking-tight mb-2 group-hover:text-[#c5a059] transition-colors">

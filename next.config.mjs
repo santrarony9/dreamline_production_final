@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  trailingSlash: false,
+  trailingSlash: true,
   images: {
     minimumCacheTTL: 5184000, // 60 days to stay within free tier optimization limits
     remotePatterns: [
@@ -77,11 +77,11 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://maps.googleapis.com",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://maps.googleapis.com https://*.doubleclick.net",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: blob: https://backend.dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://res.cloudinary.com https://image.thum.io https://images.unsplash.com https://i.ytimg.com https://img.youtube.com https://*.googleapis.com https://*.googleusercontent.com",
+              "img-src 'self' data: blob: https://backend.dreamlineproduction.com https://dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://res.cloudinary.com https://image.thum.io https://images.unsplash.com https://i.ytimg.com https://img.youtube.com https://*.googleapis.com https://*.googleusercontent.com https://*.doubleclick.net https://*.google.com https://*.google.co.in",
               "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://www.google-analytics.com https://*.googleapis.com wss:",
+              "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googleapis.com https://*.doubleclick.net https://*.google.com https://*.google.co.in wss:",
               "media-src 'self' data: blob: https://backend.dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com",
               "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://youtube.com https://player.vimeo.com https://vimeo.com",
               "frame-ancestors 'self'",
@@ -119,19 +119,116 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // Standardized Service URLs 301 Permanent Redirects
       {
-        source: '/services/pre-wedding',
-        destination: '/locations/pre-wedding-shoot-kolkata',
+        source: '/services/drone-videography',
+        destination: '/services/drone-videography-kolkata/',
         permanent: true,
       },
       {
+        source: '/services/corporate-films',
+        destination: '/services/corporate-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/corporate-photography',
+        destination: '/services/corporate-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/wedding-photography',
+        destination: '/services/wedding-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/luxury-weddings',
+        destination: '/services/wedding-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/luxury-wedding-cinema',
+        destination: '/services/wedding-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/cinematic-film',
+        destination: '/services/wedding-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/pre-wedding',
+        destination: '/services/pre-wedding-shoot-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/pre-wedding-shoot',
+        destination: '/services/pre-wedding-shoot-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/podcast',
+        destination: '/services/podcast-production-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/documentary',
+        destination: '/services/documentary-film-production-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/brand-promotion',
+        destination: '/services/brand-promotion-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/ad-films',
+        destination: '/services/commercial-ad-films-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/brand-films',
+        destination: '/services/commercial-ad-films-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/3d-area-mapping',
+        destination: '/services/3d-area-mapping-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/2d-animation',
+        destination: '/services/2d-animation-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/drone-photography',
+        destination: '/services/drone-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/rice-ceremony',
+        destination: '/services/rice-ceremony-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/annaprashan-photography',
+        destination: '/services/rice-ceremony-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/video-production-agency',
+        destination: '/services/video-production-agency-kolkata/',
+        permanent: true,
+      },
+      // Journal legacy redirects
+      {
         source: '/journal',
-        destination: '/blogs',
+        destination: '/blogs/',
         permanent: true,
       },
       {
         source: '/journal/:slug*',
-        destination: '/blogs/:slug*',
+        destination: '/blogs/:slug*/',
         permanent: true,
       },
     ];

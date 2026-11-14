@@ -7,6 +7,7 @@ const ServicePageSchema = new mongoose.Schema({
         unique: true,
         index: true
     },
+    aliases: [{ type: String, index: true }],
     title: { type: String, required: true },
     subtitle: { type: String, default: "Services" },
     description: { type: String },

@@ -18,17 +18,17 @@ const SERVICE_LINKS = {
     { title: 'Commercial Photography', href: '/commercial', desc: 'Product, fashion & commercial shoots' },
   ],
   'TECH': [
-    { title: 'Drone Videography', href: '/locations/drone-photography-kolkata', desc: 'Aerial photography & DGCA-certified drone shoots' },
+    { title: 'Drone Videography', href: '/services/drone-videography-kolkata/', desc: 'Aerial photography & DGCA-certified drone shoots' },
     { title: 'Tech & Innovation Services', href: '/tech', desc: '3D mapping, animation & tech productions' },
   ],
   'INSIGHT': [
-    { title: 'Wedding Photography', href: '/luxury', desc: 'Luxury cinematic wedding documentation' },
-    { title: 'Commercial Production', href: '/commercial', desc: 'Corporate films & brand stories' },
-    { title: 'Our Services', href: '/services', desc: 'Full range of photography & production services' },
+    { title: 'Wedding Photography', href: '/services/wedding-photography-kolkata/', desc: 'Luxury cinematic wedding documentation' },
+    { title: 'Commercial Production', href: '/services/video-production-agency-kolkata/', desc: 'Corporate films & brand stories' },
+    { title: 'Our Services', href: '/services/', desc: 'Full range of photography & production services' },
   ],
   'DEFAULT': [
-    { title: 'Wedding Photography', href: '/luxury', desc: 'Luxury cinematic wedding documentation' },
-    { title: 'Commercial Films', href: '/commercial', desc: 'Corporate films & brand stories' },
+    { title: 'Wedding Photography', href: '/services/wedding-photography-kolkata/', desc: 'Luxury cinematic wedding documentation' },
+    { title: 'Commercial Films', href: '/services/video-production-agency-kolkata/', desc: 'Corporate films & brand stories' },
     { title: 'Contact Us', href: '/contact', desc: 'Discuss your project with our team' },
   ]
 };

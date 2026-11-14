@@ -18,10 +18,12 @@ export default function Preloader() {
         }
 
         // Human users: only show preloader once per session
-        if (sessionStorage.getItem('dreamline_preloaded')) {
-            setIsLoading(false);
-            return;
-        }
+        try {
+            if (sessionStorage.getItem('dreamline_preloaded')) {
+                setIsLoading(false);
+                return;
+            }
+        } catch (e) {}
 
         // Increment progress randomly to simulate loading
         const interval = setInterval(() => {
@@ -30,17 +32,21 @@ export default function Preloader() {
                     clearInterval(interval);
                     setTimeout(() => {
                         setIsLoading(false);
-                        sessionStorage.setItem('dreamline_preloaded', '1');
-                    }, 400); // Short transition
+                        try { sessionStorage.setItem('dreamline_preloaded', '1'); } catch (e) {}
+                    }, 300);
                     return 100;
                 }
-                return prev + Math.floor(Math.random() * 20) + 8;
+                return prev + Math.floor(Math.random() * 25) + 15;
             });
-        }, 100);
+        }, 80);
 
         // If window is fully loaded, force it to 100
         const handleLoad = () => {
             setProgress(100);
+            setTimeout(() => {
+                setIsLoading(false);
+                try { sessionStorage.setItem('dreamline_preloaded', '1'); } catch (e) {}
+            }, 250);
         };
 
         if (document.readyState === 'complete') {
@@ -49,14 +55,14 @@ export default function Preloader() {
             window.addEventListener('load', handleLoad);
         }
 
-        // Fail-safe: never show loader for more than 1.0 second
+        // Fail-safe: never show loader for more than 700ms
         const failSafe = setTimeout(() => {
             setProgress(100);
             setTimeout(() => {
                 setIsLoading(false);
-                sessionStorage.setItem('dreamline_preloaded', '1');
-            }, 400);
-        }, 1000);
+                try { sessionStorage.setItem('dreamline_preloaded', '1'); } catch (e) {}
+            }, 250);
+        }, 700);
 
         return () => {
             clearInterval(interval);

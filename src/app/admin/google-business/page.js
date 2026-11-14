@@ -5,7 +5,11 @@ import axios from "axios";
 
 export default function GoogleBusinessAdmin() {
     const [loading, setLoading] = useState(true);
-    const [settings, setSettings] = useState(null);
+    const [settings, setSettings] = useState({});
+    const [address, setAddress] = useState("");
+    const [businessName, setBusinessName] = useState("");
+    const [saving, setSaving] = useState(false);
+    const [saveMsg, setSaveMsg] = useState("");
     const [pendingPosts, setPendingPosts] = useState([]);
     const [reviewSyncStatus, setReviewSyncStatus] = useState(null);
     const [reviewSyncMsg, setReviewSyncMsg] = useState('');
@@ -17,7 +21,10 @@ export default function GoogleBusinessAdmin() {
                     axios.get("/api/content"),
                     axios.get("/api/journals")
                 ]);
-                setSettings(res.data?.global?.google || {});
+                const global = res.data?.global || {};
+                setSettings(global.google || {});
+                setAddress(global.contact?.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082");
+                setBusinessName(global.google?.businessName || global.company?.name || "Dreamline Production");
                 const posts = journalsRes.data || [];
                 const pending = posts.filter(p => p.googleBusinessSync !== 'SYNCED');
                 setPendingPosts(pending);
@@ -29,6 +36,38 @@ export default function GoogleBusinessAdmin() {
         };
         fetchSettings();
     }, []);
+
+    const updateGoogleField = (field, value) => {
+        setSettings(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSaveProfile = async (e) => {
+        if (e) e.preventDefault();
+        setSaving(true);
+        setSaveMsg("");
+        try {
+            await axios.post("/api/content", {
+                global: {
+                    google: {
+                        ...settings,
+                        businessName
+                    },
+                    contact: {
+                        address
+                    },
+                    company: {
+                        name: businessName
+                    }
+                }
+            });
+            setSaveMsg("Google Business profile & maps settings updated successfully!");
+            setTimeout(() => setSaveMsg(""), 4000);
+        } catch (err) {
+            setSaveMsg("Error saving Google Business settings: " + (err.response?.data?.error || err.message));
+        } finally {
+            setSaving(false);
+        }
+    };
 
     const handleAuthorize = () => {
         alert("SYSTEM ACTION: Google Business API requires a 'Client ID' and 'Secret' from your Google Cloud Console. I will now redirect you to Global Settings to enter them.");
@@ -80,43 +119,225 @@ export default function GoogleBusinessAdmin() {
         }
     };
 
+    const getEmbedSrc = (raw) => {
+        if (!raw) return "https://maps.google.com/maps?q=Dreamline+Production,+85,+Tilottama+Plaza,+Tower+2,+First+Floor,+Karunamoyee+Ghat+Road,+Kolkata,+West+Bengal+700082&t=&z=16&ie=UTF8&iwloc=&output=embed";
+        if (typeof raw === 'string' && raw.includes('<iframe')) {
+            const match = raw.match(/src=["']([^"']+)["']/i);
+            if (match && match[1]) return match[1];
+        }
+        return raw;
+    };
+
     if (loading) return <div className="p-20 text-center uppercase text-[10px] font-black tracking-widest text-[#c5a059]">Initializing Neural Link...</div>;
 
     return (
         <div className="space-y-12">
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-0">
                 <div>
-                    <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Social Sync</h2>
+                    <h2 className="text-sm font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Location &amp; Social Sync</h2>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter">Google <span className="text-gray-500">Business.</span></h1>
                 </div>
-                <div className="flex gap-4">
-                     <div className="text-[10px] text-green-500 font-bold uppercase tracking-widest border border-green-500/20 bg-green-500/5 px-4 py-2 rounded-full flex items-center gap-2">
+                <div className="flex items-center gap-3">
+                    <div className="text-[10px] text-green-500 font-bold uppercase tracking-widest border border-green-500/20 bg-green-500/5 px-4 py-2 rounded-full flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                        API Ready
+                        Verified Profile Connected
                     </div>
                 </div>
             </header>
+
+            {/* Editable Profile, Address & Maps Settings Form */}
+            <form onSubmit={handleSaveProfile} className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8 sm:p-10 space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/5">
+                    <div>
+                        <div className="flex items-center gap-3">
+                            <h3 className="text-sm font-black uppercase tracking-widest text-[#c5a059]">📍 Verified Profile &amp; Maps Management</h3>
+                            <span className="text-[8px] bg-green-500/10 border border-green-500/20 text-green-400 px-2 py-0.5 rounded font-black tracking-widest uppercase">Header &amp; Footer Active</span>
+                        </div>
+                        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed mt-1">
+                            Updates reflect automatically on the website header address, footer Google Maps embed, and Get Directions buttons.
+                        </p>
+                    </div>
+                    <label className="flex items-center gap-2 cursor-pointer bg-white/5 border border-white/10 px-4 py-2 rounded-xl hover:bg-white/10 transition-colors self-start sm:self-auto">
+                        <input
+                            type="checkbox"
+                            checked={settings.mapEnabled !== false}
+                            onChange={(e) => updateGoogleField("mapEnabled", e.target.checked)}
+                            className="w-4 h-4 accent-[#c5a059]"
+                        />
+                        <span className="text-[10px] font-black uppercase text-gray-300 tracking-wider">Show Map in Footer</span>
+                    </label>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* 1. Business Name */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Official Business Name</label>
+                        <input
+                            type="text"
+                            value={businessName}
+                            onChange={(e) => setBusinessName(e.target.value)}
+                            placeholder="Dreamline Production"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Official verified brand name displayed on the website.</p>
+                    </div>
+
+                    {/* 2. Business Address */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Business Address</label>
+                        <input
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Clickable address in website header and footer studio card.</p>
+                    </div>
+
+                    {/* 3. Google Business Profile URL */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Google Business Profile (GMB) URL</label>
+                        <input
+                            type="url"
+                            value={settings.profileUrl || ""}
+                            onChange={(e) => updateGoogleField("profileUrl", e.target.value)}
+                            placeholder="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Opens in new tab when clicking header address or Google Profile button.</p>
+                    </div>
+
+                    {/* 4. Google Maps Location URL */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Google Maps Location URL</label>
+                        <input
+                            type="url"
+                            value={settings.mapsUrl || ""}
+                            onChange={(e) => updateGoogleField("mapsUrl", e.target.value)}
+                            placeholder="https://www.google.com/maps/place/Dreamline+Production/..."
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Full Google Maps place link used for 'Open Full Map' actions.</p>
+                    </div>
+
+                    {/* 5. Google Maps Embed Code */}
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">
+                            Google Maps Embed Code / Iframe / Embed URL
+                        </label>
+                        <textarea
+                            value={settings.embedCode || ""}
+                            onChange={(e) => updateGoogleField("embedCode", e.target.value)}
+                            placeholder="Paste <iframe> code OR https://maps.google.com/maps?q=...&output=embed"
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-mono h-24"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">
+                            Interactive responsive map source rendered in the footer. Accepts raw embed URL or full &lt;iframe&gt; code.
+                        </p>
+                    </div>
+
+                    {/* 6. Get Directions URL */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Get Directions URL</label>
+                        <input
+                            type="url"
+                            value={settings.directionsUrl || ""}
+                            onChange={(e) => updateGoogleField("directionsUrl", e.target.value)}
+                            placeholder="https://www.google.com/maps/dir/?api=1&destination=..."
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Target for the 'Get Directions' button in header and footer.</p>
+                    </div>
+
+                    {/* Google Reviews URL */}
+                    <div className="space-y-2">
+                        <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest pl-1">Google Reviews URL</label>
+                        <input
+                            type="url"
+                            value={settings.reviewsUrl || ""}
+                            onChange={(e) => updateGoogleField("reviewsUrl", e.target.value)}
+                            placeholder="https://search.google.com/local/writereview?placeid=..."
+                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-xs font-bold"
+                        />
+                        <p className="text-[9px] text-gray-600 font-bold uppercase pl-1">Links to write or read Google customer reviews.</p>
+                    </div>
+                </div>
+
+                {/* Map Preview */}
+                <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059] flex items-center gap-2">
+                            <span>🗺️</span>
+                            <span>Interactive Map Live Preview</span>
+                        </span>
+                        <div className="flex flex-wrap gap-3 text-[10px] font-bold">
+                            {settings.profileUrl && (
+                                <a href={settings.profileUrl} target="_blank" rel="noopener noreferrer" className="text-[#c5a059] hover:underline">
+                                    Test GMB Profile ↗
+                                </a>
+                            )}
+                            {settings.directionsUrl && (
+                                <>
+                                    <span className="text-gray-600">|</span>
+                                    <a href={settings.directionsUrl} target="_blank" rel="noopener noreferrer" className="text-[#c5a059] hover:underline">
+                                        Test Directions ↗
+                                    </a>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="w-full h-64 rounded-xl overflow-hidden border border-white/10 bg-black">
+                        <iframe
+                            src={getEmbedSrc(settings.embedCode)}
+                            title="Google Maps Preview"
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            allowFullScreen=""
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+
+                {/* Form Save Button & Feedback */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-white/5">
+                    {saveMsg ? (
+                        <p className={`text-[10px] font-black uppercase tracking-widest ${saveMsg.includes("Error") ? "text-red-400" : "text-green-400"}`}>
+                            {saveMsg}
+                        </p>
+                    ) : <span />}
+                    <button
+                        type="submit"
+                        disabled={saving}
+                        className="w-full sm:w-auto px-8 py-3.5 bg-[#c5a059] text-black font-black uppercase text-[10px] tracking-[0.2em] rounded-xl hover:bg-white transition-all disabled:opacity-50 shadow-lg shadow-[#c5a059]/10"
+                    >
+                        {saving ? "Updating Live Website..." : "Save Profile & Maps Settings"}
+                    </button>
+                </div>
+            </form>
 
             <div className="grid lg:grid-cols-12 gap-8">
                 {/* Connection Status */}
                 <section className="lg:col-span-4 space-y-6">
                     <div className="bg-[#0a0a0a] border border-white/5 rounded-3xl p-8">
-                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-6">Connection Status</h3>
+                        <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-6">Google Account Link</h3>
                         <div className="space-y-6">
                             <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
                                 <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl text-black font-black">G</div>
                                 <div>
-                                    <p className="text-[10px] font-black text-white uppercase tracking-widest">Google Profile</p>
-                                    <p className="text-[9px] text-gray-500 font-bold uppercase">Dreamline Production</p>
+                                    <p className="text-[10px] font-black text-white uppercase tracking-widest">{businessName}</p>
+                                    <p className="text-[9px] text-gray-500 font-bold uppercase truncate max-w-[180px]">{address}</p>
                                 </div>
                             </div>
                             <button type="button" 
                                 onClick={handleAuthorize}
                                 className="w-full bg-[#c5a059] text-black py-4 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] hover:bg-white transition-all interactive shadow-lg shadow-[#c5a059]/10"
                             >
-                                Connect Google Account
+                                Re-Authenticate Google Account
                             </button>
-                            <p className="text-[9px] text-gray-600 text-center uppercase font-bold">Last synced: Today, 11:30 AM</p>
+                            <p className="text-[9px] text-gray-600 text-center uppercase font-bold">Verified on Google Maps</p>
                         </div>
                     </div>
 
@@ -169,7 +390,7 @@ export default function GoogleBusinessAdmin() {
                         )}
 
                         <p className="text-[8px] text-gray-600 text-center uppercase font-bold mt-4">
-                            Requires Maps API Key in Global Settings
+                            Place ID: {settings.placeId || "ChIJj45i25BwAjoRO1La59wUhTs"}
                         </p>
                     </div>
                 </section>
