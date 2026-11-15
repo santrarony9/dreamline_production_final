@@ -17,6 +17,15 @@ export default function MotionGallery({
 
     const baseImages = images && images.length > 0 ? images : defaultImages;
 
+    const MOTION_DESCRIPTIONS = [
+        "Candid wedding couple portrait photographed during outdoor sunset ceremony in Kolkata",
+        "Traditional Bengali bride in red Banarasi saree during saat paak ritual",
+        "Intimate pre-wedding couple photography session at heritage location in Kolkata",
+        "Cinematic floral garland exchange ritual during luxury wedding ceremony",
+        "Emotional candid moment of bride and parents during emotional vidaai ritual",
+        "Grand luxury wedding reception celebration with golden ambient cinema lighting"
+    ];
+
     // Ensure at least 6 images in the base sequence so wide screens remain seamlessly filled
     let trackList = [...baseImages];
     while (trackList.length < 6) {
@@ -51,7 +60,7 @@ export default function MotionGallery({
                         >
                             <Image 
                                 src={src} 
-                                alt={`Cinematic wedding photography Kolkata ${(i % trackList.length) + 1}`}
+                                alt={MOTION_DESCRIPTIONS[i % MOTION_DESCRIPTIONS.length]}
                                 fill
                                 sizes="(max-width: 768px) 280px, 320px"
                                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 md:scale-105 md:group-hover:scale-100" 

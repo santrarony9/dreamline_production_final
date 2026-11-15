@@ -150,7 +150,7 @@ export default async function RootLayout({ children }) {
       "inLanguage": "en-IN",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://dreamlineproduction.com/blogs?q={search_term_string}",
+        "target": "https://dreamlineproduction.com/blogs/?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     });

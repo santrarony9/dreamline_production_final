@@ -50,14 +50,20 @@ export default function Footer({ siteContent }) {
                     {/* Navigation Section */}
                     <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-x-8 gap-y-4 text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
                         <Link href="/" className="hover:text-white transition-colors interactive">Home</Link>
-                        <Link href="/about" className="hover:text-white transition-colors interactive">History</Link>
+                        <Link href="/about" className="hover:text-white transition-colors interactive">About Us</Link>
+                        <Link href="/services/" className="hover:text-white transition-colors interactive">Services</Link>
+                        <Link href="/portfolio/" className="hover:text-white transition-colors interactive">Portfolio</Link>
                         <Link href="/luxury" className="hover:text-white transition-colors interactive">Luxury Weddings</Link>
                         <Link href="/commercial" className="hover:text-white transition-colors interactive">Commercial</Link>
-                        <Link href="/services/" className="hover:text-white transition-colors interactive">Services</Link>
-                        <Link href="/blogs" className="hover:text-white transition-colors interactive">Journal</Link>
+                        <Link href="/blogs" className="hover:text-white transition-colors interactive">Blogs</Link>
                         <Link href="/tech" className="hover:text-white transition-colors interactive">Tech</Link>
                         <Link href="/faq" className="hover:text-white transition-colors interactive">FAQ</Link>
-                        <Link href="/contact" className="hover:text-white transition-colors interactive text-[#c5a059]">Inquire</Link>
+                        {Array.isArray(siteContent?.global?.navigation?.footerItems) && siteContent.global.navigation.footerItems.map((fItem, idx) => (
+                            <Link key={idx} href={fItem.href} className="hover:text-white transition-colors interactive text-white/90">
+                                {fItem.label}
+                            </Link>
+                        ))}
+                        <Link href="/contact" className="hover:text-white transition-colors interactive text-[#c5a059]">Get a Quote</Link>
                     </div>
 
                     {/* Contact & Social Section */}

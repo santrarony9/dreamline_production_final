@@ -58,6 +58,19 @@ export default function MasterGallery({ images = [] }) {
         }
     };
 
+    // Distinct SEO-friendly descriptions for each gallery frame
+    const GALLERY_CAPTIONS = [
+        "Candid outdoor pre-wedding couple photoshoot in Kolkata by Dreamline Production",
+        "Traditional Bengali wedding rituals and cultural celebration documentation",
+        "Emotional candid bridal portrait during wedding preparations in Kolkata",
+        "Luxury couple portrait during grand evening wedding reception",
+        "Traditional sindoor daan wedding ceremony captured with cinematic lighting",
+        "Intimate pre-wedding destination narrative amidst historic heritage architecture",
+        "Cinematic bride and groom golden hour portrait in Kolkata",
+        "Vibrant haldi ceremony moments filled with genuine laughter and family celebrations",
+        "Cinematic wedding vows and exchange of floral garlands ritual in Kolkata"
+    ];
+
     // Split images into 3 columns for the vertical slider effect
     const col1 = displayImages.filter((_, i) => i % 3 === 0);
     const col2 = displayImages.filter((_, i) => i % 3 === 1);
@@ -90,15 +103,15 @@ export default function MasterGallery({ images = [] }) {
                             <motion.div
                                 layoutId={`gallery-img-${src}-${i}`}
                                 key={`c1-${i}`}
-                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-${i}` })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-${i}` }); }}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-${i}`, alt: GALLERY_CAPTIONS[(i * 3) % GALLERY_CAPTIONS.length] })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-${i}`, alt: GALLERY_CAPTIONS[(i * 3) % GALLERY_CAPTIONS.length] }); }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label="View expanded image"
                                 className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt={GALLERY_CAPTIONS[(i * 3) % GALLERY_CAPTIONS.length]} loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -111,15 +124,15 @@ export default function MasterGallery({ images = [] }) {
                             <motion.div
                                 layoutId={`gallery-img-${src}-c2-${i}`}
                                 key={`c2-${i}`}
-                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c2-${i}` })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c2-${i}` }); }}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c2-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 1) % GALLERY_CAPTIONS.length] })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c2-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 1) % GALLERY_CAPTIONS.length] }); }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label="View expanded image"
                                 className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt={GALLERY_CAPTIONS[(i * 3 + 1) % GALLERY_CAPTIONS.length]} loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -132,15 +145,15 @@ export default function MasterGallery({ images = [] }) {
                             <motion.div
                                 layoutId={`gallery-img-${src}-c3-${i}`}
                                 key={`c3-${i}`}
-                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c3-${i}` })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c3-${i}` }); }}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c3-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 2) % GALLERY_CAPTIONS.length] })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c3-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 2) % GALLERY_CAPTIONS.length] }); }}
                                 role="button"
                                 tabIndex={0}
                                 aria-label="View expanded image"
                                 className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
                                 data-cursor="VIEW"
                             >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt={GALLERY_CAPTIONS[(i * 3 + 2) % GALLERY_CAPTIONS.length]} loading="lazy" />
                             </motion.div>
                         ))}
                     </div>
@@ -169,7 +182,7 @@ export default function MasterGallery({ images = [] }) {
                         >
                             <Image 
                                 src={selectedImage.src} 
-                                alt="Wedding photography detail view by Dreamline Production"
+                                alt={selectedImage.alt || "High-resolution cinematic wedding photography showcase by Dreamline Production Kolkata"}
                                 fill
                                 className="object-contain rounded-xl shadow-2xl"
                                 sizes="90vw"

@@ -92,8 +92,8 @@ async function postToGBPDirect(post, log) {
     log(`[GBP Direct] Access token obtained ✓`);
 
     const postObj = post.toObject ? post.toObject() : post;
-    const slug = postObj.id || postObj._id?.toString();
-    const publicUrl = `${SITE_URL}/journal/${slug}`;
+    const slug = postObj.slug || postObj.id || postObj._id?.toString();
+    const publicUrl = `${SITE_URL}/blogs/${slug}/`;
     const summary = stripHtml(post.excerpt || post.content).substring(0, 1500) || post.title;
 
     // Build image URL via proxy for S3/Unsplash images
@@ -152,8 +152,8 @@ async function sendToWebhookFallback(post, log) {
 
     const postSummary = stripHtml(post.excerpt || post.content).substring(0, 1500);
     const postObj = post.toObject ? post.toObject() : post;
-    const slug = postObj.id || postObj._id?.toString();
-    const publicUrl = `${SITE_URL}/journal/${slug}`;
+    const slug = postObj.slug || postObj.id || postObj._id?.toString();
+    const publicUrl = `${SITE_URL}/blogs/${slug}/`;
 
     const payload = {
         type: 'JOURNAL_POST',

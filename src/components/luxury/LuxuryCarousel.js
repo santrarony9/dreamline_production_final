@@ -14,6 +14,14 @@ export default function LuxuryCarousel({ images }) {
         "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200"
     ];
 
+    const LUXURY_CAPTIONS = [
+        "Luxury destination wedding cinema frame capturing the couple in grand attire",
+        "Cinematic bridal portrait with dramatic golden lighting and heritage backdrop",
+        "Intimate emotional wedding vows exchange during candlelit luxury ceremony",
+        "High-fashion wedding couple portrait photographed during sunset celebration",
+        "Royal palace destination wedding cinematography by Dreamline Production Kolkata"
+    ];
+
     const displayImages = images?.length > 0 ? images : defaultImages;
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -99,7 +107,7 @@ export default function LuxuryCarousel({ images }) {
                                 tiltEnable={isCenter}
                                 className="w-full h-full"
                             >
-                                <Image src={img} fill sizes="(max-width: 768px) 80vw, 50vw" className="object-cover" alt={`Luxury carousel frame ${index + 1}`} priority={index === 0} />
+                                <Image src={img} fill sizes="(max-width: 768px) 80vw, 50vw" className="object-cover" alt={LUXURY_CAPTIONS[index % LUXURY_CAPTIONS.length]} priority={index === 0} />
                                 <div className={`absolute inset-0 bg-black/50 transition-opacity duration-1000 pointer-events-none ${isCenter ? 'opacity-0' : 'opacity-100'}`} />
                             </Tilt>
                         </div>

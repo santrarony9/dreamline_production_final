@@ -25,7 +25,7 @@ export default function AdminLayout({ children }) {
         {
             title: "Content & Portfolios",
             items: [
-                { label: "Blog / Journal", path: "/admin/journal", icon: "📓" },
+                { label: "Blog Management", path: "/admin/journal", icon: "📝" },
                 { label: "Weddings", path: "/admin/weddings", icon: "💍" },
                 { label: "Commercial", path: "/admin/commercial", icon: "🎥" },
                 { label: "Tech / Web", path: "/admin/tech", icon: "💻" },
@@ -36,6 +36,7 @@ export default function AdminLayout({ children }) {
         {
             title: "Website Setup",
             items: [
+                { label: "Pages Builder", path: "/admin/pages", icon: "📑" },
                 { label: "Home Page", path: "/admin/home", icon: "🏠" },
                 { label: "Navigation & Banner", path: "/admin/navigation", icon: "🧭" },
                 { label: "About Page", path: "/admin/about", icon: "🏢" },
@@ -45,6 +46,7 @@ export default function AdminLayout({ children }) {
     ];
 
     const bottomNavItems = [
+        { label: "Image Alt SEO", path: "/admin/image-seo", icon: "🖼️" },
         { label: "SEO Settings", path: "/admin/seo", icon: "🔍" },
         { label: "Users & Settings", path: "/admin/users", icon: "⚙️" },
         { label: "Global Info", path: "/admin/global", icon: "🌍" },
@@ -116,7 +118,8 @@ export default function AdminLayout({ children }) {
                                     <Link
                                         key={item.path}
                                         href={item.path}
-                                        className={`flex items-center gap-4 px-4 py-2.5 rounded-xl font-bold uppercase text-[9px] tracking-widest transition-all ${pathname === item.path
+                                        className={`flex items-center gap-4 px-4 py-2.5 rounded-xl font-bold uppercase text-[9px] tracking-widest transition-all ${
+                                            (pathname === item.path || (item.path === '/admin/journal' && pathname.startsWith('/admin/blog')))
                                             ? "bg-[#c5a059] text-black shadow-lg shadow-[#c5a059]/20"
                                             : "text-gray-500 hover:bg-white/5 hover:text-white"
                                             }`}

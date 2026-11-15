@@ -3,6 +3,7 @@ const nextConfig = {
   trailingSlash: true,
   images: {
     minimumCacheTTL: 5184000, // 60 days to stay within free tier optimization limits
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -218,6 +219,42 @@ const nextConfig = {
       {
         source: '/services/video-production-agency',
         destination: '/services/video-production-agency-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/video-production',
+        destination: '/services/video-production-agency-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/aerial-photography',
+        destination: '/services/drone-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/aerial-videography',
+        destination: '/services/drone-videography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/real-estate-photography',
+        destination: '/services/drone-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/event-photography',
+        destination: '/services/wedding-photography-kolkata/',
+        permanent: true,
+      },
+      // Aliases for About Us and Contact Us
+      {
+        source: '/about-us',
+        destination: '/about/',
+        permanent: true,
+      },
+      {
+        source: '/contact-us',
+        destination: '/contact/',
         permanent: true,
       },
       // Journal legacy redirects

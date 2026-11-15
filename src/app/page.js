@@ -108,13 +108,24 @@ export default async function Home() {
 
   const weddings = await Wedding.find().sort({ order: 1 }).limit(6).lean();
   
-  // Only fetch published journals (date <= today)
+  // Only fetch published journals (never drafts, date <= today)
   const journals = await Journal.find({
-      $or: [
-          { date: { $lte: todayStr } },
-          { date: null },
-          { date: "" },
-          { date: { $exists: false } }
+      $and: [
+          {
+              $or: [
+                  { status: 'published' },
+                  { status: { $exists: false } },
+                  { status: null }
+              ]
+          },
+          {
+              $or: [
+                  { date: { $lte: todayStr } },
+                  { date: null },
+                  { date: "" },
+                  { date: { $exists: false } }
+              ]
+          }
       ]
   }).sort({ date: -1 }).limit(3).lean();
 

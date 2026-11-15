@@ -1,17 +1,38 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import MediaLibrary from "./MediaLibrary";
+import axios from "axios";
 
-export default function ImageUploader({ onUploadSuccess, currentImage, recommendedSize, compact = false }) {
+export default function ImageUploader({ 
+    onUploadSuccess, 
+    currentImage, 
+    currentAlt = "", 
+    onAltChange, 
+    recommendedSize, 
+    compact = false,
+    showAltInput = true,
+    contextTitle = "",
+    category = "general"
+}) {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [error, setError] = useState(null);
     const [retryCount, setRetryCount] = useState(0);
     const [showLibrary, setShowLibrary] = useState(false);
+    const [altText, setAltText] = useState(currentAlt || "");
+    const [isSavingAlt, setIsSavingAlt] = useState(false);
+    const [isSuggestingAlt, setIsSuggestingAlt] = useState(false);
+    const [altSavedMessage, setAltSavedMessage] = useState("");
     const fileInputRef = useRef(null);
 
     const MAX_RETRIES = 3;
+
+    useEffect(() => {
+        if (currentAlt !== undefined) {
+            setAltText(currentAlt || "");
+        }
+    }, [currentAlt]);
 
     const handleFileChange = async (e) => {
         const file = e.target.files?.[0];
@@ -47,7 +68,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
 
             console.log(`[Upload] Attempt ${attempt + 1}/${MAX_RETRIES}: Uploading directly via chunking:`, file.name);
 
-            // Fetch the correct upload URL (presigned endpoint still returns the proxy endpoint if needed)
+            // Fetch the correct upload URL
             const presignRes = await fetch("/api/upload/presigned", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -113,7 +134,6 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                     xhr.send(formData);
                 });
 
-                // Set a timeout for EACH chunk instead of the whole file
                 const timeoutPromise = new Promise((_, reject) =>
                     setTimeout(() => reject(new Error("Chunk upload timed out")), 5 * 60 * 1000)
                 );
@@ -127,14 +147,36 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
 
             // Success
             console.log("[Upload] Success! Public URL:", publicUrl);
+
+            // Register asset with auto-generated alt text if not yet set
+            if (publicUrl) {
+                try {
+                    const suggestRes = await axios.post("/api/admin/media/suggest-alt", {
+                        url: publicUrl,
+                        contextTitle: contextTitle || file.name,
+                        category: category || "general"
+                    });
+                    const initialAlt = altText || suggestRes.data?.suggestedAlt || "";
+                    setAltText(initialAlt);
+                    if (onAltChange) onAltChange(initialAlt);
+
+                    await axios.post("/api/admin/media", {
+                        url: publicUrl,
+                        alt: initialAlt,
+                        title: contextTitle || file.name,
+                        category: category || "general"
+                    });
+                } catch (e) {
+                    console.warn("Asset registration warning:", e);
+                }
+            }
+
             onUploadSuccess(publicUrl);
             setIsUploading(false);
             setUploadProgress(0);
             if (fileInputRef.current) fileInputRef.current.value = "";
         } catch (err) {
             console.error(`[Upload] Attempt ${attempt + 1} failed:`, err);
-
-            // Don't retry on auth errors
             const isAuthError = err.message?.includes("Session expired") || err.message?.includes("401");
 
             if (attempt < MAX_RETRIES - 1 && !isAuthError) {
@@ -147,6 +189,48 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 setUploadProgress(0);
                 if (fileInputRef.current) fileInputRef.current.value = "";
             }
+        }
+    };
+
+    const handleSuggestAlt = async () => {
+        if (!currentImage) return;
+        setIsSuggestingAlt(true);
+        try {
+            const res = await axios.post("/api/admin/media/suggest-alt", {
+                url: currentImage,
+                contextTitle: contextTitle || "",
+                category: category || "general"
+            });
+            if (res.data?.suggestedAlt) {
+                setAltText(res.data.suggestedAlt);
+                if (onAltChange) onAltChange(res.data.suggestedAlt);
+                setAltSavedMessage("Suggested!");
+                setTimeout(() => setAltSavedMessage(""), 2000);
+            }
+        } catch (e) {
+            console.error("Suggest alt error:", e);
+        } finally {
+            setIsSuggestingAlt(false);
+        }
+    };
+
+    const handleSaveAltDirect = async () => {
+        if (!currentImage) return;
+        setIsSavingAlt(true);
+        try {
+            await axios.put("/api/admin/media", {
+                url: currentImage,
+                alt: altText.trim(),
+                category: category || "general",
+                title: contextTitle || ""
+            });
+            if (onAltChange) onAltChange(altText.trim());
+            setAltSavedMessage("Saved ✓");
+            setTimeout(() => setAltSavedMessage(""), 2500);
+        } catch (e) {
+            console.error("Save alt error:", e);
+        } finally {
+            setIsSavingAlt(false);
         }
     };
 
@@ -204,7 +288,7 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                                     {currentImage.match(/\.(mp4|webm|ogg|mov)$|video/i) ? (
                                         <video src={currentImage} className="w-full h-full object-cover" muted />
                                     ) : (
-                                        <img src={currentImage} className="w-full h-full object-cover" alt="Preview" />
+                                        <img src={currentImage} className="w-full h-full object-cover" alt={altText || "Image Preview"} />
                                     )}
                                     <a href={currentImage} target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/60 opacity-0 group-hover/preview:opacity-100 flex items-center justify-center transition-opacity">
                                         <span className="text-[6px] text-white font-black uppercase">View</span>
@@ -226,6 +310,57 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
                 </button>
             </div>
 
+            {/* Integrated SEO Alt Text Field */}
+            {showAltInput && currentImage && (
+                <div className="bg-black/40 border border-white/10 rounded-xl p-3 space-y-2 animate-fade-in">
+                    <div className="flex items-center justify-between text-[9px]">
+                        <span className="font-black uppercase tracking-wider text-gray-400 flex items-center gap-1">
+                            <span>🏷️</span> Image Alt Text (SEO &amp; Accessibility)
+                        </span>
+                        <div className="flex items-center gap-2">
+                            {altSavedMessage && (
+                                <span className="text-[#c5a059] font-bold uppercase text-[9px] animate-pulse">
+                                    {altSavedMessage}
+                                </span>
+                            )}
+                            <span className="text-gray-500 font-mono">
+                                {altText.length} chars
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            value={altText}
+                            onChange={(e) => {
+                                setAltText(e.target.value);
+                                if (onAltChange) onAltChange(e.target.value);
+                            }}
+                            placeholder="Describe what is visible in the image for Google Image SEO..."
+                            className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-500 focus:border-[#c5a059] outline-none"
+                        />
+                        <button
+                            type="button"
+                            disabled={isSuggestingAlt}
+                            onClick={handleSuggestAlt}
+                            className="px-2.5 py-1.5 bg-white/5 hover:bg-white/10 text-gray-300 text-[10px] font-black uppercase rounded-lg border border-white/10 transition-all whitespace-nowrap"
+                            title="Auto-suggest descriptive alt text"
+                        >
+                            {isSuggestingAlt ? "..." : "🤖 Suggest"}
+                        </button>
+                        <button
+                            type="button"
+                            disabled={isSavingAlt}
+                            onClick={handleSaveAltDirect}
+                            className="px-3 py-1.5 bg-[#c5a059] text-black text-[10px] font-black uppercase tracking-wider rounded-lg hover:bg-white transition-all whitespace-nowrap"
+                        >
+                            {isSavingAlt ? "..." : "Save"}
+                        </button>
+                    </div>
+                </div>
+            )}
+
             {error && (
                 <div className="flex items-center justify-between w-full">
                     <p className="text-[8px] text-red-500 font-bold uppercase tracking-widest pl-1 truncate">
@@ -244,8 +379,12 @@ export default function ImageUploader({ onUploadSuccess, currentImage, recommend
             {showLibrary && (
                 <MediaLibrary
                     onClose={() => setShowLibrary(false)}
-                    onSelect={(url) => {
+                    onSelect={(url, alt) => {
                         onUploadSuccess(url);
+                        if (alt) {
+                            setAltText(alt);
+                            if (onAltChange) onAltChange(alt);
+                        }
                         setShowLibrary(false);
                     }}
                 />

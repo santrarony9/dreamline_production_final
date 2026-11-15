@@ -33,7 +33,7 @@ export default function ServiceVideoShowcase({ videos }) {
                     >
                         <Image 
                             src={displayImage} 
-                            alt={video.title} 
+                            alt={`${video.title} - Cinematic production showcase video by Dreamline Production`} 
                             fill 
                             className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-60"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

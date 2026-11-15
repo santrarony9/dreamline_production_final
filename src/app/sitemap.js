@@ -2,6 +2,7 @@ import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Journal from "@/models/Journal";
 import ServicePage from "@/models/ServicePage";
+import CustomPage from "@/models/CustomPage";
 
 const LOCATION_SLUGS = [
     "wedding-photographer-salt-lake-kolkata",
@@ -49,6 +50,12 @@ export default async function sitemap() {
         },
         {
             url: `${baseUrl}/commercial/`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/portfolio/`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
@@ -146,8 +153,32 @@ export default async function sitemap() {
                 priority: 0.8,
             }));
 
-        // Fetch all journals — use clean slug or custom `id`
-        const journals = await Journal.find({}, 'id date updatedAt slug').lean();
+        // Fetch published blogs only — exclude drafts and future scheduled posts
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const now = new Date();
+        const istDate = new Date(now.getTime() + istOffset);
+        const todayStr = istDate.toISOString().split('T')[0];
+
+        const journals = await Journal.find({
+            $and: [
+                {
+                    $or: [
+                        { status: 'published' },
+                        { status: { $exists: false } },
+                        { status: null }
+                    ]
+                },
+                {
+                    $or: [
+                        { date: { $lte: todayStr } },
+                        { date: null },
+                        { date: "" },
+                        { date: { $exists: false } }
+                    ]
+                }
+            ]
+        }, 'id date updatedAt slug title status').lean();
+
         const journalRoutes = journals
             .filter(j => (j.slug || j.id) && !j.title?.includes('Series'))
             .map((j) => ({
@@ -168,13 +199,35 @@ export default async function sitemap() {
                 priority: 0.8,
             }));
 
+        // Fetch published custom pages — exclude drafts, scheduled for future, or noIndex
+        const customPages = await CustomPage.find({
+            status: 'published',
+            $or: [
+                { publishDate: { $lte: todayStr } },
+                { publishDate: null },
+                { publishDate: "" },
+                { publishDate: { $exists: false } }
+            ],
+            'seo.noIndex': { $ne: true }
+        }, 'slug updatedAt').lean();
+
+        const customPageRoutes = customPages
+            .filter(p => p.slug)
+            .map((p) => ({
+                url: `${baseUrl}/${p.slug}/`,
+                lastModified: p.updatedAt || new Date(),
+                changeFrequency: 'weekly',
+                priority: 0.8,
+            }));
+
         return [
             ...staticRoutes,
             ...locationRoutes,
             ...staticServiceRoutes,
             ...weddingRoutes,
             ...journalRoutes,
-            ...dynamicServiceRoutes
+            ...dynamicServiceRoutes,
+            ...customPageRoutes
         ];
     } catch (error) {
         console.error("Sitemap generation error:", error);

@@ -233,7 +233,7 @@ export default async function AboutPage() {
                                 <Image src={member.image}
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                                    alt={member.name}
+                                    alt={`${member.name}, ${member.role} at Dreamline Production Kolkata`}
                                     sizes="(max-width: 768px) 100vw, 33vw" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                                 <div className="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

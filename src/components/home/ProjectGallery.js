@@ -97,7 +97,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                     >
                                         <Image
                                             src={getThumbnail(project)}
-                                            alt={project.title}
+                                            alt={project.altText || (isWedding ? `Cinematic wedding story: ${project.title} by Dreamline Production Kolkata` : `Commercial cinematography showcase: ${project.title} by Dreamline Production`)}
                                             fill
                                             priority={index < 4}
                                             className="object-cover filter grayscale-[30%] brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"

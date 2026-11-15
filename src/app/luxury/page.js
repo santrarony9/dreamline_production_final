@@ -155,7 +155,7 @@ export default async function LuxuryPage() {
                             <div className="flex items-center justify-center gap-6">
                                 {luxuryData.testimonial.image && (
                                     <div className="w-16 h-16 rounded-full overflow-hidden border border-[#c5a059]/30 relative">
-                                        <Image src={luxuryData.testimonial.image} alt={luxuryData.testimonial.author} fill className="object-cover" sizes="64px" />
+                                        <Image src={luxuryData.testimonial.image} alt={luxuryData.testimonial.author ? `${luxuryData.testimonial.author} luxury wedding client` : "Luxury wedding testimonial client"} fill className="object-cover" sizes="64px" />
                                     </div>
                                 )}
                                 <div className="text-left">

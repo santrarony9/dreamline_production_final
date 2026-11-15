@@ -112,7 +112,7 @@ export default async function DynamicServicePage({ params }) {
                     <div className="relative aspect-[21/9] w-full rounded-[2rem] overflow-hidden border border-white/5">
                         <Image 
                             src={page.heroImage} 
-                            alt={page.title} 
+                            alt={page.heroImageAlt || `${page.title} - Professional cinematography service by Dreamline Production Kolkata`} 
                             fill 
                             className="object-cover opacity-80"
                             priority
@@ -139,7 +139,7 @@ export default async function DynamicServicePage({ params }) {
                             <div key={idx} className="relative rounded-3xl overflow-hidden border border-white/5 group">
                                 <img 
                                     src={img.url} 
-                                    alt={img.caption || `Gallery image ${idx}`} 
+                                    alt={img.alt || img.caption || `${page.title} visual portfolio capture ${idx + 1} by Dreamline Production Kolkata`} 
                                     loading="lazy"
                                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
                                 />

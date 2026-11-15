@@ -12,9 +12,11 @@ const ServicePageSchema = new mongoose.Schema({
     subtitle: { type: String, default: "Services" },
     description: { type: String },
     heroImage: { type: String },
+    heroImageAlt: { type: String, default: "" },
     gallery: [{
         url: String,
-        caption: String
+        caption: String,
+        alt: { type: String, default: "" }
     }],
     videos: [{
         title: String,

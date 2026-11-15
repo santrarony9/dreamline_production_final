@@ -184,7 +184,7 @@ export default function WeddingAdmin() {
                                         {(editingWedding.images || []).map((img, index) => (
                                             <div key={index} className="flex flex-col gap-1">
                                                 <div className="relative aspect-[3/4] rounded-xl overflow-hidden group border border-white/5">
-                                                    <img src={img} className="w-full h-full object-cover" />
+                                                    <img src={img} alt={editingWedding?.title ? `${editingWedding.title} photo ${i + 1}` : `Wedding capture ${i + 1}`} className="w-full h-full object-cover" />
                                                     <button
                                                         type="button"
                                                         onClick={() => {

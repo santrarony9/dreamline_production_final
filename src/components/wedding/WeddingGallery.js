@@ -8,6 +8,15 @@ export default function WeddingGallery({ images, altTexts = [] }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
+    const DEFAULT_WEDDING_ALTS = [
+        "Candid emotional wedding moment captured during ceremony in Kolkata",
+        "Traditional wedding rituals documentation by Dreamline Production",
+        "Intimate couple portrait with cinematic lighting in Kolkata",
+        "Bridal preparation and candid ceremony photography",
+        "Sindoor daan and sacred wedding vows in Kolkata",
+        "Grand reception celebration and wedding couple photography"
+    ];
+
     const openLightbox = (index) => {
         setCurrentIndex(index);
         setSelectedImage(images[index]);
@@ -65,7 +74,7 @@ export default function WeddingGallery({ images, altTexts = [] }) {
                             width={800}
                             height={600}
                             className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-1000"
-                            alt={altTexts[index] || `Wedding Capture ${index + 1}`}
+                            alt={altTexts[index] || DEFAULT_WEDDING_ALTS[index % DEFAULT_WEDDING_ALTS.length]}
                             loading="lazy"
                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
@@ -132,7 +141,7 @@ export default function WeddingGallery({ images, altTexts = [] }) {
                                 <img
                                     src={selectedImage}
                                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                                    alt="Enlarged wedding capture"
+                                    alt={altTexts[currentIndex] || DEFAULT_WEDDING_ALTS[currentIndex % DEFAULT_WEDDING_ALTS.length]}
                                 />
                                 <div className="absolute -bottom-10 left-0 right-0 text-center">
                                     <p className="text-white/40 text-[10px] font-black uppercase tracking-[0.4em]">

@@ -26,7 +26,7 @@ export default function Partners({ partners = [] }) {
                                 {partner.image ? (
                                     <Image
                                         src={partner.image}
-                                        alt={partner.name}
+                                        alt={`${partner.name} brand client logo - Dreamline Production partner`}
                                         fill
                                         sizes="(max-width: 640px) 128px, 192px"
                                         className="object-contain"

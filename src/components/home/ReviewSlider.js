@@ -92,7 +92,7 @@ export default function ReviewSlider({
                                     {review.avatar ? (
                                         <img 
                                             src={review.avatar} 
-                                            alt={review.author} 
+                                            alt={`${review.author} client profile photo`} 
                                             referrerPolicy="no-referrer"
                                             className="w-10 h-10 rounded-full object-cover border border-white/10"
                                         />

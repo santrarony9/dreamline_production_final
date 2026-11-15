@@ -670,7 +670,7 @@ function HomeEditorContent() {
                                     <div key={i} className="bg-white/2 border border-white/5 p-4 rounded-2xl relative group space-y-3">
                                         <div className="aspect-square bg-black rounded-xl overflow-hidden border border-white/5 relative">
                                             {partner.image ? (
-                                                <img src={partner.image} className="w-full h-full object-contain p-4" />
+                                                <img src={partner.image} alt={partner.name || "Brand Partner"} className="w-full h-full object-contain p-4" />
                                             ) : (
                                                 <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black uppercase text-gray-600">Logo</div>
                                             )}
@@ -766,7 +766,7 @@ function HomeEditorContent() {
                                     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
                                         {(content.motionArchive.images || []).map((img, i) => (
                                             <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-white/5">
-                                                <img src={img} className="w-full h-full object-cover" />
+                                                <img src={img} alt={`Gallery asset ${i + 1}`} className="w-full h-full object-cover" />
                                                 <div className="absolute inset-x-0 bottom-0 p-2 bg-black/60 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <button
                                                         type="button"
@@ -924,7 +924,7 @@ function HomeEditorContent() {
                                             <label className="text-[9px] uppercase font-black text-gray-500 tracking-widest pl-1 block mb-2">Video Thumbnail (Poster Image)</label>
                                             {v.image ? (
                                                 <div className="relative rounded-lg overflow-hidden border border-white/10 group aspect-video">
-                                                    <img src={v.image} className="w-full h-full object-cover" />
+                                                    <img src={v.image} alt={v.title || "Video Showcase"} className="w-full h-full object-cover" />
                                                     <button type="button" onClick={() => {
                                                         const newList = [...content.videoVault];
                                                         newList[i] = { ...newList[i], image: "" };
@@ -968,7 +968,7 @@ function HomeEditorContent() {
                                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
                                     {(content.splitGallery || []).map((img, i) => (
                                         <div key={i} className="relative aspect-[4/5] rounded-xl overflow-hidden group border border-white/5">
-                                            <img src={img} className="w-full h-full object-cover" />
+                                            <img src={img} alt={`Split gallery asset ${i + 1}`} className="w-full h-full object-cover" />
                                             <button
                                                 type="button"
                                                 onClick={() => {

@@ -6,6 +6,7 @@ const TechProjectSchema = new mongoose.Schema(
         domain: { type: String, required: true },
         category: { type: String, default: "Web Development" },
         img: { type: String, required: true },
+        imgAlt: { type: String, default: "" },
         order: { type: Number, default: 0 }
     },
     { timestamps: true }

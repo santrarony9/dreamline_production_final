@@ -178,7 +178,7 @@ export default function LuxuryEditor() {
                         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4">
                             {(content.luxuryCarousel || []).map((img, i) => (
                                 <div key={i} className="relative aspect-[3/2] rounded-xl overflow-hidden group border border-white/5">
-                                    <img src={img} className="w-full h-full object-cover" />
+                                    <img src={img} alt={`Luxury showcase asset ${i + 1}`} className="w-full h-full object-cover" />
                                     <button
                                         type="button"
                                         onClick={() => {

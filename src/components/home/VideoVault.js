@@ -70,7 +70,7 @@ export default function VideoVault({
                         >
                             <Image
                                 src={video.displayImage}
-                                alt={video.title}
+                                alt={`${video.title} - ${video.category || "Cinematic film"} by Dreamline Production Kolkata`}
                                 fill
                                 className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 opacity-70 group-hover:opacity-100"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

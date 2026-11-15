@@ -411,7 +411,7 @@ export default function GoogleBusinessAdmin() {
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-zinc-800 rounded-lg overflow-hidden relative">
                                         {post.image ? (
-                                            <img src={post.image} alt="Cover" className="w-full h-full object-cover" />
+                                            <img src={post.image} alt={post.summary ? `${post.summary.slice(0, 40)}...` : "Google Business update visual"} className="w-full h-full object-cover" />
                                         ) : (
                                             <div className="w-full h-full bg-gradient-to-br from-zinc-700 to-zinc-900 flex items-center justify-center text-[10px] text-gray-500 font-black">IMG</div>
                                         )}

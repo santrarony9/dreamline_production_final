@@ -314,7 +314,7 @@ export default function AboutEditor() {
                                 <div key={i} className="bg-white/5 border border-white/10 p-4 rounded-2xl relative group space-y-4">
                                     <div className="aspect-[4/5] bg-black rounded-lg overflow-hidden border border-white/5 relative">
                                         {m.image ? (
-                                            <img src={m.image} className="w-full h-full object-cover" />
+                                            <img src={m.image} alt={m.name || "Team Member"} className="w-full h-full object-cover" />
                                         ) : (
                                             <div className="absolute inset-0 flex items-center justify-center text-[10px] font-black uppercase text-gray-600">No Image</div>
                                         )}

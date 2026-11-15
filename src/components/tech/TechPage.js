@@ -106,7 +106,7 @@ export default function TechPage() {
                                 >
                                     <motion.img
                                         src={site.img}
-                                        alt={site.title}
+                                        alt={site.imgAlt || `${site.title} digital web development portfolio by Dreamline Production Kolkata`}
                                         className="w-full h-full object-cover filter grayscale-[40%] brightness-75"
                                         whileHover={{ scale: 1.05, filter: "grayscale(0%) brightness(1.1)" }}
                                         transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}

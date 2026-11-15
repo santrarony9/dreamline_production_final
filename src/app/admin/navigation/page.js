@@ -6,11 +6,10 @@ import axios from "axios";
 
 const DEFAULT_NAV_ITEMS = [
     { label: "HOME", href: "/" },
-    { label: "ABOUT", href: "/about" },
-    { label: "WEDDINGS", href: "/luxury" },
-    { label: "COMMERCIAL", href: "/commercial" },
-    { label: "BLOG", href: "/blogs" },
-    { label: "CONTACT", href: "/contact" }
+    { label: "ABOUT US", href: "/about/" },
+    { label: "PORTFOLIO", href: "/portfolio/" },
+    { label: "BLOGS", href: "/blogs/" },
+    { label: "CONTACT US", href: "/contact/" }
 ];
 
 export default function NavigationAdmin() {
@@ -26,12 +25,15 @@ export default function NavigationAdmin() {
     });
 
     const [cta, setCta] = useState({
-        label: "INQUIRE NOW",
+        label: "GET A QUOTE",
         href: "/contact",
         enabled: true
     });
 
     const [navItems, setNavItems] = useState(DEFAULT_NAV_ITEMS);
+    const [footerItems, setFooterItems] = useState([]);
+    const [customPages, setCustomPages] = useState([]);
+    const [selectedCustomPageId, setSelectedCustomPageId] = useState("");
 
     useEffect(() => {
         fetchNavSettings();
@@ -40,8 +42,13 @@ export default function NavigationAdmin() {
     const fetchNavSettings = async () => {
         setLoading(true);
         try {
-            const res = await axios.get("/api/content");
-            const global = res.data?.global || {};
+            const [contentRes, pagesRes] = await Promise.all([
+                axios.get("/api/content"),
+                axios.get("/api/pages").catch(() => ({ data: [] }))
+            ]);
+            
+            const global = contentRes.data?.global || {};
+            setCustomPages(pagesRes.data || []);
             
             const defaultAddress = global.contact?.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082";
             const defaultGmbLink = global.google?.profileUrl || global.google?.mapsUrl || "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9";
@@ -73,6 +80,9 @@ export default function NavigationAdmin() {
                 if (Array.isArray(global.navigation.items) && global.navigation.items.length > 0) {
                     setNavItems(global.navigation.items);
                 }
+                if (Array.isArray(global.navigation.footerItems)) {
+                    setFooterItems(global.navigation.footerItems);
+                }
             }
         } catch (err) {
             console.error("Error fetching navigation settings:", err);
@@ -92,7 +102,8 @@ export default function NavigationAdmin() {
                     announcement,
                     navigation: {
                         cta,
-                        items: navItems
+                        items: navItems,
+                        footerItems
                     }
                 }
             });
@@ -104,6 +115,42 @@ export default function NavigationAdmin() {
         } finally {
             setSaving(false);
         }
+    };
+
+    const handleAddCustomPageToNav = () => {
+        if (!selectedCustomPageId) return;
+        const page = customPages.find(p => p._id === selectedCustomPageId);
+        if (!page) return;
+
+        const label = (page.navigation?.navLabel || page.title || "PAGE").toUpperCase();
+        const href = `/${page.slug}/`;
+
+        if (navItems.some(item => item.href === href)) {
+            alert(`"${label}" is already in the navigation menu.`);
+            return;
+        }
+
+        setNavItems([...navItems, { label, href }]);
+        setMessage(`Added "${label}" to header navigation menu.`);
+        setTimeout(() => setMessage(""), 3000);
+    };
+
+    const handleAddCustomPageToFooter = () => {
+        if (!selectedCustomPageId) return;
+        const page = customPages.find(p => p._id === selectedCustomPageId);
+        if (!page) return;
+
+        const label = page.navigation?.navLabel || page.title;
+        const href = `/${page.slug}/`;
+
+        if (footerItems.some(item => item.href === href)) {
+            alert(`"${label}" is already in the footer links.`);
+            return;
+        }
+
+        setFooterItems([...footerItems, { label, href }]);
+        setMessage(`Added "${label}" to footer links.`);
+        setTimeout(() => setMessage(""), 3000);
     };
 
     const addNavItem = () => {
@@ -129,8 +176,31 @@ export default function NavigationAdmin() {
         setNavItems(updated);
     };
 
+    const addFooterItem = () => {
+        setFooterItems([...footerItems, { label: "NEW LINK", href: "/" }]);
+    };
+
+    const updateFooterItem = (index, field, value) => {
+        const updated = [...footerItems];
+        updated[index][field] = value;
+        setFooterItems(updated);
+    };
+
+    const removeFooterItem = (index) => {
+        setFooterItems(footerItems.filter((_, i) => i !== index));
+    };
+
+    const moveFooterItem = (index, direction) => {
+        const target = index + direction;
+        if (target < 0 || target >= footerItems.length) return;
+        const updated = [...footerItems];
+        const [moved] = updated.splice(index, 1);
+        updated.splice(target, 0, moved);
+        setFooterItems(updated);
+    };
+
     const resetToDefaults = () => {
-        if (!confirm("Reset navigation menu to default 6 links?")) return;
+        if (!confirm("Reset navigation menu to default links?")) return;
         setNavItems(DEFAULT_NAV_ITEMS);
     };
 
@@ -147,8 +217,8 @@ export default function NavigationAdmin() {
             <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                 <div>
                     <h2 className="text-xs font-black text-[#c5a059] uppercase tracking-[0.4em] mb-2">Website Architecture</h2>
-                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter">
-                        Navigation <span className="text-gray-500">& Banner.</span>
+                    <h1 className="text-4xl font-black text-white uppercase tracking-tighter font-heading">
+                        Navigation <span className="text-gray-500">&amp; Banner.</span>
                     </h1>
                 </div>
                 <div className="flex gap-3">
@@ -198,10 +268,15 @@ export default function NavigationAdmin() {
                         <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]"></span>
                     </div>
                     <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-white/80 overflow-x-auto hide-scrollbar">
-                        {navItems.map((item, i) => (
+                        <span className="hover:text-[#c5a059] whitespace-nowrap">HOME</span>
+                        <span className="hover:text-[#c5a059] whitespace-nowrap">ABOUT US</span>
+                        <span className="text-[#c5a059] whitespace-nowrap font-bold">SERVICES ▾</span>
+                        <span className="hover:text-[#c5a059] whitespace-nowrap">PORTFOLIO</span>
+                        <span className="hover:text-[#c5a059] whitespace-nowrap">BLOGS</span>
+                        <span className="hover:text-[#c5a059] whitespace-nowrap">CONTACT US</span>
+                        {navItems.filter(item => !['HOME', 'ABOUT', 'ABOUT US', 'PORTFOLIO', 'BLOG', 'BLOGS', 'CONTACT', 'CONTACT US'].includes(item.label?.toUpperCase())).map((item, i) => (
                             <span key={i} className="hover:text-[#c5a059] whitespace-nowrap">{item.label}</span>
                         ))}
-                        <span className="text-gray-500 whitespace-nowrap">SERVICES ▾</span>
                     </div>
                     {cta.enabled && (
                         <div className="bg-[#c5a059] text-black text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">
@@ -290,6 +365,47 @@ export default function NavigationAdmin() {
                         </button>
                     </div>
 
+                    {/* Quick Add from Custom Pages */}
+                    {customPages.length > 0 && (
+                        <div className="p-4 bg-white/[0.02] border border-[#c5a059]/30 rounded-2xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                            <div className="flex-1">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059] block mb-1">
+                                    📑 Quick Add Custom Page to Menus
+                                </span>
+                                <select
+                                    value={selectedCustomPageId}
+                                    onChange={(e) => setSelectedCustomPageId(e.target.value)}
+                                    className="w-full bg-black/60 border border-white/10 text-white text-xs rounded-xl px-3 py-2.5 focus:border-[#c5a059] outline-none"
+                                >
+                                    <option value="">Select a Custom Page to add...</option>
+                                    {customPages.map(cp => (
+                                        <option key={cp._id} value={cp._id}>
+                                            {cp.title} (/{cp.slug}/) — {cp.status}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex items-center gap-2 self-end sm:self-auto pt-2 sm:pt-4">
+                                <button
+                                    type="button"
+                                    disabled={!selectedCustomPageId}
+                                    onClick={handleAddCustomPageToNav}
+                                    className="px-3 py-2 bg-[#c5a059] text-black text-[10px] font-black uppercase tracking-wider rounded-lg hover:bg-white transition-all disabled:opacity-40"
+                                >
+                                    + Add to Header Nav
+                                </button>
+                                <button
+                                    type="button"
+                                    disabled={!selectedCustomPageId}
+                                    onClick={handleAddCustomPageToFooter}
+                                    className="px-3 py-2 bg-white/10 hover:bg-white/20 text-white text-[10px] font-black uppercase tracking-wider rounded-lg border border-white/10 transition-all disabled:opacity-40"
+                                >
+                                    + Add to Footer
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="space-y-3">
                         {navItems.map((item, index) => (
                             <div
@@ -315,7 +431,7 @@ export default function NavigationAdmin() {
                                         type="text"
                                         value={item.href}
                                         onChange={(e) => updateNavItem(index, "href", e.target.value)}
-                                        placeholder="URL path (e.g. /luxury)"
+                                        placeholder="URL path (e.g. /luxury/)"
                                         className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-[#c5a059] outline-none text-xs font-mono"
                                     />
                                 </div>
@@ -399,6 +515,95 @@ export default function NavigationAdmin() {
                             />
                         </div>
                     </div>
+                </div>
+
+                {/* 4. WEBSITE FOOTER LINKS */}
+                <div className="bg-[#0a0a0a] border border-white/5 p-8 md:p-10 rounded-3xl space-y-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+                        <div>
+                            <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">
+                                ⚓ Website Footer Links
+                            </h3>
+                            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+                                Control dynamic custom links displayed in the website footer navigation area.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={addFooterItem}
+                            className="text-[10px] font-black uppercase tracking-widest bg-white/5 hover:bg-[#c5a059] hover:text-black text-white px-5 py-2.5 rounded-xl border border-white/10 transition-all flex items-center gap-1.5 self-start sm:self-auto"
+                        >
+                            <span>+</span> Add Footer Link
+                        </button>
+                    </div>
+
+                    {footerItems.length === 0 ? (
+                        <p className="text-xs text-gray-500 italic p-4 bg-white/[0.02] rounded-xl border border-white/5">
+                            No custom footer links configured yet. Standard studio links are displayed by default.
+                        </p>
+                    ) : (
+                        <div className="space-y-3">
+                            {footerItems.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-col sm:flex-row items-center gap-3 bg-white/[0.02] border border-white/5 p-4 rounded-2xl hover:border-white/15 transition-all"
+                                >
+                                    <span className="text-[10px] font-mono text-gray-600 font-bold px-2">
+                                        #{index + 1}
+                                    </span>
+
+                                    <div className="flex-1 w-full sm:w-auto">
+                                        <input
+                                            type="text"
+                                            value={item.label}
+                                            onChange={(e) => updateFooterItem(index, "label", e.target.value)}
+                                            placeholder="Display Label (e.g. Drone Shoots)"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-[#c5a059] outline-none text-xs font-bold"
+                                        />
+                                    </div>
+
+                                    <div className="flex-1 w-full sm:w-auto">
+                                        <input
+                                            type="text"
+                                            value={item.href}
+                                            onChange={(e) => updateFooterItem(index, "href", e.target.value)}
+                                            placeholder="URL path (e.g. /drone-photography-kolkata/)"
+                                            className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white focus:border-[#c5a059] outline-none text-xs font-mono"
+                                        />
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5 self-end sm:self-auto">
+                                        <button
+                                            type="button"
+                                            disabled={index === 0}
+                                            onClick={() => moveFooterItem(index, -1)}
+                                            className="p-2 text-gray-400 hover:text-white disabled:opacity-20 text-xs"
+                                            title="Move up"
+                                        >
+                                            ↑
+                                        </button>
+                                        <button
+                                            type="button"
+                                            disabled={index === footerItems.length - 1}
+                                            onClick={() => moveFooterItem(index, 1)}
+                                            className="p-2 text-gray-400 hover:text-white disabled:opacity-20 text-xs"
+                                            title="Move down"
+                                        >
+                                            ↓
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => removeFooterItem(index)}
+                                            className="p-2 text-red-500/60 hover:text-red-400 text-xs ml-2"
+                                            title="Remove link"
+                                        >
+                                            ✕
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Floating Save Bar */}

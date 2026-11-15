@@ -13,7 +13,7 @@
 const ALLOWED_TAGS = new Set([
     'b', 'i', 'em', 'strong', 'u', 's', 'br', 'p', 'span', 'div',
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-    'a', 'img',
+    'a', 'img', 'figure', 'figcaption',
     'ul', 'ol', 'li',
     'blockquote', 'pre', 'code',
     'table', 'thead', 'tbody', 'tr', 'th', 'td',
@@ -22,9 +22,11 @@ const ALLOWED_TAGS = new Set([
 
 // Attributes allowed per tag (or globally with '*')
 const ALLOWED_ATTRS = {
-    '*': ['class', 'id'],
+    '*': ['class', 'id', 'style'],
     'a': ['href', 'target', 'rel', 'title'],
     'img': ['src', 'alt', 'width', 'height', 'loading'],
+    'figure': ['class', 'id', 'style'],
+    'figcaption': ['class', 'id', 'style'],
 };
 
 /**

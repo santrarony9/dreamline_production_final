@@ -3,6 +3,11 @@ import { NextResponse } from "next/server";
 
 const SERVICE_REDIRECTS = {
   '/services/drone-videography': '/services/drone-videography-kolkata/',
+  '/services/drone-photography': '/services/drone-photography-kolkata/',
+  '/services/aerial-photography': '/services/drone-photography-kolkata/',
+  '/services/aerial-videography': '/services/drone-videography-kolkata/',
+  '/services/real-estate-photography': '/services/drone-photography-kolkata/',
+  '/services/event-photography': '/services/wedding-photography-kolkata/',
   '/services/corporate-films': '/services/corporate-photography-kolkata/',
   '/services/corporate-photography': '/services/corporate-photography-kolkata/',
   '/services/wedding-photography': '/services/wedding-photography-kolkata/',
@@ -18,7 +23,10 @@ const SERVICE_REDIRECTS = {
   '/services/3d-area-mapping': '/services/3d-area-mapping-kolkata/',
   '/services/2d-animation': '/services/2d-animation-kolkata/',
   '/services/video-production': '/services/video-production-agency-kolkata/',
+  '/services/video-production-agency': '/services/video-production-agency-kolkata/',
   '/services/rice-ceremony': '/services/rice-ceremony-photography-kolkata/',
+  '/about-us': '/about/',
+  '/contact-us': '/contact/',
 };
 
 export default withAuth(
