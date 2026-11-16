@@ -223,7 +223,7 @@ export default async function AboutPage() {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                         {(aboutData.team?.members?.length > 0 ? aboutData.team.members : [
                             { name: "Arjun Das", role: "Lead Cinematographer", image: "https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=800" },
                             { name: "Esha Gupta", role: "Creative Director", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800" },
@@ -233,12 +233,14 @@ export default async function AboutPage() {
                                 <Image src={member.image}
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-                                    alt={`${member.name}, ${member.role} at Dreamline Production Kolkata`}
-                                    sizes="(max-width: 768px) 100vw, 33vw" />
+                                    alt={`${member.name}, ${member.role || 'Team Member'} at Dreamline Production Kolkata`}
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
                                 <div className="absolute bottom-0 left-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                     <h3 className="font-heading text-xl font-bold text-white mb-1">{member.name}</h3>
-                                    <p className="text-[#c5a059] text-[10px] font-bold uppercase tracking-widest">{member.role}</p>
+                                    {member.role ? (
+                                        <p className="text-[#c5a059] text-[10px] font-bold uppercase tracking-widest">{member.role}</p>
+                                    ) : null}
                                 </div>
                             </div>
                         ))}

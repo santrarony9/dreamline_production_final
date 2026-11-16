@@ -102,9 +102,9 @@
     "team": {
       "members": [
         {
-          "name": "Swarup Roy",
+          "name": "George Swarup Roy",
           "role": "",
-          "image": "/uploads/team/swarup-roy.webp",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841703678-22.png",
           "_id": "6a168ea4b702545bab6ac2cf"
         },
         {
@@ -114,10 +114,40 @@
           "_id": "6a168ea4b702545bab6ac2d0"
         },
         {
-          "name": "Aditya Singh",
+          "name": "Aditya Kumar Singh",
           "role": "",
-          "image": "/uploads/team/aditya-singh.webp",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841705884-17.png",
           "_id": "6a168ea4b702545bab6ac2d1"
+        },
+        {
+          "name": "Goutam Ghosh",
+          "role": "",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841706942-18.png",
+          "_id": "6afb1c6b97ed6cc9f5151519"
+        },
+        {
+          "name": "Sohan Samanta",
+          "role": "",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841707205-19.png",
+          "_id": "6afb1c6b97ed6cc9f515151a"
+        },
+        {
+          "name": "Akash Lohara",
+          "role": "",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841707641-21.png",
+          "_id": "6afb1c6b97ed6cc9f515151b"
+        },
+        {
+          "name": "Sougata Halder",
+          "role": "",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841707970-24.png",
+          "_id": "6afb1c6c97ed6cc9f515151c"
+        },
+        {
+          "name": "Ankur Bhattacharji",
+          "role": "",
+          "image": "https://backend.dreamlineproduction.com/uploads/1794841708270-25.png",
+          "_id": "6afb1c6c97ed6cc9f515151d"
         }
       ],
       "description": "A collective of cinematographers, editors, and creative directors united by a passion for visual perfection.",
