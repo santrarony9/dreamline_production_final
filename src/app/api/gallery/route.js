@@ -28,256 +28,284 @@ async function syncContentSplitGallery() {
 // Initial seed data from authentic Dreamline Production assets
 const INITIAL_GALLERY_SEED = [
     {
-        title: "Candid Bengali Bridal Portrait",
-        caption: "Emotional candid bridal portrait during wedding preparations in Kolkata",
-        altText: "Candid emotional Bengali bridal portrait by Dreamline Production Kolkata",
+        title: "Sid & Trina Wedding Ceremony",
+        caption: "Sacred vows and floral garland exchange from Sid & Trina's luxury wedding film in Kolkata",
+        altText: "Sid and Trina luxury Bengali wedding ceremony portrait Kolkata",
         category: "weddings",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 1
+        imageUrl: "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 1,
+        published: true
     },
     {
-        title: "Royal Couple Evening Reception",
-        caption: "Luxury couple portrait during grand evening wedding reception",
-        altText: "Luxury couple portrait during grand evening wedding reception in Kolkata",
+        title: "Rajlaxmi Shubho Drishti Ritual",
+        caption: "Bride Rajlaxmi holding sacred betel leaves during the traditional Shubho Drishti ritual",
+        altText: "Rajlaxmi Shubho Drishti traditional Bengali wedding ritual Kolkata",
+        category: "rituals",
+        imageUrl: "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 2,
+        published: true
+    },
+    {
+        title: "Heritage Mandap Sunset at Howrah",
+        caption: "Royal heritage wedding mandap overlooking the iconic Howrah Bridge at golden hour sunset",
+        altText: "Howrah Bridge sunset wedding mandap Kolkata by Dreamline Production",
         category: "weddings",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg",
+        imageUrl: "/thumbnails/seo_thumb_holud.jpg",
         aspectRatio: "vertical",
-        order: 2
+        order: 3,
+        published: true
     },
     {
-        title: "Sunset at Prinsep Ghat",
-        caption: "Romantic pre-wedding couple photoshoot at the historic Prinsep Ghat Kolkata",
-        altText: "Cinematic romantic pre-wedding photoshoot at Prinsep Ghat by Dreamline Production",
-        category: "pre-wedding",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 3
-    },
-    {
-        title: "Traditional Sindoor Daan Ritual",
-        caption: "Traditional sindoor daan wedding ceremony captured with cinematic lighting",
+        title: "Traditional Bengali Sindoor Daan",
+        caption: "Sacred sindoor daan wedding ceremony before the holy Agni fire captured with warm ambient lighting",
         altText: "Traditional Bengali sindoor daan wedding ceremony in Kolkata",
         category: "rituals",
         imageUrl: "/thumbnails/seo_sindoor_daan.jpg",
         aspectRatio: "vertical",
-        order: 4
+        order: 4,
+        published: true
     },
     {
-        title: "Intimate Heritage Narrative",
-        caption: "Intimate pre-wedding destination narrative amidst historic heritage architecture",
-        altText: "Heritage estate destination pre-wedding couple photography Kolkata",
+        title: "Cinematic Pre-Wedding Gimbal Shoot",
+        caption: "On-location Ronin gimbal camera tracking shot during romantic outdoor couple pre-wedding film",
+        altText: "Cinematic pre-wedding photoshoot with Ronin gimbal by Dreamline Production Kolkata",
         category: "pre-wedding",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 5
+        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
+        aspectRatio: "horizontal",
+        order: 5,
+        published: true
     },
     {
-        title: "Shubho Drishti Ceremony",
-        caption: "Traditional auspicious Shubho Drishti betel leaf ceremony captured candidly",
-        altText: "Auspicious Shubho Drishti Bengali wedding ritual photography",
-        category: "rituals",
+        title: "Royal Heritage Mandap Embrace",
+        caption: "Elegant black-and-white couple portrait under luxury floral wedding mandap",
+        altText: "Luxury wedding couple portrait under mandap Kolkata",
+        category: "weddings",
         imageUrl: "/thumbnails/seo_thumb_drishti.jpg",
         aspectRatio: "vertical",
-        order: 6
+        order: 6,
+        published: true
     },
     {
-        title: "Golden Hour Couple Portrait",
-        caption: "Cinematic bride and groom golden hour portrait in Kolkata",
-        altText: "Golden hour cinematic wedding couple photoshoot Kolkata",
-        category: "weddings",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 7
-    },
-    {
-        title: "Vibrant Gaye Holud Moments",
-        caption: "Vibrant haldi ceremony moments filled with genuine laughter and family celebrations",
-        altText: "Vibrant Gaye Holud turmeric ceremony photography Kolkata",
-        category: "rituals",
-        imageUrl: "/thumbnails/seo_thumb_holud.jpg",
-        aspectRatio: "vertical",
-        order: 8
-    },
-    {
-        title: "Saat Paak Sacred Circles",
-        caption: "Seven sacred circumambulations of Saat Paak wedding ritual",
-        altText: "Seven sacred vows Saat Paak Bengali marriage ritual photography",
-        category: "rituals",
-        imageUrl: "/thumbnails/seo_saat_paak.jpg",
-        aspectRatio: "vertical",
-        order: 9
-    },
-    {
-        title: "Sacred Garland Exchange Vows",
-        caption: "Cinematic wedding vows and exchange of floral garlands ritual in Kolkata",
-        altText: "Mala Bodol exchange of floral garlands ceremony in Kolkata",
-        category: "rituals",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 10
-    },
-    {
-        title: "Bridal Preparation Artistry",
-        caption: "Meticulous bridal preparation with traditional Benarasi saree and sandalwood art",
-        altText: "Bridal preparation and makeup artistry photography Kolkata",
-        category: "weddings",
-        imageUrl: "/thumbnails/seo_bridal_makeup.jpg",
-        aspectRatio: "vertical",
-        order: 11
-    },
-    {
-        title: "Grand Banquet Aerial Perspective",
-        caption: "High-altitude DGCA-certified drone view of luxury wedding banquet estate in Kolkata",
-        altText: "DGCA certified drone aerial photography of luxury wedding venue Kolkata",
-        category: "drone",
-        imageUrl: "/thumbnails/banquets-kolkata.jpg",
-        aspectRatio: "horizontal",
-        order: 12
-    },
-    {
-        title: "Prinsep Ghat Monument Aerial",
-        caption: "Aerial sweep over Vidyasagar Setu and Prinsep Ghat riverside memorial",
+        title: "Prinsep Ghat Monument Aerial Sweep",
+        caption: "DGCA-certified drone aerial perspective over Vidyasagar Setu and Prinsep Ghat riverside memorial",
         altText: "Aerial drone cinematography at Prinsep Ghat and Hooghly river Kolkata",
         category: "drone",
         imageUrl: "/thumbnails/prinsep-ghat.jpg",
         aspectRatio: "horizontal",
-        order: 13
+        order: 7,
+        published: true
     },
     {
-        title: "Bou Bhat Welcoming Ritual",
-        caption: "Cherished Bou Bhat ceremony welcoming the newlywed bride to the household",
-        altText: "Bou Bhat traditional Bengali post-wedding reception ritual",
-        category: "rituals",
-        imageUrl: "/thumbnails/seo_bou_bhat.jpg",
-        aspectRatio: "vertical",
-        order: 14
+        title: "Grand Banquet Aerial Perspective",
+        caption: "High-altitude certified drone view of luxury wedding banquet estate in Kolkata",
+        altText: "Drone aerial photography of luxury wedding venue Kolkata",
+        category: "drone",
+        imageUrl: "/thumbnails/banquets-kolkata.jpg",
+        aspectRatio: "horizontal",
+        order: 8,
+        published: true
     },
     {
-        title: "Ashirbad Blessings Ceremony",
-        caption: "Elders offering sacred blessings during the traditional Ashirbad ceremony",
-        altText: "Traditional Ashirbad wedding blessings ceremony Kolkata",
-        category: "rituals",
-        imageUrl: "/thumbnails/seo_ashirbad.jpg",
-        aspectRatio: "vertical",
-        order: 15
-    },
-    {
-        title: "L&T Industrial Cinematography",
-        caption: "High-precision commercial documentary for L&T Superior Mobile Air Classifier",
+        title: "L&T Mobile Air Classifier Documentary",
+        caption: "High-precision industrial documentary film for L&T Construction & Mining Machinery",
         altText: "L&T industrial commercial film production by Dreamline Production",
         category: "commercial",
         imageUrl: "https://img.youtube.com/vi/HQDlIySd3aM/maxresdefault.jpg",
         aspectRatio: "horizontal",
-        order: 16
+        order: 9,
+        published: true
     },
     {
         title: "TATA Genrobotics Bandicoot Film",
-        caption: "Documentary innovation film highlighting social robotics for TATA Trust",
-        altText: "TATA Trust Bandicoot commercial film by Dreamline Production",
+        caption: "Social robotics innovation documentary film produced for TATA Trusts",
+        altText: "TATA Trusts Bandicoot commercial film by Dreamline Production",
         category: "commercial",
         imageUrl: "https://img.youtube.com/vi/zFWNx12dg3c/maxresdefault.jpg",
         aspectRatio: "horizontal",
-        order: 17
+        order: 10,
+        published: true
     },
     {
-        title: "Chandra Udyog Factory Cinematography",
-        caption: "Manufacturing plant process documentation and brand storytelling",
+        title: "Chandra Udyog Plant Cinematography",
+        caption: "Industrial plant machinery operations and manufacturing corporate brand video",
         altText: "Chandra Udyog industrial plant video production Kolkata",
         category: "commercial",
         imageUrl: "https://img.youtube.com/vi/UqnXM7lm4qE/maxresdefault.jpg",
         aspectRatio: "horizontal",
-        order: 18
+        order: 11,
+        published: true
     },
     {
         title: "Atlas Foundries Precision Shoot",
-        caption: "Heavy casting and foundry manufacturing commercial cinematography",
+        caption: "Heavy casting and engineering foundry manufacturing commercial documentary",
         altText: "Atlas Foundries commercial documentary film Kolkata",
         category: "commercial",
         imageUrl: "https://img.youtube.com/vi/rZRB0R-Ane4/maxresdefault.jpg",
         aspectRatio: "horizontal",
-        order: 19
+        order: 12,
+        published: true
     },
     {
-        title: "Candid Couple Laughter",
-        caption: "Spontaneous laughter shared between bride and groom during phere rituals",
-        altText: "Candid wedding couple laughter and genuine emotions Kolkata",
-        category: "weddings",
+        title: "L&T Breaking Barriers Corporate Film",
+        caption: "Corporate brand cinema showcasing heavy machinery innovation and human stories",
+        altText: "L&T Breaking Barriers corporate documentary Kolkata",
+        category: "commercial",
+        imageUrl: "https://img.youtube.com/vi/8NpSypsTCbs/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 13,
+        published: true
+    },
+    {
+        title: "KSW Eco Saras Corporate Video",
+        caption: "Brand story and sustainability profile film for KSW Eco Saras",
+        altText: "KSW Eco Saras corporate film production Kolkata",
+        category: "commercial",
+        imageUrl: "https://img.youtube.com/vi/LynqHXnCqVg/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 14,
+        published: true
+    },
+    {
+        title: "CONNEQT Kolkata Corporate Showcase",
+        caption: "Modern corporate workspace cinematography and employee stories for CONNEQT Kolkata",
+        altText: "CONNEQT business office commercial film Kolkata",
+        category: "commercial",
+        imageUrl: "https://img.youtube.com/vi/F6dg5pDtC_U/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 15,
+        published: true
+    },
+    {
+        title: "Brut India News Documentary",
+        caption: "In-depth documentary film covering human resilience and inspiring sports narratives",
+        altText: "Brut India news documentary video production by Dreamline Production",
+        category: "commercial",
+        imageUrl: "https://img.youtube.com/vi/naGtj-8iHuM/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 16,
+        published: true
+    },
+    {
+        title: "TRT World International Feature",
+        caption: "International news investigative feature documented on-location in Kolkata",
+        altText: "TRT World news feature cinematography Dreamline Production Kolkata",
+        category: "commercial",
+        imageUrl: "https://img.youtube.com/vi/YCZNkMz9CS4/maxresdefault.jpg",
+        aspectRatio: "horizontal",
+        order: 17,
+        published: true
+    },
+    {
+        title: "Live Broadcast Multi-Cam Control Room",
+        caption: "Dreamline Production multi-camera live video mixing console and field broadcast desk",
+        altText: "Live multi-camera broadcast control setup by Dreamline Production",
+        category: "commercial",
+        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg",
+        aspectRatio: "horizontal",
+        order: 18,
+        published: true
+    },
+    {
+        title: "ATEM Mini Pro Multi-Camera Switcher",
+        caption: "Live production switching rig and preview monitor during grand ceremony broadcast",
+        altText: "ATEM Mini Pro switcher multi-cam setup Dreamline Production",
+        category: "commercial",
+        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg",
+        aspectRatio: "vertical",
+        order: 19,
+        published: true
+    },
+    {
+        title: "Sony Alpha 4K Multi-Track Podcast Recording",
+        caption: "On-camera monitor feed during professional studio podcast interview recording",
+        altText: "Studio podcast recording on Sony camera Dreamline Production Kolkata",
+        category: "commercial",
+        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
+        aspectRatio: "vertical",
+        order: 20,
+        published: true
+    },
+    {
+        title: "Think Big Studio Talk Show Production",
+        caption: "Full studio wide shot during multi-guest corporate interview and podcast production",
+        altText: "Studio talk show video production Dreamline Production Kolkata",
+        category: "commercial",
+        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
+        aspectRatio: "vertical",
+        order: 21,
+        published: true
+    },
+    {
+        title: "Outdoor Documentary Dialogue Filming",
+        caption: "Cinematographer filming natural garden documentary interview with directional audio",
+        altText: "Documentary interview video production Kolkata",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861489175-WhatsApp_Image_2026-.jpeg",
         aspectRatio: "vertical",
-        order: 20
+        order: 22,
+        published: true
     },
     {
-        title: "Heritage Mandap Decor & Atmosphere",
-        caption: "Grand floral mandap decor illuminated under warm evening fairy lights",
-        altText: "Luxury Bengali wedding mandap decor and floral architecture",
-        category: "weddings",
+        title: "Executive Acoustic Studio Interview",
+        caption: "Interior corporate interview capture with dedicated lavalier mics and ambient styling",
+        altText: "Executive interview shoot by Dreamline Production",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861508628-WhatsApp_Image_2026-.jpeg",
         aspectRatio: "vertical",
-        order: 21
+        order: 23,
+        published: true
     },
     {
-        title: "Intimate Pre-Wedding Silhouette",
-        caption: "Sunset silhouette capture capturing contemporary romance along Hooghly river",
-        altText: "Cinematic couple silhouette pre-wedding shoot Kolkata",
-        category: "pre-wedding",
+        title: "Live News & Documentary Field Filming",
+        caption: "Gimbal-stabilized dynamic street documentary recording amidst high-energy crowd rally",
+        altText: "Field news documentary filming in Kolkata",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861522772-WhatsApp_Image_2026-.jpeg",
         aspectRatio: "vertical",
-        order: 22
+        order: 24,
+        published: true
     },
     {
-        title: "Bengali Bride Kalai Shobha",
-        caption: "Artisan gold jewelry and traditional Shankha Pola bridal details",
-        altText: "Traditional Bengali bridal jewelry and Shankha Pola close-up portrait",
-        category: "weddings",
+        title: "High-Profile Broadcast Dialogue Production",
+        caption: "Studio dialogue setup with broadcast microphones and reference field monitor",
+        altText: "High profile broadcast interview recording Kolkata",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861531176-WhatsApp_Image_2026-.jpeg",
         aspectRatio: "vertical",
-        order: 23
+        order: 25,
+        published: true
     },
     {
-        title: "Vows and Sacred Fire Agni Sakshi",
-        caption: "Solemn marital vows witnessed before the sacred Agni wedding fire",
-        altText: "Agni Sakshi holy fire vows ceremony Bengali wedding",
-        category: "rituals",
+        title: "Broadcast Studio Multi-Light Setup",
+        caption: "Comprehensive studio filming floor showing three-point softbox lighting and tripods",
+        altText: "Broadcast studio lighting and camera setup Dreamline Production",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861544533-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 24
+        aspectRatio: "horizontal",
+        order: 26,
+        published: true
     },
     {
-        title: "Pre-Wedding Urban Street Narrative",
-        caption: "Stylized retro fashion pre-wedding shoot in heritage North Kolkata streets",
-        altText: "North Kolkata vintage pre-wedding photography by Dreamline Production",
-        category: "pre-wedding",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861562409-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 25
-    },
-    {
-        title: "Grand Sindoor Daan Climax",
-        caption: "Heart-stopping moment of vermilion application sealing the marital union",
-        altText: "Cinematic sindoor daan wedding photography Kolkata",
-        category: "rituals",
-        imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861570785-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 26
-    },
-    {
-        title: "Groom Baraat Celebrations",
-        caption: "High-energy dhol and fireworks procession celebrating the groom's arrival",
-        altText: "Groom baraat entry and grand wedding celebration Kolkata",
-        category: "weddings",
+        title: "Location Commercial Film Filming",
+        caption: "Field documentary crew directing landscape commercial shoot with monitor and gimbal",
+        altText: "Commercial location film production Kolkata",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861604584-WhatsApp_Image_2026-.jpeg",
-        aspectRatio: "vertical",
-        order: 27
+        aspectRatio: "horizontal",
+        order: 27,
+        published: true
     },
     {
-        title: "Modern Couple Twilight Portrait",
-        caption: "Twilight architectural portrait capturing modern luxury couture",
-        altText: "Modern luxury wedding couple twilight photoshoot Kolkata",
-        category: "weddings",
+        title: "On-Location Investigative Video Journalism",
+        caption: "Field video journalist and gimbal camera operator documenting live investigation",
+        altText: "Investigative documentary filming Dreamline Production",
+        category: "commercial",
         imageUrl: "https://backend.dreamlineproduction.com/uploads/1790861615934-WhatsApp_Image_2026-.jpeg",
         aspectRatio: "vertical",
-        order: 28
+        order: 28,
+        published: true
     }
 ];
 

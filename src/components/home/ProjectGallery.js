@@ -13,7 +13,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
     const filteredProjects = (category !== "all" || filter === "all") ? projects : projects.filter(p => p.type === filter);
 
     const getThumbnail = (project) => {
-        const isBrokenS3 = (url) => url && url.includes('amazonaws.com');
+        const isInvalidOrBroken = (url) => !url || url.includes('amazonaws.com') || url.includes('DSC00187__-_2.png') || url.includes('TAN09571.JPG');
         let ytId = null;
         if (project.videoUrl || project.link) {
             const url = project.videoUrl || project.link;
@@ -21,18 +21,21 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                 try { ytId = new URL(url).searchParams.get('v'); } catch(e){}
             } else if (url.includes('youtu.be/')) {
                 ytId = url.split('youtu.be/')[1]?.split('?')[0];
+            } else if (url.includes('youtube.com/embed/')) {
+                ytId = url.split('youtube.com/embed/')[1]?.split('?')[0];
             }
         }
 
-        if (ytId && (!project.coverImage || isBrokenS3(project.coverImage))) {
-            return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
-        }
-
-        if (project.coverImage && !isBrokenS3(project.coverImage)) return project.coverImage;
-        if (project.img && !isBrokenS3(project.img)) return project.img;
+        if (project.coverImage && !isInvalidOrBroken(project.coverImage)) return project.coverImage;
+        if (project.img && !isInvalidOrBroken(project.img)) return project.img;
         if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
 
-        return "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800";
+        // Direct couple matching safeguards to prevent any mismatch
+        if (project.title?.toUpperCase().includes('SID')) return "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg";
+        if (project.title?.toUpperCase().includes('RAJLAXMI')) return "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg";
+        if (project.title?.toUpperCase().includes('DIANDRA')) return "/thumbnails/seo_thumb_holud.jpg";
+
+        return "/thumbnails/seo_thumb_holud.jpg";
     };
 
     return (

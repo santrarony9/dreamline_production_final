@@ -4,74 +4,74 @@
     {
       "title": "L&T Superior Mobile Air Classifier",
       "type": "commercial",
-      "img": "/thumbnails/seo_bridal_makeup.jpg",
+      "img": "https://img.youtube.com/vi/HQDlIySd3aM/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://www.youtube.com/watch?v=HQDlIySd3aM",
-      "_id": "6a0974046a1261ad80a4072a"
+      "altText": "L&T Construction & Mining Machinery Commercial Film by Dreamline Production"
     },
     {
-      "title": "l & t  | Breaking Barriers",
+      "title": "L&T | Breaking Barriers",
       "type": "commercial",
-      "img": "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
+      "img": "https://img.youtube.com/vi/8NpSypsTCbs/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://www.youtube.com/watch?v=8NpSypsTCbs",
-      "_id": "69fc9b2e1094fd7357994693"
+      "altText": "L&T Breaking Barriers Corporate Documentary Film"
     },
     {
-      "title": "tata |  Bandicoot by Genrobotics",
+      "title": "TATA | Bandicoot by Genrobotics",
       "type": "commercial",
-      "img": "/thumbnails/seo_sindoor_daan.jpg",
+      "img": "https://img.youtube.com/vi/zFWNx12dg3c/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://www.youtube.com/watch?v=zFWNx12dg3c",
-      "_id": "69fc9b2e1094fd7357994694"
+      "altText": "TATA Trusts Bandicoot Social Robotics Innovation Film"
     },
     {
-      "title": "chandra udyog",
+      "title": "Chandra Udyog",
       "type": "commercial",
-      "img": "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg",
+      "img": "https://img.youtube.com/vi/UqnXM7lm4qE/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://www.youtube.com/watch?v=UqnXM7lm4qE",
-      "_id": "69fcabb61aa3b19cf28a7d4f"
+      "altText": "Chandra Udyog Industrial Plant Corporate Video"
     },
     {
-      "title": "ATLAS  FOUNDARIES",
+      "title": "Atlas Foundries",
       "type": "commercial",
-      "img": "/thumbnails/seo_thumb_holud.jpg",
+      "img": "https://img.youtube.com/vi/rZRB0R-Ane4/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://youtu.be/rZRB0R-Ane4?si=aRabBgqM2cHTDyZe",
-      "_id": "6a048a611727392c53f58a00"
+      "altText": "Atlas Foundries Precision Engineering Film Kolkata"
     },
     {
       "title": "KSW | ECO SARAS",
       "type": "commercial",
-      "img": "/thumbnails/seo_sindoor_daan.jpg",
+      "img": "https://img.youtube.com/vi/LynqHXnCqVg/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://youtu.be/LynqHXnCqVg?si=43o-IcD5XDF5I6Tb",
-      "_id": "6a048a611727392c53f589fe"
+      "altText": "KSW Eco Saras Corporate Video Kolkata"
     },
     {
-      "title": "CONNEQT KOLKATA",
+      "title": "CONNEQT Kolkata",
       "type": "commercial",
-      "img": "https://backend.dreamlineproduction.com/uploads/1790861508628-WhatsApp_Image_2026-.jpeg",
+      "img": "https://img.youtube.com/vi/F6dg5pDtC_U/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://youtu.be/F6dg5pDtC_U?si=oo5Fehg8kVkHkmeo",
-      "_id": "6a048a611727392c53f589ff"
+      "altText": "CONNEQT Business Services Kolkata Office Film"
     },
     {
-      "title": "brut ",
+      "title": "BRUT India",
       "type": "commercial",
-      "img": "/thumbnails/seo_sindoor_daan.jpg",
+      "img": "https://img.youtube.com/vi/naGtj-8iHuM/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://youtu.be/naGtj-8iHuM?si=sD2PMI9DNmpxh1tG",
-      "_id": "6a048a611727392c53f58a01"
+      "altText": "Brut India News Documentary Film Production"
     },
     {
-      "title": "trt world",
+      "title": "TRT World",
       "type": "commercial",
-      "img": "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
+      "img": "https://img.youtube.com/vi/YCZNkMz9CS4/maxresdefault.jpg",
       "hoverVideo": "",
       "videoUrl": "https://youtu.be/YCZNkMz9CS4?si=KhEKMqAEwwwIFaPc",
-      "_id": "6a048a611727392c53f58a02"
+      "altText": "TRT World International News Documentary Kolkata"
     }
   ],
   "__v": 1,
@@ -82,7 +82,7 @@
       "titleLine1": "TRUSTED PRODUCTION",
       "titleLine2": "HOUSE IN KOLKATA."
     },
-    "logoHistory": "/thumbnails/seo_sindoor_daan.jpg",
+    "logoHistory": "https://backend.dreamlineproduction.com/uploads/1790869082390-MSDREAMLINEPRODUCTIO.jpg",
     "details": {
       "heading": "About Us",
       "mission": "To help brands and individuals communicate their stories through powerful visuals, strategic content, and high-quality production.",
@@ -92,7 +92,7 @@
     },
     "founder": {
       "heading": "Capturing<br>The Unseen.",
-      "image": "/thumbnails/seo_ashirbad.jpg",
+      "image": "https://backend.dreamlineproduction.com/uploads/1790920316901-Screenshot_23.png",
       "name": "Rony Santra",
       "note": "\"At Dreamline, we don't just record events; we archive feelings. My journey began with a simple belief: that every brand and every couple has a story that deserves to be told with cinematic grandeur. Over the last decade, we've refined our craft to ensure that when you look back at our work 20 years from now, you don't just see what happened — you feel it.\"",
       "role": "Founder & Creative Director",
@@ -104,19 +104,19 @@
         {
           "name": "Swarup Roy",
           "role": "",
-          "image": "/thumbnails/seo_saat_paak.jpg",
+          "image": "https://backend.dreamlineproduction.com/uploads/1790868963325-WhatsApp_Image_2026-.jpeg",
           "_id": "6a168ea4b702545bab6ac2cf"
         },
         {
           "name": "Piyali Biswas",
           "role": "",
-          "image": "/thumbnails/seo_sindoor_daan.jpg",
+          "image": "https://backend.dreamlineproduction.com/uploads/1790869017921-WhatsApp_Image_2026-.jpeg",
           "_id": "6a168ea4b702545bab6ac2d0"
         },
         {
           "name": "Aditya Singh",
           "role": "",
-          "image": "/thumbnails/seo_thumb_drishti.jpg",
+          "image": "https://backend.dreamlineproduction.com/uploads/1790869041203-WhatsApp_Image_2026-.jpeg",
           "_id": "6a168ea4b702545bab6ac2d1"
         }
       ],
@@ -127,7 +127,7 @@
     "bts": {
       "heading": "Proven<br>Excellence.",
       "sectionSubtitle": "By The Numbers",
-      "videoImage": "https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?auto=format&fit=crop&w=1600"
+      "videoImage": ""
     },
     "whyUs": {
       "description": "We don't just record events; we craft stories that emotionally connect with audiences.",
@@ -137,35 +137,26 @@
       "processSteps": [],
       "sectionSubtitle": "Why Us"
     },
-    "productionServices": [],
-    "seo": {
-      "title": "About Us | Dreamline Production",
-      "description": "Explore Dreamline Production's journey, our creative vision, and our commitment to producing premium visual content for brands and clients.",
-      "keywords": "",
-      "ogImage": ""
-    }
+    "productionServices": []
   },
   "videoVault": [
     {
-      "title": "News Documentary |  BRUT",
+      "title": "News Documentary | BRUT",
       "category": "Commercial",
-      "image": "/thumbnails/seo_bou_bhat.jpg",
-      "videoUrl": "",
-      "_id": "6a07213f0eab1f05b1bdb075"
+      "image": "https://img.youtube.com/vi/naGtj-8iHuM/maxresdefault.jpg",
+      "videoUrl": "https://youtu.be/naGtj-8iHuM"
     },
     {
       "title": "News Documentary | TRT World",
       "category": "Commercial",
-      "image": "/thumbnails/seo_bridal_makeup.jpg",
-      "videoUrl": "youtube.com/watch?si=1BxkDUS0rnwo-XS1&v=YCZNkMz9CS4&feature=youtu.be",
-      "_id": "6a07213f0eab1f05b1bdb076"
+      "image": "https://img.youtube.com/vi/YCZNkMz9CS4/maxresdefault.jpg",
+      "videoUrl": "https://youtu.be/YCZNkMz9CS4"
     },
     {
-      "title": "Onam Celebration",
+      "title": "Onam Celebration Film",
       "category": "Commercial",
-      "image": "https://backend.dreamlineproduction.com/uploads/1790861489175-WhatsApp_Image_2026-.jpeg",
-      "videoUrl": "youtube.com/watch?si=7GTGTQxHt3TbFovw&v=-2PV88RyiI0&feature=youtu.be",
-      "_id": "6a07213f0eab1f05b1bdb077"
+      "image": "https://img.youtube.com/vi/-2PV88RyiI0/maxresdefault.jpg",
+      "videoUrl": "https://youtu.be/-2PV88RyiI0"
     }
   ],
   "commercial": {
@@ -184,10 +175,11 @@
   "global": {
     "company": {
       "establishedYear": "2010",
-      "registrationNo": "WB-PR-00XXXXXX"
+      "registrationNo": "WB-PR-00XXXXXX",
+      "name": "Dreamline Production"
     },
     "contact": {
-      "address": "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082",
+      "address": "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082",
       "email": "info.dreamlineproduction@gmail.com",
       "phone": "+91 82400 54002"
     },
@@ -211,7 +203,14 @@
       "clientId": "",
       "clientSecret": "",
       "mapsApiKey": "",
-      "searchConsoleId": ""
+      "searchConsoleId": "",
+      "businessName": "Dreamline Production",
+      "directionsUrl": "https://www.google.com/maps/dir/?api=1&destination=Dreamline+Production,+85,+Tilottama+Plaza,+Tower+2,+First+Floor,+Karunamoyee+Ghat+Road,+Kolkata,+West+Bengal+700082&destination_place_id=ChIJj45i25BwAjoRO1La59wUhTs",
+      "embedCode": "https://maps.google.com/maps?q=Dreamline+Production,+85,+Tilottama+Plaza,+Tower+2,+First+Floor,+Karunamoyee+Ghat+Road,+Kolkata,+West+Bengal+700082&t=&z=16&ie=UTF8&iwloc=&output=embed",
+      "mapEnabled": true,
+      "mapsUrl": "https://www.google.com/maps/place/Dreamline+Production/@22.4850486,88.3313873,17z/data=!4m6!3m5!1s0x3a027090db628e8f:0x3b8514dce7da523b!8m2!3d22.4850486!4d88.3339622!16s%2Fg%2F11hb2thsvp",
+      "profileUrl": "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9",
+      "reviewsUrl": "https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs"
     }
   },
   "home": {
@@ -230,7 +229,7 @@
     "expertise": {
       "description": "Dreamline Production moves away from \"standard shots.\" We build cinematic experiences that preserve the soul of the event, treated with high-end color grading and sound design.",
       "heading": "Luxury<br>Emotion<br>Storytelling.",
-      "image": "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg",
+      "image": "https://backend.dreamlineproduction.com/uploads/1793328337588-logo.jpg",
       "servicesList": [
         {
           "name": "3D VISUALIZATION WORK",
@@ -259,19 +258,19 @@
         }
       ],
       "title": "Expertise Focus",
-      "yearsExperience": "15"
+      "yearsExperience": "16"
     },
     "motionArchive": {
       "description": "15+ Years of Frames",
       "subtitle": "Archive.",
       "title": "The Motion",
       "images": [
-        "https://backend.dreamlineproduction.com/uploads/1790861489175-WhatsApp_Image_2026-.jpeg",
+        "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg",
+        "/thumbnails/seo_thumb_holud.jpg",
+        "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
         "/thumbnails/seo_sindoor_daan.jpg",
-        "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg",
-        "/thumbnails/seo_saat_paak.jpg",
-        "/thumbnails/seo_ashirbad.jpg",
-        "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg"
+        "/thumbnails/prinsep-ghat.jpg",
+        "https://img.youtube.com/vi/HQDlIySd3aM/maxresdefault.jpg"
       ]
     },
     "reviews": {
@@ -319,7 +318,7 @@
         }
       ],
       "sectionSubtitle": "The Reputation",
-      "totalReviewsText": "72 GOOGLE REVIEWS",
+      "totalReviewsText": "83 GOOGLE REVIEWS",
       "sectionTitle": "Reviews."
     },
     "quote": {
@@ -333,19 +332,9 @@
         "_id": "6a059575143ae1ea5dc1553c"
       },
       {
-        "name": "L& T",
-        "image": "https://dreamlineproduction.com/uploads/1790065337088-2.webp",
-        "_id": "6a059575143ae1ea5dc1553d"
-      },
-      {
         "name": "aljazeera",
-        "image": "https://dreamlineproduction.com/uploads/1790077324219-4.webp",
+        "image": "https://backend.dreamlineproduction.com/uploads/1790863603917-Untitled_design__16_.jpg",
         "_id": "6a068e6f86d9e91ef8b7e209"
-      },
-      {
-        "name": "TV TODAY",
-        "image": "",
-        "_id": "6a068e6f86d9e91ef8b7e20a"
       },
       {
         "name": "CHANDRA UDYOG",
@@ -354,7 +343,7 @@
       },
       {
         "name": "ABP NETWORK",
-        "image": "https://dreamlineproduction.com/uploads/1790077419950-9.webp",
+        "image": "https://backend.dreamlineproduction.com/uploads/1790863595400-Untitled_design__15_.jpg",
         "_id": "6a068e6f86d9e91ef8b7e20c"
       },
       {
@@ -371,6 +360,21 @@
         "name": "CONNEQT",
         "image": "https://dreamlineproduction.com/uploads/1790077355259-6.webp",
         "_id": "6a068e6f86d9e91ef8b7e20f"
+      },
+      {
+        "name": "l  & t",
+        "image": "https://backend.dreamlineproduction.com/uploads/1790863240896-Untitled_design__14_.jpg",
+        "_id": "6abe6900b197bb5d4dbe19eb"
+      },
+      {
+        "name": "tv today",
+        "image": "https://backend.dreamlineproduction.com/uploads/1790863248954-Untitled_design__13_.jpg",
+        "_id": "6abe6900b197bb5d4dbe19ec"
+      },
+      {
+        "name": "insta image",
+        "image": "https://backend.dreamlineproduction.com/uploads/1790863272355-Untitled_design__11_.jpg",
+        "_id": "6abe6900b197bb5d4dbe19ed"
       }
     ],
     "services": [
@@ -438,40 +442,44 @@
       "role": "Marketing Head, Kolkata Retailers"
     },
     "sparkCarousel": [
-      "/thumbnails/seo_saat_paak.jpg",
-      "/thumbnails/seo_thumb_holud.jpg",
-      "https://backend.dreamlineproduction.com/uploads/1790861489175-WhatsApp_Image_2026-.jpeg",
-      "/thumbnails/seo_sindoor_daan.jpg",
-      "/thumbnails/seo_saat_paak.jpg"
-    ],
-    "seo": {
-      "title": "Luxury Wedding Photographer Kolkata | Dreamline Production",
-      "description": "Capture your dream wedding with a luxury wedding photographer in Kolkata. Timeless storytelling, premium photography, and unforgettable moments.",
-      "keywords": "Luxury Wedding Photographer Kolkata, Luxury Wedding Photographer near me, Luxury Wedding Photographer",
-      "ogImage": ""
-    }
+      "https://backend.dreamlineproduction.com/uploads/1793327108869-WhatsApp_Image_2026-.jpeg",
+      "https://backend.dreamlineproduction.com/uploads/1793327117694-WhatsApp_Image_2026-.jpeg",
+      "https://backend.dreamlineproduction.com/uploads/1793327130299-WhatsApp_Image_2026-.jpeg",
+      "https://backend.dreamlineproduction.com/uploads/1793327141093-WhatsApp_Image_2026-.jpeg",
+      "https://backend.dreamlineproduction.com/uploads/1793327588250-Two_Souls__Timeless_.png"
+    ]
   },
   "splitGallery": [
-    "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
-    "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg",
-    "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
-    "/thumbnails/seo_saat_paak.jpg",
-    "/thumbnails/seo_bou_bhat.jpg",
-    "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg",
-    "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
+    "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg",
+    "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
     "/thumbnails/seo_thumb_holud.jpg",
-    "/thumbnails/seo_bridal_makeup.jpg",
-    "/thumbnails/seo_thumb_holud.jpg",
+    "/thumbnails/seo_sindoor_daan.jpg",
     "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
-    "/thumbnails/seo_saat_paak.jpg",
+    "/thumbnails/seo_thumb_drishti.jpg",
+    "/thumbnails/prinsep-ghat.jpg",
+    "/thumbnails/banquets-kolkata.jpg",
+    "https://img.youtube.com/vi/HQDlIySd3aM/maxresdefault.jpg",
+    "https://img.youtube.com/vi/zFWNx12dg3c/maxresdefault.jpg",
+    "https://img.youtube.com/vi/UqnXM7lm4qE/maxresdefault.jpg",
+    "https://img.youtube.com/vi/rZRB0R-Ane4/maxresdefault.jpg",
+    "https://img.youtube.com/vi/8NpSypsTCbs/maxresdefault.jpg",
+    "https://img.youtube.com/vi/LynqHXnCqVg/maxresdefault.jpg",
+    "https://img.youtube.com/vi/F6dg5pDtC_U/maxresdefault.jpg",
+    "https://img.youtube.com/vi/naGtj-8iHuM/maxresdefault.jpg",
+    "https://img.youtube.com/vi/YCZNkMz9CS4/maxresdefault.jpg",
+    "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
     "https://backend.dreamlineproduction.com/uploads/1790861489175-WhatsApp_Image_2026-.jpeg",
-    "/thumbnails/seo_thumb_holud.jpg",
-    "/thumbnails/seo_ashirbad.jpg",
-    "/thumbnails/seo_thumb_drishti.jpg",
-    "/thumbnails/seo_thumb_drishti.jpg",
-    "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg"
+    "https://backend.dreamlineproduction.com/uploads/1790861508628-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861522772-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861531176-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861544533-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861604584-WhatsApp_Image_2026-.jpeg",
+    "https://backend.dreamlineproduction.com/uploads/1790861615934-WhatsApp_Image_2026-.jpeg"
   ],
-  "updatedAt": "2026-09-22T11:44:30.102Z",
+  "updatedAt": "2026-11-16T10:31:41.344Z",
   "gallery": {
     "title": "Motion Archive",
     "subtitle": "",

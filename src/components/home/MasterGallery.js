@@ -8,95 +8,245 @@ import GalleryLightbox from "@/components/gallery/GalleryLightbox";
 
 const AUTHENTIC_FALLBACK_IMAGES = [
     {
-        src: "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg",
-        title: "Candid Bengali Bridal Portrait",
-        caption: "Emotional candid bridal portrait during wedding preparations in Kolkata",
+        src: "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg",
+        title: "Sid & Trina Wedding Ceremony",
+        caption: "Sacred vows and floral garland exchange from Sid & Trina's luxury wedding film in Kolkata",
         category: "weddings"
     },
     {
-        src: "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg",
-        title: "Royal Couple Evening Reception",
-        caption: "Luxury couple portrait during grand evening wedding reception",
-        category: "weddings"
-    },
-    {
-        src: "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
-        title: "Sunset at Prinsep Ghat",
-        caption: "Romantic pre-wedding couple photoshoot at historic Prinsep Ghat Kolkata",
-        category: "pre-wedding"
-    },
-    {
-        src: "/thumbnails/seo_sindoor_daan.jpg",
-        title: "Traditional Sindoor Daan Ritual",
-        caption: "Traditional sindoor daan wedding ceremony captured with cinematic lighting",
+        src: "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
+        title: "Rajlaxmi Shubho Drishti Ritual",
+        caption: "Bride Rajlaxmi holding sacred betel leaves during the traditional Shubho Drishti ritual",
         category: "rituals"
     },
     {
-        src: "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
-        title: "Intimate Heritage Narrative",
-        caption: "Intimate pre-wedding destination narrative amidst historic heritage architecture",
+        src: "/thumbnails/seo_thumb_holud.jpg",
+        title: "Heritage Mandap Sunset at Howrah",
+        caption: "Royal heritage wedding mandap overlooking the iconic Howrah Bridge at golden hour sunset",
+        category: "weddings"
+    },
+    {
+        src: "/thumbnails/seo_sindoor_daan.jpg",
+        title: "Traditional Bengali Sindoor Daan",
+        caption: "Sacred sindoor daan wedding ceremony before the holy Agni fire captured with warm ambient lighting",
+        category: "rituals"
+    },
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
+        title: "Cinematic Pre-Wedding Gimbal Shoot",
+        caption: "On-location Ronin gimbal camera tracking shot during romantic outdoor couple pre-wedding film",
         category: "pre-wedding"
     },
     {
         src: "/thumbnails/seo_thumb_drishti.jpg",
-        title: "Shubho Drishti Ceremony",
-        caption: "Traditional auspicious Shubho Drishti betel leaf ceremony captured candidly",
-        category: "rituals"
-    },
-    {
-        src: "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
-        title: "Golden Hour Couple Portrait",
-        caption: "Cinematic bride and groom golden hour portrait in Kolkata",
+        title: "Royal Heritage Mandap Embrace",
+        caption: "Elegant couple portrait under luxury floral wedding mandap",
         category: "weddings"
     },
     {
-        src: "/thumbnails/seo_thumb_holud.jpg",
-        title: "Vibrant Gaye Holud Moments",
-        caption: "Vibrant haldi ceremony moments filled with genuine laughter and family celebrations",
-        category: "rituals"
-    },
-    {
-        src: "/thumbnails/seo_saat_paak.jpg",
-        title: "Saat Paak Sacred Circles",
-        caption: "Seven sacred circumambulations of Saat Paak wedding ritual",
-        category: "rituals"
-    },
-    {
-        src: "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg",
-        title: "Sacred Garland Exchange Vows",
-        caption: "Cinematic wedding vows and exchange of floral garlands ritual in Kolkata",
-        category: "rituals"
-    },
-    {
-        src: "/thumbnails/seo_bridal_makeup.jpg",
-        title: "Bridal Preparation Artistry",
-        caption: "Meticulous bridal preparation with traditional Benarasi saree and sandalwood art",
-        category: "weddings"
+        src: "/thumbnails/prinsep-ghat.jpg",
+        title: "Prinsep Ghat Monument Aerial Sweep",
+        caption: "DGCA-certified drone aerial perspective over Vidyasagar Setu and Prinsep Ghat riverside memorial",
+        category: "drone"
     },
     {
         src: "/thumbnails/banquets-kolkata.jpg",
         title: "Grand Banquet Aerial Perspective",
-        caption: "High-altitude DGCA-certified drone view of luxury wedding banquet estate in Kolkata",
+        caption: "High-altitude certified drone view of luxury wedding banquet estate in Kolkata",
         category: "drone"
+    },
+    {
+        src: "https://img.youtube.com/vi/HQDlIySd3aM/maxresdefault.jpg",
+        title: "L&T Mobile Air Classifier Documentary",
+        caption: "High-precision industrial documentary film for L&T Construction & Mining Machinery",
+        category: "commercial"
+    },
+    {
+        src: "https://img.youtube.com/vi/zFWNx12dg3c/maxresdefault.jpg",
+        title: "TATA Genrobotics Bandicoot Film",
+        caption: "Social robotics innovation documentary film produced for TATA Trusts",
+        category: "commercial"
+    },
+    {
+        src: "https://img.youtube.com/vi/UqnXM7lm4qE/maxresdefault.jpg",
+        title: "Chandra Udyog Plant Cinematography",
+        caption: "Industrial plant machinery operations and manufacturing corporate brand video",
+        category: "commercial"
+    },
+    {
+        src: "https://img.youtube.com/vi/rZRB0R-Ane4/maxresdefault.jpg",
+        title: "Atlas Foundries Precision Shoot",
+        caption: "Heavy casting and engineering foundry manufacturing commercial documentary",
+        category: "commercial"
     }
 ];
+
+const KNOWN_IMAGE_METADATA = {
+    "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg": {
+        title: "Sid & Trina Wedding Ceremony",
+        caption: "Sacred vows and floral garland exchange from Sid & Trina's luxury wedding film in Kolkata",
+        category: "weddings"
+    },
+    "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg": {
+        title: "Rajlaxmi Shubho Drishti Ritual",
+        caption: "Bride Rajlaxmi holding sacred betel leaves during the traditional Shubho Drishti ritual",
+        category: "rituals"
+    },
+    "/thumbnails/seo_thumb_holud.jpg": {
+        title: "Heritage Mandap Sunset at Howrah",
+        caption: "Royal heritage wedding mandap overlooking the iconic Howrah Bridge at golden hour sunset",
+        category: "weddings"
+    },
+    "/thumbnails/seo_sindoor_daan.jpg": {
+        title: "Traditional Bengali Sindoor Daan",
+        caption: "Sacred sindoor daan wedding ceremony before the holy Agni fire",
+        category: "rituals"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg": {
+        title: "Cinematic Pre-Wedding Gimbal Shoot",
+        caption: "On-location Ronin gimbal tracking shot during romantic outdoor couple pre-wedding film",
+        category: "pre-wedding"
+    },
+    "/thumbnails/seo_thumb_drishti.jpg": {
+        title: "Royal Heritage Mandap Embrace",
+        caption: "Elegant couple portrait under luxury floral wedding mandap",
+        category: "weddings"
+    },
+    "/thumbnails/prinsep-ghat.jpg": {
+        title: "Prinsep Ghat Monument Aerial",
+        caption: "Aerial sweep over Vidyasagar Setu and Prinsep Ghat riverside memorial",
+        category: "drone"
+    },
+    "/thumbnails/banquets-kolkata.jpg": {
+        title: "Grand Banquet Aerial Perspective",
+        caption: "High-altitude DGCA-certified drone view of luxury wedding banquet estate in Kolkata",
+        category: "drone"
+    },
+    "https://img.youtube.com/vi/HQDlIySd3aM/maxresdefault.jpg": {
+        title: "L&T Mobile Air Classifier Documentary",
+        caption: "High-precision commercial documentary for L&T Construction & Mining Machinery",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/zFWNx12dg3c/maxresdefault.jpg": {
+        title: "TATA Genrobotics Bandicoot Film",
+        caption: "Documentary innovation film highlighting social robotics for TATA Trusts",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/UqnXM7lm4qE/maxresdefault.jpg": {
+        title: "Chandra Udyog Factory Cinematography",
+        caption: "Manufacturing plant process documentation and brand storytelling",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/rZRB0R-Ane4/maxresdefault.jpg": {
+        title: "Atlas Foundries Precision Shoot",
+        caption: "Heavy casting and foundry manufacturing commercial cinematography",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/8NpSypsTCbs/maxresdefault.jpg": {
+        title: "L&T Breaking Barriers Corporate Film",
+        caption: "Corporate brand cinema showcasing heavy machinery innovation and human stories",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/LynqHXnCqVg/maxresdefault.jpg": {
+        title: "KSW Eco Saras Corporate Video",
+        caption: "Brand story and sustainability profile film for KSW Eco Saras",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/F6dg5pDtC_U/maxresdefault.jpg": {
+        title: "CONNEQT Kolkata Corporate Showcase",
+        caption: "Modern corporate workspace cinematography and employee stories for CONNEQT Kolkata",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/naGtj-8iHuM/maxresdefault.jpg": {
+        title: "Brut India News Documentary",
+        caption: "In-depth documentary film covering human resilience and inspiring sports narratives",
+        category: "commercial"
+    },
+    "https://img.youtube.com/vi/YCZNkMz9CS4/maxresdefault.jpg": {
+        title: "TRT World International Feature",
+        caption: "International news investigative feature documented on-location in Kolkata",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg": {
+        title: "Live Broadcast Multi-Cam Control Room",
+        caption: "Multi-camera live video mixing console and field broadcast desk",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg": {
+        title: "ATEM Mini Multi-Camera Switcher",
+        caption: "Live production switching rig and preview monitor during grand ceremony broadcast",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg": {
+        title: "Sony Alpha 4K Multi-Track Podcast Recording",
+        caption: "On-camera monitor feed during professional studio podcast interview recording",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg": {
+        title: "Think Big Studio Talk Show Production",
+        caption: "Full studio wide shot during multi-guest corporate interview and podcast production",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg": {
+        title: "Think Big Studio Talk Show Production",
+        caption: "Full studio wide shot during multi-guest corporate interview and podcast production",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861489175-WhatsApp_Image_2026-.jpeg": {
+        title: "Outdoor Documentary Dialogue Filming",
+        caption: "Cinematographer filming natural garden documentary interview with directional audio",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861508628-WhatsApp_Image_2026-.jpeg": {
+        title: "Executive Acoustic Studio Interview",
+        caption: "Interior corporate interview capture with dedicated microphones and ambient styling",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861522772-WhatsApp_Image_2026-.jpeg": {
+        title: "Live News & Documentary Field Filming",
+        caption: "Gimbal-stabilized dynamic street documentary recording amidst high-energy crowd rally",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861531176-WhatsApp_Image_2026-.jpeg": {
+        title: "High-Profile Broadcast Dialogue Production",
+        caption: "Studio dialogue setup with broadcast microphones and reference field monitor",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861544533-WhatsApp_Image_2026-.jpeg": {
+        title: "Broadcast Studio Multi-Light Setup",
+        caption: "Comprehensive studio filming floor showing three-point softbox lighting and tripods",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861604584-WhatsApp_Image_2026-.jpeg": {
+        title: "Location Commercial Film Filming",
+        caption: "Field documentary crew directing landscape commercial shoot with monitor and gimbal",
+        category: "commercial"
+    },
+    "https://backend.dreamlineproduction.com/uploads/1790861615934-WhatsApp_Image_2026-.jpeg": {
+        title: "On-Location Investigative Video Journalism",
+        caption: "Field video journalist and gimbal camera operator documenting live investigation",
+        category: "commercial"
+    }
+};
 
 export default function MasterGallery({ images = [] }) {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [lightboxIndex, setLightboxIndex] = useState(null);
 
-    // Format input images into structured objects
-    const baseItems = (images && images.length >= 6) 
+    // Format input images into structured objects using verified metadata
+    const baseItems = (images && images.length > 0) 
         ? images.map((img, i) => {
-            const fallback = AUTHENTIC_FALLBACK_IMAGES[i % AUTHENTIC_FALLBACK_IMAGES.length];
-            return typeof img === "string" 
-                ? { 
-                    imageUrl: img, 
-                    title: fallback.title, 
-                    caption: fallback.caption, 
-                    category: fallback.category 
-                  }
-                : img;
+            if (typeof img === "object" && img !== null) {
+                return img;
+            }
+            const url = img;
+            const meta = KNOWN_IMAGE_METADATA[url] || AUTHENTIC_FALLBACK_IMAGES[i % AUTHENTIC_FALLBACK_IMAGES.length];
+            return { 
+                imageUrl: url, 
+                title: meta.title, 
+                caption: meta.caption, 
+                category: meta.category 
+            };
         })
         : AUTHENTIC_FALLBACK_IMAGES.map(item => ({ ...item, imageUrl: item.src }));
 

@@ -235,6 +235,28 @@ export default function GalleryAdmin() {
         }
     };
 
+    const autoFetchYouTubeThumb = (i) => {
+        const proj = projects[i];
+        if (!proj?.videoUrl) {
+            alert("Please enter a YouTube video URL first.");
+            return;
+        }
+        let ytId = null;
+        const url = proj.videoUrl;
+        if (url.includes('youtube.com/watch')) {
+            try { ytId = new URL(url).searchParams.get('v'); } catch(e){}
+        } else if (url.includes('youtu.be/')) {
+            ytId = url.split('youtu.be/')[1]?.split('?')[0];
+        } else if (url.includes('youtube.com/embed/')) {
+            ytId = url.split('youtube.com/embed/')[1]?.split('?')[0];
+        }
+        if (ytId) {
+            updateProject(i, "img", `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`);
+        } else {
+            alert("Could not extract YouTube ID from this URL.");
+        }
+    };
+
     // --- Commercial Projects Operations ---
     const handleSaveProjects = async () => {
         setSavingProjects(true);
@@ -659,6 +681,15 @@ export default function GalleryAdmin() {
                                                     className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-[10px] text-[#c5a059] outline-none"
                                                     placeholder="https://www.youtube.com/watch?v=..."
                                                 />
+                                                {proj.videoUrl && (proj.videoUrl.includes('youtube') || proj.videoUrl.includes('youtu.be')) && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => autoFetchYouTubeThumb(i)}
+                                                        className="w-full mt-2 py-2 px-3 bg-[#c5a059]/15 hover:bg-[#c5a059] text-[#c5a059] hover:text-black rounded-xl text-[9px] font-black uppercase tracking-wider transition-colors text-center"
+                                                    >
+                                                        ★ Fetch YouTube HD Thumbnail
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
 
