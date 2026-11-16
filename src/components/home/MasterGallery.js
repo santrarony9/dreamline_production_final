@@ -1,199 +1,334 @@
 "use client";
+
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import GalleryLightbox from "@/components/gallery/GalleryLightbox";
+
+const AUTHENTIC_FALLBACK_IMAGES = [
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861422140-WhatsApp_Image_2026-.jpeg",
+        title: "Candid Bengali Bridal Portrait",
+        caption: "Emotional candid bridal portrait during wedding preparations in Kolkata",
+        category: "weddings"
+    },
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861439566-WhatsApp_Image_2026-.jpeg",
+        title: "Royal Couple Evening Reception",
+        caption: "Luxury couple portrait during grand evening wedding reception",
+        category: "weddings"
+    },
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
+        title: "Sunset at Prinsep Ghat",
+        caption: "Romantic pre-wedding couple photoshoot at historic Prinsep Ghat Kolkata",
+        category: "pre-wedding"
+    },
+    {
+        src: "/thumbnails/seo_sindoor_daan.jpg",
+        title: "Traditional Sindoor Daan Ritual",
+        caption: "Traditional sindoor daan wedding ceremony captured with cinematic lighting",
+        category: "rituals"
+    },
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861456574-WhatsApp_Image_2026-.jpeg",
+        title: "Intimate Heritage Narrative",
+        caption: "Intimate pre-wedding destination narrative amidst historic heritage architecture",
+        category: "pre-wedding"
+    },
+    {
+        src: "/thumbnails/seo_thumb_drishti.jpg",
+        title: "Shubho Drishti Ceremony",
+        caption: "Traditional auspicious Shubho Drishti betel leaf ceremony captured candidly",
+        category: "rituals"
+    },
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861464923-WhatsApp_Image_2026-.jpeg",
+        title: "Golden Hour Couple Portrait",
+        caption: "Cinematic bride and groom golden hour portrait in Kolkata",
+        category: "weddings"
+    },
+    {
+        src: "/thumbnails/seo_thumb_holud.jpg",
+        title: "Vibrant Gaye Holud Moments",
+        caption: "Vibrant haldi ceremony moments filled with genuine laughter and family celebrations",
+        category: "rituals"
+    },
+    {
+        src: "/thumbnails/seo_saat_paak.jpg",
+        title: "Saat Paak Sacred Circles",
+        caption: "Seven sacred circumambulations of Saat Paak wedding ritual",
+        category: "rituals"
+    },
+    {
+        src: "https://backend.dreamlineproduction.com/uploads/1790861480620-WhatsApp_Image_2026-.jpeg",
+        title: "Sacred Garland Exchange Vows",
+        caption: "Cinematic wedding vows and exchange of floral garlands ritual in Kolkata",
+        category: "rituals"
+    },
+    {
+        src: "/thumbnails/seo_bridal_makeup.jpg",
+        title: "Bridal Preparation Artistry",
+        caption: "Meticulous bridal preparation with traditional Benarasi saree and sandalwood art",
+        category: "weddings"
+    },
+    {
+        src: "/thumbnails/banquets-kolkata.jpg",
+        title: "Grand Banquet Aerial Perspective",
+        caption: "High-altitude DGCA-certified drone view of luxury wedding banquet estate in Kolkata",
+        category: "drone"
+    }
+];
 
 export default function MasterGallery({ images = [] }) {
-    const [selectedImage, setSelectedImage] = useState(null);
-    // Fallback images if none provided from global content
-    const defaultImages = [
-        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1549417229-aa67d3263c09?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=800",
-        "https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=800",
-    ];
+    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [lightboxIndex, setLightboxIndex] = useState(null);
 
-    const displayImages = images && images.length >= 6 ? images : defaultImages;
+    // Format input images into structured objects
+    const baseItems = (images && images.length >= 6) 
+        ? images.map((img, i) => {
+            const fallback = AUTHENTIC_FALLBACK_IMAGES[i % AUTHENTIC_FALLBACK_IMAGES.length];
+            return typeof img === "string" 
+                ? { 
+                    imageUrl: img, 
+                    title: fallback.title, 
+                    caption: fallback.caption, 
+                    category: fallback.category 
+                  }
+                : img;
+        })
+        : AUTHENTIC_FALLBACK_IMAGES.map(item => ({ ...item, imageUrl: item.src }));
 
-    // Use hash routing for modal back button support
+    // Filter by selected category
+    const activeItems = selectedCategory === "all"
+        ? baseItems
+        : baseItems.filter(item => item.category === selectedCategory);
+
+    // Hash routing for lightbox back-button support
     useEffect(() => {
         const handleHashChange = () => {
-            if (typeof window !== "undefined" && !window.location.hash.includes("gallery")) {
-                setSelectedImage(null);
-            }
-        };
-
-        const handleKeyDown = (e) => {
-            if (e.key === "Escape") {
-                handleClose();
+            if (typeof window !== "undefined" && !window.location.hash.includes("mastergallery")) {
+                setLightboxIndex(null);
             }
         };
 
         window.addEventListener("hashchange", handleHashChange);
-        window.addEventListener("keydown", handleKeyDown);
-
-        return () => {
-            window.removeEventListener("hashchange", handleHashChange);
-            window.removeEventListener("keydown", handleKeyDown);
-        };
+        return () => window.removeEventListener("hashchange", handleHashChange);
     }, []);
 
-    const handleOpen = (img) => {
-        setSelectedImage(img);
-        if (typeof window !== "undefined" && !window.location.hash.includes("gallery")) {
-            window.location.hash = "gallery";
+    const openLightbox = (index) => {
+        setLightboxIndex(index);
+        if (typeof window !== "undefined" && !window.location.hash.includes("mastergallery")) {
+            window.location.hash = "mastergallery";
         }
     };
 
-    const handleClose = () => {
-        if (typeof window !== "undefined" && window.location.hash.includes("gallery")) {
+    const closeLightbox = () => {
+        if (typeof window !== "undefined" && window.location.hash.includes("mastergallery")) {
             window.history.back();
         } else {
-            setSelectedImage(null);
+            setLightboxIndex(null);
         }
     };
 
-    // Distinct SEO-friendly descriptions for each gallery frame
-    const GALLERY_CAPTIONS = [
-        "Candid outdoor pre-wedding couple photoshoot in Kolkata by Dreamline Production",
-        "Traditional Bengali wedding rituals and cultural celebration documentation",
-        "Emotional candid bridal portrait during wedding preparations in Kolkata",
-        "Luxury couple portrait during grand evening wedding reception",
-        "Traditional sindoor daan wedding ceremony captured with cinematic lighting",
-        "Intimate pre-wedding destination narrative amidst historic heritage architecture",
-        "Cinematic bride and groom golden hour portrait in Kolkata",
-        "Vibrant haldi ceremony moments filled with genuine laughter and family celebrations",
-        "Cinematic wedding vows and exchange of floral garlands ritual in Kolkata"
+    const nextImage = () => {
+        if (lightboxIndex === null || activeItems.length === 0) return;
+        setLightboxIndex((prev) => (prev + 1) % activeItems.length);
+    };
+
+    const prevImage = () => {
+        if (lightboxIndex === null || activeItems.length === 0) return;
+        setLightboxIndex((prev) => (prev - 1 + activeItems.length) % activeItems.length);
+    };
+
+    // Split active items into 3 columns for seamless vertical parallax
+    const col1 = activeItems.filter((_, i) => i % 3 === 0);
+    const col2 = activeItems.filter((_, i) => i % 3 === 1);
+    const col3 = activeItems.filter((_, i) => i % 3 === 2);
+
+    const getSeamlessArray = (arr) => {
+        if (arr.length === 0) return [];
+        if (arr.length < 3) return [...arr, ...arr, ...arr, ...arr];
+        return [...arr, ...arr];
+    };
+
+    const categories = [
+        { key: "all", label: "All Archives" },
+        { key: "weddings", label: "Weddings" },
+        { key: "pre-wedding", label: "Pre-Wedding" },
+        { key: "rituals", label: "Traditional Rituals" }
     ];
 
-    // Split images into 3 columns for the vertical slider effect
-    const col1 = displayImages.filter((_, i) => i % 3 === 0);
-    const col2 = displayImages.filter((_, i) => i % 3 === 1);
-    const col3 = displayImages.filter((_, i) => i % 3 === 2);
-
-    // Double up arrays to make the CSS scrolling seamless
-    const getSeamlessArray = (arr) => [...arr, ...arr, ...arr];
-
     return (
-        <section className="bg-[#050505] border-t border-white/5 py-16 md:py-32 overflow-hidden">
-            <div className="container mx-auto px-6 md:px-12 mb-10 md:mb-20 relative z-10">
-                <h2 className="font-heading text-5xl md:text-7xl lg:text-[100px] font-black uppercase tracking-tighter leading-[0.85] mb-6">
-                    MASTER<br /><span className="text-[#c5a059]">GALLERY.</span>
-                </h2>
-                <p className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.2em] max-w-xl">
-                    A MULTI-DIMENSIONAL ARCHIVE OF EMOTION, LIGHT, AND MOTION.
-                </p>
+        <section className="bg-[#050505] border-t border-white/5 py-16 md:py-32 overflow-hidden relative">
+            <div className="container mx-auto px-6 md:px-12 mb-8 md:mb-14 relative z-10">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.4em] mb-3 block">
+                            The Master Visual Archive
+                        </span>
+                        <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-[90px] font-black uppercase tracking-tighter leading-[0.88] mb-4">
+                            MASTER<br /><span className="text-[#c5a059]">GALLERY.</span>
+                        </h2>
+                        <p className="text-gray-400 text-xs sm:text-sm font-light max-w-xl leading-relaxed">
+                            A multi-dimensional archive of emotion, light, and motion. Click any frame to explore full-screen portraits and ceremony rituals.
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        {/* Homepage Category Filter Pills */}
+                        <div className="flex flex-wrap gap-1.5 p-1 bg-white/5 rounded-full border border-white/10">
+                            {categories.map((cat) => {
+                                const isActive = selectedCategory === cat.key;
+                                return (
+                                    <button
+                                        key={cat.key}
+                                        type="button"
+                                        onClick={() => setSelectedCategory(cat.key)}
+                                        className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-wider transition-all duration-300 ${
+                                            isActive
+                                                ? "bg-[#c5a059] text-black shadow-md"
+                                                : "text-gray-400 hover:text-white"
+                                        }`}
+                                    >
+                                        {cat.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {/* Direct Link to Complete Archive */}
+                        <Link
+                            href="/gallery/"
+                            className="px-6 py-2.5 rounded-full border border-[#c5a059]/40 hover:border-[#c5a059] text-[#c5a059] hover:text-black hover:bg-[#c5a059] text-[10px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap shadow-lg flex items-center gap-2 group"
+                        >
+                            <span>Full Archive</span>
+                            <span className="group-hover:translate-x-1 transition-transform">→</span>
+                        </Link>
+                    </div>
+                </div>
             </div>
 
             {/* Vertical Scroll Tracks */}
-            <div className="h-[60vh] md:h-[70vh] flex gap-4 md:gap-6 px-4 md:px-12 mt-8 md:mt-16 group relative">
+            <div className="h-[60vh] md:h-[70vh] flex gap-4 md:gap-6 px-4 md:px-12 mt-6 md:mt-12 group relative">
                 {/* Gradient Fades for Top/Bottom */}
-                <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#050505] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#050505] to-transparent z-10 pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#050505] to-transparent z-10 pointer-events-none" />
 
                 {/* Column 1 - Tracks Up */}
                 <div className="flex-1 flex flex-col gap-4 overflow-hidden">
                     <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
-                        {getSeamlessArray(col1).map((src, i) => (
-                            <motion.div
-                                layoutId={`gallery-img-${src}-${i}`}
-                                key={`c1-${i}`}
-                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-${i}`, alt: GALLERY_CAPTIONS[(i * 3) % GALLERY_CAPTIONS.length] })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-${i}`, alt: GALLERY_CAPTIONS[(i * 3) % GALLERY_CAPTIONS.length] }); }}
-                                role="button"
-                                tabIndex={0}
-                                aria-label="View expanded image"
-                                className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
-                                data-cursor="VIEW"
-                            >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt={GALLERY_CAPTIONS[(i * 3) % GALLERY_CAPTIONS.length]} loading="lazy" />
-                            </motion.div>
-                        ))}
+                        {getSeamlessArray(col1).map((item, i) => {
+                            const originalIdx = activeItems.findIndex(x => (x.imageUrl || x.src) === (item.imageUrl || item.src));
+                            const targetIdx = originalIdx >= 0 ? originalIdx : 0;
+                            return (
+                                <div
+                                    key={`c1-${i}`}
+                                    onClick={() => openLightbox(targetIdx)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openLightbox(targetIdx); }}
+                                    aria-label={`View expanded image: ${item.title}`}
+                                    className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059] group/card shadow-xl"
+                                >
+                                    <Image 
+                                        src={item.imageUrl || item.src} 
+                                        fill 
+                                        sizes="(max-width: 768px) 50vw, 33vw" 
+                                        className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" 
+                                        alt={item.caption || item.title || "Dreamline Production Master Gallery"} 
+                                        loading="lazy" 
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                                        <span className="text-[#c5a059] text-[8px] font-black uppercase tracking-widest">{item.category}</span>
+                                        <p className="text-white text-xs font-bold uppercase truncate">{item.title}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
                 {/* Column 2 - Tracks Down */}
-                <div className="flex-1 flex flex-col gap-4 overflow-hidden pt-20">
+                <div className="flex-1 flex flex-col gap-4 overflow-hidden pt-12 md:pt-20">
                     <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused] whitespace-nowrap">
-                        {getSeamlessArray(col2).map((src, i) => (
-                            <motion.div
-                                layoutId={`gallery-img-${src}-c2-${i}`}
-                                key={`c2-${i}`}
-                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c2-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 1) % GALLERY_CAPTIONS.length] })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c2-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 1) % GALLERY_CAPTIONS.length] }); }}
-                                role="button"
-                                tabIndex={0}
-                                aria-label="View expanded image"
-                                className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
-                                data-cursor="VIEW"
-                            >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt={GALLERY_CAPTIONS[(i * 3 + 1) % GALLERY_CAPTIONS.length]} loading="lazy" />
-                            </motion.div>
-                        ))}
+                        {getSeamlessArray(col2.length > 0 ? col2 : col1).map((item, i) => {
+                            const originalIdx = activeItems.findIndex(x => (x.imageUrl || x.src) === (item.imageUrl || item.src));
+                            const targetIdx = originalIdx >= 0 ? originalIdx : 0;
+                            return (
+                                <div
+                                    key={`c2-${i}`}
+                                    onClick={() => openLightbox(targetIdx)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openLightbox(targetIdx); }}
+                                    aria-label={`View expanded image: ${item.title}`}
+                                    className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059] group/card shadow-xl"
+                                >
+                                    <Image 
+                                        src={item.imageUrl || item.src} 
+                                        fill 
+                                        sizes="(max-width: 768px) 50vw, 33vw" 
+                                        className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" 
+                                        alt={item.caption || item.title || "Dreamline Production Master Gallery"} 
+                                        loading="lazy" 
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                                        <span className="text-[#c5a059] text-[8px] font-black uppercase tracking-widest">{item.category}</span>
+                                        <p className="text-white text-xs font-bold uppercase truncate">{item.title}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
-                {/* Column 3 - Tracks Up (Hidden on Mobile) */}
-                <div className="hidden md:flex flex-1 flex-col gap-4 overflow-hidden pt-10">
+                {/* Column 3 - Tracks Up */}
+                <div className="hidden sm:flex flex-1 flex-col gap-4 overflow-hidden pt-6 md:pt-10">
                     <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
-                        {getSeamlessArray(col3).map((src, i) => (
-                            <motion.div
-                                layoutId={`gallery-img-${src}-c3-${i}`}
-                                key={`c3-${i}`}
-                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c3-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 2) % GALLERY_CAPTIONS.length] })}
-                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c3-${i}`, alt: GALLERY_CAPTIONS[(i * 3 + 2) % GALLERY_CAPTIONS.length] }); }}
-                                role="button"
-                                tabIndex={0}
-                                aria-label="View expanded image"
-                                className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
-                                data-cursor="VIEW"
-                            >
-                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt={GALLERY_CAPTIONS[(i * 3 + 2) % GALLERY_CAPTIONS.length]} loading="lazy" />
-                            </motion.div>
-                        ))}
+                        {getSeamlessArray(col3.length > 0 ? col3 : col1).map((item, i) => {
+                            const originalIdx = activeItems.findIndex(x => (x.imageUrl || x.src) === (item.imageUrl || item.src));
+                            const targetIdx = originalIdx >= 0 ? originalIdx : 0;
+                            return (
+                                <div
+                                    key={`c3-${i}`}
+                                    onClick={() => openLightbox(targetIdx)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openLightbox(targetIdx); }}
+                                    aria-label={`View expanded image: ${item.title}`}
+                                    className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059] group/card shadow-xl"
+                                >
+                                    <Image 
+                                        src={item.imageUrl || item.src} 
+                                        fill 
+                                        sizes="(max-width: 768px) 50vw, 33vw" 
+                                        className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" 
+                                        alt={item.caption || item.title || "Dreamline Production Master Gallery"} 
+                                        loading="lazy" 
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                                        <span className="text-[#c5a059] text-[8px] font-black uppercase tracking-widest">{item.category}</span>
+                                        <p className="text-white text-xs font-bold uppercase truncate">{item.title}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
 
-            {/* Full Screen Reveal Overlay */}
-            <AnimatePresence>
-                {selectedImage && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl cursor-pointer"
-                        onClick={handleClose}
-                        onKeyDown={(e) => { if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') handleClose(); }}
-                        role="dialog"
-                        aria-modal="true"
-                        aria-label="Expanded image view"
-                        tabIndex={-1}
-                        data-cursor="CLOSE"
-                    >
-                        <motion.div
-                            layoutId={selectedImage.id}
-                            className="relative w-[90vw] h-[90vh] max-w-7xl"
-                        >
-                            <Image 
-                                src={selectedImage.src} 
-                                alt={selectedImage.alt || "High-resolution cinematic wedding photography showcase by Dreamline Production Kolkata"}
-                                fill
-                                className="object-contain rounded-xl shadow-2xl"
-                                sizes="90vw"
-                            />
-                        </motion.div>
-                        <div className="absolute top-8 right-8 text-white/50 text-xs font-black uppercase tracking-widest hover:text-white transition-colors">
-                            Close [X]
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/* Interactive Lightbox */}
+            <GalleryLightbox
+                isOpen={lightboxIndex !== null}
+                images={activeItems}
+                currentIndex={lightboxIndex || 0}
+                onClose={closeLightbox}
+                onNext={nextImage}
+                onPrev={prevImage}
+                onSelectIndex={(idx) => setLightboxIndex(idx)}
+            />
         </section>
     );
 }

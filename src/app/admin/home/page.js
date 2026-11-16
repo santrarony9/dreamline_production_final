@@ -959,9 +959,17 @@ function HomeEditorContent() {
                         </div>
 
                         <div className="bg-[#0a0a0a] border border-white/5 p-10 rounded-3xl space-y-8 relative overflow-hidden">
-                            <div>
-                                <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🖼️ Photo Gallery (3-Column)</h3>
-                                <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The vertical scrolling photo gallery with 3 columns.</p>
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                                <div>
+                                    <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">🖼️ Photo Gallery (3-Column)</h3>
+                                    <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest leading-relaxed">The vertical scrolling photo gallery with 3 columns.</p>
+                                </div>
+                                <Link
+                                    href="/admin/gallery"
+                                    className="px-4 py-2 rounded-xl bg-[#c5a059]/10 border border-[#c5a059]/30 text-[#c5a059] hover:bg-[#c5a059] hover:text-black text-[9px] font-black uppercase tracking-wider transition-all"
+                                >
+                                    🎬 Open Full Gallery CMS →
+                                </Link>
                             </div>
                             <div className="space-y-4">
                                 <label className="text-[10px] uppercase font-black text-[#c5a059] tracking-widest pl-1">Gallery Images - <span className="text-gray-500">Minimum 6 images (800x1000 vertical recommended)</span></label>
