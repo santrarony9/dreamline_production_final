@@ -43,7 +43,9 @@ export default function GalleryAdmin() {
         category: "weddings",
         imageUrl: "",
         aspectRatio: "vertical",
-        published: true
+        published: true,
+        weddingId: "",
+        projectUrl: ""
     });
 
     // --- Commercial Projects State ---
@@ -108,7 +110,9 @@ export default function GalleryAdmin() {
                     category: "weddings",
                     imageUrl: "",
                     aspectRatio: "vertical",
-                    published: true
+                    published: true,
+                    weddingId: "",
+                    projectUrl: ""
                 });
                 await fetchGalleryItems();
                 setTimeout(() => setGalleryMessage(""), 3500);
@@ -811,6 +815,29 @@ export default function GalleryAdmin() {
                                 />
                             </div>
 
+                            <div>
+                                <label className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">
+                                    Linked Wedding Story (Optional)
+                                </label>
+                                <select
+                                    value={newItemForm.weddingId || ""}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setNewItemForm({
+                                            ...newItemForm,
+                                            weddingId: val,
+                                            projectUrl: val ? `/wedding/${val}` : ""
+                                        });
+                                    }}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold outline-none focus:border-[#c5a059]"
+                                >
+                                    <option value="">None (Independent Master Gallery Item)</option>
+                                    <option value="wedding-1771743825332">Sid &amp; Trina (Luxury Bengali Wedding)</option>
+                                    <option value="zamindar-soul">Diandra &amp; Surjo (Heritage Selection)</option>
+                                    <option value="wedding-1778663588915">Rajlaxmi &amp; Mohit (Traditional Bengali Wedding)</option>
+                                </select>
+                            </div>
+
                             <div className="flex items-center gap-3 pt-2">
                                 <label className="flex items-center gap-2 cursor-pointer select-none">
                                     <input
@@ -932,6 +959,29 @@ export default function GalleryAdmin() {
                                     onChange={(e) => setEditingItem({ ...editingItem, altText: e.target.value })}
                                     className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-medium outline-none focus:border-[#c5a059]"
                                 />
+                            </div>
+
+                            <div>
+                                <label className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-2">
+                                    Linked Wedding Story (Optional)
+                                </label>
+                                <select
+                                    value={editingItem.weddingId || ""}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setEditingItem({
+                                            ...editingItem,
+                                            weddingId: val,
+                                            projectUrl: val ? `/wedding/${val}` : ""
+                                        });
+                                    }}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white text-xs font-bold outline-none focus:border-[#c5a059]"
+                                >
+                                    <option value="">None (Independent Master Gallery Item)</option>
+                                    <option value="wedding-1771743825332">Sid &amp; Trina (Luxury Bengali Wedding)</option>
+                                    <option value="zamindar-soul">Diandra &amp; Surjo (Heritage Selection)</option>
+                                    <option value="wedding-1778663588915">Rajlaxmi &amp; Mohit (Traditional Bengali Wedding)</option>
+                                </select>
                             </div>
 
                             <div className="flex items-center gap-3 pt-2">

@@ -18,6 +18,17 @@ export async function generateMetadata({ params }) {
         if (!wedding) {
             wedding = await Wedding.findOne({ id }).lean();
         }
+        if (!wedding) {
+            try {
+                const fs = await import('fs');
+                const path = await import('path');
+                const filePath = path.join(process.cwd(), 'weddings.json');
+                if (fs.existsSync(filePath)) {
+                    const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                    wedding = list.find(w => w.id === id || w._id === id);
+                }
+            } catch(e) {}
+        }
         
         if (!wedding) return {};
 
@@ -81,7 +92,20 @@ export default async function WeddingDetailPage({ params }) {
             wedding = await Wedding.findOne({ id: id }).lean();
         }
     } catch (err) {
-        return notFound();
+        // Fallback will attempt to load below
+    }
+
+    // Disk JSON fallback if MongoDB record is not found or connection unavailable
+    if (!wedding) {
+        try {
+            const fs = await import('fs');
+            const path = await import('path');
+            const filePath = path.join(process.cwd(), 'weddings.json');
+            if (fs.existsSync(filePath)) {
+                const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+                wedding = list.find(w => w.id === id || w._id === id);
+            }
+        } catch(e) {}
     }
 
     if (!wedding) return notFound();

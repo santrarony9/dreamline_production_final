@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import GalleryLightbox from "@/components/gallery/GalleryLightbox";
 
@@ -103,6 +104,14 @@ export default function InteractiveGalleryView({ initialItems = [], counts = {} 
                     <AnimatePresence mode="popLayout">
                         {filteredItems.map((item, index) => {
                             const isHorizontal = item.aspectRatio === "horizontal";
+                            const targetProjectUrl = item.projectUrl || (item.weddingId ? `/wedding/${item.weddingId}` : (
+                                item.category === "weddings" ? (
+                                    item.title?.toLowerCase().includes("sid") ? "/wedding/wedding-1771743825332" :
+                                    item.title?.toLowerCase().includes("diandra") || item.title?.toLowerCase().includes("surjo") ? "/wedding/zamindar-soul" :
+                                    item.title?.toLowerCase().includes("rajlaxmi") || item.title?.toLowerCase().includes("mohit") ? "/wedding/wedding-1778663588915" : ""
+                                ) : ""
+                            ));
+
                             return (
                                 <motion.div
                                     layout
@@ -129,7 +138,7 @@ export default function InteractiveGalleryView({ initialItems = [], counts = {} 
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
 
                                     {/* Category Pill Badge on Card */}
-                                    <div className="absolute top-4 left-4 z-10">
+                                    <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
                                         <span className="bg-black/80 backdrop-blur-md border border-white/10 text-[#c5a059] text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
                                             {item.category}
                                         </span>
@@ -152,6 +161,18 @@ export default function InteractiveGalleryView({ initialItems = [], counts = {} 
                                             <p className="text-gray-400 text-xs line-clamp-2 font-light leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
                                                 {item.caption}
                                             </p>
+                                        )}
+                                        {targetProjectUrl && (
+                                            <div className="mt-3 flex items-center">
+                                                <Link
+                                                    href={targetProjectUrl}
+                                                    onClick={(e) => e.stopPropagation()}
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#c5a059] text-black text-[9px] font-black uppercase tracking-wider hover:bg-white transition-all shadow-md"
+                                                >
+                                                    <span>View Story &amp; Gallery</span>
+                                                    <span>&rarr;</span>
+                                                </Link>
+                                            </div>
                                         )}
                                     </div>
                                 </motion.div>

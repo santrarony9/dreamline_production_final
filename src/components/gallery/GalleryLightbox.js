@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function GalleryLightbox({
@@ -76,6 +77,13 @@ export default function GalleryLightbox({
     const imgCaption = currentItem.caption || "";
     const imgCategory = currentItem.category || "wedding";
     const imgAlt = currentItem.altText || currentItem.alt || imgTitle;
+    const targetProjectUrl = currentItem.projectUrl || (currentItem.weddingId ? `/wedding/${currentItem.weddingId}` : (
+        imgCategory === "weddings" || imgCategory === "wedding" ? (
+            imgTitle?.toLowerCase().includes("sid") ? "/wedding/wedding-1771743825332" :
+            imgTitle?.toLowerCase().includes("diandra") || imgTitle?.toLowerCase().includes("surjo") ? "/wedding/zamindar-soul" :
+            imgTitle?.toLowerCase().includes("rajlaxmi") || imgTitle?.toLowerCase().includes("mohit") ? "/wedding/wedding-1778663588915" : ""
+        ) : ""
+    ));
 
     return (
         <AnimatePresence>
@@ -189,6 +197,17 @@ export default function GalleryLightbox({
                         <p className="text-gray-400 text-xs sm:text-sm font-light max-w-2xl mx-auto leading-relaxed">
                             {imgCaption}
                         </p>
+                    )}
+                    {targetProjectUrl && (
+                        <div className="mt-3.5 flex items-center justify-center">
+                            <Link
+                                href={targetProjectUrl}
+                                className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#c5a059] text-black text-xs font-black uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(197,160,89,0.35)]"
+                            >
+                                <span>Explore Wedding Story &amp; Full Gallery</span>
+                                <span>&rarr;</span>
+                            </Link>
+                        </div>
                     )}
                     <div className="mt-3 flex items-center justify-center gap-3 text-[10px] text-white/40 uppercase tracking-widest font-black">
                         <span>← Swipe / Use Arrow Keys →</span>

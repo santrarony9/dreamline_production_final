@@ -37,7 +37,7 @@
     "review": "Dreamline Production captured our most sacred vows and emotional moments with breathtaking cinematic beauty. Truly unforgettable!",
     "altText": "Sid & Trina Luxury Bengali Wedding Film Kolkata by Dreamline Production",
     "imageAltTexts": [
-      "Sid and Trina Exchange of Garlands Ceremony Kolkata"
+      "Sid & Trina Exchange of Garlands Ceremony in Kolkata"
     ],
     "order": 1,
     "seo": {
@@ -79,15 +79,21 @@
     "videoUrl": "",
     "images": [
       "/thumbnails/seo_thumb_holud.jpg",
-      "/thumbnails/seo_thumb_drishti.jpg"
+      "/thumbnails/seo_thumb_drishti.jpg",
+      "/thumbnails/seo_thumb_1.jpg",
+      "/thumbnails/seo_thumb_2.jpg",
+      "/thumbnails/seo_thumb_11.jpg"
     ],
     "img": "/thumbnails/seo_thumb_holud.jpg",
     "location": "ITC ROYAL BENGAL, KOLKATA",
     "altText": "Diandra & Surjo Royal Heritage Bengali Wedding Kolkata by Dreamline Production",
     "createdAt": "2026-11-15T08:33:23.358Z",
     "imageAltTexts": [
-      "Royal Heritage Wedding Mandap at Sunset with Howrah Bridge Kolkata",
-      "Intimate Heritage Wedding Couple Portrait Kolkata"
+      "Diandra & Surjo Royal Heritage Wedding Mandap at Sunset with Howrah Bridge Kolkata",
+      "Diandra & Surjo Intimate Heritage Wedding Couple Embrace Kolkata",
+      "Diandra & Surjo Grand Floral Palace Mandap Ceremony Kolkata",
+      "Diandra & Surjo Cinematic Wedding Aisle Entry Filmed by Dreamline Production",
+      "Diandra & Surjo Royal Heritage Palace Estate at Twilight"
     ],
     "seo": {
       "description": "",
@@ -108,7 +114,8 @@
     "img": "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
     "videoUrl": "https://youtu.be/mM59Ah26olI",
     "images": [
-      "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg"
+      "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
+      "/thumbnails/seo_sindoor_daan.jpg"
     ],
     "review": "The Dreamline team made every ritual look like poetry on screen. We cherish our wedding film every single day.",
     "clientNames": "Rajlaxmi & Mohit",
@@ -139,7 +146,8 @@
     "createdAt": "2026-05-13T09:17:39.686Z",
     "__v": 1,
     "imageAltTexts": [
-      "Rajlaxmi Shubho Drishti Betel Leaf Ceremony"
+      "Rajlaxmi Shubho Drishti Betel Leaf Ceremony Kolkata",
+      "Rajlaxmi & Mohit Sacred Bengali Sindoor Daan Fire Ceremony Kolkata"
     ],
     "altText": "Rajlaxmi & Mohit Bengali Wedding Cinema Kolkata by Dreamline Production",
     "albumUrl": "",

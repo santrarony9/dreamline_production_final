@@ -28,44 +28,52 @@ async function syncContentSplitGallery() {
 // Initial seed data from authentic Dreamline Production assets
 const INITIAL_GALLERY_SEED = [
     {
-        title: "Sid & Trina Wedding Ceremony",
+        title: "Sid & Trina - Luxury Bengali Wedding Ceremony",
         caption: "Sacred vows and floral garland exchange from Sid & Trina's luxury wedding film in Kolkata",
         altText: "Sid and Trina luxury Bengali wedding ceremony portrait Kolkata",
         category: "weddings",
         imageUrl: "https://img.youtube.com/vi/6S7ZKGVoEGs/maxresdefault.jpg",
         aspectRatio: "horizontal",
         order: 1,
-        published: true
+        published: true,
+        weddingId: "wedding-1771743825332",
+        projectUrl: "/wedding/wedding-1771743825332"
     },
     {
-        title: "Rajlaxmi Shubho Drishti Ritual",
-        caption: "Bride Rajlaxmi holding sacred betel leaves during the traditional Shubho Drishti ritual",
-        altText: "Rajlaxmi Shubho Drishti traditional Bengali wedding ritual Kolkata",
-        category: "rituals",
+        title: "Rajlaxmi & Mohit - Shubho Drishti Ceremony",
+        caption: "Bride Rajlaxmi holding sacred betel leaves during traditional Shubho Drishti ritual in Kolkata",
+        altText: "Rajlaxmi and Mohit Shubho Drishti traditional Bengali wedding ritual Kolkata",
+        category: "weddings",
         imageUrl: "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
         aspectRatio: "horizontal",
         order: 2,
-        published: true
+        published: true,
+        weddingId: "wedding-1778663588915",
+        projectUrl: "/wedding/wedding-1778663588915"
     },
     {
-        title: "Heritage Mandap Sunset at Howrah",
-        caption: "Royal heritage wedding mandap overlooking the iconic Howrah Bridge at golden hour sunset",
-        altText: "Howrah Bridge sunset wedding mandap Kolkata by Dreamline Production",
+        title: "Diandra & Surjo - Heritage Mandap Sunset at Howrah",
+        caption: "Royal heritage wedding celebration overlooking the iconic Howrah Bridge at golden hour sunset",
+        altText: "Diandra and Surjo Howrah Bridge sunset wedding mandap Kolkata by Dreamline Production",
         category: "weddings",
         imageUrl: "/thumbnails/seo_thumb_holud.jpg",
         aspectRatio: "vertical",
         order: 3,
-        published: true
+        published: true,
+        weddingId: "zamindar-soul",
+        projectUrl: "/wedding/zamindar-soul"
     },
     {
-        title: "Traditional Bengali Sindoor Daan",
+        title: "Rajlaxmi & Mohit - Sacred Bengali Sindoor Daan",
         caption: "Sacred sindoor daan wedding ceremony before the holy Agni fire captured with warm ambient lighting",
-        altText: "Traditional Bengali sindoor daan wedding ceremony in Kolkata",
-        category: "rituals",
+        altText: "Rajlaxmi and Mohit traditional Bengali sindoor daan wedding ceremony in Kolkata",
+        category: "weddings",
         imageUrl: "/thumbnails/seo_sindoor_daan.jpg",
         aspectRatio: "vertical",
         order: 4,
-        published: true
+        published: true,
+        weddingId: "wedding-1778663588915",
+        projectUrl: "/wedding/wedding-1778663588915"
     },
     {
         title: "Cinematic Pre-Wedding Gimbal Shoot",
@@ -78,14 +86,52 @@ const INITIAL_GALLERY_SEED = [
         published: true
     },
     {
-        title: "Royal Heritage Mandap Embrace",
-        caption: "Elegant black-and-white couple portrait under luxury floral wedding mandap",
-        altText: "Luxury wedding couple portrait under mandap Kolkata",
+        title: "Diandra & Surjo - Royal Heritage Mandap Embrace",
+        caption: "Intimate black-and-white couple portrait under luxury floral wedding mandap",
+        altText: "Diandra and Surjo luxury wedding couple portrait under mandap Kolkata",
         category: "weddings",
         imageUrl: "/thumbnails/seo_thumb_drishti.jpg",
         aspectRatio: "vertical",
         order: 6,
-        published: true
+        published: true,
+        weddingId: "zamindar-soul",
+        projectUrl: "/wedding/zamindar-soul"
+    },
+    {
+        title: "Diandra & Surjo - Palace Courtyard Mandap Celebration",
+        caption: "Grand floral garland exchange under heritage palace courtyard mandap with festive illuminations",
+        altText: "Diandra and Surjo grand floral palace mandap wedding ceremony Kolkata",
+        category: "weddings",
+        imageUrl: "/thumbnails/seo_thumb_1.jpg",
+        aspectRatio: "vertical",
+        order: 7,
+        published: true,
+        weddingId: "zamindar-soul",
+        projectUrl: "/wedding/zamindar-soul"
+    },
+    {
+        title: "Diandra & Surjo - Cinematic Wedding Aisle Entry",
+        caption: "Cinematographer tracking bride and groom aisle entrance with Ronin gimbal stabilizer",
+        altText: "Diandra and Surjo cinematic wedding aisle entry filmed by Dreamline Production",
+        category: "weddings",
+        imageUrl: "/thumbnails/seo_thumb_2.jpg",
+        aspectRatio: "vertical",
+        order: 8,
+        published: true,
+        weddingId: "zamindar-soul",
+        projectUrl: "/wedding/zamindar-soul"
+    },
+    {
+        title: "Diandra & Surjo - Royal Palace Heritage Estate at Twilight",
+        caption: "Architectural twilight view of illuminated heritage palace courtyard and wedding reflection pool",
+        altText: "Diandra and Surjo luxury wedding estate venue Kolkata by Dreamline Production",
+        category: "weddings",
+        imageUrl: "/thumbnails/seo_thumb_11.jpg",
+        aspectRatio: "horizontal",
+        order: 9,
+        published: true,
+        weddingId: "zamindar-soul",
+        projectUrl: "/wedding/zamindar-soul"
     },
     {
         title: "Prinsep Ghat Monument Aerial Sweep",
@@ -401,7 +447,9 @@ export async function POST(request) {
             imageUrl: body.imageUrl.trim(),
             aspectRatio: body.aspectRatio || 'vertical',
             order: body.order !== undefined ? body.order : nextOrder,
-            published: body.published !== undefined ? Boolean(body.published) : true
+            published: body.published !== undefined ? Boolean(body.published) : true,
+            weddingId: (body.weddingId || "").trim(),
+            projectUrl: (body.projectUrl || "").trim()
         });
 
         await syncContentSplitGallery();
@@ -439,6 +487,8 @@ export async function PUT(request) {
         if (body.aspectRatio !== undefined) updateFields.aspectRatio = body.aspectRatio;
         if (body.order !== undefined) updateFields.order = Number(body.order);
         if (body.published !== undefined) updateFields.published = Boolean(body.published);
+        if (body.weddingId !== undefined) updateFields.weddingId = (body.weddingId || "").trim();
+        if (body.projectUrl !== undefined) updateFields.projectUrl = (body.projectUrl || "").trim();
 
         const updated = await GalleryItem.findByIdAndUpdate(
             itemId,

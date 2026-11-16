@@ -39,6 +39,16 @@ const GalleryItemSchema = new mongoose.Schema({
     published: { 
         type: Boolean, 
         default: true 
+    },
+    weddingId: {
+        type: String,
+        default: "",
+        trim: true
+    },
+    projectUrl: {
+        type: String,
+        default: "",
+        trim: true
     }
 }, { timestamps: true });
 
