@@ -328,7 +328,15 @@ export default function Navbar({ initialServices, siteContent }) {
                             className="hover:text-white transition-colors flex items-center gap-1.5 font-bold truncate group"
                             title="Open Google Business Profile & Directions in a new tab"
                         >
-                            <svg className="w-3.5 h-3.5 flex-shrink-0 text-black group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+                            <svg 
+                                width={14} 
+                                height={14} 
+                                style={{ width: "14px", height: "14px", minWidth: "14px", minHeight: "14px", maxWidth: "14px", maxHeight: "14px" }} 
+                                className="w-3.5 h-3.5 flex-shrink-0 text-black group-hover:text-white transition-colors" 
+                                fill="currentColor" 
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
                                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
                             <span className="truncate max-w-[260px] sm:max-w-md md:max-w-lg lg:max-w-none">{headerAddressText}</span>
@@ -422,12 +430,16 @@ export default function Navbar({ initialServices, siteContent }) {
                         >
                             <span>SERVICES</span>
                             <svg 
+                                width={10}
+                                height={10}
+                                style={{ width: "10px", height: "10px", minWidth: "10px", minHeight: "10px" }}
                                 className={`w-2.5 h-2.5 transition-transform duration-300 ${
                                     isServicesOpen ? "rotate-180 text-[#c5a059]" : "opacity-50"
                                 }`} 
                                 fill="none" 
                                 stroke="currentColor" 
                                 viewBox="0 0 24 24"
+                                aria-hidden="true"
                             >
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -565,12 +577,16 @@ export default function Navbar({ initialServices, siteContent }) {
                         >
                             <span>PORTFOLIO</span>
                             <svg 
+                                width={8}
+                                height={8}
+                                style={{ width: "8px", height: "8px", minWidth: "8px", minHeight: "8px" }}
                                 className={`w-2 h-2 transition-transform duration-300 ${
                                     isPortfolioOpen ? "rotate-180 text-[#c5a059]" : "opacity-40"
                                 }`} 
                                 fill="none" 
                                 stroke="currentColor" 
                                 viewBox="0 0 24 24"
+                                aria-hidden="true"
                             >
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -653,7 +669,16 @@ export default function Navbar({ initialServices, siteContent }) {
                             className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#c5a059] text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white hover:shadow-[0_0_20px_rgba(197,160,89,0.5)] transition-all duration-300 interactive shadow-md"
                         >
                             <span>{cta.label || "GET A QUOTE"}</span>
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg 
+                                width={12} 
+                                height={12} 
+                                style={{ width: "12px", height: "12px", minWidth: "12px", minHeight: "12px" }} 
+                                className="w-3 h-3" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </Link>
@@ -730,7 +755,16 @@ export default function Navbar({ initialServices, siteContent }) {
                                     10+
                                 </span>
                             </span>
-                            <svg className={`w-5 h-5 transition-transform duration-300 ${openMobileSubMenu === 'services' ? 'rotate-180 text-[#c5a059]' : 'text-white/60'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg 
+                                width={20} 
+                                height={20} 
+                                style={{ width: "20px", height: "20px", minWidth: "20px", minHeight: "20px" }} 
+                                className={`w-5 h-5 transition-transform duration-300 ${openMobileSubMenu === 'services' ? 'rotate-180 text-[#c5a059]' : 'text-white/60'}`} 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
@@ -789,7 +823,16 @@ export default function Navbar({ initialServices, siteContent }) {
                             className="w-full flex items-center justify-between font-heading text-xl font-black uppercase text-white hover:text-[#c5a059] transition-colors"
                         >
                             <span>PORTFOLIO</span>
-                            <svg className={`w-5 h-5 transition-transform duration-300 ${openMobileSubMenu === 'portfolio' ? 'rotate-180 text-[#c5a059]' : 'text-white/60'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg 
+                                width={20} 
+                                height={20} 
+                                style={{ width: "20px", height: "20px", minWidth: "20px", minHeight: "20px" }} 
+                                className={`w-5 h-5 transition-transform duration-300 ${openMobileSubMenu === 'portfolio' ? 'rotate-180 text-[#c5a059]' : 'text-white/60'}`} 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
@@ -879,7 +922,16 @@ export default function Navbar({ initialServices, siteContent }) {
                         className="w-full py-3.5 flex items-center justify-center gap-2 bg-[#c5a059] text-black font-black text-xs tracking-[0.2em] uppercase rounded-full hover:bg-white transition-colors shadow-lg"
                     >
                         <span>{cta.label || "GET A QUOTE"}</span>
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg 
+                            width={14} 
+                            height={14} 
+                            style={{ width: "14px", height: "14px", minWidth: "14px", minHeight: "14px" }} 
+                            className="w-3.5 h-3.5" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </Link>
@@ -889,7 +941,16 @@ export default function Navbar({ initialServices, siteContent }) {
                         href={`tel:${cleanPhone}`} 
                         className="w-full py-3 flex items-center justify-center gap-2 bg-white/5 border border-white/10 text-white font-black text-xs tracking-[0.2em] uppercase rounded-full hover:bg-white/10 transition-colors"
                     >
-                        <svg className="w-4 h-4 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg 
+                            width={16} 
+                            height={16} 
+                            style={{ width: "16px", height: "16px", minWidth: "16px", minHeight: "16px" }} 
+                            className="w-4 h-4 text-[#c5a059]" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                        >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
                         <span>CALL: {phone}</span>

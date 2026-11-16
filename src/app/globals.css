@@ -42,6 +42,11 @@
   .font-heading {
     font-family: 'Unbounded', sans-serif;
   }
+
+  svg {
+    max-width: 100%;
+    vertical-align: middle;
+  }
 }
 
 /* Custom Scrollbar */

@@ -9,6 +9,15 @@ export default function Hero({ content }) {
     const { titleLine1, titleLine2, subtitle, backgroundImage, cta1Text, cta1Link, cta2Text, cta2Link } = content || {};
     const containerRef = useRef(null);
 
+    // Guard against the accidental corporate building image and restore intended hero visual
+    const DEFAULT_HERO_IMAGE = "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80";
+    const isCorporateBuilding = backgroundImage && (
+        backgroundImage.includes("1790056541863") || 
+        backgroundImage.includes("DREAMLINE-PRODUCTION-IMAGE-1")
+    );
+    const activeBackground = (!backgroundImage || isCorporateBuilding) ? DEFAULT_HERO_IMAGE : backgroundImage;
+    const activeSubtitle = (subtitle && subtitle !== "Loading Experience") ? subtitle : "EST. 2010 • DREAMLINE PRODUCTION";
+
     // Smooth Parallax for Marquee and Background
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -36,9 +45,9 @@ export default function Hero({ content }) {
                     </motion.div>
                 </div>
 
-                {backgroundImage && backgroundImage.endsWith('.mp4') ? (
+                {activeBackground && activeBackground.endsWith('.mp4') ? (
                     <video
-                        src={backgroundImage}
+                        src={activeBackground}
                         autoPlay
                         loop
                         muted
@@ -49,9 +58,9 @@ export default function Hero({ content }) {
                         disablePictureInPicture
                         className="h-full w-full object-cover scale-110"
                     />
-                ) : backgroundImage ? (
+                ) : activeBackground ? (
                     <Image
-                        src={backgroundImage}
+                        src={activeBackground}
                         alt="Dreamline Production cinematic wedding photography studio Kolkata"
                         fill
                         priority
@@ -66,7 +75,7 @@ export default function Hero({ content }) {
 
                 <div className="overflow-hidden mb-4">
                     <p className="text-xs md:text-sm font-black uppercase tracking-[0.5em] text-[#c5a059] animate-fade-up">
-                        {subtitle || "EST. 2010 • DREAMLINE PRODUCTION"}
+                        {activeSubtitle}
                     </p>
                 </div>
 
