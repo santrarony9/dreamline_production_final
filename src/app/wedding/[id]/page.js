@@ -128,7 +128,7 @@ export default async function WeddingDetailPage({ params }) {
     // Gallery images alt texts
     if (wedding.images && Array.isArray(wedding.images)) {
         wedding.images.forEach((img, idx) => {
-            if (img && !allAltTexts.includes(img)) {
+            if (img && !allImages.slice(0, allAltTexts.length).includes(img)) {
                 // only push if image wasn't already in allImages (dedup check)
                 allAltTexts.push((wedding.imageAltTexts?.[idx]) || fallbackAlt);
             }

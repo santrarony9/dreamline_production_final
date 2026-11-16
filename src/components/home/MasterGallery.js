@@ -85,7 +85,7 @@ export default function MasterGallery({ images = [] }) {
 
                 {/* Column 1 - Tracks Up */}
                 <div className="flex-1 flex flex-col gap-4 overflow-hidden">
-                    <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
+                    <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused]">
                         {getSeamlessArray(col1).map((src, i) => (
                             <motion.div
                                 layoutId={`gallery-img-${src}-${i}`}
@@ -106,7 +106,7 @@ export default function MasterGallery({ images = [] }) {
 
                 {/* Column 2 - Tracks Down */}
                 <div className="flex-1 flex flex-col gap-4 overflow-hidden pt-20">
-                    <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused] whitespace-nowrap">
+                    <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused]">
                         {getSeamlessArray(col2).map((src, i) => (
                             <motion.div
                                 layoutId={`gallery-img-${src}-c2-${i}`}
@@ -127,7 +127,7 @@ export default function MasterGallery({ images = [] }) {
 
                 {/* Column 3 - Tracks Up (Hidden on Mobile) */}
                 <div className="hidden md:flex flex-1 flex-col gap-4 overflow-hidden pt-10">
-                    <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
+                    <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused]">
                         {getSeamlessArray(col3).map((src, i) => (
                             <motion.div
                                 layoutId={`gallery-img-${src}-c3-${i}`}
