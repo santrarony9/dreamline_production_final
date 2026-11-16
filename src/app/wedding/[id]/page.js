@@ -1,10 +1,13 @@
 
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
+import WeddingAlbum from "@/models/WeddingAlbum";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import mongoose from "mongoose";
+import WeddingGallery from "@/components/wedding/WeddingGallery";
+import StructuredData from '@/components/seo/StructuredData';
 
 export async function generateMetadata({ params }) {
     await dbConnect();
@@ -13,7 +16,11 @@ export async function generateMetadata({ params }) {
     try {
         let wedding;
         if (mongoose.Types.ObjectId.isValid(id)) {
-            wedding = await Wedding.findById(id).lean();
+            wedding = await WeddingAlbum.findById(id).lean();
+            if (!wedding) wedding = await Wedding.findById(id).lean();
+        }
+        if (!wedding) {
+            wedding = await WeddingAlbum.findOne({ $or: [{ albumId: id }, { weddingId: id }] }).lean();
         }
         if (!wedding) {
             wedding = await Wedding.findOne({ id }).lean();
@@ -25,30 +32,33 @@ export async function generateMetadata({ params }) {
                 const filePath = path.join(process.cwd(), 'weddings.json');
                 if (fs.existsSync(filePath)) {
                     const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                    wedding = list.find(w => w.id === id || w._id === id);
+                    wedding = list.find(w => w.id === id || w._id === id || w.albumId === id || w.weddingId === id);
                 }
             } catch(e) {}
         }
         
         if (!wedding) return {};
 
+        const title = wedding.title || "Wedding Film";
+        const cover = wedding.coverImage || wedding.img || (wedding.photos?.[0]?.url) || "";
+
         return {
-            title: `${wedding.title} | A Cinematic Wedding Story`,
-            description: wedding.description || `Experience the timeless elegance of ${wedding.title}. Documented with cinematic grandeur by Dreamline Production.`,
+            title: `${title} | A Cinematic Wedding Story`,
+            description: wedding.description || `Experience the timeless elegance of ${title}. Documented with cinematic grandeur by Dreamline Production.`,
             openGraph: {
-                title: `${wedding.title} | Luxury Wedding Film`,
+                title: `${title} | Luxury Wedding Film`,
                 description: wedding.description || "A breathtaking luxury wedding documented with cinematic vision by Dreamline Production.",
-                images: wedding.coverImage || wedding.img ? [{ url: wedding.coverImage || wedding.img, width: 1200, height: 630 }] : [],
+                images: cover ? [{ url: cover, width: 1200, height: 630 }] : [],
                 type: "video.movie",
             },
             alternates: {
-                canonical: `https://dreamlineproduction.com/wedding/${wedding.id || id}`,
+                canonical: `https://dreamlineproduction.com/wedding/${wedding.weddingId || wedding.id || id}`,
             },
             twitter: {
                 card: 'summary_large_image',
-                title: `${wedding.title} | Luxury Wedding Film`,
-                description: wedding.description || `Experience the timeless elegance of ${wedding.title}.`,
-                images: wedding.coverImage || wedding.img ? [wedding.coverImage || wedding.img] : [],
+                title: `${title} | Luxury Wedding Film`,
+                description: wedding.description || `Experience the timeless elegance of ${title}.`,
+                images: cover ? [cover] : [],
             },
         };
     } catch (e) {
@@ -74,102 +84,107 @@ function getEmbedUrl(url) {
     return url; // fallback
 }
 
-import WeddingGallery from "@/components/wedding/WeddingGallery";
-import StructuredData from '@/components/seo/StructuredData';
-
 export default async function WeddingDetailPage({ params }) {
     const { id } = await params;
     await dbConnect();
 
-    let wedding;
+    let wedding = null;
+    let album = null;
     try {
-        // Try finding by MongoDB _id first
         if (mongoose.Types.ObjectId.isValid(id)) {
-            wedding = await Wedding.findById(id).lean();
+            album = await WeddingAlbum.findById(id).lean();
+            if (!album) {
+                wedding = await Wedding.findById(id).lean();
+            }
         }
-        // Fallback to custom id string
-        if (!wedding) {
+        if (!album && !wedding) {
+            album = await WeddingAlbum.findOne({ $or: [{ albumId: id }, { weddingId: id }] }).lean();
+        }
+        if (!album && !wedding) {
             wedding = await Wedding.findOne({ id: id }).lean();
         }
     } catch (err) {
-        // Fallback will attempt to load below
+        // Fallback below
     }
 
     // Disk JSON fallback if MongoDB record is not found or connection unavailable
-    if (!wedding) {
+    if (!album && !wedding) {
         try {
             const fs = await import('fs');
             const path = await import('path');
             const filePath = path.join(process.cwd(), 'weddings.json');
             if (fs.existsSync(filePath)) {
                 const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                wedding = list.find(w => w.id === id || w._id === id);
+                wedding = list.find(w => w.id === id || w._id === id || w.albumId === id || w.weddingId === id);
             }
         } catch(e) {}
     }
 
-    if (!wedding) return notFound();
+    if (!album && !wedding) return notFound();
 
-    // SEO: Permanent redirect MongoDB _id to clean canonical slug
-    if (wedding.id && id !== wedding.id) {
-        redirect(`/wedding/${wedding.id}`);
+    if (album) {
+        wedding = {
+            ...album,
+            id: album.weddingId || album.albumId,
+            img: album.coverImage || album.img,
+        };
     }
 
-    // Collect explicitly uploaded gallery images, and merge with legacy chapters
+    // SEO: Canonical slug redirection if accessed via raw _id
+    const canonicalSlug = wedding.weddingId || wedding.id;
+    if (canonicalSlug && id !== canonicalSlug && !id.startsWith('album-')) {
+        redirect(`/wedding/${canonicalSlug}`);
+    }
+
+    // Collect all photographs, captions, and alt texts
     let allImages = [];
-    
-    // Add cover image first if available
-    if (wedding.coverImage) allImages.push(wedding.coverImage);
-    else if (wedding.img) allImages.push(wedding.img);
-
-    // Add gallery images
-    if (wedding.images && Array.isArray(wedding.images)) {
-        wedding.images.forEach(img => {
-            if (img && !allImages.includes(img)) allImages.push(img);
-        });
-    }
-
-    // Add chapter images
-    if (wedding.storyChapters && Array.isArray(wedding.storyChapters)) {
-        wedding.storyChapters.forEach(chapter => {
-            if (chapter.images) {
-                chapter.images.forEach(img => {
-                    if (img && !allImages.includes(img)) allImages.push(img);
-                });
-            }
-        });
-    }
-
-    // Build alt text array in the same order as allImages
+    let allAltTexts = [];
+    let allCaptions = [];
     const fallbackAlt = `${wedding.title} - Wedding Photography by Dreamline Production Kolkata`;
-    const allAltTexts = [];
 
-    // Cover image alt text
-    if (wedding.coverImage || wedding.img) {
-        allAltTexts.push(wedding.altText || fallbackAlt);
-    }
-
-    // Gallery images alt texts
-    if (wedding.images && Array.isArray(wedding.images)) {
-        wedding.images.forEach((img, idx) => {
-            if (img && !allAltTexts.includes(img)) {
-                // only push if image wasn't already in allImages (dedup check)
-                allAltTexts.push((wedding.imageAltTexts?.[idx]) || fallbackAlt);
+    if (wedding.photos && Array.isArray(wedding.photos) && wedding.photos.length > 0) {
+        const sortedPhotos = [...wedding.photos].sort((a, b) => (a.order || 0) - (b.order || 0));
+        sortedPhotos.forEach(p => {
+            if (p.url) {
+                allImages.push(p.url);
+                allAltTexts.push(p.altText || fallbackAlt);
+                allCaptions.push(p.caption || "");
             }
         });
-    }
+    } else {
+        if (wedding.coverImage) {
+            allImages.push(wedding.coverImage);
+            allAltTexts.push(wedding.altText || fallbackAlt);
+            allCaptions.push("");
+        } else if (wedding.img) {
+            allImages.push(wedding.img);
+            allAltTexts.push(wedding.altText || fallbackAlt);
+            allCaptions.push("");
+        }
 
-    // Chapter images — no dedicated alt text, use fallback
-    if (wedding.storyChapters && Array.isArray(wedding.storyChapters)) {
-        wedding.storyChapters.forEach(chapter => {
-            if (chapter.images) {
-                chapter.images.forEach(img => {
-                    if (img && !allImages.slice(0, allAltTexts.length).includes(img)) {
-                        allAltTexts.push(fallbackAlt);
-                    }
-                });
-            }
-        });
+        if (wedding.images && Array.isArray(wedding.images)) {
+            wedding.images.forEach((img, idx) => {
+                if (img && !allImages.includes(img)) {
+                    allImages.push(img);
+                    allAltTexts.push(wedding.imageAltTexts?.[idx] || fallbackAlt);
+                    allCaptions.push("");
+                }
+            });
+        }
+
+        if (wedding.storyChapters && Array.isArray(wedding.storyChapters)) {
+            wedding.storyChapters.forEach(chapter => {
+                if (chapter.images) {
+                    chapter.images.forEach(img => {
+                        if (img && !allImages.includes(img)) {
+                            allImages.push(img);
+                            allAltTexts.push(fallbackAlt);
+                            allCaptions.push(chapter.title || "");
+                        }
+                    });
+                }
+            });
+        }
     }
 
     const embedUrl = getEmbedUrl(wedding.videoUrl);
@@ -187,7 +202,7 @@ export default async function WeddingDetailPage({ params }) {
                     "name": "Dreamline Production",
                     "url": "https://dreamlineproduction.com"
                 },
-                "url": `https://dreamlineproduction.com/wedding/${id}`,
+                "url": `https://dreamlineproduction.com/wedding/${canonicalSlug}`,
                 "dateCreated": wedding.date,
                 "locationCreated": {
                     "@type": "Place",
@@ -218,26 +233,28 @@ export default async function WeddingDetailPage({ params }) {
             </section>
 
             {/* Contained Video Player */}
-            <section className="container mx-auto px-6 mb-32">
-                <div className="max-w-6xl mx-auto aspect-video bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl relative">
-                    {embedUrl ? (
-                        <iframe
-                            src={embedUrl}
-                            className="w-full h-full"
-                            frameBorder="0"
-                            allow="autoplay; fullscreen; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-zinc-900 interactive group relative">
-                            <Image src={wedding.coverImage || wedding.img || allImages[0] || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200"} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt={`${wedding.title} cinematic wedding film by Dreamline Production`} sizes="(max-width: 768px) 100vw, 1200px" />
-                            <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 z-10">
-                                <span className="text-white text-xs font-black tracking-widest uppercase">Play</span>
+            {wedding.videoUrl && (
+                <section className="container mx-auto px-6 mb-32">
+                    <div className="max-w-6xl mx-auto aspect-video bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl relative">
+                        {embedUrl ? (
+                            <iframe
+                                src={embedUrl}
+                                className="w-full h-full"
+                                frameBorder="0"
+                                allow="autoplay; fullscreen; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-zinc-900 interactive group relative">
+                                <Image src={wedding.coverImage || wedding.img || allImages[0] || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200"} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt={`${wedding.title} cinematic wedding film by Dreamline Production`} sizes="(max-width: 768px) 100vw, 1200px" />
+                                <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 z-10">
+                                    <span className="text-white text-xs font-black tracking-widest uppercase">Play</span>
+                                </div>
                             </div>
-                        </div>
-                    )}
-                </div>
-            </section>
+                        )}
+                    </div>
+                </section>
+            )}
 
             {/* Massive Masonry Gallery */}
             {allImages.length > 0 && (
@@ -247,7 +264,7 @@ export default async function WeddingDetailPage({ params }) {
                         <div className="w-12 h-1 bg-[#c5a059] rounded-full"></div>
                     </div>
 
-                    <WeddingGallery images={allImages} altTexts={allAltTexts} />
+                    <WeddingGallery images={allImages} altTexts={allAltTexts} captions={allCaptions} />
                 </section>
             )}
 

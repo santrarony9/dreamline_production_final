@@ -1,5 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import GalleryItem from "@/models/GalleryItem";
+import WeddingAlbum from "@/models/WeddingAlbum";
+import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
 import StructuredData from "@/components/seo/StructuredData";
 import InteractiveGalleryView from "@/components/gallery/InteractiveGalleryView";
@@ -69,6 +71,37 @@ export default async function GalleryPage() {
 
     const items = JSON.parse(JSON.stringify(rawItems || []));
 
+    // Query published wedding albums for dedicated Wedding Album section
+    let rawAlbums = [];
+    try {
+        rawAlbums = await WeddingAlbum.find({ published: true })
+            .sort({ order: 1, createdAt: -1 })
+            .lean();
+    } catch (e) {
+        console.error("Gallery wedding album query error:", e);
+    }
+
+    if (!rawAlbums || rawAlbums.length === 0) {
+        try {
+            const rawWeddings = await Wedding.find({ published: { $ne: false } })
+                .sort({ order: 1 })
+                .lean();
+            rawAlbums = rawWeddings.map(w => ({
+                albumId: `album-${w.id}`,
+                weddingId: w.id,
+                title: w.title,
+                subtitle: w.subtitle || "Luxury Bengali Wedding",
+                clientNames: w.clientNames || w.title,
+                location: w.location || "Kolkata",
+                coverImage: w.coverImage || w.img || (w.images && w.images[0]) || "",
+                photosCount: (w.photos && w.photos.length) || (w.images && w.images.length) || 0,
+                published: true
+            }));
+        } catch (e) {}
+    }
+
+    const weddingAlbums = JSON.parse(JSON.stringify(rawAlbums || []));
+
     // Compute category counts
     const counts = {
         all: items.length,
@@ -136,7 +169,7 @@ export default async function GalleryPage() {
 
             {/* Interactive Master Gallery View */}
             <section className="container mx-auto px-6 pb-24 md:pb-32">
-                <InteractiveGalleryView initialItems={items} counts={counts} />
+                <InteractiveGalleryView initialItems={items} counts={counts} weddingAlbums={weddingAlbums} />
             </section>
 
             {/* Studio Consultation CTA */}

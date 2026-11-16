@@ -15,7 +15,7 @@ const CATEGORIES = [
     { key: "drone", label: "Drone & Aerial" }
 ];
 
-export default function InteractiveGalleryView({ initialItems = [], counts = {} }) {
+export default function InteractiveGalleryView({ initialItems = [], counts = {}, weddingAlbums = [] }) {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [lightboxIndex, setLightboxIndex] = useState(null);
 
@@ -91,6 +91,112 @@ export default function InteractiveGalleryView({ initialItems = [], counts = {} 
                     );
                 })}
             </div>
+
+            {/* Dedicated Wedding Albums Showcase (Featured in Weddings Category) */}
+            {selectedCategory === "weddings" && weddingAlbums && weddingAlbums.length > 0 && (
+                <div className="mb-16">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
+                        <div>
+                            <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em] block mb-1">
+                                Complete Couple Portfolios
+                            </span>
+                            <h2 className="font-heading text-2xl sm:text-3xl font-black uppercase text-white tracking-tight">
+                                Published Wedding <span className="text-[#c5a059] italic">Albums</span>
+                            </h2>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <span className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400 text-xs font-bold uppercase tracking-wider">
+                                {weddingAlbums.length} Published Albums
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {weddingAlbums.map((album) => {
+                            const albumSlug = album.weddingId || album.albumId;
+                            const photoCount = Array.isArray(album.photos) 
+                                ? album.photos.length 
+                                : (album.photosCount || 1);
+
+                            return (
+                                <Link
+                                    key={album.albumId || album.weddingId}
+                                    href={`/wedding/${albumSlug}`}
+                                    className="group relative rounded-3xl overflow-hidden bg-zinc-950 border border-white/10 hover:border-[#c5a059] transition-all duration-500 shadow-2xl flex flex-col hover:-translate-y-1"
+                                >
+                                    {/* Album Cover Container */}
+                                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-900">
+                                        <Image
+                                            src={album.coverImage || "/thumbnails/seo_thumb_holud.jpg"}
+                                            alt={`${album.title} Wedding Album by Dreamline Production`}
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            className="object-cover filter grayscale-[10%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent opacity-70 group-hover:opacity-85 transition-opacity" />
+
+                                        {/* Badges */}
+                                        <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
+                                            <span className="bg-black/80 backdrop-blur-md border border-[#c5a059]/40 text-[#c5a059] text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">
+                                                Wedding Album
+                                            </span>
+                                        </div>
+
+                                        <div className="absolute top-4 right-4 z-10">
+                                            <span className="bg-black/80 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full shadow-lg flex items-center gap-1.5">
+                                                <svg className="w-3.5 h-3.5 text-[#c5a059]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                {photoCount} {photoCount === 1 ? 'Photograph' : 'Photographs'}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Content Info */}
+                                    <div className="p-6 flex flex-col flex-1 justify-between bg-zinc-950/90">
+                                        <div>
+                                            <span className="text-gray-500 text-[10px] font-black uppercase tracking-widest block mb-1">
+                                                {album.location || "Kolkata, India"}
+                                            </span>
+                                            <h3 className="font-heading text-xl sm:text-2xl font-black uppercase text-white tracking-tight group-hover:text-[#c5a059] transition-colors mb-2">
+                                                {album.title}
+                                            </h3>
+                                            {album.subtitle && (
+                                                <p className="text-gray-400 text-xs font-light line-clamp-2 leading-relaxed mb-4">
+                                                    {album.subtitle}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                                            <span className="text-[#c5a059] text-[11px] font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform flex items-center gap-1">
+                                                Open Album &amp; Photos &rarr;
+                                            </span>
+                                            <span className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-[#c5a059] group-hover:text-black flex items-center justify-center text-white transition-colors">
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    {/* Section divider before individual ritual captures */}
+                    <div className="mt-16 pt-8 border-t border-white/10 flex items-center justify-between mb-8">
+                        <div>
+                            <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em] block mb-1">
+                                Curated Ritual Highlights
+                            </span>
+                            <h3 className="font-heading text-xl sm:text-2xl font-black uppercase text-white tracking-tight">
+                                Sacred Moments &amp; <span className="text-[#c5a059] italic">Ceremonies</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Gallery Masonry / Grid */}
             {filteredItems.length === 0 ? (

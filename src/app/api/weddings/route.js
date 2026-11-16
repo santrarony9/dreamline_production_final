@@ -13,7 +13,7 @@ const ALLOWED_WEDDING_FIELDS = [
     "id", "title", "subtitle", "description", "location", "date", 
     "coverImage", "img", "hoverVideo", "videoUrl", "albumUrl", 
     "images", "altText", "imageAltTexts", "review", "clientNames", 
-    "reviews", "storyChapters", "vendors", "order", "seo"
+    "reviews", "storyChapters", "vendors", "order", "seo", "published", "photos", "updatedAt"
 ];
 
 export async function GET() {
