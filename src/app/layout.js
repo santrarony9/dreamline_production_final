@@ -21,12 +21,18 @@ const unbounded = Unbounded({
 
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
+import { getPublishedNavigationTree } from "@/lib/navigation-service";
 import { cache } from 'react';
 
 const getSiteContent = cache(async () => {
   await dbConnect();
-  const content = await Content.findOne().lean();
-  return JSON.parse(JSON.stringify(content || {}));
+  const [content, navTree] = await Promise.all([
+    Content.findOne().lean(),
+    getPublishedNavigationTree().catch(() => [])
+  ]);
+  const parsed = JSON.parse(JSON.stringify(content || {}));
+  parsed.navigationTree = navTree || [];
+  return parsed;
 });
 
 export const viewport = {
