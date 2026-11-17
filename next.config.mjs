@@ -55,19 +55,14 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   async rewrites() {
-    // Only apply proxy rewrites if we are running on the Vercel frontend
-    if (process.env.VERCEL === '1') {
-      return {
-        fallback: [
-          {
-            source: '/uploads/:path*',
-            destination: 'https://backend.dreamlineproduction.com/uploads/:path*',
-          }
-        ]
-      };
-    }
-
-    return [];
+    return {
+      fallback: [
+        {
+          source: '/uploads/:path*',
+          destination: 'https://backend.dreamlineproduction.com/uploads/:path*',
+        }
+      ]
+    };
   },
   async headers() {
     return [

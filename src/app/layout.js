@@ -88,15 +88,17 @@ export async function generateMetadata() {
       },
       icons: {
         icon: [
-          { url: globalSeo.favicon || "/favicon.ico" },
-          { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
-          { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-          { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
-          { url: "/favicon.png", sizes: "512x512", type: "image/png" },
+          { url: "/favicon.ico?v=2" },
+          { url: "/favicon-16x16.png?v=2", sizes: "16x16", type: "image/png" },
+          { url: "/favicon-32x32.png?v=2", sizes: "32x32", type: "image/png" },
+          { url: "/favicon-48x48.png?v=2", sizes: "48x48", type: "image/png" },
+          { url: "/favicon.png?v=2", sizes: "512x512", type: "image/png" },
+          { url: "/favicon.svg?v=2", type: "image/svg+xml" },
         ],
-        shortcut: globalSeo.favicon || "/favicon.ico",
+        shortcut: "/favicon.ico?v=2",
         apple: [
-          { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+          { url: "/apple-touch-icon.png?v=2", sizes: "180x180", type: "image/png" },
+          { url: "/apple-icon.png?v=2", sizes: "180x180", type: "image/png" },
         ],
       },
       robots: {
