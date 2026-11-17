@@ -158,7 +158,7 @@ export default async function CustomDynamicPage({ params, searchParams }) {
             "url": SITE_URL,
             "logo": {
                 "@type": "ImageObject",
-                "url": `${SITE_URL}/favicon.ico`
+                "url": `${SITE_URL}/logo.png`
             }
         }
     };
