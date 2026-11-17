@@ -54,8 +54,8 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        // Allow login page without requiring token
-        if (req.nextUrl.pathname === "/admin/login") {
+        // Allow login and setup pages without requiring token (support trailing slashes)
+        if (req.nextUrl.pathname.startsWith("/admin/login") || req.nextUrl.pathname.startsWith("/admin/setup-account")) {
           return true;
         }
         // Only require auth for other admin routes

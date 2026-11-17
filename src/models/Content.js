@@ -260,6 +260,19 @@ const ContentSchema = new mongoose.Schema({
         hoverVideo: String,
         videoUrl: String // Full video URL for the player
     }],
+    // Promotional & Page Banners
+    banners: [{
+        title: { type: String, default: "" },
+        subtitle: { type: String, default: "" },
+        description: { type: String, default: "" },
+        image: { type: String, default: "" },
+        videoUrl: { type: String, default: "" },
+        ctaText: { type: String, default: "" },
+        ctaLink: { type: String, default: "" },
+        badge: { type: String, default: "" },
+        order: { type: Number, default: 0 },
+        isActive: { type: Boolean, default: true }
+    }],
     splitGallery: [String]
 }, { timestamps: true });
 

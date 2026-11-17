@@ -104,7 +104,7 @@ function HomeEditorContent() {
         }));
     };
 
-    if (loading) return <div className="text-gray-500 uppercase text-[10px] font-bold tracking-widest">Decoding cinema data...</div>;
+    if (loading || !content) return <div className="text-gray-500 uppercase text-[10px] font-bold tracking-widest py-20 text-center">Loading editor...</div>;
 
     const tabs = [
         { id: "BANNER", label: "Banner & News", icon: "🎬" },
@@ -188,6 +188,46 @@ function HomeEditorContent() {
                                     {content.hero.backgroundImage && (
                                         <button type="button" onClick={() => updateSection("hero", "backgroundImage", "")} className="text-[10px] text-red-500 hover:text-red-400 font-bold uppercase w-full text-right transition-colors">Clear Asset</button>
                                     )}
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary CTA Button Label</label>
+                                    <input
+                                        type="text"
+                                        value={content.hero.cta1Text || ""}
+                                        onChange={(e) => updateSection("hero", "cta1Text", e.target.value)}
+                                        placeholder="Explore Weddings"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary CTA Button Link</label>
+                                    <input
+                                        type="text"
+                                        value={content.hero.cta1Link || ""}
+                                        onChange={(e) => updateSection("hero", "cta1Link", e.target.value)}
+                                        placeholder="/luxury"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-mono font-bold"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Secondary CTA Button Label</label>
+                                    <input
+                                        type="text"
+                                        value={content.hero.cta2Text || ""}
+                                        onChange={(e) => updateSection("hero", "cta2Text", e.target.value)}
+                                        placeholder="Commercial Works"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-bold"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Secondary CTA Button Link</label>
+                                    <input
+                                        type="text"
+                                        value={content.hero.cta2Link || ""}
+                                        onChange={(e) => updateSection("hero", "cta2Link", e.target.value)}
+                                        placeholder="/commercial"
+                                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none transition-all text-sm font-mono font-bold"
+                                    />
                                 </div>
                             </div>
                         </div>

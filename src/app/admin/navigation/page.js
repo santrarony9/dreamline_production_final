@@ -1,9 +1,9 @@
 "use client";
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import Link from "next/link";
+import ImageUploader from "@/components/admin/ImageUploader";
 
 const BLANK_ITEM = {
     title: "",
@@ -22,10 +22,25 @@ const BLANK_ITEM = {
     isDropdown: false
 };
 
+const BLANK_BANNER = {
+    title: "",
+    subtitle: "",
+    description: "",
+    image: "",
+    ctaText: "Learn More",
+    ctaLink: "/services",
+    badge: "Featured",
+    order: 0,
+    isActive: true
+};
+
 export default function NavigationAdmin() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState({ text: "", type: "success" });
+
+    // Active tab: 'menu' | 'hero' | 'banners' | 'notice'
+    const [activeTab, setActiveTab] = useState("menu");
 
     // Navigation state from DB
     const [rootItems, setRootItems] = useState([]);
@@ -37,6 +52,23 @@ export default function NavigationAdmin() {
         blogArticles: []
     });
 
+    // Homepage Hero Banner state
+    const [heroBanner, setHeroBanner] = useState({
+        titleLine1: "Visionary",
+        titleLine2: "Cinema.",
+        subtitle: "EST. 2010 • DREAMLINE PRODUCTION",
+        backgroundImage: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80",
+        cta1Text: "Explore Weddings",
+        cta1Link: "/luxury",
+        cta2Text: "Commercial Works",
+        cta2Link: "/commercial"
+    });
+
+    // Promotional & Page Banners list
+    const [promoBanners, setPromoBanners] = useState([]);
+    const [editingBanner, setEditingBanner] = useState(null);
+    const [deletingBanner, setDeletingBanner] = useState(null);
+
     // Top announcement banner & CTA settings
     const [announcement, setAnnouncement] = useState({
         enabled: true,
@@ -44,31 +76,31 @@ export default function NavigationAdmin() {
         text: "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082",
         link: "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9"
     });
+
     const [cta, setCta] = useState({
         label: "GET A QUOTE",
         href: "/contact",
         enabled: true
     });
 
-    // Active modal states
-    const [editingItem, setEditingItem] = useState(null); // Item being created or edited
+    const [contact, setContact] = useState({
+        phone: "+91 82400 54002",
+        address: "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082",
+        email: "support@dreamlineproduction.com"
+    });
+
+    // Active modal states for Menu Items
+    const [editingItem, setEditingItem] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [deletingItem, setDeletingItem] = useState(null); // Item slated for deletion confirmation
+    const [deletingItem, setDeletingItem] = useState(null);
     const [draggedItemId, setDraggedItemId] = useState(null);
-
-    // Active tab: 'menu' (Navigation Items) or 'banner' (Announcement & CTA)
-    const [activeTab, setActiveTab] = useState("menu");
-
-    useEffect(() => {
-        fetchNavigationData();
-    }, []);
 
     const showToast = (text, type = "success") => {
         setMessage({ text, type });
         setTimeout(() => setMessage({ text: "", type: "success" }), 4500);
     };
 
-    const fetchNavigationData = async () => {
+    const fetchNavigationData = useCallback(async () => {
         setLoading(true);
         try {
             const [navRes, contentRes] = await Promise.all([
@@ -82,7 +114,39 @@ export default function NavigationAdmin() {
                 setAvailablePages(navRes.data.availablePages || {});
             }
 
-            const global = contentRes.data?.global || {};
+            const rawContent = contentRes.data || {};
+            const global = rawContent.global || {};
+            const home = rawContent.home || {};
+
+            // Hero Banner
+            if (home.hero) {
+                setHeroBanner({
+                    titleLine1: home.hero.titleLine1 || "Visionary",
+                    titleLine2: home.hero.titleLine2 || "Cinema.",
+                    subtitle: home.hero.subtitle || "EST. 2010 • DREAMLINE PRODUCTION",
+                    backgroundImage: home.hero.backgroundImage || "",
+                    cta1Text: home.hero.cta1Text || "Explore Weddings",
+                    cta1Link: home.hero.cta1Link || "/luxury",
+                    cta2Text: home.hero.cta2Text || "Commercial Works",
+                    cta2Link: home.hero.cta2Link || "/commercial"
+                });
+            }
+
+            // Promotional Banners
+            if (Array.isArray(rawContent.banners)) {
+                setPromoBanners(rawContent.banners);
+            }
+
+            // Contact
+            if (global.contact) {
+                setContact({
+                    phone: global.contact.phone || "+91 82400 54002",
+                    address: global.contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082",
+                    email: global.contact.email || "support@dreamlineproduction.com"
+                });
+            }
+
+            // Top Announcement Bar
             if (global.announcement) {
                 setAnnouncement({
                     enabled: global.announcement.enabled !== false,
@@ -91,6 +155,8 @@ export default function NavigationAdmin() {
                     link: global.announcement.link || ""
                 });
             }
+
+            // Header CTA Button
             if (global.navigation?.cta) {
                 setCta({
                     label: global.navigation.cta.label || "GET A QUOTE",
@@ -104,9 +170,15 @@ export default function NavigationAdmin() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
-    // Open Modal for New Root Item
+    useEffect(() => {
+        fetchNavigationData();
+    }, [fetchNavigationData]);
+
+    // -------------------------------------------------------------------------
+    // MENU ITEM ACTIONS
+    // -------------------------------------------------------------------------
     const handleAddNewRoot = () => {
         const nextOrder = rootItems.length + 1;
         setEditingItem({
@@ -117,7 +189,6 @@ export default function NavigationAdmin() {
         setIsModalOpen(true);
     };
 
-    // Open Modal for New Submenu Item under a Parent
     const handleAddSubmenu = (parent) => {
         const parentId = parent.id || parent._id;
         const currentSubCount = parent.children?.length || 0;
@@ -130,7 +201,6 @@ export default function NavigationAdmin() {
         setIsModalOpen(true);
     };
 
-    // Open Modal to Edit an Existing Item
     const handleEditItem = (item) => {
         setEditingItem({
             ...item,
@@ -140,12 +210,10 @@ export default function NavigationAdmin() {
         setIsModalOpen(true);
     };
 
-    // Quick Page Selector in Editor Modal
     const handleSelectPage = (e) => {
         const selectedUrl = e.target.value;
         if (!selectedUrl) return;
 
-        // Find metadata from available pages
         const allPages = [
             ...(availablePages.corePages || []),
             ...(availablePages.servicePages || []),
@@ -162,7 +230,6 @@ export default function NavigationAdmin() {
         }));
     };
 
-    // Save Single Item (Create or Update)
     const handleSaveItemModal = async (e) => {
         e.preventDefault();
         if (!editingItem.title.trim()) {
@@ -177,11 +244,9 @@ export default function NavigationAdmin() {
         setSaving(true);
         try {
             if (editingItem.id) {
-                // Update
                 const res = await axios.put("/api/admin/navigation", editingItem);
                 showToast(res.data?.message || "Menu item updated successfully!");
             } else {
-                // Create
                 const res = await axios.post("/api/admin/navigation", editingItem);
                 showToast(res.data?.message || "Menu item created successfully!");
             }
@@ -196,7 +261,6 @@ export default function NavigationAdmin() {
         }
     };
 
-    // Toggle Active / Inactive Status Directly
     const handleToggleActive = async (item) => {
         const id = item.id || item._id;
         const newStatus = !item.isActive;
@@ -214,7 +278,6 @@ export default function NavigationAdmin() {
         }
     };
 
-    // Confirm & Execute Deletion
     const handleConfirmDelete = async () => {
         if (!deletingItem) return;
         const id = deletingItem.id || deletingItem._id;
@@ -232,7 +295,6 @@ export default function NavigationAdmin() {
         }
     };
 
-    // Move Root Item Up or Down
     const handleMoveRoot = async (index, direction) => {
         const targetIndex = index + direction;
         if (targetIndex < 0 || targetIndex >= rootItems.length) return;
@@ -242,7 +304,6 @@ export default function NavigationAdmin() {
         newRoots.splice(targetIndex, 0, moved);
         setRootItems(newRoots);
 
-        // Prepare flat reorder list for API
         const payload = newRoots.map((it, idx) => ({
             id: it.id || it._id,
             order: idx + 1,
@@ -258,7 +319,6 @@ export default function NavigationAdmin() {
         }
     };
 
-    // Move Submenu Item Up or Down inside its parent
     const handleMoveSub = async (parentIndex, subIndex, direction) => {
         const parent = rootItems[parentIndex];
         if (!parent || !Array.isArray(parent.children)) return;
@@ -290,7 +350,6 @@ export default function NavigationAdmin() {
         }
     };
 
-    // HTML5 Drag and Drop for Root Items
     const handleDragStart = (e, itemId) => {
         setDraggedItemId(itemId);
         e.dataTransfer.setData("text/plain", itemId);
@@ -330,7 +389,6 @@ export default function NavigationAdmin() {
         }
     };
 
-    // Reset Menu to Flagship Defaults
     const handleResetDefaults = async () => {
         const confirmed = confirm("Are you sure you want to reset the navigation menu to Dreamline Production flagship defaults? Any custom links will be restored to defaults.");
         if (!confirmed) return;
@@ -347,8 +405,80 @@ export default function NavigationAdmin() {
         }
     };
 
-    // Save Top Announcement & CTA
-    const handleSaveBanner = async (e) => {
+    // -------------------------------------------------------------------------
+    // BANNER ACTIONS
+    // -------------------------------------------------------------------------
+    const handleSaveHeroBanner = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        try {
+            await axios.post("/api/content", {
+                home: {
+                    hero: heroBanner
+                }
+            });
+            showToast("Homepage Hero Banner updated successfully!");
+        } catch (err) {
+            showToast("Error saving hero banner: " + (err.response?.data?.error || err.message), "error");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleOpenAddBanner = () => {
+        setEditingBanner({
+            ...BLANK_BANNER,
+            order: promoBanners.length + 1
+        });
+    };
+
+    const handleSavePromoBanner = async (e) => {
+        e.preventDefault();
+        if (!editingBanner.title.trim()) {
+            showToast("Banner Title is required.", "error");
+            return;
+        }
+
+        setSaving(true);
+        let updatedList;
+        if (editingBanner._id || editingBanner.id) {
+            const bannerId = editingBanner._id || editingBanner.id;
+            updatedList = promoBanners.map(b => (b._id === bannerId || b.id === bannerId) ? editingBanner : b);
+        } else {
+            updatedList = [...promoBanners, { ...editingBanner, id: Date.now().toString() }];
+        }
+
+        try {
+            await axios.post("/api/content", { banners: updatedList });
+            setPromoBanners(updatedList);
+            setEditingBanner(null);
+            showToast("Banner saved successfully!");
+        } catch (err) {
+            showToast("Error saving banner: " + (err.response?.data?.error || err.message), "error");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleDeletePromoBanner = async () => {
+        if (!deletingBanner) return;
+        const bannerId = deletingBanner._id || deletingBanner.id;
+        const updatedList = promoBanners.filter(b => b._id !== bannerId && b.id !== bannerId);
+
+        setSaving(true);
+        try {
+            await axios.post("/api/content", { banners: updatedList });
+            setPromoBanners(updatedList);
+            setDeletingBanner(null);
+            showToast("Banner deleted successfully!");
+        } catch (err) {
+            showToast("Error deleting banner: " + (err.response?.data?.error || err.message), "error");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleSaveNoticeAndCta = async (e) => {
         e.preventDefault();
         setSaving(true);
         try {
@@ -357,12 +487,13 @@ export default function NavigationAdmin() {
                     announcement,
                     navigation: {
                         cta
-                    }
+                    },
+                    contact
                 }
             });
             showToast("Top Announcement & CTA button saved successfully!");
         } catch (err) {
-            showToast("Error saving banner: " + (err.response?.data?.error || err.message), "error");
+            showToast("Error saving notice & CTA: " + (err.response?.data?.error || err.message), "error");
         } finally {
             setSaving(false);
         }
@@ -373,7 +504,7 @@ export default function NavigationAdmin() {
             <div className="py-24 text-center space-y-4">
                 <div className="w-10 h-10 border-2 border-[#c5a059] border-t-transparent rounded-full animate-spin mx-auto"></div>
                 <p className="text-gray-400 text-xs uppercase tracking-widest font-black">
-                    Loading Dynamic Navigation Architecture...
+                    Loading Navigation &amp; Banner Architecture...
                 </p>
             </div>
         );
@@ -400,10 +531,10 @@ export default function NavigationAdmin() {
                         Control Center
                     </span>
                     <h1 className="text-4xl font-black text-white uppercase tracking-tighter font-heading">
-                        Navigation <span className="text-gray-500">Menu Management.</span>
+                        Navigation <span className="text-gray-500">&amp; Banner Studio.</span>
                     </h1>
                     <p className="text-gray-400 text-xs font-medium mt-1 max-w-2xl leading-relaxed">
-                        Customize your website navigation bar and dropdown menus in real time. Add, edit, nest, and reorder menu items without touching the source code.
+                        Customize your website navigation bar, dropdown menus, homepage hero banner, promotional banners, and announcement notice bars in real time without editing source code.
                     </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
@@ -424,21 +555,31 @@ export default function NavigationAdmin() {
                         <span>Live Site</span>
                         <span>↗</span>
                     </a>
-                    <button
-                        type="button"
-                        onClick={handleAddNewRoot}
-                        className="text-[10px] font-black text-black bg-[#c5a059] hover:bg-white uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-1.5"
-                    >
-                        <span>+ Add Menu Item</span>
-                    </button>
+                    {activeTab === "menu" ? (
+                        <button
+                            type="button"
+                            onClick={handleAddNewRoot}
+                            className="text-[10px] font-black text-black bg-[#c5a059] hover:bg-white uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-1.5"
+                        >
+                            <span>+ Add Menu Item</span>
+                        </button>
+                    ) : activeTab === "banners" ? (
+                        <button
+                            type="button"
+                            onClick={handleOpenAddBanner}
+                            className="text-[10px] font-black text-black bg-[#c5a059] hover:bg-white uppercase tracking-widest px-5 py-2.5 rounded-xl transition-all shadow-lg flex items-center gap-1.5"
+                        >
+                            <span>+ Add Banner</span>
+                        </button>
+                    ) : null}
                 </div>
             </header>
 
             {/* Navigation Tabs */}
-            <div className="flex border-b border-white/10 gap-6 text-xs font-black uppercase tracking-widest">
+            <div className="flex border-b border-white/10 gap-6 text-xs font-black uppercase tracking-widest overflow-x-auto hide-scrollbar">
                 <button
                     onClick={() => setActiveTab("menu")}
-                    className={`pb-3 transition-colors relative ${
+                    className={`pb-3 transition-colors relative whitespace-nowrap ${
                         activeTab === "menu" ? "text-[#c5a059]" : "text-gray-400 hover:text-white"
                     }`}
                 >
@@ -447,20 +588,47 @@ export default function NavigationAdmin() {
                         <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#c5a059]"></span>
                     )}
                 </button>
+
                 <button
-                    onClick={() => setActiveTab("banner")}
-                    className={`pb-3 transition-colors relative ${
-                        activeTab === "banner" ? "text-[#c5a059]" : "text-gray-400 hover:text-white"
+                    onClick={() => setActiveTab("hero")}
+                    className={`pb-3 transition-colors relative whitespace-nowrap ${
+                        activeTab === "hero" ? "text-[#c5a059]" : "text-gray-400 hover:text-white"
+                    }`}
+                >
+                    <span>🎬 Homepage Hero Banner</span>
+                    {activeTab === "hero" && (
+                        <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#c5a059]"></span>
+                    )}
+                </button>
+
+                <button
+                    onClick={() => setActiveTab("banners")}
+                    className={`pb-3 transition-colors relative whitespace-nowrap ${
+                        activeTab === "banners" ? "text-[#c5a059]" : "text-gray-400 hover:text-white"
+                    }`}
+                >
+                    <span>🖼️ Promotional Banners ({promoBanners.length})</span>
+                    {activeTab === "banners" && (
+                        <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#c5a059]"></span>
+                    )}
+                </button>
+
+                <button
+                    onClick={() => setActiveTab("notice")}
+                    className={`pb-3 transition-colors relative whitespace-nowrap ${
+                        activeTab === "notice" ? "text-[#c5a059]" : "text-gray-400 hover:text-white"
                     }`}
                 >
                     <span>📢 Notice Bar &amp; CTA Button</span>
-                    {activeTab === "banner" && (
+                    {activeTab === "notice" && (
                         <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#c5a059]"></span>
                     )}
                 </button>
             </div>
 
+            {/* ========================================================================= */}
             {/* TAB 1: MENU ITEMS & HIERARCHY */}
+            {/* ========================================================================= */}
             {activeTab === "menu" && (
                 <div className="space-y-8">
                     {/* Live Visual Preview of Desktop Header */}
@@ -558,8 +726,8 @@ export default function NavigationAdmin() {
                                         onDrop={(e) => handleDrop(e, itemId)}
                                         className={`bg-[#0a0a0a] border rounded-2xl transition-all duration-300 ${
                                             draggedItemId === itemId 
-                                                ? "border-[#c5a059] opacity-50 scale-[0.99]" 
-                                                : "border-white/10 hover:border-white/20"
+                                                 ? "border-[#c5a059] opacity-50 scale-[0.99]" 
+                                                 : "border-white/10 hover:border-white/20"
                                         }`}
                                     >
                                         {/* ROOT ITEM ROW */}
@@ -701,7 +869,6 @@ export default function NavigationAdmin() {
                                                                 className="flex flex-col sm:flex-row sm:items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-white/10 gap-2 transition-all"
                                                             >
                                                                 <div className="flex items-center gap-2.5 min-w-0">
-                                                                    {/* Submenu Order Arrows */}
                                                                     <div className="flex flex-col flex-shrink-0">
                                                                         <button
                                                                             type="button"
@@ -785,9 +952,259 @@ export default function NavigationAdmin() {
                 </div>
             )}
 
-            {/* TAB 2: ANNOUNCEMENT BANNER & CTA BUTTON */}
-            {activeTab === "banner" && (
-                <form onSubmit={handleSaveBanner} className="space-y-8">
+            {/* ========================================================================= */}
+            {/* TAB 2: HOMEPAGE HERO BANNER */}
+            {/* ========================================================================= */}
+            {activeTab === "hero" && (
+                <form onSubmit={handleSaveHeroBanner} className="space-y-8 animate-in fade-in duration-300">
+                    <div className="bg-[#0a0a0a] border border-white/10 p-6 md:p-8 rounded-3xl space-y-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+                            <div>
+                                <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">
+                                    🎬 Homepage Hero Banner
+                                </h3>
+                                <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+                                    Primary full-screen cinematic banner displayed at the very top of your homepage.
+                                </p>
+                            </div>
+                            <a
+                                href="/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[9px] font-black text-[#c5a059] bg-[#c5a059]/10 px-3 py-1.5 rounded-xl hover:bg-[#c5a059] hover:text-black transition-all self-start sm:self-auto"
+                            >
+                                View on Website ↗
+                            </a>
+                        </div>
+
+                        {/* Title & Subtitle inputs */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary Title (Line 1)</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.titleLine1}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, titleLine1: e.target.value })}
+                                    placeholder="Visionary"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-sm font-bold"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Secondary Title (Line 2)</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.titleLine2}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, titleLine2: e.target.value })}
+                                    placeholder="Cinema."
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-sm font-bold"
+                                />
+                            </div>
+
+                            <div className="space-y-2 md:col-span-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Narrative Subtitle</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.subtitle}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, subtitle: e.target.value })}
+                                    placeholder="EST. 2010 • DREAMLINE PRODUCTION"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-sm font-bold"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Background Media Uploader */}
+                        <div className="space-y-3 pt-2">
+                            <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Cinematic Backdrop Asset (Image or Video)</label>
+                            <ImageUploader
+                                currentImage={heroBanner.backgroundImage}
+                                recommendedSize="Cinematic Backdrop (Video MP4 or Image URL) - 1920x1080 (16:9)"
+                                onUploadSuccess={(url) => setHeroBanner({ ...heroBanner, backgroundImage: url })}
+                            />
+                            {heroBanner.backgroundImage && (
+                                <button
+                                    type="button"
+                                    onClick={() => setHeroBanner({ ...heroBanner, backgroundImage: "" })}
+                                    className="text-[10px] text-red-400 hover:text-red-300 font-bold uppercase transition-colors"
+                                >
+                                    Clear Asset
+                                </button>
+                            )}
+                        </div>
+
+                        {/* CTA Buttons */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-white/5">
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary Button Label</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.cta1Text}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, cta1Text: e.target.value })}
+                                    placeholder="Explore Weddings"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-bold"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Primary Button Target URL</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.cta1Link}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, cta1Link: e.target.value })}
+                                    placeholder="/luxury"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-mono font-bold"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Secondary Button Label</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.cta2Text}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, cta2Text: e.target.value })}
+                                    placeholder="Commercial Works"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-bold"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Secondary Button Target URL</label>
+                                <input
+                                    type="text"
+                                    value={heroBanner.cta2Link}
+                                    onChange={(e) => setHeroBanner({ ...heroBanner, cta2Link: e.target.value })}
+                                    placeholder="/commercial"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-mono font-bold"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="pt-4">
+                            <button
+                                type="submit"
+                                disabled={saving}
+                                className="px-8 py-3.5 rounded-2xl bg-[#c5a059] text-black text-xs font-black uppercase tracking-widest hover:bg-white transition-all shadow-lg"
+                            >
+                                {saving ? "Saving Changes..." : "Save Hero Banner"}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            )}
+
+            {/* ========================================================================= */}
+            {/* TAB 3: PROMOTIONAL & MULTI-BANNERS */}
+            {/* ========================================================================= */}
+            {activeTab === "banners" && (
+                <div className="space-y-8 animate-in fade-in duration-300">
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <h2 className="text-sm font-black uppercase tracking-widest text-white">
+                                Promotional &amp; Seasonal Banners ({promoBanners.length})
+                            </h2>
+                            <p className="text-[11px] text-gray-500 font-medium">
+                                Create promotional highlight banners, season discounts, or special event cards displayed across your website.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleOpenAddBanner}
+                            className="text-[10px] font-black uppercase tracking-widest bg-[#c5a059] hover:bg-white text-black px-4 py-2 rounded-xl transition-all shadow-md"
+                        >
+                            + Add New Banner
+                        </button>
+                    </div>
+
+                    {promoBanners.length === 0 ? (
+                        <div className="p-12 text-center bg-[#0a0a0a] border border-dashed border-white/10 rounded-3xl space-y-4">
+                            <p className="text-gray-400 text-xs font-bold uppercase tracking-wider">No promotional banners configured yet.</p>
+                            <button
+                                type="button"
+                                onClick={handleOpenAddBanner}
+                                className="text-[10px] font-black uppercase tracking-widest bg-[#c5a059] text-black px-6 py-2.5 rounded-xl hover:bg-white transition-all shadow-lg"
+                            >
+                                Create Your First Banner
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {promoBanners.map((banner, bIdx) => (
+                                <div key={banner._id || banner.id || bIdx} className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden hover:border-[#c5a059]/40 transition-all flex flex-col justify-between">
+                                    {banner.image ? (
+                                        <div className="h-44 bg-cover bg-center relative" style={{ backgroundImage: `url(${banner.image})` }}>
+                                            <div className="absolute inset-0 bg-black/40"></div>
+                                            {banner.badge && (
+                                                <span className="absolute top-4 left-4 bg-black/80 text-[#c5a059] border border-[#c5a059]/30 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">
+                                                    {banner.badge}
+                                                </span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="h-28 bg-white/5 flex items-center justify-center text-gray-500 text-xs font-mono uppercase">
+                                            No Image Asset
+                                        </div>
+                                    )}
+
+                                    <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
+                                        <div>
+                                            <div className="flex items-center justify-between gap-2">
+                                                <h3 className="text-base font-black text-white uppercase tracking-tight">
+                                                    {banner.title}
+                                                </h3>
+                                                <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded ${
+                                                    banner.isActive !== false ? "bg-emerald-950 text-emerald-400 border border-emerald-500/30" : "bg-red-950 text-red-400 border border-red-500/30"
+                                                }`}>
+                                                    {banner.isActive !== false ? "Active" : "Hidden"}
+                                                </span>
+                                            </div>
+                                            {banner.subtitle && (
+                                                <p className="text-[#c5a059] text-xs font-bold uppercase tracking-wider mt-0.5">
+                                                    {banner.subtitle}
+                                                </p>
+                                            )}
+                                            {banner.description && (
+                                                <p className="text-gray-400 text-xs mt-2 line-clamp-2">
+                                                    {banner.description}
+                                                </p>
+                                            )}
+                                        </div>
+
+                                        <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                                            <span className="text-[10px] font-mono text-gray-500 truncate max-w-[180px]">
+                                                {banner.ctaLink || "/"}
+                                            </span>
+                                            <div className="flex items-center gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setEditingBanner(banner)}
+                                                    className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/10 border border-white/10 transition-all text-xs"
+                                                    title="Edit Banner"
+                                                >
+                                                    ✏️ Edit
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setDeletingBanner(banner)}
+                                                    className="p-2 rounded-xl text-red-400 hover:text-red-200 hover:bg-red-950/60 border border-red-500/20 transition-all text-xs"
+                                                    title="Delete Banner"
+                                                >
+                                                    🗑️
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* ========================================================================= */}
+            {/* TAB 4: ANNOUNCEMENT NOTICE BAR & CTA BUTTON */}
+            {/* ========================================================================= */}
+            {activeTab === "notice" && (
+                <form onSubmit={handleSaveNoticeAndCta} className="space-y-8 animate-in fade-in duration-300">
                     {/* Top Announcement Bar */}
                     <div className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl space-y-6">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
@@ -840,6 +1257,41 @@ export default function NavigationAdmin() {
                                     value={announcement.link}
                                     onChange={(e) => setAnnouncement({ ...announcement, link: e.target.value })}
                                     placeholder="https://maps.app.goo.gl/..."
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-bold font-mono"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Studio Contact Info */}
+                    <div className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 rounded-3xl space-y-6">
+                        <div className="pb-4 border-b border-white/5">
+                            <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059] mb-1">
+                                📞 Header Studio Phone &amp; Support Email
+                            </h3>
+                            <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+                                Contact phone number displayed on the right side of the desktop announcement banner.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Phone Number (Call / WhatsApp)</label>
+                                <input
+                                    type="text"
+                                    value={contact.phone}
+                                    onChange={(e) => setContact({ ...contact, phone: e.target.value })}
+                                    placeholder="+91 82400 54002"
+                                    className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-bold"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-[10px] uppercase font-black text-gray-500 tracking-widest pl-1">Official Support Email</label>
+                                <input
+                                    type="email"
+                                    value={contact.email}
+                                    onChange={(e) => setContact({ ...contact, email: e.target.value })}
+                                    placeholder="support@dreamlineproduction.com"
                                     className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-[#c5a059] outline-none text-xs font-bold font-mono"
                                 />
                             </div>
@@ -906,11 +1358,12 @@ export default function NavigationAdmin() {
                 </form>
             )}
 
+            {/* ========================================================================= */}
             {/* MODAL 1: ADD / EDIT MENU ITEM */}
+            {/* ========================================================================= */}
             {isModalOpen && editingItem && (
                 <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
                     <div className="bg-[#0e0e0e] border border-white/15 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
-                        {/* Modal Header */}
                         <div className="p-6 border-b border-white/10 flex items-center justify-between">
                             <div>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
@@ -929,7 +1382,6 @@ export default function NavigationAdmin() {
                             </button>
                         </div>
 
-                        {/* Modal Body Form */}
                         <form onSubmit={handleSaveItemModal} className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
                             {/* Quick Page Selector */}
                             <div className="p-4 rounded-2xl bg-white/[0.03] border border-[#c5a059]/20 space-y-2">
@@ -1025,7 +1477,7 @@ export default function NavigationAdmin() {
                                     >
                                         <option value="">-- None (Top-Level Menu Item) --</option>
                                         {rootItems
-                                            .filter(r => (r.id || r._id) !== editingItem.id) // Cannot be parent of itself
+                                            .filter(r => (r.id || r._id) !== editingItem.id)
                                             .map((r) => (
                                                 <option key={r.id || r._id} value={r.id || r._id}>
                                                     ↳ Under: {r.title}
@@ -1178,7 +1630,9 @@ export default function NavigationAdmin() {
                 </div>
             )}
 
-            {/* MODAL 2: DELETE CONFIRMATION */}
+            {/* ========================================================================= */}
+            {/* MODAL 2: DELETE CONFIRMATION FOR MENU ITEM */}
+            {/* ========================================================================= */}
             {deletingItem && (
                 <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
                     <div className="bg-[#121212] border border-red-500/30 rounded-3xl w-full max-w-md p-6 text-center space-y-4 shadow-2xl">
@@ -1213,6 +1667,195 @@ export default function NavigationAdmin() {
                                 className="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-black uppercase tracking-wider shadow-lg"
                             >
                                 {saving ? "Deleting..." : "Yes, Delete Item"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* ========================================================================= */}
+            {/* MODAL 3: ADD / EDIT PROMOTIONAL BANNER */}
+            {/* ========================================================================= */}
+            {editingBanner && (
+                <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+                    <div className="bg-[#0e0e0e] border border-white/15 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
+                        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                            <div>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
+                                    {editingBanner._id || editingBanner.id ? "Edit Promotional Banner" : "New Promotional Banner"}
+                                </span>
+                                <h2 className="text-xl font-black text-white uppercase tracking-tight">
+                                    {editingBanner.title || "Configure Banner"}
+                                </h2>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setEditingBanner(null)}
+                                className="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white flex items-center justify-center text-sm"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSavePromoBanner} className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="space-y-1.5 md:col-span-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Banner Heading <span className="text-red-400">*</span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        value={editingBanner.title}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, title: e.target.value })}
+                                        placeholder="e.g. Wedding Season 2026 Special"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-[#c5a059] outline-none font-bold"
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Subtitle / Tagline
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={editingBanner.subtitle || ""}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, subtitle: e.target.value })}
+                                        placeholder="e.g. Early Bird Discounts Available"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-[#c5a059] outline-none"
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Badge Label
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={editingBanner.badge || ""}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, badge: e.target.value })}
+                                        placeholder="e.g. Limited Offer / Featured"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-[#c5a059] outline-none"
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5 md:col-span-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        rows={2}
+                                        value={editingBanner.description || ""}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, description: e.target.value })}
+                                        placeholder="Brief description of the promotion or announcement..."
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-[#c5a059] outline-none"
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5 md:col-span-2">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Banner Image Asset
+                                    </label>
+                                    <ImageUploader
+                                        currentImage={editingBanner.image}
+                                        recommendedSize="Promotional Banner - 1200x630 or 1920x800"
+                                        onUploadSuccess={(url) => setEditingBanner({ ...editingBanner, image: url })}
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Button Label
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={editingBanner.ctaText || ""}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, ctaText: e.target.value })}
+                                        placeholder="Book Now"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-[#c5a059] outline-none"
+                                    />
+                                </div>
+
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] uppercase font-black text-gray-400 tracking-wider">
+                                        Button Link Destination
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={editingBanner.ctaLink || ""}
+                                        onChange={(e) => setEditingBanner({ ...editingBanner, ctaLink: e.target.value })}
+                                        placeholder="/contact"
+                                        className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-xs text-white focus:border-[#c5a059] outline-none font-mono"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5">
+                                <input
+                                    type="checkbox"
+                                    id="bannerActiveCheckbox"
+                                    checked={editingBanner.isActive !== false}
+                                    onChange={(e) => setEditingBanner({ ...editingBanner, isActive: e.target.checked })}
+                                    className="w-4 h-4 accent-[#c5a059] cursor-pointer"
+                                />
+                                <label htmlFor="bannerActiveCheckbox" className="text-xs font-bold text-white cursor-pointer select-none">
+                                    Banner Active &amp; Visible on Website
+                                </label>
+                            </div>
+
+                            <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingBanner(null)}
+                                    className="px-5 py-2.5 rounded-xl border border-white/10 text-gray-400 hover:text-white text-xs font-black uppercase tracking-wider transition-all"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={saving}
+                                    className="px-7 py-2.5 rounded-xl bg-[#c5a059] hover:bg-white text-black text-xs font-black uppercase tracking-widest transition-all shadow-lg"
+                                >
+                                    {saving ? "Saving..." : "Save Banner"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ========================================================================= */}
+            {/* MODAL 4: DELETE CONFIRMATION FOR BANNER */}
+            {/* ========================================================================= */}
+            {deletingBanner && (
+                <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+                    <div className="bg-[#121212] border border-red-500/30 rounded-3xl w-full max-w-md p-6 text-center space-y-4 shadow-2xl">
+                        <div className="w-12 h-12 rounded-full bg-red-950/60 border border-red-500/40 text-red-400 flex items-center justify-center mx-auto text-xl">
+                            🗑️
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-black uppercase text-white tracking-tight">
+                                Delete Banner?
+                            </h3>
+                            <p className="text-gray-400 text-xs mt-1 leading-relaxed">
+                                Are you sure you want to delete <span className="text-white font-bold">&quot;{deletingBanner.title}&quot;</span>?
+                            </p>
+                        </div>
+                        <div className="flex justify-center gap-3 pt-2">
+                            <button
+                                type="button"
+                                onClick={() => setDeletingBanner(null)}
+                                className="px-5 py-2.5 rounded-xl border border-white/10 text-gray-400 hover:text-white text-xs font-black uppercase tracking-wider"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                disabled={saving}
+                                onClick={handleDeletePromoBanner}
+                                className="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-black uppercase tracking-wider shadow-lg"
+                            >
+                                {saving ? "Deleting..." : "Yes, Delete Banner"}
                             </button>
                         </div>
                     </div>

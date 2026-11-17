@@ -61,7 +61,7 @@ export async function POST(request) {
     // Top-level fields
     const topLevelFields = [
         'about', 'luxury', 'commercial', 'contact', 'social', 'footer', 
-        'splitGallery', 'videoVault', 'projects'
+        'splitGallery', 'videoVault', 'projects', 'banners'
     ];
     topLevelFields.forEach(field => {
         if (body[field] !== undefined) updateData[field] = body[field];
@@ -105,7 +105,7 @@ export async function POST(request) {
         content = await Content.findOneAndUpdate(
             {},
             { $set: updateData },
-            { upsert: true, new: true, runValidators: true }
+            { upsert: true, returnDocument: 'after', runValidators: true }
         );
 
         // Automatically create corresponding ServicePage documents for subcategories
