@@ -433,7 +433,7 @@ export default function MasterGallery({ images = [] }) {
 
                 {/* Column 1 - Tracks Up */}
                 <div className="flex-1 flex flex-col gap-4 overflow-hidden">
-                    <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused] whitespace-nowrap">
+<div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused]">
                         {getSeamlessArray(col1).map((item, i) => {
                             const originalIdx = activeItems.findIndex(x => (x.imageUrl || x.src) === (item.imageUrl || item.src));
                             const targetIdx = originalIdx >= 0 ? originalIdx : 0;
@@ -462,12 +462,13 @@ export default function MasterGallery({ images = [] }) {
                                 </div>
                             );
                         })}
+
                     </div>
                 </div>
 
                 {/* Column 2 - Tracks Down */}
-                <div className="flex-1 flex flex-col gap-4 overflow-hidden pt-12 md:pt-20">
-                    <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused] whitespace-nowrap">
+<div className="flex-1 flex flex-col gap-4 overflow-hidden pt-12 md:pt-20">
+                    <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused]">
                         {getSeamlessArray(col2.length > 0 ? col2 : col1).map((item, i) => {
                             const originalIdx = activeItems.findIndex(x => (x.imageUrl || x.src) === (item.imageUrl || item.src));
                             const targetIdx = originalIdx >= 0 ? originalIdx : 0;
@@ -530,6 +531,46 @@ export default function MasterGallery({ images = [] }) {
                                 </div>
                             );
                         })}
+=======
+                <div className="flex-1 flex flex-col gap-4 overflow-hidden pt-20">
+                    <div className="flex flex-col gap-4 v-track-down group-hover:[animation-play-state:paused]">
+                        {getSeamlessArray(col2).map((src, i) => (
+                            <motion.div
+                                layoutId={`gallery-img-${src}-c2-${i}`}
+                                key={`c2-${i}`}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c2-${i}` })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c2-${i}` }); }}
+                                role="button"
+                                tabIndex={0}
+                                aria-label="View expanded image"
+                                className="w-full aspect-[4/5] rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
+                                data-cursor="VIEW"
+                            >
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Column 3 - Tracks Up (Hidden on Mobile) */}
+                <div className="hidden md:flex flex-1 flex-col gap-4 overflow-hidden pt-10">
+                    <div className="flex flex-col gap-4 v-track-up group-hover:[animation-play-state:paused]">
+                        {getSeamlessArray(col3).map((src, i) => (
+                            <motion.div
+                                layoutId={`gallery-img-${src}-c3-${i}`}
+                                key={`c3-${i}`}
+                                onClick={() => handleOpen({ src, id: `gallery-img-${src}-c3-${i}` })}
+                                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleOpen({ src, id: `gallery-img-${src}-c3-${i}` }); }}
+                                role="button"
+                                tabIndex={0}
+                                aria-label="View expanded image"
+                                className="w-full aspect-square rounded-2xl overflow-hidden bg-zinc-900 border border-white/5 relative interactive premium-card flex-shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c5a059]"
+                                data-cursor="VIEW"
+                            >
+                                <Image src={src} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover filter grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105" alt="Wedding photography portfolio by Dreamline Production Kolkata" loading="lazy" />
+                            </motion.div>
+                        ))}
+>>>>>>> origin/main
                     </div>
                 </div>
             </div>
