@@ -23,6 +23,26 @@ export default function Navbar({ initialServices, siteContent }) {
         }
     }, [siteContent?.navigationTree]);
 
+    // Auto-sync navigation on window focus (for instant updates across browser tabs)
+    useEffect(() => {
+        const handleSyncNavigation = async () => {
+            try {
+                const res = await fetch("/api/navigation");
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.items) && data.items.length > 0) {
+                        setNavItems(data.items);
+                    }
+                }
+            } catch (err) {
+                // Background sync silent fallback
+            }
+        };
+
+        window.addEventListener("focus", handleSyncNavigation);
+        return () => window.removeEventListener("focus", handleSyncNavigation);
+    }, []);
+
     // Handle scroll styling (floating pill elevation)
     useEffect(() => {
         const handleScroll = () => {

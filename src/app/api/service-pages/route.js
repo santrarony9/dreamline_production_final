@@ -19,6 +19,8 @@ const ALLOWED_SERVICE_PAGE_FIELDS = [
     "heroVideo", 
     "gallery", 
     "videos", 
+    "videoSectionTitle",
+    "videoSectionSubtitle",
     "sections", 
     "testimonials", 
     "seoTitle", 
@@ -78,6 +80,7 @@ export async function POST(request) {
         // Revalidate the service pages with trailing slash
         revalidatePath(`/services/${sanitizedData.slug}/`);
         revalidatePath('/services/');
+        revalidatePath('/', 'layout');
         
         return NextResponse.json(page);
     } catch (err) {

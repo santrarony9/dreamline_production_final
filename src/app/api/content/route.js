@@ -127,12 +127,20 @@ export async function POST(request) {
             }
         }
 
-        // Revalidate paths for on-demand ISR
-        revalidatePath('/');
-        revalidatePath('/about');
-        revalidatePath('/luxury');
-        revalidatePath('/commercial');
-        revalidatePath('/tech');
+        // Revalidate layout and all paths for immediate on-demand ISR synchronization
+        try {
+            revalidatePath('/', 'layout');
+            revalidatePath('/');
+            revalidatePath('/about');
+            revalidatePath('/luxury');
+            revalidatePath('/commercial');
+            revalidatePath('/tech');
+            revalidatePath('/services');
+            revalidatePath('/portfolio');
+            revalidatePath('/contact');
+        } catch (revErr) {
+            console.warn('[Content Update] Revalidation notice:', revErr.message);
+        }
         
         return NextResponse.json({ success: true, data: content });
     } catch (error) {

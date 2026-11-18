@@ -7,6 +7,9 @@ import SmoothScroll from "@/components/global/SmoothScroll";
 import MediaProtection from "@/components/global/MediaProtection";
 import "./globals.css";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
   variable: "--font-instrument-sans",

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ServicePage from "@/models/ServicePage";

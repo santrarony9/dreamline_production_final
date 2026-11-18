@@ -20,14 +20,34 @@ const ALLOWED_MIME_TYPES = [
 ];
 
 export async function POST(request) {
-    console.log("UPLOAD URL REQUEST RECEIVED — returning direct VPS upload URL with token");
+    let isAuthenticated = false;
+    let userEmail = null;
 
-    const { getToken } = await import("next-auth/jwt");
-    const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8" });
-    if (!token) {
+    // 1. Try NextAuth Server Session
+    try {
+        const session = await getServerSession(authOptions);
+        if (session?.user) {
+            isAuthenticated = true;
+            userEmail = session.user.email || session.user.name || "admin";
+        }
+    } catch (sErr) {}
+
+    // 2. Fallback to JWT token
+    if (!isAuthenticated) {
+        try {
+            const { getToken } = await import("next-auth/jwt");
+            const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8" });
+            if (token) {
+                isAuthenticated = true;
+                userEmail = token.email || token.name || "admin";
+            }
+        } catch (tErr) {}
+    }
+
+    if (!isAuthenticated) {
         return NextResponse.json({ error: "Session expired. Please refresh the page and log in again." }, { status: 401 });
     }
-    const session = { user: token };
+    const session = { user: { email: userEmail } };
 
     try {
         const body = await request.json();

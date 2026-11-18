@@ -169,6 +169,8 @@ export default function ServicesAdmin() {
         heroVideo: "",
         gallery: [],
         videos: [],
+        videoSectionTitle: "",
+        videoSectionSubtitle: "",
         sections: [],
         testimonials: [],
         seoTitle: "",
@@ -832,6 +834,8 @@ export default function ServicesAdmin() {
                 heroVideo: page.heroVideo || "",
                 gallery: page.gallery || [],
                 videos: page.videos || [],
+                videoSectionTitle: page.videoSectionTitle || "",
+                videoSectionSubtitle: page.videoSectionSubtitle || "",
                 sections: page.sections || [],
                 testimonials: page.testimonials || [],
                 seoTitle: page.seoTitle || "",
@@ -855,6 +859,8 @@ export default function ServicesAdmin() {
                 heroVideo: "",
                 gallery: [],
                 videos: [],
+                videoSectionTitle: "",
+                videoSectionSubtitle: "",
                 sections: [],
                 testimonials: [],
                 seoTitle: "",
@@ -1774,15 +1780,20 @@ export default function ServicesAdmin() {
 
                                 {/* Video Showcase Section */}
                                 <div className="bg-[#0b0b0b] border border-white/10 p-8 rounded-3xl space-y-6">
-                                    <div className="flex justify-between items-center pb-4 border-b border-white/5">
-                                        <h3 className="text-[#c5a059] text-xs font-black uppercase tracking-widest">
-                                            4. Featured YouTube &amp; Video Showcase ({pageFormData.videos?.length || 0})
-                                        </h3>
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/5">
+                                        <div>
+                                            <h3 className="text-[#c5a059] text-xs font-black uppercase tracking-widest">
+                                                4. Featured YouTube &amp; Video Showcase ({pageFormData.videos?.length || 0})
+                                            </h3>
+                                            <p className="text-gray-500 text-[10px] uppercase tracking-wider mt-1">
+                                                Add YouTube videos. Live thumbnails, 16:9 responsive embeds &amp; reordering controls.
+                                            </p>
+                                        </div>
                                         <button
                                             type="button"
                                             onClick={() => setPageFormData({
                                                 ...pageFormData,
-                                                videos: [...(pageFormData.videos || []), { title: "", url: "" }]
+                                                videos: [...(pageFormData.videos || []), { title: "", url: "", thumbnail: "" }]
                                             })}
                                             className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-[#c5a059]/30 text-[#c5a059] text-xs font-black uppercase tracking-wider transition-all"
                                         >
@@ -1790,44 +1801,179 @@ export default function ServicesAdmin() {
                                         </button>
                                     </div>
 
+                                    {/* Section Heading & Subtitle Configuration */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-white/5">
+                                        <div>
+                                            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                Video Gallery Heading (Optional)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={pageFormData.videoSectionTitle || ""}
+                                                onChange={(e) => setPageFormData({ ...pageFormData, videoSectionTitle: e.target.value })}
+                                                placeholder="e.g., Birthday Photography Videos"
+                                                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                Video Gallery Subtitle (Optional)
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={pageFormData.videoSectionSubtitle || ""}
+                                                onChange={(e) => setPageFormData({ ...pageFormData, videoSectionSubtitle: e.target.value })}
+                                                placeholder="e.g., Explore our celebratory birthday cinematography & candid moments."
+                                                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                            />
+                                        </div>
+                                    </div>
+
                                     <div className="space-y-4">
-                                        {(pageFormData.videos || []).map((vid, vIdx) => (
-                                            <div key={vIdx} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 bg-black/60 p-4 rounded-2xl border border-white/5">
-                                                <input
-                                                    type="text"
-                                                    value={vid.title}
-                                                    onChange={(e) => {
-                                                        const copy = [...pageFormData.videos];
-                                                        copy[vIdx].title = e.target.value;
-                                                        setPageFormData({ ...pageFormData, videos: copy });
-                                                    }}
-                                                    placeholder="Video Title / Description"
-                                                    className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    value={vid.url}
-                                                    onChange={(e) => {
-                                                        const copy = [...pageFormData.videos];
-                                                        copy[vIdx].url = e.target.value;
-                                                        setPageFormData({ ...pageFormData, videos: copy });
-                                                    }}
-                                                    placeholder="YouTube URL or Embed"
-                                                    className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
-                                                />
+                                        {(pageFormData.videos || []).length === 0 ? (
+                                            <div className="text-center py-8 border border-dashed border-white/10 rounded-2xl">
+                                                <p className="text-gray-500 text-xs uppercase font-bold tracking-wider">No videos added yet for this service.</p>
                                                 <button
                                                     type="button"
-                                                    onClick={() => {
-                                                        const copy = [...pageFormData.videos];
-                                                        copy.splice(vIdx, 1);
-                                                        setPageFormData({ ...pageFormData, videos: copy });
-                                                    }}
-                                                    className="p-2 text-red-400 hover:text-red-200 text-xs font-black uppercase"
+                                                    onClick={() => setPageFormData({
+                                                        ...pageFormData,
+                                                        videos: [{ title: "", url: "", thumbnail: "" }]
+                                                    })}
+                                                    className="mt-3 text-xs text-[#c5a059] underline font-bold uppercase tracking-wider"
                                                 >
-                                                    Remove
+                                                    Click here to add the first video
                                                 </button>
                                             </div>
-                                        ))}
+                                        ) : (
+                                            (pageFormData.videos || []).map((vid, vIdx) => {
+                                                const rawUrl = vid.url || "";
+                                                const ytMatch = rawUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
+                                                const ytId = ytMatch && ytMatch[2].length === 11 ? ytMatch[2] : (/^[a-zA-Z0-9_-]{11}$/.test(rawUrl.trim()) ? rawUrl.trim() : null);
+                                                const thumbUrl = vid.thumbnail || (ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null);
+
+                                                return (
+                                                    <div key={vIdx} className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-black/60 p-4 rounded-2xl border border-white/5 hover:border-white/15 transition-all">
+                                                        {/* Reorder Buttons & Index */}
+                                                        <div className="flex items-center gap-1.5 self-start md:self-center">
+                                                            <span className="w-6 h-6 rounded-lg bg-white/5 text-gray-400 text-[10px] font-black flex items-center justify-center">
+                                                                {vIdx + 1}
+                                                            </span>
+                                                            <div className="flex flex-row md:flex-col gap-1">
+                                                                <button
+                                                                    type="button"
+                                                                    disabled={vIdx === 0}
+                                                                    onClick={() => {
+                                                                        const copy = [...pageFormData.videos];
+                                                                        const temp = copy[vIdx - 1];
+                                                                        copy[vIdx - 1] = copy[vIdx];
+                                                                        copy[vIdx] = temp;
+                                                                        setPageFormData({ ...pageFormData, videos: copy });
+                                                                    }}
+                                                                    className="p-1 px-2 md:px-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
+                                                                    title="Move Up"
+                                                                >
+                                                                    ▲
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    disabled={vIdx === pageFormData.videos.length - 1}
+                                                                    onClick={() => {
+                                                                        const copy = [...pageFormData.videos];
+                                                                        const temp = copy[vIdx + 1];
+                                                                        copy[vIdx + 1] = copy[vIdx];
+                                                                        copy[vIdx] = temp;
+                                                                        setPageFormData({ ...pageFormData, videos: copy });
+                                                                    }}
+                                                                    className="p-1 px-2 md:px-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
+                                                                    title="Move Down"
+                                                                >
+                                                                    ▼
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Thumbnail Preview */}
+                                                        <div className="w-24 aspect-video rounded-xl overflow-hidden border border-white/10 bg-[#111] flex-shrink-0 flex items-center justify-center relative">
+                                                            {thumbUrl ? (
+                                                                <img 
+                                                                    src={thumbUrl} 
+                                                                    alt="Preview" 
+                                                                    className="w-full h-full object-cover" 
+                                                                />
+                                                            ) : (
+                                                                <span className="text-[9px] text-gray-500 uppercase font-black text-center px-1">
+                                                                    No Thumbnail
+                                                                </span>
+                                                            )}
+                                                            {ytId && (
+                                                                <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/80 text-[8px] font-black text-[#c5a059] uppercase">
+                                                                    16:9
+                                                                </span>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Title & URL inputs */}
+                                                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                            <input
+                                                                type="text"
+                                                                value={vid.title}
+                                                                onChange={(e) => {
+                                                                    const copy = [...pageFormData.videos];
+                                                                    copy[vIdx].title = e.target.value;
+                                                                    setPageFormData({ ...pageFormData, videos: copy });
+                                                                }}
+                                                                placeholder="Video Title / Caption"
+                                                                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                            />
+                                                            <input
+                                                                type="text"
+                                                                value={vid.url}
+                                                                onChange={(e) => {
+                                                                    const copy = [...pageFormData.videos];
+                                                                    const newUrl = e.target.value;
+                                                                    copy[vIdx].url = newUrl;
+                                                                    const m = newUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
+                                                                    const id = m && m[2].length === 11 ? m[2] : null;
+                                                                    if (id && !copy[vIdx].thumbnail) {
+                                                                        copy[vIdx].thumbnail = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+                                                                    }
+                                                                    setPageFormData({ ...pageFormData, videos: copy });
+                                                                }}
+                                                                placeholder="https://www.youtube.com/watch?v=..."
+                                                                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                            />
+                                                        </div>
+
+                                                        {/* Action Buttons: Open URL & Remove */}
+                                                        <div className="flex items-center gap-2 self-end md:self-center">
+                                                            {vid.url && (
+                                                                <a
+                                                                    href={vid.url}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-xs"
+                                                                    title="Open YouTube video in new tab"
+                                                                >
+                                                                    ↗
+                                                                </a>
+                                                            )}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    const copy = [...pageFormData.videos];
+                                                                    copy.splice(vIdx, 1);
+                                                                    setPageFormData({ ...pageFormData, videos: copy });
+                                                                }}
+                                                                className="px-3 py-2 rounded-xl bg-red-950/20 hover:bg-red-900/50 text-red-400 hover:text-red-200 text-xs font-black uppercase transition-all border border-red-500/20"
+                                                                title="Remove video"
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })
+                                        )}
                                     </div>
                                 </div>
 

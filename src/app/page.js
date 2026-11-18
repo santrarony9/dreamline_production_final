@@ -1,8 +1,10 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 // On-demand revalidation handles immediate updates
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import Wedding from "@/models/Wedding";
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 
 
 
@@ -18,22 +20,22 @@ import Partners from "@/components/home/Partners";
 
 // Below-the-fold: dynamic imports to reduce initial JS bundle (TBT optimization)
 // Each has a fixed-height skeleton to prevent CLS
-const MotionGallery = dynamic(() => import("@/components/home/MotionGallery"), {
+const MotionGallery = nextDynamic(() => import("@/components/home/MotionGallery"), {
     loading: () => <div className="py-32 bg-black" aria-hidden="true" />,
 });
-const VideoVault = dynamic(() => import("@/components/home/VideoVault"), {
+const VideoVault = nextDynamic(() => import("@/components/home/VideoVault"), {
     loading: () => <div className="py-32 bg-black" aria-hidden="true" />,
 });
-const MasterGallery = dynamic(() => import("@/components/home/MasterGallery"), {
+const MasterGallery = nextDynamic(() => import("@/components/home/MasterGallery"), {
     loading: () => <div className="py-32 bg-[#050505]" aria-hidden="true" />,
 });
-const ProjectGallery = dynamic(() => import("@/components/home/ProjectGallery"), {
+const ProjectGallery = nextDynamic(() => import("@/components/home/ProjectGallery"), {
     loading: () => <div className="py-32 bg-[#050505]" aria-hidden="true" />,
 });
-const JournalSection = dynamic(() => import("@/components/home/JournalSection"), {
+const JournalSection = nextDynamic(() => import("@/components/home/JournalSection"), {
     loading: () => <div className="py-20 bg-[#050505]" aria-hidden="true" />,
 });
-const ReviewSlider = dynamic(() => import("@/components/home/ReviewSlider"), {
+const ReviewSlider = nextDynamic(() => import("@/components/home/ReviewSlider"), {
     loading: () => <div className="py-32 bg-[#050505]" aria-hidden="true" />,
 });
 

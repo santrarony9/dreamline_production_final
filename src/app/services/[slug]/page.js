@@ -1,4 +1,6 @@
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import dbConnect from "@/lib/mongodb";
 import ServicePage from "@/models/ServicePage";
 import PodcastVideo from "@/models/PodcastVideo";
@@ -261,11 +263,36 @@ export default async function DynamicServicePage({ params }) {
                     ? (podcastVideos.length > 0 ? podcastVideos : (page.videos && page.videos.length > 0 ? page.videos : DEFAULT_PODCAST_VIDEOS))
                     : (page.videos || []);
 
+                if (!displayVideos || displayVideos.length === 0) return null;
+
+                const isBirthday = (page.slug === 'birthday-photography-kolkata' || slug === 'birthday-photography-kolkata');
+                const isOtherSocial = (page.slug === 'other-social-events-kolkata' || slug === 'other-social-events-kolkata');
+
+                const defaultTitle = isBirthday
+                    ? "Birthday Photography Videos"
+                    : isOtherSocial
+                    ? "Other Social Events Videos"
+                    : (page.title ? `${page.title} Videos` : "Cinematic Showcase");
+
+                const defaultSubtitle = isBirthday
+                    ? "Explore our milestone birthday cinematography, vibrant celebrations & candid moments."
+                    : isOtherSocial
+                    ? "Explore our cultural celebrations, sacred ceremonies, milestone anniversaries & festive gatherings."
+                    : (isPodcastPage ? "Explore our podcast productions, conversations and creative video projects." : "Cinematic video captures & visual storytelling.");
+
+                const sectionTitle = isPodcastPage
+                    ? "Our Podcast Productions"
+                    : (page.videoSectionTitle || defaultTitle);
+
+                const sectionSubtitle = isPodcastPage
+                    ? "Explore our podcast productions, conversations and creative video projects."
+                    : (page.videoSectionSubtitle || defaultSubtitle);
+
                 return (
                     <ServiceVideoShowcase 
                         videos={displayVideos}
-                        title={isPodcastPage ? "Our Podcast Productions" : undefined}
-                        subtitle={isPodcastPage ? "Explore our podcast productions, conversations and creative video projects." : undefined}
+                        title={sectionTitle}
+                        subtitle={sectionSubtitle}
                         pageSlug={page.slug || slug}
                     />
                 );

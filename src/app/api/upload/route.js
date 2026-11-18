@@ -59,8 +59,7 @@ export async function POST(request) {
             try {
                 const token = await getToken({ 
                     req: request, 
-                    secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8",
-                    secureCookie: true
+                    secret: process.env.NEXTAUTH_SECRET || "p8I0u8u8u8u8u8u8u8u8u8u8u8u8u8u8"
                 });
                 if (token) isAuthenticated = true;
             } catch (e) {}

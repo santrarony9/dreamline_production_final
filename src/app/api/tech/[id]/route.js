@@ -5,6 +5,34 @@ import { authOptions } from "@/lib/auth";
 import dbConnect from "@/lib/mongodb";
 import TechProject from "@/models/TechProject";
 
+export async function PUT(req, { params }) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const { id } = await params;
+        const body = await req.json();
+
+        await dbConnect();
+        const updated = await TechProject.findByIdAndUpdate(
+            id,
+            { $set: body },
+            { new: true, runValidators: true }
+        );
+
+        if (!updated) {
+            return NextResponse.json({ error: "Project not found" }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true, project: updated }, { status: 200 });
+    } catch (error) {
+        console.error("TechProject Update Error:", error);
+        return NextResponse.json({ error: "Failed to update project" }, { status: 500 });
+    }
+}
+
 export async function DELETE(req, { params }) {
     try {
         const session = await getServerSession(authOptions);

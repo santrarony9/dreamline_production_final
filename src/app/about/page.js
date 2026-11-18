@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 // On-demand revalidation handles immediate updates
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";

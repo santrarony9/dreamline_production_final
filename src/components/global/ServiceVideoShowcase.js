@@ -148,14 +148,16 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         const ytId = getYouTubeId(video.url);
         const meta = ytId && PODCAST_METADATA[ytId] ? PODCAST_METADATA[ytId] : null;
         const isShort = video.type === "shorts" || (meta ? (meta.type === "shorts") : (video.url?.includes("/shorts/")));
-        const show = video.category || meta?.show || (pageSlug === "podcast-production-kolkata" ? "Dreamline Podcast" : "Dreamline Film");
-        const tag = isShort ? "Podcast Short" : "Full Episode";
+        const isBirthdayPage = pageSlug === "birthday-photography-kolkata" || pageSlug?.includes("birthday");
+        const isOtherSocialPage = pageSlug === "other-social-events-kolkata" || pageSlug?.includes("social-events");
+        const show = video.category || meta?.show || (isBirthdayPage ? "Birthday Photography" : isOtherSocialPage ? "Social Events" : (pageSlug === "podcast-production-kolkata" ? "Dreamline Podcast" : "Dreamline Film"));
+        const tag = video.tag || (isShort ? "Short Highlight" : (pageSlug === "podcast-production-kolkata" ? "Full Episode" : "4K Cinematic"));
         const accessibleTitle = meta?.accessibleTitle || `${video.title} - Video production by Dreamline Production Kolkata`;
         
         // Fast, lightweight hqdefault thumbnail: https://img.youtube.com/vi/VIDEO_ID/hqdefault.jpg (~15-25 KB)
         let primaryThumbnail = "";
-        if (video.thumbnail && !video.thumbnail.includes("youtube.com") && !video.thumbnail.includes("ytimg.com")) {
-            primaryThumbnail = video.thumbnail;
+        if (video.thumbnail && video.thumbnail.trim()) {
+            primaryThumbnail = video.thumbnail.trim();
         } else if (ytId) {
             primaryThumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
         } else {
@@ -377,8 +379,8 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
 
     return (
         <section 
-            id="podcast-productions" 
-            aria-label="Our Podcast Productions" 
+            id={pageSlug === "podcast-production-kolkata" ? "podcast-productions" : (pageSlug === "birthday-photography-kolkata" ? "birthday-photography-videos" : (pageSlug === "other-social-events-kolkata" ? "other-social-events-videos" : "service-video-showcase"))} 
+            aria-label={title || "Video Showcase"} 
             className="py-24 bg-[#050505] border-y border-white/5 relative"
         >
             {/* Early DNS & CDN Preconnects for Instant Playback */}
@@ -399,6 +401,10 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                         {title ? (
                             title.toLowerCase().includes("our podcast productions") ? (
                                 <>Our Podcast <span className="text-[#c5a059]">Productions</span></>
+                            ) : title.toLowerCase().includes("birthday photography videos") ? (
+                                <>Birthday Photography <span className="text-[#c5a059]">Videos.</span></>
+                            ) : title.toLowerCase().includes("other social events videos") ? (
+                                <>Other Social Events <span className="text-[#c5a059]">Videos.</span></>
                             ) : (
                                 title
                             )
@@ -530,7 +536,13 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
 
                 {/* 4. DEFAULT SINGLE GRID (For other pages that don't have mixed types) */}
                 {!hasBothTypes && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className={`grid gap-8 ${
+                        enrichedVideos.length === 1 
+                            ? "grid-cols-1 max-w-3xl mx-auto" 
+                            : enrichedVideos.length === 2 
+                            ? "grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto" 
+                            : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                    }`}>
                         {enrichedVideos.map(renderVideoCard)}
                     </div>
                 )}

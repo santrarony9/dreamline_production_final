@@ -26,6 +26,8 @@ const ServicePageSchema = new mongoose.Schema({
         url: String, // YouTube or direct link
         thumbnail: String
     }],
+    videoSectionTitle: { type: String, default: "" },
+    videoSectionSubtitle: { type: String, default: "" },
     sections: [{
         title: { type: String, default: "" },
         subtitle: { type: String, default: "" },

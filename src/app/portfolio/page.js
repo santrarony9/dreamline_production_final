@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import Content from "@/models/Content";
