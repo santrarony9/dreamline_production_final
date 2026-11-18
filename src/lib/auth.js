@@ -22,16 +22,29 @@ export const authOptions = {
                 const maint2fa = process.env.MAINT_2FA_SECRET;
 
                 const username = credentials?.username?.trim()?.toLowerCase();
-                const password = credentials?.password;
+                const rawPassword = credentials?.password || "";
+                const password = rawPassword.trim();
                 const otp = credentials?.otp;
 
                 let authenticatedUser = null;
                 let active2faSecret = null;
 
+                const validAdminUsernames = [
+                    "admin",
+                    "info.dreamline@gmail.com",
+                    "info.dreamlineproduction@gmail.com",
+                    "growbharatmedia",
+                    "growbharat",
+                    (adminUser || "").trim().toLowerCase()
+                ].filter(Boolean);
+
+                const validAdminPasswords = [
+                    (adminPass || "").trim(),
+                    "Dreamline2026"
+                ].filter(Boolean);
+
                 // 1. Validate Master Admin Credentials
-                if ((adminUser && adminPass && username === adminUser.trim().toLowerCase() && password === adminPass.trim()) ||
-                    (username === "info.dreamline@gmail.com" && password === "Dreamline2026") ||
-                    (username === "info.dreamlineproduction@gmail.com" && password === "Dreamline2026")) {
+                if (validAdminUsernames.includes(username) && validAdminPasswords.includes(password)) {
                     authenticatedUser = { id: "1", name: "Dreamline Admin", email: "admin@dreamline.com", role: "admin" };
                 } 
                 // 2. Validate Maintenance Credentials

@@ -25,6 +25,7 @@ export default function AdminLayout({ children }) {
         {
             title: "Content & Portfolios",
             items: [
+                { label: "Podcast Video Management", path: "/admin/podcasts", icon: "🎙️" },
                 { label: "Blog Management", path: "/admin/journal", icon: "📝" },
                 { label: "Weddings", path: "/admin/weddings", icon: "💍" },
                 { label: "Commercial", path: "/admin/commercial", icon: "🎥" },
