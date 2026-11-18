@@ -131,12 +131,13 @@ export async function generateMetadata({ params }) {
         };
     }
 
-    const title = page.title;
-    const description = page.description || "Professional cinematic production services in Kolkata.";
+    const title = page.seoTitle || page.title;
+    const description = page.metaDescription || page.description || "Professional cinematic production services in Kolkata.";
     const canonicalSlug = page.slug || slug;
     return {
         title: title,
         description: description,
+        keywords: page.metaKeywords || undefined,
         alternates: {
             canonical: `https://dreamlineproduction.com/services/${canonicalSlug}/`,
         },
@@ -238,7 +239,7 @@ export default async function DynamicServicePage({ params }) {
             </section>
 
             {/* HERO IMAGE / VIDEO AREA */}
-            {page.heroImage && (
+            {page.heroImage && !isPodcastPage && (
                 <section className="px-4 md:px-10 mb-24">
                     <div className="relative aspect-[21/9] w-full rounded-[2rem] overflow-hidden border border-white/5">
                         <Image 
@@ -269,6 +270,77 @@ export default async function DynamicServicePage({ params }) {
                     />
                 );
             })()}
+
+            {/* CUSTOM CONTENT SECTIONS (IF MANAGED VIA BACKEND) */}
+            {page.sections && page.sections.length > 0 && (
+                <section className="py-20 px-8 md:px-16 max-w-7xl mx-auto space-y-16">
+                    {page.sections.map((sec, sIdx) => (
+                        <div key={sIdx} className={`grid grid-cols-1 ${sec.image ? 'lg:grid-cols-2 gap-12 items-center' : 'max-w-4xl mx-auto'}`}>
+                            <div className="space-y-4">
+                                {sec.subtitle && (
+                                    <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em]">
+                                        {sec.subtitle}
+                                    </span>
+                                )}
+                                {sec.title && (
+                                    <h3 className="font-heading text-2xl md:text-3xl font-black text-white uppercase italic tracking-tight">
+                                        {sec.title}
+                                    </h3>
+                                )}
+                                {sec.content && (
+                                    <p className="text-white/70 text-sm md:text-base leading-relaxed whitespace-pre-line">
+                                        {sec.content}
+                                    </p>
+                                )}
+                            </div>
+                            {sec.image && (
+                                <div className="rounded-3xl overflow-hidden border border-[#c5a059]/20 relative shadow-2xl">
+                                    <img 
+                                        src={sec.image} 
+                                        alt={sec.title || `${page.title} feature`} 
+                                        className="w-full h-auto object-cover max-h-[450px]" 
+                                        loading="lazy" 
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </section>
+            )}
+
+            {/* TESTIMONIALS SECTION */}
+            {page.testimonials && page.testimonials.length > 0 && (
+                <section className="py-20 px-8 md:px-16 bg-[#0c0c0c] border-y border-white/5">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="mb-12 text-center">
+                            <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em]">Client Experiences</span>
+                            <h2 className="font-heading text-3xl md:text-4xl font-black text-white uppercase italic tracking-tight mt-2">
+                                Praise &amp; <span className="text-[#c5a059]">Stories.</span>
+                            </h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {page.testimonials.map((test, tIdx) => (
+                                <div key={tIdx} className="bg-black/60 border border-white/10 rounded-2xl p-6 space-y-4 hover:border-[#c5a059]/40 transition-colors">
+                                    <div className="flex items-center gap-1 text-[#c5a059] text-xs">
+                                        {Array.from({ length: test.rating || 5 }).map((_, rIdx) => (
+                                            <span key={rIdx}>★</span>
+                                        ))}
+                                    </div>
+                                    <p className="text-white/80 text-xs md:text-sm italic leading-relaxed">
+                                        "{test.comment}"
+                                    </p>
+                                    <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                                        <div>
+                                            <p className="text-white text-xs font-bold uppercase tracking-wide">{test.clientName}</p>
+                                            {test.company && <p className="text-white/50 text-[10px] uppercase">{test.company}</p>}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* PHOTO GALLERY SECTION */}
             {page.gallery && page.gallery.length > 0 && (
@@ -302,8 +374,8 @@ export default async function DynamicServicePage({ params }) {
                 <h2 className="font-heading text-4xl md:text-6xl font-black text-white uppercase italic mb-12 leading-tight pb-2 md:pb-4">
                     Let's create <br /> something <span className="text-[#c5a059]">iconic.</span>
                 </h2>
-                <Link href="/contact" className="inline-block px-12 py-5 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive shadow-2xl">
-                    Get a Quote
+                <Link href={page.ctaLink || "/contact"} className="inline-block px-12 py-5 bg-[#c5a059] text-black font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-1 interactive shadow-2xl">
+                    {page.ctaText || "Get a Quote"}
                 </Link>
             </section>
         </main>

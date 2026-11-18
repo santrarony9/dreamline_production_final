@@ -19,7 +19,7 @@ export default function AdminLayout({ children }) {
             items: [
                 { label: "Dashboard", path: "/admin", icon: "📊" },
                 { label: "Inquiries", path: "/admin/bookings", icon: "✉️" },
-                { label: "Services & Categories", path: "/admin/services", icon: "🗂️" },
+                { label: "SERVICES MANAGEMENT", path: "/admin/services", icon: "🗂️" },
             ]
         },
         {

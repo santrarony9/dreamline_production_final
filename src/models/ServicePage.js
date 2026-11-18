@@ -11,8 +11,11 @@ const ServicePageSchema = new mongoose.Schema({
     title: { type: String, required: true },
     subtitle: { type: String, default: "Services" },
     description: { type: String },
+    shortDescription: { type: String, default: "" },
+    category: { type: String, default: "", index: true },
     heroImage: { type: String },
     heroImageAlt: { type: String, default: "" },
+    heroVideo: { type: String, default: "" },
     gallery: [{
         url: String,
         caption: String,
@@ -23,7 +26,29 @@ const ServicePageSchema = new mongoose.Schema({
         url: String, // YouTube or direct link
         thumbnail: String
     }],
-    active: { type: Boolean, default: true }
+    sections: [{
+        title: { type: String, default: "" },
+        subtitle: { type: String, default: "" },
+        content: { type: String, default: "" },
+        image: { type: String, default: "" },
+        order: { type: Number, default: 0 }
+    }],
+    testimonials: [{
+        clientName: { type: String, default: "" },
+        company: { type: String, default: "" },
+        comment: { type: String, default: "" },
+        rating: { type: Number, default: 5 },
+        avatar: { type: String, default: "" }
+    }],
+    seoTitle: { type: String, default: "" },
+    metaDescription: { type: String, default: "" },
+    metaKeywords: { type: String, default: "" },
+    ctaText: { type: String, default: "" },
+    ctaLink: { type: String, default: "" },
+    featuredBadge: { type: String, default: "" },
+    order: { type: Number, default: 0 },
+    active: { type: Boolean, default: true },
+    isPublished: { type: Boolean, default: true }
 }, { timestamps: true });
 
 export default mongoose.models.ServicePage || mongoose.model('ServicePage', ServicePageSchema);

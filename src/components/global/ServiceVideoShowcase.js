@@ -159,7 +159,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         } else if (ytId) {
             primaryThumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
         } else {
-            primaryThumbnail = "https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=1200&q=80";
+            primaryThumbnail = "/logo-banner.png";
         }
 
         // Canonical original YouTube watch URL

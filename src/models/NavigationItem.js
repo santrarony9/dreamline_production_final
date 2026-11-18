@@ -60,6 +60,11 @@ const NavigationItemSchema = new mongoose.Schema({
         default: "",
         trim: true 
     },
+    subGroup: { 
+        type: String, 
+        default: "",
+        trim: true 
+    },
     icon: { 
         type: String, 
         default: "",

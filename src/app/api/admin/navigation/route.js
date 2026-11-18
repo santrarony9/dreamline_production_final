@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import dbConnect from '@/lib/mongodb';
 import NavigationItem from '@/models/NavigationItem';
 import ServicePage from '@/models/ServicePage';
+import ServiceCategory from '@/models/ServiceCategory';
 import CustomPage from '@/models/CustomPage';
 import Journal from '@/models/Journal';
 import { getAdminNavigationTree, revalidateNavigation } from '@/lib/navigation-service';
@@ -91,16 +92,18 @@ export async function GET() {
             return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
         }
 
-        const [{ rootItems, flatItems }, availablePages] = await Promise.all([
+        const [{ rootItems, flatItems }, availablePages, categories] = await Promise.all([
             getAdminNavigationTree(),
-            getAvailableWebsitePages()
+            getAvailableWebsitePages(),
+            ServiceCategory.find().sort({ order: 1, createdAt: 1 }).lean().catch(() => [])
         ]);
 
         return NextResponse.json({
             success: true,
             rootItems,
             flatItems,
-            availablePages
+            availablePages,
+            categories
         });
     } catch (error) {
         console.error('[API /api/admin/navigation GET] Error:', error);
@@ -131,6 +134,7 @@ export async function POST(req) {
             badge = '',
             description = '',
             group = '',
+            subGroup = '',
             icon = '',
             isDropdown = false
         } = body;
@@ -160,6 +164,7 @@ export async function POST(req) {
             badge: (badge || '').trim(),
             description: (description || '').trim(),
             group: (group || '').trim(),
+            subGroup: (subGroup || '').trim(),
             icon: (icon || '').trim(),
             isDropdown: Boolean(isDropdown)
         });
@@ -192,7 +197,132 @@ export async function PUT(req) {
         await dbConnect();
         const body = await req.json();
 
-        // 1. Bulk Reorder Handler
+        // 1. Bulk Services Menu Save Handler
+        if (body.action === 'save_services_menu' && Array.isArray(body.categories)) {
+            let servicesRoot = await NavigationItem.findOne({ title: "SERVICES", parentId: null });
+            if (!servicesRoot) {
+                servicesRoot = await NavigationItem.create({
+                    title: "SERVICES",
+                    url: "/services/",
+                    type: "internal",
+                    parentId: null,
+                    order: 3,
+                    openInNewTab: false,
+                    isActive: true,
+                    displayDesktop: true,
+                    displayMobile: true,
+                    isDropdown: true,
+                    badge: ""
+                });
+            } else {
+                await NavigationItem.findByIdAndUpdate(servicesRoot._id, {
+                    isDropdown: true,
+                    isActive: true,
+                    displayDesktop: true,
+                    displayMobile: true,
+                    badge: ""
+                });
+            }
+
+            // Remove existing children of SERVICES
+            await NavigationItem.deleteMany({ parentId: servicesRoot._id });
+
+            let overallOrder = 1;
+            const newChildren = [];
+
+            for (let cIdx = 0; cIdx < body.categories.length; cIdx++) {
+                const cat = body.categories[cIdx];
+                const catName = (cat.name || "").trim().toUpperCase();
+                if (!catName) continue;
+                
+                const isCatActive = cat.isActive !== false;
+                const isCatPublished = cat.isPublished !== false;
+                const showInMegaMenu = cat.showInMegaMenu !== false;
+                const catSlug = (cat.slug || catName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')).trim();
+
+                // Persist / update ServiceCategory document
+                try {
+                    await ServiceCategory.findOneAndUpdate(
+                        { name: catName },
+                        { 
+                            $set: {
+                                name: catName,
+                                slug: catSlug,
+                                description: cat.description || "",
+                                image: cat.image || "",
+                                order: cIdx + 1,
+                                isActive: isCatActive,
+                                isPublished: isCatPublished,
+                                showInMegaMenu: showInMegaMenu,
+                                url: cat.url || "",
+                                badge: cat.badge || ""
+                            }
+                        },
+                        { upsert: true, new: true }
+                    );
+                } catch (catErr) {
+                    console.warn(`[API Navigation] Could not sync category ${catName}:`, catErr.message);
+                }
+
+                // If category is not in mega menu or inactive/unpublished, items should not appear on public menu
+                const categoryVisibleInMega = isCatActive && isCatPublished && showInMegaMenu;
+
+                const items = Array.isArray(cat.items) ? cat.items : [];
+                
+                if (items.length === 0) {
+                    if (categoryVisibleInMega) {
+                        newChildren.push({
+                            title: "Coming Soon",
+                            url: "#",
+                            type: "internal",
+                            parentId: servicesRoot._id,
+                            order: overallOrder++,
+                            group: catName,
+                            badge: "COMING SOON",
+                            description: `Services under ${catName} launching soon.`,
+                            openInNewTab: false,
+                            isActive: true,
+                            displayDesktop: true,
+                            displayMobile: true,
+                            isDropdown: false
+                        });
+                    }
+                } else {
+                    for (const item of items) {
+                        newChildren.push({
+                            title: (item.title || "").trim(),
+                            url: (item.url || "#").trim(),
+                            type: item.type || "internal",
+                            parentId: servicesRoot._id,
+                            order: overallOrder++,
+                            group: catName,
+                            subGroup: (item.subGroup || "").trim(),
+                            icon: (item.icon || "").trim(),
+                            badge: (item.badge || "").trim(),
+                            description: (item.description || "").trim(),
+                            openInNewTab: Boolean(item.openInNewTab),
+                            isActive: categoryVisibleInMega ? (item.isActive !== false) : false,
+                            displayDesktop: item.displayDesktop !== false,
+                            displayMobile: item.displayMobile !== false,
+                            isDropdown: false
+                        });
+                    }
+                }
+            }
+
+            if (newChildren.length > 0) {
+                await NavigationItem.insertMany(newChildren);
+            }
+
+            revalidateNavigation();
+
+            return NextResponse.json({
+                success: true,
+                message: `Services menu successfully updated and published! (${newChildren.length} items across ${body.categories.length} categories)`
+            });
+        }
+
+        // 2. Bulk Reorder Handler
         if (body.action === 'reorder' && Array.isArray(body.items)) {
             const updates = body.items.map((it, idx) => {
                 let cleanParentId = it.parentId;
@@ -280,6 +410,7 @@ export async function PUT(req) {
                 badge: (badge || '').trim(),
                 description: (description || '').trim(),
                 group: (group || '').trim(),
+                subGroup: (body.subGroup || '').trim(),
                 icon: (icon || '').trim(),
                 isDropdown: Boolean(isDropdown)
             },
