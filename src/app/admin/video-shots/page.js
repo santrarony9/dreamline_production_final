@@ -86,6 +86,12 @@ export default function VideoShotsAdmin() {
 
     const [uploadingImage, setUploadingImage] = useState(false);
 
+    // Drag & Drop reordering state
+    const [draggedVideoId, setDraggedVideoId] = useState(null);
+    const [dragOverVideoId, setDragOverVideoId] = useState(null);
+    const [draggedShotId, setDraggedShotId] = useState(null);
+    const [dragOverShotId, setDragOverShotId] = useState(null);
+
     // Toast helper
     const showToast = useCallback((message, type = "success") => {
         setToast({ message, type });
@@ -341,10 +347,20 @@ export default function VideoShotsAdmin() {
         e.preventDefault();
         try {
             const res = await axios.post("/api/admin/videos", videoForm);
-            if (res.data.success) {
+            if (res.data.success && res.data.video) {
+                const saved = res.data.video;
                 showToast(`Video "${videoForm.title}" saved & synchronized with frontend!`);
                 setVideoModal({ open: false, isEdit: false, data: null });
-                loadAllData();
+                if (videoForm._id) {
+                    setVideos(prev => prev.map(v => v._id === saved._id ? { ...v, ...saved } : v));
+                } else {
+                    setVideos(prev => [...prev, saved]);
+                    setStats(prev => prev ? {
+                        ...prev,
+                        totalVideos: (prev.totalVideos || 0) + 1,
+                        publishedVideos: (prev.publishedVideos || 0) + (saved.isPublished ? 1 : 0)
+                    } : prev);
+                }
             }
         } catch (err) {
             console.error("Save video error:", err);
@@ -363,7 +379,12 @@ export default function VideoShotsAdmin() {
                     const res = await axios.delete(`/api/admin/videos?id=${video._id}`);
                     showToast(res.data.message);
                     setConfirmModal({ open: false, title: "", message: "", warning: false, onConfirm: null });
-                    loadAllData();
+                    setVideos(prev => prev.filter(v => v._id !== video._id));
+                    setStats(prev => prev ? {
+                        ...prev,
+                        totalVideos: Math.max(0, (prev.totalVideos || 0) - 1),
+                        publishedVideos: Math.max(0, (prev.publishedVideos || 0) - (video.isPublished ? 1 : 0))
+                    } : prev);
                 } catch (err) {
                     showToast("Delete failed: " + (err.response?.data?.error || err.message), "error");
                 }
@@ -388,9 +409,9 @@ export default function VideoShotsAdmin() {
                 status: "published"
             };
             const res = await axios.post("/api/admin/videos", duplicated);
-            if (res.data.success) {
+            if (res.data.success && res.data.video) {
                 showToast(`Duplicated video "${video.title}" successfully!`);
-                loadAllData();
+                setVideos(prev => [...prev, res.data.video]);
             }
         } catch (err) {
             showToast("Failed to duplicate video: " + (err.response?.data?.error || err.message), "error");
@@ -415,27 +436,73 @@ export default function VideoShotsAdmin() {
 
         const items = updated.map((v, idx) => ({ _id: v._id, order: idx + 1 }));
 
+        const orderMap = new Map(items.map(it => [it._id, it.order]));
+        setVideos(prev => prev.map(v => orderMap.has(v._id) ? { ...v, order: orderMap.get(v._id) } : v));
+
         try {
             await axios.put("/api/admin/videos", { items, serviceSlug: video.serviceSlug });
             showToast("Video order updated!");
-            loadAllData();
         } catch (err) {
             showToast("Failed to update video order", "error");
         }
     };
 
     const handleToggleVideoPublish = async (video) => {
+        const updatedIsPub = video.isPublished === false ? true : false;
+        const updatedStatus = updatedIsPub ? "published" : "draft";
+
+        setVideos(prev => prev.map(v => v._id === video._id ? { ...v, isPublished: updatedIsPub, status: updatedStatus } : v));
+        setStats(prev => prev ? {
+            ...prev,
+            publishedVideos: (prev.publishedVideos || 0) + (updatedIsPub ? 1 : -1),
+            draftVideos: (prev.draftVideos || 0) + (updatedIsPub ? -1 : 1)
+        } : prev);
+
         try {
-            const updated = {
-                ...video,
-                isPublished: !video.isPublished,
-                status: !video.isPublished ? "published" : "draft"
-            };
-            await axios.post("/api/admin/videos", updated);
-            showToast(`Video "${video.title}" is now ${updated.isPublished ? 'Published' : 'Draft'}!`);
-            loadAllData();
+            await axios.post("/api/admin/videos", { ...video, isPublished: updatedIsPub, status: updatedStatus });
+            showToast(`Video "${video.title}" is now ${updatedIsPub ? 'Published' : 'Draft'}!`);
         } catch (err) {
             showToast("Failed to update status", "error");
+        }
+    };
+
+    const handleDropVideo = async (targetVideo) => {
+        if (!draggedVideoId || draggedVideoId === targetVideo._id) {
+            setDraggedVideoId(null);
+            setDragOverVideoId(null);
+            return;
+        }
+
+        const currentServiceVideos = videos
+            .filter(v => v.serviceSlug === targetVideo.serviceSlug)
+            .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+        const sourceIndex = currentServiceVideos.findIndex(v => v._id === draggedVideoId);
+        const targetIndex = currentServiceVideos.findIndex(v => v._id === targetVideo._id);
+
+        if (sourceIndex === -1 || targetIndex === -1) {
+            setDraggedVideoId(null);
+            setDragOverVideoId(null);
+            return;
+        }
+
+        const reordered = [...currentServiceVideos];
+        const [moved] = reordered.splice(sourceIndex, 1);
+        reordered.splice(targetIndex, 0, moved);
+
+        const items = reordered.map((v, idx) => ({ _id: v._id, order: idx + 1 }));
+
+        const orderMap = new Map(items.map(it => [it._id, it.order]));
+        setVideos(prev => prev.map(v => orderMap.has(v._id) ? { ...v, order: orderMap.get(v._id) } : v));
+
+        setDraggedVideoId(null);
+        setDragOverVideoId(null);
+
+        try {
+            await axios.put("/api/admin/videos", { items, serviceSlug: targetVideo.serviceSlug });
+            showToast("Video reordered via drag & drop!");
+        } catch (err) {
+            showToast("Failed to persist reorder", "error");
         }
     };
 
@@ -487,10 +554,20 @@ export default function VideoShotsAdmin() {
         e.preventDefault();
         try {
             const res = await axios.post("/api/admin/shots", shotForm);
-            if (res.data.success) {
+            if (res.data.success && res.data.shot) {
+                const saved = res.data.shot;
                 showToast(`Shot "${shotForm.title}" saved & gallery synchronized!`);
                 setShotModal({ open: false, isEdit: false, data: null });
-                loadAllData();
+                if (shotForm._id) {
+                    setShots(prev => prev.map(s => s._id === saved._id ? { ...s, ...saved } : s));
+                } else {
+                    setShots(prev => [...prev, saved]);
+                    setStats(prev => prev ? {
+                        ...prev,
+                        totalShots: (prev.totalShots || 0) + 1,
+                        publishedShots: (prev.publishedShots || 0) + (saved.isPublished ? 1 : 0)
+                    } : prev);
+                }
             }
         } catch (err) {
             console.error("Save shot error:", err);
@@ -509,7 +586,12 @@ export default function VideoShotsAdmin() {
                     const res = await axios.delete(`/api/admin/shots?id=${shot._id}`);
                     showToast(res.data.message);
                     setConfirmModal({ open: false, title: "", message: "", warning: false, onConfirm: null });
-                    loadAllData();
+                    setShots(prev => prev.filter(s => s._id !== shot._id));
+                    setStats(prev => prev ? {
+                        ...prev,
+                        totalShots: Math.max(0, (prev.totalShots || 0) - 1),
+                        publishedShots: Math.max(0, (prev.publishedShots || 0) - (shot.isPublished ? 1 : 0))
+                    } : prev);
                 } catch (err) {
                     showToast("Delete failed: " + (err.response?.data?.error || err.message), "error");
                 }
@@ -535,27 +617,73 @@ export default function VideoShotsAdmin() {
 
         const items = updated.map((s, idx) => ({ _id: s._id, order: idx + 1 }));
 
+        const orderMap = new Map(items.map(it => [it._id, it.order]));
+        setShots(prev => prev.map(s => orderMap.has(s._id) ? { ...s, order: orderMap.get(s._id) } : s));
+
         try {
             await axios.put("/api/admin/shots", { items, serviceSlug: shot.serviceSlug });
             showToast("Shot order updated!");
-            loadAllData();
         } catch (err) {
             showToast("Failed to update shot order", "error");
         }
     };
 
     const handleToggleShotPublish = async (shot) => {
+        const updatedIsPub = shot.isPublished === false ? true : false;
+        const updatedStatus = updatedIsPub ? "published" : "draft";
+
+        setShots(prev => prev.map(s => s._id === shot._id ? { ...s, isPublished: updatedIsPub, status: updatedStatus } : s));
+        setStats(prev => prev ? {
+            ...prev,
+            publishedShots: (prev.publishedShots || 0) + (updatedIsPub ? 1 : -1),
+            draftShots: (prev.draftShots || 0) + (updatedIsPub ? -1 : 1)
+        } : prev);
+
         try {
-            const updated = {
-                ...shot,
-                isPublished: !shot.isPublished,
-                status: !shot.isPublished ? "published" : "draft"
-            };
-            await axios.post("/api/admin/shots", updated);
-            showToast(`Shot "${shot.title}" is now ${updated.isPublished ? 'Published' : 'Draft'}!`);
-            loadAllData();
+            await axios.post("/api/admin/shots", { ...shot, isPublished: updatedIsPub, status: updatedStatus });
+            showToast(`Shot "${shot.title}" is now ${updatedIsPub ? 'Published' : 'Draft'}!`);
         } catch (err) {
             showToast("Failed to update status", "error");
+        }
+    };
+
+    const handleDropShot = async (targetShot) => {
+        if (!draggedShotId || draggedShotId === targetShot._id) {
+            setDraggedShotId(null);
+            setDragOverShotId(null);
+            return;
+        }
+
+        const currentServiceShots = shots
+            .filter(s => s.serviceSlug === targetShot.serviceSlug)
+            .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+        const sourceIndex = currentServiceShots.findIndex(s => s._id === draggedShotId);
+        const targetIndex = currentServiceShots.findIndex(s => s._id === targetShot._id);
+
+        if (sourceIndex === -1 || targetIndex === -1) {
+            setDraggedShotId(null);
+            setDragOverShotId(null);
+            return;
+        }
+
+        const reordered = [...currentServiceShots];
+        const [moved] = reordered.splice(sourceIndex, 1);
+        reordered.splice(targetIndex, 0, moved);
+
+        const items = reordered.map((s, idx) => ({ _id: s._id, order: idx + 1 }));
+
+        const orderMap = new Map(items.map(it => [it._id, it.order]));
+        setShots(prev => prev.map(s => orderMap.has(s._id) ? { ...s, order: orderMap.get(s._id) } : s));
+
+        setDraggedShotId(null);
+        setDragOverShotId(null);
+
+        try {
+            await axios.put("/api/admin/shots", { items, serviceSlug: targetShot.serviceSlug });
+            showToast("Shot reordered via drag & drop!");
+        } catch (err) {
+            showToast("Failed to persist reorder", "error");
         }
     };
 
@@ -1276,7 +1404,33 @@ export default function VideoShotsAdmin() {
                             {filteredVideos.map((video) => (
                                 <div
                                     key={video._id}
-                                    className="bg-[#0b0b0b] border border-white/10 rounded-2xl overflow-hidden hover:border-[#c5a059]/50 transition-all flex flex-col justify-between"
+                                    draggable={true}
+                                    onDragStart={(e) => {
+                                        e.dataTransfer.setData("text/plain", video._id);
+                                        e.dataTransfer.effectAllowed = "move";
+                                        setDraggedVideoId(video._id);
+                                    }}
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                        e.dataTransfer.dropEffect = "move";
+                                        if (dragOverVideoId !== video._id) setDragOverVideoId(video._id);
+                                    }}
+                                    onDragLeave={() => {
+                                        if (dragOverVideoId === video._id) setDragOverVideoId(null);
+                                    }}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        handleDropVideo(video);
+                                    }}
+                                    onDragEnd={() => {
+                                        setDraggedVideoId(null);
+                                        setDragOverVideoId(null);
+                                    }}
+                                    className={`bg-[#0b0b0b] border rounded-2xl overflow-hidden transition-all flex flex-col justify-between cursor-grab active:cursor-grabbing ${
+                                        draggedVideoId === video._id ? "opacity-30 scale-95 border-amber-500/80 shadow-2xl" :
+                                        dragOverVideoId === video._id ? "border-[#c5a059] ring-2 ring-[#c5a059]/40 scale-[1.02]" :
+                                        "border-white/10 hover:border-[#c5a059]/50"
+                                    }`}
                                 >
                                     <div>
                                         {/* 16:9 Thumbnail with Click-to-Play Preview */}
@@ -1285,10 +1439,21 @@ export default function VideoShotsAdmin() {
                                             onClick={() => setPreviewVideoModal({ open: true, url: video.youtubeUrl, title: video.title, ytId: video.youtubeId })}
                                         >
                                             <img
-                                                src={video.customThumbnail || video.thumbnail || `https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
+                                                src={video.customThumbnail || video.thumbnail || (video.youtubeId ? `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg` : "/logo-banner.png")}
                                                 alt={video.title}
+                                                onError={(e) => {
+                                                    if (video.youtubeId && !e.currentTarget.src.includes('hqdefault.jpg')) {
+                                                        e.currentTarget.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
+                                                    }
+                                                }}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
                                             />
+                                            {/* Drag handle pill */}
+                                            <div className="absolute top-2.5 right-2.5 z-10 pointer-events-none">
+                                                <span className="px-2 py-0.5 rounded-full bg-black/80 backdrop-blur-md text-[9px] font-bold text-gray-300 border border-white/10 flex items-center gap-1">
+                                                    <span>⋮⋮</span> <span>Drag</span>
+                                                </span>
+                                            </div>
                                             {/* Centered Golden Play Button */}
                                             <div className="absolute inset-0 flex items-center justify-center">
                                                 <div className="w-12 h-12 rounded-full bg-[#c5a059] text-black flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -1438,7 +1603,33 @@ export default function VideoShotsAdmin() {
                             {filteredShots.map((shot) => (
                                 <div
                                     key={shot._id}
-                                    className="bg-[#0b0b0b] border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all flex flex-col justify-between group"
+                                    draggable={true}
+                                    onDragStart={(e) => {
+                                        e.dataTransfer.setData("text/plain", shot._id);
+                                        e.dataTransfer.effectAllowed = "move";
+                                        setDraggedShotId(shot._id);
+                                    }}
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                        e.dataTransfer.dropEffect = "move";
+                                        if (dragOverShotId !== shot._id) setDragOverShotId(shot._id);
+                                    }}
+                                    onDragLeave={() => {
+                                        if (dragOverShotId === shot._id) setDragOverShotId(null);
+                                    }}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        handleDropShot(shot);
+                                    }}
+                                    onDragEnd={() => {
+                                        setDraggedShotId(null);
+                                        setDragOverShotId(null);
+                                    }}
+                                    className={`bg-[#0b0b0b] border rounded-2xl overflow-hidden transition-all flex flex-col justify-between group cursor-grab active:cursor-grabbing ${
+                                        draggedShotId === shot._id ? "opacity-30 scale-95 border-purple-500/80 shadow-2xl" :
+                                        dragOverShotId === shot._id ? "border-purple-400 ring-2 ring-purple-500/40 scale-[1.02]" :
+                                        "border-white/10 hover:border-purple-500/50"
+                                    }`}
                                 >
                                     <div>
                                         {/* Image Frame with Lightbox Zoom */}
@@ -1451,6 +1642,12 @@ export default function VideoShotsAdmin() {
                                                 alt={shot.title}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
+                                            {/* Drag handle pill */}
+                                            <div className="absolute top-2 right-2 z-10 pointer-events-none">
+                                                <span className="px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[8px] font-bold text-gray-300 border border-white/10 flex items-center gap-0.5">
+                                                    <span>⋮⋮</span>
+                                                </span>
+                                            </div>
                                             {/* Hover Zoom Icon */}
                                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                 <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white text-sm">

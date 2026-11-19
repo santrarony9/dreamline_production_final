@@ -20,28 +20,52 @@ export async function GET() {
     const [
         totalServices,
         publishedServices,
-        totalVideos,
-        publishedVideos,
-        draftVideos,
-        totalShots,
-        publishedShots,
-        draftShots,
+        videoStats,
+        shotStats,
         categories,
         recentVideos,
         recentShots
     ] = await Promise.all([
         ServicePage.countDocuments(),
         ServicePage.countDocuments({ isPublished: true }),
-        ServiceVideo.countDocuments(),
-        ServiceVideo.countDocuments({ isPublished: true, status: 'published' }),
-        ServiceVideo.countDocuments({ $or: [{ isPublished: false }, { status: 'draft' }] }),
-        ServiceShot.countDocuments(),
-        ServiceShot.countDocuments({ isPublished: true, status: 'published' }),
-        ServiceShot.countDocuments({ $or: [{ isPublished: false }, { status: 'draft' }] }),
+        ServiceVideo.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: 1 },
+                    published: {
+                        $sum: {
+                            $cond: [{ $and: [{ $eq: ["$isPublished", true] }, { $ne: ["$status", "draft"] }] }, 1, 0]
+                        }
+                    }
+                }
+            }
+        ]),
+        ServiceShot.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: 1 },
+                    published: {
+                        $sum: {
+                            $cond: [{ $and: [{ $eq: ["$isPublished", true] }, { $ne: ["$status", "draft"] }] }, 1, 0]
+                        }
+                    }
+                }
+            }
+        ]),
         ServiceCategory.find({}).sort({ order: 1 }).lean(),
         ServiceVideo.find({}).sort({ createdAt: -1 }).limit(6).lean(),
         ServiceShot.find({}).sort({ createdAt: -1 }).limit(6).lean()
     ]);
+
+    const totalVideos = videoStats[0]?.total || 0;
+    const publishedVideos = videoStats[0]?.published || 0;
+    const draftVideos = Math.max(0, totalVideos - publishedVideos);
+
+    const totalShots = shotStats[0]?.total || 0;
+    const publishedShots = shotStats[0]?.published || 0;
+    const draftShots = Math.max(0, totalShots - publishedShots);
 
     return NextResponse.json({
         totalServices,

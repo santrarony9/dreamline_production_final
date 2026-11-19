@@ -250,13 +250,19 @@
   }
 }
 
-/* Vertical Gallery Motion */
+/* Vertical Gallery Motion - Hardware Accelerated */
 .v-track-up {
   animation: glide-up 30s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 .v-track-down {
   animation: glide-down 30s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 @keyframes glide-up {

@@ -32,18 +32,24 @@ export async function GET(request) {
 
     const services = await ServicePage.find(query).sort({ order: 1, createdAt: 1 }).lean();
 
-    // Enrich each service with real video and shot counts
-    const enriched = await Promise.all(services.map(async (svc) => {
-        const [videoCount, shotCount] = await Promise.all([
-            ServiceVideo.countDocuments({ serviceSlug: svc.slug }),
-            ServiceShot.countDocuments({ serviceSlug: svc.slug })
-        ]);
-        return {
-            ...svc,
-            _id: svc._id.toString(),
-            videoCount,
-            shotCount
-        };
+    // Fast aggregated counts in 2 queries instead of 2 * N queries
+    const [videoCounts, shotCounts] = await Promise.all([
+        ServiceVideo.aggregate([
+            { $group: { _id: "$serviceSlug", count: { $sum: 1 } } }
+        ]),
+        ServiceShot.aggregate([
+            { $group: { _id: "$serviceSlug", count: { $sum: 1 } } }
+        ])
+    ]);
+
+    const videoMap = Object.fromEntries(videoCounts.map(v => [v._id, v.count]));
+    const shotMap = Object.fromEntries(shotCounts.map(s => [s._id, s.count]));
+
+    const enriched = services.map((svc) => ({
+        ...svc,
+        _id: svc._id.toString(),
+        videoCount: videoMap[svc.slug] || 0,
+        shotCount: shotMap[svc.slug] || 0
     }));
 
     return NextResponse.json({ success: true, services: enriched });

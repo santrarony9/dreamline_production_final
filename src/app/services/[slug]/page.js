@@ -19,85 +19,85 @@ const DEFAULT_PODCAST_VIDEOS = [
         title: "কেন টেলিভিশন ইন্ডাস্ট্রিকে 'Soulless Job' বললেন অভিনেতা বরুণ চন্দ? | Prompt With Paromita",
         url: "https://youtube.com/shorts/yleEJrCNEf0",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/yleEJrCNEf0/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/yleEJrCNEf0/hqdefault.jpg"
     },
     {
         title: "সঙ্গীতে সফলতার টিপস | Prompt With Paromita",
         url: "https://youtube.com/shorts/KSivcLWbdnA",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/KSivcLWbdnA/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/KSivcLWbdnA/hqdefault.jpg"
     },
     {
         title: "সুন্দর বাংলা গান | Prompt With Paromita",
         url: "https://youtube.com/shorts/gV2eKL_RTrc",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/gV2eKL_RTrc/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/gV2eKL_RTrc/hqdefault.jpg"
     },
     {
         title: "শতরূপে মা দুর্গা | Prompt With Paromita",
         url: "https://youtube.com/shorts/9nrOL-qhBf0",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/9nrOL-qhBf0/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/9nrOL-qhBf0/hqdefault.jpg"
     },
     {
         title: "Calcutta's Mini Lucknow | Prompt With Paromita",
         url: "https://youtube.com/shorts/n1-LSS_uzJQ",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/n1-LSS_uzJQ/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/n1-LSS_uzJQ/hqdefault.jpg"
     },
     {
         title: "Get Healed Through Recitation by Sangita Saha | Prompt With Paromita",
         url: "https://youtube.com/shorts/5bINCVdismM",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/5bINCVdismM/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/5bINCVdismM/hqdefault.jpg"
     },
     {
         title: "ডায়মন্ড কি শুধুই হাই-সোসাইটির জন্য? | Sbd Lifestyle",
         url: "https://youtube.com/shorts/JV_yYXVIgjo",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/JV_yYXVIgjo/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/JV_yYXVIgjo/hqdefault.jpg"
     },
     {
         title: "ভবানীপুর কী deciding factor? West Bengal Elections Analysis | Kholapata ebong Arpita",
         url: "https://youtu.be/vTQLIoqQPGU",
         type: "standard",
-        thumbnail: "https://i.ytimg.com/vi/vTQLIoqQPGU/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/vTQLIoqQPGU/hqdefault.jpg"
     },
     {
         title: "অল্প বয়সেও হতে পারে Prostate Problem! Dr. Avishek Mukherjee | Kholapata ebong Arpita",
         url: "https://youtu.be/TU6KUw_55ic",
         type: "standard",
-        thumbnail: "https://i.ytimg.com/vi/TU6KUw_55ic/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/TU6KUw_55ic/hqdefault.jpg"
     },
     {
         title: "\"ভারতীয় মেয়েদের বিশ্বজয়, লড়াই শুরু হয়েছিল বহুদিন আগে\" মিঠু মুখোপাধ্যায় | Kholapata ebong Arpita",
         url: "https://youtube.com/shorts/J_s5AIP-hFY",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/J_s5AIP-hFY/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/J_s5AIP-hFY/hqdefault.jpg"
     },
     {
         title: "\"রাজনীতিতে কে থাকবে, আর কে যাবে, predict করা খুব মুশকিল\" জওহর সরকার | Kholapata ebong Arpita",
         url: "https://youtube.com/shorts/f2_paHV562A",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/f2_paHV562A/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/f2_paHV562A/hqdefault.jpg"
     },
     {
         title: "Banglar gan with versatile singer Pousali Banerjee | Prompt With Paromita",
         url: "https://youtu.be/rGCNP3nWC9Y",
         type: "standard",
-        thumbnail: "https://i.ytimg.com/vi/rGCNP3nWC9Y/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/rGCNP3nWC9Y/hqdefault.jpg"
     },
     {
         title: "দীপান্বিতা অমাবস্যার নিয়ম! #shorts | Prompt With Paromita",
         url: "https://youtube.com/shorts/hRnCf_evOZs",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/hRnCf_evOZs/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/hRnCf_evOZs/hqdefault.jpg"
     },
     {
         title: "দুর্গাপুজোর বোধন,বিসর্জন,সিঁদুর খেলা—কেন এই রীতি ? | Kholapata ebong Arpita",
         url: "https://youtu.be/t4YqQvedLkE",
         type: "standard",
-        thumbnail: "https://i.ytimg.com/vi/t4YqQvedLkE/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/t4YqQvedLkE/hqdefault.jpg"
     },
     {
         title: "মাত্র ৪৮ মিনিট! কেন এই সময়টাই এত গুরুত্বপূর্ণ? | Kholapata ebong Arpita",
@@ -109,13 +109,13 @@ const DEFAULT_PODCAST_VIDEOS = [
         title: "শান্তিপুরের ঐতিহ্য: বড় গোস্বামী বাড়ি ও আগমেশ্বরী মাতার অজানা ইতিহাস | ANI In Search For Truth",
         url: "https://youtu.be/fLturgnZcMw",
         type: "standard",
-        thumbnail: "https://i.ytimg.com/vi/fLturgnZcMw/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/fLturgnZcMw/hqdefault.jpg"
     },
     {
         title: "মারণ ক্রিয়া কি ? তন্ত্র দিয়ে কি সত্যিই ক্ষতি করা যায়? | ANI In Search For Truth",
         url: "https://youtube.com/shorts/p-AOOftRg_E",
         type: "shorts",
-        thumbnail: "https://i.ytimg.com/vi/p-AOOftRg_E/maxresdefault.jpg"
+        thumbnail: "https://i.ytimg.com/vi/p-AOOftRg_E/hqdefault.jpg"
     }
 ];
 

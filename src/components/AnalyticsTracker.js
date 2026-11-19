@@ -10,8 +10,13 @@ export default function AnalyticsTracker({ gaId, adsId, adsLabel }) {
     const fbPixelId = ""; // USER: Add your Facebook Pixel ID here (e.g., "123456789012345")
 
     useEffect(() => {
-        // Report view on route change to custom tracking
+        // Do not track admin routes or localhost development views in the database
+        const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+        const isAdmin = pathname?.startsWith('/admin');
+
+        // Report view on route change to custom tracking (production public visitors only)
         const reportView = () => {
+            if (isLocal || isAdmin) return;
             setTimeout(async () => {
                 try {
                     await axios.post("/api/tracking/view", { 

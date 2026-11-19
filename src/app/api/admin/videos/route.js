@@ -113,7 +113,7 @@ export async function POST(request) {
         }
 
         const isShorts = videoType === 'shorts' || youtubeUrl.includes('/shorts/');
-        const defaultThumb = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+        const defaultThumb = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
         const activeThumb = customThumbnail && customThumbnail.trim() ? customThumbnail.trim() : defaultThumb;
 
         const updateData = {

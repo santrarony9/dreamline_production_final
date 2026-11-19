@@ -8,6 +8,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import mongoose from "mongoose";
+import WeddingVideoPlayer from "@/components/wedding/WeddingVideoPlayer";
 import WeddingGallery from "@/components/wedding/WeddingGallery";
 import StructuredData from '@/components/seo/StructuredData';
 
@@ -237,24 +238,11 @@ export default async function WeddingDetailPage({ params }) {
             {/* Contained Video Player */}
             {wedding.videoUrl && (
                 <section className="container mx-auto px-6 mb-32">
-                    <div className="max-w-6xl mx-auto aspect-video bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl relative">
-                        {embedUrl ? (
-                            <iframe
-                                src={embedUrl}
-                                className="w-full h-full"
-                                frameBorder="0"
-                                allow="autoplay; fullscreen; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
-                        ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-zinc-900 interactive group relative">
-                                <Image src={wedding.coverImage || wedding.img || allImages[0] || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200"} fill className="object-cover opacity-50 grayscale group-hover:grayscale-0 transition-all duration-700" alt={`${wedding.title} cinematic wedding film by Dreamline Production`} sizes="(max-width: 768px) 100vw, 1200px" />
-                                <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 z-10">
-                                    <span className="text-white text-xs font-black tracking-widest uppercase">Play</span>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <WeddingVideoPlayer 
+                        embedUrl={embedUrl} 
+                        coverImage={wedding.coverImage || wedding.img || allImages[0]} 
+                        title={wedding.title} 
+                    />
                 </section>
             )}
 

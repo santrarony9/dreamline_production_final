@@ -1,24 +1,37 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function MediaProtection() {
+    const pathname = usePathname();
+
     useEffect(() => {
-        // Prevent right-click context menu on images and videos
+        // Disable media protection completely in admin or localhost to allow debugging & drag-and-drop
+        if (typeof window !== "undefined") {
+            const isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+            const isAdmin = pathname?.startsWith("/admin");
+            if (isLocal || isAdmin) return;
+        }
+
+        // Prevent right-click context menu on images and videos on public production pages
         const handleContextMenu = (e) => {
             if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
                 e.preventDefault();
             }
         };
 
-        // Prevent dragging of images and videos
+        // Prevent dragging of public images and videos
         const handleDragStart = (e) => {
+            if (e.target.closest && e.target.closest('[draggable="true"]')) {
+                return; // Allow intentional draggable elements
+            }
             if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
                 e.preventDefault();
             }
         };
 
-        // Prevent common keyboard shortcuts for "Save As", "Inspect Element", etc.
+        // Prevent common keyboard shortcuts for "Save As", "Inspect Element" on public production pages
         const handleKeyDown = (e) => {
             // F12 (DevTools)
             if (e.keyCode === 123) {
@@ -51,7 +64,7 @@ export default function MediaProtection() {
             document.removeEventListener('dragstart', handleDragStart);
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
+    }, [pathname]);
 
     return null; // Invisible global utility component
 }

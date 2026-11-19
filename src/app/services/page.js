@@ -96,14 +96,23 @@ export default async function ServicesPage() {
 
     // Fetch dynamic service sub-pages from DB
     const servicePages = await ServicePage.find({ active: true }, { slug: 1, title: 1, subtitle: 1, description: 1 })
-        .sort({ title: 1 })
+        .sort({ order: 1, title: 1 })
         .lean();
 
     // Fetch categories from Content model
     const rawContent = await Content.findOne().lean();
     const services = rawContent?.home?.services || [];
 
-    const serializedServicePages = [...STATIC_SERVICES, ...JSON.parse(JSON.stringify(servicePages))];
+    // Safely deduplicate services (prioritize DB over static defaults)
+    const seenSlugs = new Set();
+    const serializedServicePages = [];
+    const allCandidatePages = [...JSON.parse(JSON.stringify(servicePages || [])), ...STATIC_SERVICES];
+    for (const p of allCandidatePages) {
+        if (p.slug && !seenSlugs.has(p.slug)) {
+            seenSlugs.add(p.slug);
+            serializedServicePages.push(p);
+        }
+    }
 
     return (
         <main className="bg-black pt-24 md:pt-32">

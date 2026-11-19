@@ -102,7 +102,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
                                             src={getThumbnail(project)}
                                             alt={project.altText || (isWedding ? `Cinematic wedding story: ${project.title} by Dreamline Production Kolkata` : `Commercial cinematography showcase: ${project.title} by Dreamline Production`)}
                                             fill
-                                            priority={index < 4}
+                                            loading="lazy"
                                             className="object-cover filter grayscale-[30%] brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />

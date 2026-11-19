@@ -54,7 +54,7 @@ export function getVideoThumbnail(videoUrl, customImage, fallbackType = 'commerc
         return customImage;
     }
     if (ytId) {
-        return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+        return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
     }
     return FALLBACK_MEDIA[fallbackType] || FALLBACK_MEDIA.commercial;
 }

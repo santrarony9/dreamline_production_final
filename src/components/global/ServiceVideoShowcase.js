@@ -154,12 +154,12 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         const tag = video.tag || (isShort ? "Short Highlight" : (pageSlug === "podcast-production-kolkata" ? "Full Episode" : "4K Cinematic"));
         const accessibleTitle = meta?.accessibleTitle || `${video.title} - Video production by Dreamline Production Kolkata`;
         
-        // Prefer crisp 1080p maxresdefault thumbnail with automatic resilient fallbacks
+        // Prefer reliable hqdefault thumbnail with automatic resilient fallbacks
         let primaryThumbnail = "";
         if (video.thumbnail && video.thumbnail.trim()) {
             primaryThumbnail = video.thumbnail.trim();
         } else if (ytId) {
-            primaryThumbnail = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+            primaryThumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
         } else {
             primaryThumbnail = "/logo-banner.png";
         }
@@ -301,7 +301,6 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                 src={imageSrc}
                                 alt={`${video.title} - Video production thumbnail by Dreamline Production Kolkata`}
                                 fill
-                                unoptimized
                                 loading="lazy"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
@@ -447,7 +446,6 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                 src={imageSrc}
                                 alt={`${video.title} - Video production short`}
                                 fill
-                                unoptimized
                                 loading="lazy"
                                 sizes="(max-width: 768px) 100vw, 340px"
                                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
