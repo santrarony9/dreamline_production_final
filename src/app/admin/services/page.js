@@ -899,6 +899,74 @@ export default function ServicesAdmin() {
         }
     };
 
+    const handleMoveVideo = async (vIdx, targetSlug) => {
+        if (!targetSlug || targetSlug === selectedSlug) return;
+        const videoToMove = pageFormData.videos[vIdx];
+        if (!videoToMove) return;
+
+        setSaving(true);
+        try {
+            const targetPage = servicePages.find(p => p.slug === targetSlug) || {};
+            const targetVideos = [...(targetPage.videos || []), videoToMove];
+            
+            await axios.post("/api/service-pages", {
+                ...targetPage,
+                slug: targetSlug,
+                title: targetPage.title || allConfiguredSubcategories.find(s => s.slug === targetSlug)?.title || targetSlug,
+                videos: targetVideos
+            });
+
+            const remainingVideos = pageFormData.videos.filter((_, idx) => idx !== vIdx);
+            const updatedCurrent = { ...pageFormData, videos: remainingVideos };
+            setPageFormData(updatedCurrent);
+
+            await axios.post("/api/service-pages", {
+                ...updatedCurrent,
+                slug: selectedSlug
+            });
+
+            const pagesRes = await axios.get("/api/service-pages");
+            setServicePages(pagesRes.data || []);
+            showToast(`Moved video to "${targetSlug}" successfully!`);
+        } catch (err) {
+            console.error("Failed to move video:", err);
+            showToast("Failed to move video: " + (err.response?.data?.error || err.message), "error");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleFeatureOnHomepage = async (video) => {
+        setSaving(true);
+        try {
+            const { data: contentData } = await axios.get("/api/content");
+            const currentVault = contentData?.videoVault || [];
+            const exists = currentVault.some(v => v.videoUrl === video.url);
+            if (exists) {
+                showToast("Video is already in Homepage Featured Vault!", "info");
+                return;
+            }
+            const updatedVault = [
+                ...currentVault,
+                {
+                    title: video.title || "Featured Production",
+                    category: video.category || pageFormData.title || "Cinematic Film",
+                    videoUrl: video.url,
+                    image: video.thumbnail || ""
+                }
+            ];
+            await axios.post("/api/content", {
+                videoVault: updatedVault
+            });
+            showToast("Added video to Homepage Featured Vault!");
+        } catch (err) {
+            console.error("Failed to feature on homepage:", err);
+            showToast("Failed to feature video: " + (err.response?.data?.error || err.message), "error");
+        } finally {
+            setSaving(false);
+        }
+    };
+
     if (loading) {
         return (
             <div className="bg-[#050505] min-h-screen text-white flex items-center justify-center">
@@ -1778,6 +1846,157 @@ export default function ServicesAdmin() {
                                     </div>
                                 </div>
 
+                                {/* Photo Gallery & Captured Frames Section (Part 3.5) */}
+                                <div className="bg-[#0b0b0b] border border-white/10 p-8 rounded-3xl space-y-6">
+                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/5">
+                                        <div>
+                                            <h3 className="text-[#c5a059] text-xs font-black uppercase tracking-widest">
+                                                3.5 Captured Frames &amp; Photo Gallery ({pageFormData.gallery?.length || 0})
+                                            </h3>
+                                            <p className="text-gray-500 text-[10px] uppercase tracking-wider mt-1">
+                                                Manage high-definition portfolio still frames, ritual moments &amp; visual captures.
+                                            </p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setPageFormData({
+                                                ...pageFormData,
+                                                gallery: [...(pageFormData.gallery || []), { url: "", caption: "", alt: "" }]
+                                            })}
+                                            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-[#c5a059]/30 text-[#c5a059] text-xs font-black uppercase tracking-wider transition-all"
+                                        >
+                                            + Add Photo
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-4">
+                                        {(pageFormData.gallery || []).length === 0 ? (
+                                            <div className="text-center py-8 border border-dashed border-white/10 rounded-2xl">
+                                                <p className="text-gray-500 text-xs uppercase font-bold tracking-wider">No photos added yet in this service gallery.</p>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setPageFormData({
+                                                        ...pageFormData,
+                                                        gallery: [{ url: "", caption: "", alt: "" }]
+                                                    })}
+                                                    className="mt-3 text-xs text-[#c5a059] underline font-bold uppercase tracking-wider"
+                                                >
+                                                    Click here to add the first photo
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            (pageFormData.gallery || []).map((img, gIdx) => (
+                                                <div key={gIdx} className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-black/60 p-4 rounded-2xl border border-white/5 hover:border-white/15 transition-all">
+                                                    {/* Reorder Buttons & Index */}
+                                                    <div className="flex items-center gap-1.5 self-start md:self-center">
+                                                        <span className="w-6 h-6 rounded-lg bg-white/5 text-gray-400 text-[10px] font-black flex items-center justify-center">
+                                                            {gIdx + 1}
+                                                        </span>
+                                                        <div className="flex flex-row md:flex-col gap-1">
+                                                            <button
+                                                                type="button"
+                                                                disabled={gIdx === 0}
+                                                                onClick={() => {
+                                                                    const copy = [...pageFormData.gallery];
+                                                                    const temp = copy[gIdx - 1];
+                                                                    copy[gIdx - 1] = copy[gIdx];
+                                                                    copy[gIdx] = temp;
+                                                                    setPageFormData({ ...pageFormData, gallery: copy });
+                                                                }}
+                                                                className="p-1 px-2 md:px-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
+                                                                title="Move Up"
+                                                            >
+                                                                ▲
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                disabled={gIdx === pageFormData.gallery.length - 1}
+                                                                onClick={() => {
+                                                                    const copy = [...pageFormData.gallery];
+                                                                    const temp = copy[gIdx + 1];
+                                                                    copy[gIdx + 1] = copy[gIdx];
+                                                                    copy[gIdx] = temp;
+                                                                    setPageFormData({ ...pageFormData, gallery: copy });
+                                                                }}
+                                                                className="p-1 px-2 md:px-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
+                                                                title="Move Down"
+                                                            >
+                                                                ▼
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Image Thumbnail Preview */}
+                                                    <div className="w-24 aspect-[16/10] rounded-xl overflow-hidden border border-white/10 bg-[#111] flex-shrink-0 flex items-center justify-center relative">
+                                                         {img.url ? (
+                                                             <img 
+                                                                 src={img.url} 
+                                                                 alt={img.alt || "Preview"} 
+                                                                 className="w-full h-full object-cover" 
+                                                             />
+                                                         ) : (
+                                                             <span className="text-[9px] text-gray-500 uppercase font-black text-center px-1">
+                                                                 No Image
+                                                             </span>
+                                                         )}
+                                                    </div>
+
+                                                    {/* Inputs */}
+                                                    <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                                         <input
+                                                             type="text"
+                                                             value={img.url}
+                                                             onChange={(e) => {
+                                                                 const copy = [...pageFormData.gallery];
+                                                                 copy[gIdx].url = e.target.value;
+                                                                 setPageFormData({ ...pageFormData, gallery: copy });
+                                                             }}
+                                                             placeholder="Image URL (https://...)"
+                                                             className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                         />
+                                                         <input
+                                                             type="text"
+                                                             value={img.caption || ""}
+                                                             onChange={(e) => {
+                                                                 const copy = [...pageFormData.gallery];
+                                                                 copy[gIdx].caption = e.target.value;
+                                                                 setPageFormData({ ...pageFormData, gallery: copy });
+                                                             }}
+                                                             placeholder="Caption (e.g. Saat Paak Ritual)"
+                                                             className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                         />
+                                                         <input
+                                                             type="text"
+                                                             value={img.alt || ""}
+                                                             onChange={(e) => {
+                                                                 const copy = [...pageFormData.gallery];
+                                                                 copy[gIdx].alt = e.target.value;
+                                                                 setPageFormData({ ...pageFormData, gallery: copy });
+                                                             }}
+                                                             placeholder="Alt text for SEO"
+                                                             className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                         />
+                                                    </div>
+
+                                                    {/* Remove button */}
+                                                    <button
+                                                         type="button"
+                                                         onClick={() => {
+                                                             const copy = [...pageFormData.gallery];
+                                                             copy.splice(gIdx, 1);
+                                                             setPageFormData({ ...pageFormData, gallery: copy });
+                                                         }}
+                                                         className="px-3 py-2 rounded-xl bg-red-950/20 hover:bg-red-900/50 text-red-400 hover:text-red-200 text-xs font-black uppercase transition-all border border-red-500/20 self-end md:self-center"
+                                                         title="Remove photo"
+                                                    >
+                                                         Remove
+                                                    </button>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+
                                 {/* Video Showcase Section */}
                                 <div className="bg-[#0b0b0b] border border-white/10 p-8 rounded-3xl space-y-6">
                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/5">
@@ -1852,123 +2071,237 @@ export default function ServicesAdmin() {
                                                 const thumbUrl = vid.thumbnail || (ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null);
 
                                                 return (
-                                                    <div key={vIdx} className="flex flex-col md:flex-row items-stretch md:items-center gap-4 bg-black/60 p-4 rounded-2xl border border-white/5 hover:border-white/15 transition-all">
-                                                        {/* Reorder Buttons & Index */}
-                                                        <div className="flex items-center gap-1.5 self-start md:self-center">
-                                                            <span className="w-6 h-6 rounded-lg bg-white/5 text-gray-400 text-[10px] font-black flex items-center justify-center">
-                                                                {vIdx + 1}
-                                                            </span>
-                                                            <div className="flex flex-row md:flex-col gap-1">
+                                                    <div key={vIdx} className="bg-black/60 p-5 rounded-2xl border border-white/5 hover:border-white/15 transition-all space-y-4">
+                                                        {/* Top Row: Reorder, Index, Title, and Action Controls */}
+                                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-white/5">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="w-6 h-6 rounded-lg bg-white/5 text-[#c5a059] text-[10px] font-black flex items-center justify-center">
+                                                                    #{vIdx + 1}
+                                                                </span>
+                                                                <div className="flex gap-1">
+                                                                    <button
+                                                                        type="button"
+                                                                        disabled={vIdx === 0}
+                                                                        onClick={() => {
+                                                                            const copy = [...pageFormData.videos];
+                                                                            const temp = copy[vIdx - 1];
+                                                                            copy[vIdx - 1] = copy[vIdx];
+                                                                            copy[vIdx] = temp;
+                                                                            setPageFormData({ ...pageFormData, videos: copy });
+                                                                        }}
+                                                                        className="p-1 px-2 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
+                                                                        title="Move Up"
+                                                                    >
+                                                                        ▲
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        disabled={vIdx === pageFormData.videos.length - 1}
+                                                                        onClick={() => {
+                                                                            const copy = [...pageFormData.videos];
+                                                                            const temp = copy[vIdx + 1];
+                                                                            copy[vIdx + 1] = copy[vIdx];
+                                                                            copy[vIdx] = temp;
+                                                                            setPageFormData({ ...pageFormData, videos: copy });
+                                                                        }}
+                                                                        className="p-1 px-2 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
+                                                                        title="Move Down"
+                                                                    >
+                                                                        ▼
+                                                                    </button>
+                                                                </div>
+                                                                {vid.category && (
+                                                                    <span className="px-2 py-0.5 rounded-full bg-[#c5a059]/10 text-[#c5a059] text-[9px] font-black uppercase tracking-wider border border-[#c5a059]/20">
+                                                                        {vid.category}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            <div className="flex items-center gap-2 self-end sm:self-auto">
+                                                                {vid.url && (
+                                                                    <a
+                                                                        href={vid.url}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-[10px] font-bold flex items-center gap-1"
+                                                                        title="Open on YouTube"
+                                                                    >
+                                                                        Watch ↗
+                                                                    </a>
+                                                                )}
                                                                 <button
                                                                     type="button"
-                                                                    disabled={vIdx === 0}
-                                                                    onClick={() => {
-                                                                        const copy = [...pageFormData.videos];
-                                                                        const temp = copy[vIdx - 1];
-                                                                        copy[vIdx - 1] = copy[vIdx];
-                                                                        copy[vIdx] = temp;
-                                                                        setPageFormData({ ...pageFormData, videos: copy });
-                                                                    }}
-                                                                    className="p-1 px-2 md:px-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
-                                                                    title="Move Up"
+                                                                    onClick={() => handleFeatureOnHomepage(vid)}
+                                                                    className="px-2.5 py-1 rounded-lg bg-[#c5a059]/10 hover:bg-[#c5a059]/20 text-[#c5a059] border border-[#c5a059]/30 text-[10px] font-black uppercase tracking-wider transition-all"
+                                                                    title="Add to Homepage Featured Video Vault"
                                                                 >
-                                                                    ▲
+                                                                    ★ Feature on Home
                                                                 </button>
                                                                 <button
                                                                     type="button"
-                                                                    disabled={vIdx === pageFormData.videos.length - 1}
                                                                     onClick={() => {
                                                                         const copy = [...pageFormData.videos];
-                                                                        const temp = copy[vIdx + 1];
-                                                                        copy[vIdx + 1] = copy[vIdx];
-                                                                        copy[vIdx] = temp;
+                                                                        copy.splice(vIdx, 1);
                                                                         setPageFormData({ ...pageFormData, videos: copy });
                                                                     }}
-                                                                    className="p-1 px-2 md:px-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-20 text-gray-300 hover:text-white text-[10px] font-bold"
-                                                                    title="Move Down"
+                                                                    className="px-2.5 py-1 rounded-lg bg-red-950/20 hover:bg-red-900/50 text-red-400 hover:text-red-200 text-[10px] font-black uppercase transition-all border border-red-500/20"
+                                                                    title="Remove video"
                                                                 >
-                                                                    ▼
+                                                                    Delete
                                                                 </button>
                                                             </div>
                                                         </div>
 
-                                                        {/* Thumbnail Preview */}
-                                                        <div className="w-24 aspect-video rounded-xl overflow-hidden border border-white/10 bg-[#111] flex-shrink-0 flex items-center justify-center relative">
-                                                            {thumbUrl ? (
-                                                                <img 
-                                                                    src={thumbUrl} 
-                                                                    alt="Preview" 
-                                                                    className="w-full h-full object-cover" 
-                                                                />
-                                                            ) : (
-                                                                <span className="text-[9px] text-gray-500 uppercase font-black text-center px-1">
-                                                                    No Thumbnail
-                                                                </span>
-                                                            )}
-                                                            {ytId && (
-                                                                <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/80 text-[8px] font-black text-[#c5a059] uppercase">
-                                                                    16:9
-                                                                </span>
-                                                            )}
-                                                        </div>
+                                                        {/* Middle Row: Preview & Form Fields */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                                                            {/* Thumbnail Preview */}
+                                                            <div className="md:col-span-3">
+                                                                <div className="aspect-video w-full rounded-xl overflow-hidden border border-white/10 bg-[#111] flex items-center justify-center relative">
+                                                                    {thumbUrl ? (
+                                                                        <img 
+                                                                            src={thumbUrl} 
+                                                                            alt={vid.title || "Preview"} 
+                                                                            className="w-full h-full object-cover" 
+                                                                        />
+                                                                    ) : (
+                                                                        <span className="text-[9px] text-gray-500 uppercase font-black text-center px-1">
+                                                                            No Thumbnail
+                                                                        </span>
+                                                                    )}
+                                                                    {ytId && (
+                                                                        <span className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-black/80 text-[8px] font-black text-[#c5a059] uppercase">
+                                                                            16:9
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                <p className="text-[9px] text-gray-500 mt-1 truncate">ID: {ytId || "custom URL"}</p>
+                                                            </div>
 
-                                                        {/* Title & URL inputs */}
-                                                        <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                            <input
-                                                                type="text"
-                                                                value={vid.title}
-                                                                onChange={(e) => {
-                                                                    const copy = [...pageFormData.videos];
-                                                                    copy[vIdx].title = e.target.value;
-                                                                    setPageFormData({ ...pageFormData, videos: copy });
-                                                                }}
-                                                                placeholder="Video Title / Caption"
-                                                                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
-                                                            />
-                                                            <input
-                                                                type="text"
-                                                                value={vid.url}
-                                                                onChange={(e) => {
-                                                                    const copy = [...pageFormData.videos];
-                                                                    const newUrl = e.target.value;
-                                                                    copy[vIdx].url = newUrl;
-                                                                    const m = newUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
-                                                                    const id = m && m[2].length === 11 ? m[2] : null;
-                                                                    if (id && !copy[vIdx].thumbnail) {
-                                                                        copy[vIdx].thumbnail = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-                                                                    }
-                                                                    setPageFormData({ ...pageFormData, videos: copy });
-                                                                }}
-                                                                placeholder="https://www.youtube.com/watch?v=..."
-                                                                className="w-full bg-black border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
-                                                            />
-                                                        </div>
+                                                            {/* Inputs */}
+                                                            <div className="md:col-span-9 space-y-3">
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                                    <div>
+                                                                        <label className="text-[9px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                                            Video Title / Caption
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={vid.title || ""}
+                                                                            onChange={(e) => {
+                                                                                const copy = [...pageFormData.videos];
+                                                                                copy[vIdx].title = e.target.value;
+                                                                                setPageFormData({ ...pageFormData, videos: copy });
+                                                                            }}
+                                                                            placeholder="e.g., Royal Bengali Wedding Cinematography"
+                                                                            className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label className="text-[9px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                                            YouTube URL / ID
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={vid.url || ""}
+                                                                            onChange={(e) => {
+                                                                                const copy = [...pageFormData.videos];
+                                                                                const newUrl = e.target.value;
+                                                                                copy[vIdx].url = newUrl;
+                                                                                const m = newUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
+                                                                                const id = m && m[2].length === 11 ? m[2] : null;
+                                                                                if (id && !copy[vIdx].thumbnail) {
+                                                                                    copy[vIdx].thumbnail = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+                                                                                }
+                                                                                setPageFormData({ ...pageFormData, videos: copy });
+                                                                            }}
+                                                                            placeholder="https://www.youtube.com/watch?v=..."
+                                                                            className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                                        />
+                                                                    </div>
+                                                                </div>
 
-                                                        {/* Action Buttons: Open URL & Remove */}
-                                                        <div className="flex items-center gap-2 self-end md:self-center">
-                                                            {vid.url && (
-                                                                <a
-                                                                    href={vid.url}
-                                                                    target="_blank"
-                                                                    rel="noopener noreferrer"
-                                                                    className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-xs"
-                                                                    title="Open YouTube video in new tab"
-                                                                >
-                                                                    ↗
-                                                                </a>
-                                                            )}
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => {
-                                                                    const copy = [...pageFormData.videos];
-                                                                    copy.splice(vIdx, 1);
-                                                                    setPageFormData({ ...pageFormData, videos: copy });
-                                                                }}
-                                                                className="px-3 py-2 rounded-xl bg-red-950/20 hover:bg-red-900/50 text-red-400 hover:text-red-200 text-xs font-black uppercase transition-all border border-red-500/20"
-                                                                title="Remove video"
-                                                            >
-                                                                Remove
-                                                            </button>
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                                    <div>
+                                                                        <label className="text-[9px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                                            Category / Style Tag
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={vid.category || ""}
+                                                                            onChange={(e) => {
+                                                                                const copy = [...pageFormData.videos];
+                                                                                copy[vIdx].category = e.target.value;
+                                                                                setPageFormData({ ...pageFormData, videos: copy });
+                                                                            }}
+                                                                            placeholder="e.g., Wedding Film, Drone Cinematography"
+                                                                            className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label className="text-[9px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                                            Custom Thumbnail URL (Optional)
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={vid.thumbnail || ""}
+                                                                            onChange={(e) => {
+                                                                                const copy = [...pageFormData.videos];
+                                                                                copy[vIdx].thumbnail = e.target.value;
+                                                                                setPageFormData({ ...pageFormData, videos: copy });
+                                                                            }}
+                                                                            placeholder="https://img.youtube.com/vi/.../maxresdefault.jpg"
+                                                                            className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Description and Move Video */}
+                                                                <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
+                                                                    <div className="sm:col-span-7">
+                                                                        <label className="text-[9px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                                            Description / Synopsis (Optional)
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            value={vid.description || ""}
+                                                                            onChange={(e) => {
+                                                                                const copy = [...pageFormData.videos];
+                                                                                copy[vIdx].description = e.target.value;
+                                                                                setPageFormData({ ...pageFormData, videos: copy });
+                                                                            }}
+                                                                            placeholder="Brief scene or production notes..."
+                                                                            className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
+                                                                        />
+                                                                    </div>
+                                                                    <div className="sm:col-span-5">
+                                                                        <label className="text-[9px] font-black uppercase tracking-wider text-gray-400 block mb-1">
+                                                                            Move to Service Page
+                                                                        </label>
+                                                                        <select
+                                                                            defaultValue=""
+                                                                            onChange={(e) => {
+                                                                                const target = e.target.value;
+                                                                                if (target) {
+                                                                                    if (window.confirm(`Move video "${vid.title || 'Untitled'}" to ${target}?`)) {
+                                                                                        handleMoveVideo(vIdx, target);
+                                                                                    }
+                                                                                    e.target.value = "";
+                                                                                }
+                                                                            }}
+                                                                            className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-gray-300 outline-none focus:border-[#c5a059]"
+                                                                        >
+                                                                            <option value="" disabled>-- Move video to service... --</option>
+                                                                            {allConfiguredSubcategories
+                                                                                .filter(sub => sub.slug !== selectedSlug)
+                                                                                .map((sub, sIdx) => (
+                                                                                    <option key={sIdx} value={sub.slug}>
+                                                                                        [{sub.category}] {sub.title}
+                                                                                    </option>
+                                                                                ))}
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 );

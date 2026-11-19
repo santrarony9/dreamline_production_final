@@ -1,4 +1,9 @@
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+import dbConnect from "@/lib/mongodb";
+import ServicePage from "@/models/ServicePage";
+import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
 import StructuredData from '@/components/seo/StructuredData';
 import Link from 'next/link';
 
@@ -16,7 +21,10 @@ export const metadata = {
   }
 };
 
-export default function ServicePage() {
+export default async function RiceCeremonyPage() {
+  await dbConnect();
+  const rawPage = await ServicePage.findOne({ slug: 'rice-ceremony-photography-kolkata' }).lean();
+  const page = rawPage ? JSON.parse(JSON.stringify(rawPage)) : null;
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does rice ceremony photography cost in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "The cost depends on event duration, venue, photography style, number of photographers, and deliverables."}}, {"@type": "Question", "name": "What does a rice ceremony photography package include?", "acceptedAnswer": {"@type": "Answer", "text": "A package may include candid photography, traditional portraits, baby photographs, family pictures, ritual coverage, and edited images."}}, {"@type": "Question", "name": "Can you cover a Bengali Annaprashan ceremony at home?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, Annaprashan ceremonies held at home can be covered."}}, {"@type": "Question", "name": "When should I book baby rice ceremony photography?", "acceptedAnswer": {"@type": "Answer", "text": "It is better to book your photographer a few weeks in advance, especially during busy wedding and festive seasons."}}, {"@type": "Question", "name": "Can grandparents and family members be included in the photographs?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. Family members are an important part of an Annaprashan celebration."}}]}) }} />
@@ -49,7 +57,55 @@ export default function ServicePage() {
       </div>
     
           </article>
-          <div className="mt-16 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
+        </section>
+
+        {/* DYNAMIC VIDEO SHOWCASE - Full Width 2-Column Luxury Layout */}
+        {page?.videos && page.videos.length > 0 && (
+          <ServiceVideoShowcase 
+            videos={page.videos}
+            title={page.videoSectionTitle || "Rice Ceremony (Annaprashan) Showcase"}
+            subtitle={page.videoSectionSubtitle || "Explore our traditional Bengali Annaprashan ceremonies, first grain rituals & tender family moments."}
+            pageSlug="rice-ceremony-photography-kolkata"
+          />
+        )}
+
+        {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
+        {page?.gallery && page.gallery.length > 0 && (
+          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+            <div className="mb-12 text-center">
+              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Sacred First Grain Stills</span>
+              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+                Captured <span className="text-[#c5a059]">Blessings.</span>
+              </h2>
+              <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
+                Annaprashan ceremonies, rituals &amp; little one smiles across Kolkata
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+              {page.gallery.map((img, idx) => {
+                const isOddLast = page.gallery.length % 2 === 1 && idx === page.gallery.length - 1;
+                return (
+                  <div key={idx} className={isOddLast ? "md:col-span-2 flex justify-center w-full" : "w-full"}>
+                    <div className={`relative aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 group shadow-2xl bg-neutral-950 ${isOddLast ? "w-full md:w-[calc(50%-1.25rem)]" : "w-full"}`}>
+                      <img 
+                        src={img.url} 
+                        alt={img.alt || img.caption || "Rice ceremony photography Kolkata by Dreamline Production"} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                        loading="lazy" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <p className="text-white text-xs md:text-sm font-black uppercase tracking-wider text-[#c5a059]">{img.caption}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        <section className="container mx-auto px-6 max-w-4xl pb-32">
+          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
             <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
 
 // Pre-configured rich metadata for Podcast Production videos
@@ -154,12 +154,12 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         const tag = video.tag || (isShort ? "Short Highlight" : (pageSlug === "podcast-production-kolkata" ? "Full Episode" : "4K Cinematic"));
         const accessibleTitle = meta?.accessibleTitle || `${video.title} - Video production by Dreamline Production Kolkata`;
         
-        // Fast, lightweight hqdefault thumbnail: https://img.youtube.com/vi/VIDEO_ID/hqdefault.jpg (~15-25 KB)
+        // Prefer crisp 1080p maxresdefault thumbnail with automatic resilient fallbacks
         let primaryThumbnail = "";
         if (video.thumbnail && video.thumbnail.trim()) {
             primaryThumbnail = video.thumbnail.trim();
         } else if (ytId) {
-            primaryThumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+            primaryThumbnail = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
         } else {
             primaryThumbnail = "/logo-banner.png";
         }
@@ -222,157 +222,336 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         setIframeLoading(false);
     };
 
-    // Render individual video card
-    const renderVideoCard = (video) => {
+    // Standard 16:9 Cinema Card - Unobstructed Thumbnail with Decoupled Metadata Card
+    const renderStandardCard = (video) => {
         const isPlaying = playingVideoId === video.ytId;
-        const isShort = video.isShort;
         const imageSrc = getThumbnailSrc(video);
-        const watchUrl = video.originalWatchUrl || (isShort ? `https://youtube.com/shorts/${video.ytId}` : `https://www.youtube.com/watch?v=${video.ytId}`);
+        const watchUrl = video.originalWatchUrl || `https://www.youtube.com/watch?v=${video.ytId}`;
 
         return (
-            <div
-                key={video.ytId || video.idx}
-                className={`group relative rounded-3xl overflow-hidden border border-white/10 bg-[#0d0d0d] hover:border-[#c5a059]/60 transition-all duration-500 shadow-2xl flex flex-col ${
-                    isShort ? "aspect-[9/16] w-full max-w-[320px] mx-auto" : "aspect-video w-full"
-                }`}
-            >
-                {isPlaying ? (
-                    <div className="relative w-full h-full bg-black">
-                        {/* Smooth Loading Indicator while YouTube Player initializes */}
-                        {iframeLoading && (
-                            <div 
-                                className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm pointer-events-none transition-opacity duration-300"
-                                aria-live="polite"
-                            >
-                                <div className="w-12 h-12 rounded-full border-2 border-[#c5a059]/30 border-t-[#c5a059] animate-spin mb-3 shadow-[0_0_20px_rgba(197,160,89,0.3)]"></div>
-                                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#c5a059]">
-                                    Connecting Player...
-                                </span>
-                            </div>
-                        )}
+            <div className="group relative rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a] hover:border-[#c5a059]/80 transition-all duration-500 shadow-2xl flex flex-col justify-between h-full w-full">
+                {/* TOP: 16:9 Cinema Frame - Strictly 16:9, Unobstructed Thumbnail & Embedded Player */}
+                <div className="relative aspect-video w-full overflow-hidden bg-black flex-shrink-0">
+                    {isPlaying ? (
+                        <div className="relative w-full h-full bg-black">
+                            {/* Smooth Loading Indicator while YouTube Player initializes */}
+                            {iframeLoading && (
+                                <div 
+                                    className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm pointer-events-none transition-opacity duration-300"
+                                    aria-live="polite"
+                                >
+                                    <div className="w-12 h-12 rounded-full border-2 border-[#c5a059]/30 border-t-[#c5a059] animate-spin mb-3 shadow-[0_0_25px_rgba(197,160,89,0.4)]"></div>
+                                    <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.25em] text-[#c5a059]">
+                                        Connecting Cinema Player...
+                                    </span>
+                                </div>
+                            )}
 
-                        {/* On-Demand Standard YouTube Embed Iframe */}
-                        <iframe
-                            src={`https://www.youtube.com/embed/${video.ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                            title={video.accessibleTitle}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            loading="lazy"
-                            onLoad={() => setIframeLoading(false)}
-                            className="w-full h-full border-0 relative z-10"
-                        />
+                            {/* Standard YouTube Embed Iframe - Click to Play */}
+                            <iframe
+                                src={`https://www.youtube.com/embed/${video.ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                                title={video.accessibleTitle}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                loading="lazy"
+                                onLoad={() => setIframeLoading(false)}
+                                className="w-full h-full border-0 relative z-10"
+                            />
 
-                        {/* Top Controls Overlay: Close & Watch on YouTube fallback */}
-                        <div className="absolute top-3 right-3 z-30 flex items-center gap-2">
-                            <a
-                                href={watchUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                title="Open and watch video directly on YouTube in a new tab"
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/85 hover:bg-[#c5a059] text-white hover:text-black border border-white/20 hover:border-[#c5a059] text-[10px] font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-lg interactive"
-                            >
-                                <span>YouTube</span>
-                                <span className="text-xs">↗</span>
-                            </a>
-                            <button
-                                type="button"
-                                onClick={handleClose}
-                                aria-label={`Close ${video.title}`}
-                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/85 hover:bg-[#c5a059] text-white hover:text-black border border-white/20 hover:border-[#c5a059] text-[10px] font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-lg interactive"
-                            >
-                                <span>Close</span>
-                                <span className="text-xs">✕</span>
-                            </button>
-                        </div>
-                    </div>
-                ) : (
-                    <div
-                        className="relative w-full h-full cursor-pointer interactive flex flex-col justify-between overflow-hidden"
-                        onClick={() => handlePlay(video.ytId)}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`Play video: ${video.title}`}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                handlePlay(video.ytId);
-                            }
-                        }}
-                    >
-                        {/* Background Thumbnail Image - Native Lazy Loading & CLS Protected */}
-                        <Image
-                            src={imageSrc}
-                            alt={`${video.title} - Video production thumbnail by Dreamline Production Kolkata`}
-                            fill
-                            unoptimized
-                            loading="lazy"
-                            sizes={isShort ? "(max-width: 768px) 100vw, 320px" : "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
-                            className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                            onError={() => handleThumbnailError(video.ytId)}
-                        />
-
-                        {/* Subtle Card Darkening Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/40 pointer-events-none"></div>
-
-                        {/* Top Badges & Watch on YouTube Link */}
-                        <div className="relative z-10 flex items-center justify-between p-4 md:p-5">
-                            <span className="px-3 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/10 text-[9px] md:text-[10px] font-black uppercase tracking-wider text-[#c5a059]">
-                                {video.show}
-                            </span>
-                            <div className="flex items-center gap-2">
-                                <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md border ${
-                                    isShort 
-                                        ? "bg-purple-900/50 text-purple-200 border-purple-500/30" 
-                                        : "bg-amber-900/40 text-[#c5a059] border-[#c5a059]/30"
-                                }`}>
-                                    {video.tag}
-                                </span>
+                            {/* Top Controls Overlay: Close & Watch on YouTube fallback */}
+                            <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 flex items-center gap-2">
                                 <a
                                     href={watchUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    onClick={(e) => e.stopPropagation()}
-                                    title="Watch on YouTube (External Link)"
-                                    className="opacity-0 group-hover:opacity-100 px-2 py-1 rounded-full bg-black/80 hover:bg-[#c5a059] text-gray-300 hover:text-black border border-white/20 text-[9px] font-black uppercase tracking-wider transition-all backdrop-blur-md"
+                                    title="Open and watch video directly on YouTube in a new tab"
+                                    className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-black/85 hover:bg-[#c5a059] text-white hover:text-black border border-white/20 hover:border-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-xl interactive"
                                 >
-                                    ↗
+                                    <span>YouTube</span>
+                                    <span className="text-xs sm:text-sm">↗</span>
                                 </a>
-                            </div>
-                        </div>
-
-                        {/* Centered Play Button with Gold Glow & Hover Scale */}
-                        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                            <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-[#c5a059] text-black flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.5)] group-hover:scale-110 group-hover:bg-white transition-all duration-300">
-                                <svg
-                                    className="w-6 h-6 fill-current translate-x-0.5"
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
+                                <button
+                                    type="button"
+                                    onClick={handleClose}
+                                    aria-label={`Close ${video.title}`}
+                                    className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-black/85 hover:bg-red-600 text-white border border-white/20 hover:border-red-500 text-[10px] sm:text-xs font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-xl interactive"
                                 >
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
+                                    <span>Close</span>
+                                    <span className="text-xs sm:text-sm">✕</span>
+                                </button>
                             </div>
                         </div>
+                    ) : (
+                        <div
+                            className="relative w-full h-full cursor-pointer interactive"
+                            onClick={() => handlePlay(video.ytId)}
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`Play cinema film: ${video.title}`}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    handlePlay(video.ytId);
+                                }
+                            }}
+                        >
+                            {/* Background Thumbnail Image - Unobstructed, Crisp 1080p */}
+                            <Image
+                                src={imageSrc}
+                                alt={`${video.title} - Video production thumbnail by Dreamline Production Kolkata`}
+                                fill
+                                unoptimized
+                                loading="lazy"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
+                                onError={() => handleThumbnailError(video.ytId)}
+                            />
 
-                        {/* Bottom Gradient Overlay & Title */}
-                        <div className="relative z-10 p-5 md:p-6 bg-gradient-to-t from-black via-black/80 to-transparent pt-12">
-                            <h4 className="text-white font-heading text-sm md:text-base font-bold uppercase tracking-tight line-clamp-2 mb-2 group-hover:text-[#c5a059] transition-colors">
-                                {video.title}
-                            </h4>
-                            <div className="flex items-center justify-between text-[10px] text-gray-400 font-black uppercase tracking-widest">
-                                <div className="flex items-center gap-2">
-                                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse"></span>
-                                    <span>Click to Play</span>
-                                    <span className="text-white/30">•</span>
-                                    <span className="text-[#c5a059]">{isShort ? "9:16 Shorts" : "4K Widescreen"}</span>
+                            {/* Subtle edge vignette (does NOT obscure center footage) */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none group-hover:opacity-60 transition-opacity duration-300"></div>
+
+                            {/* Large Centered Golden Play Button with Luxury Glow */}
+                            <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#c5a059] text-black flex items-center justify-center shadow-[0_0_35px_rgba(197,160,89,0.65)] group-hover:scale-110 group-hover:bg-white group-hover:shadow-[0_0_50px_rgba(255,255,255,0.7)] transition-all duration-300">
+                                    <svg
+                                        className="w-7 h-7 sm:w-8 sm:h-8 fill-current translate-x-0.5"
+                                        viewBox="0 0 24 24"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
                                 </div>
-                                <span className="text-gray-500 group-hover:text-[#c5a059] transition-colors text-[9px]">
-                                    Watch ↗
+                            </div>
+
+                            {/* Bottom-Right Corner Format Pill */}
+                            <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10 pointer-events-none">
+                                <span className="px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md border border-white/10 text-[10px] font-black uppercase tracking-wider text-[#c5a059] shadow-md">
+                                    4K UHD
                                 </span>
                             </div>
                         </div>
+                    )}
+                </div>
+
+                {/* BOTTOM: Dedicated Metadata Card (Decoupled from 16:9 Frame) */}
+                <div className="p-5 sm:p-6 md:p-7 flex flex-col justify-between flex-1 bg-gradient-to-b from-[#111111] to-[#070707] border-t border-white/5 space-y-4">
+                    {/* Row 1: Category badge pill & Format tag - Dedicated row, NEVER overlaps title */}
+                    <div className="flex items-center justify-between gap-3">
+                        <span className="px-3.5 py-1.5 rounded-full bg-[#c5a059]/10 border border-[#c5a059]/30 text-[10px] sm:text-xs font-black uppercase tracking-wider text-[#c5a059] shadow-sm">
+                            {video.show}
+                        </span>
+                        <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-white/50">
+                            {video.tag}
+                        </span>
                     </div>
-                )}
+
+                    {/* Row 2: Video Title with min-height & line-clamp-2 for strict baseline alignment */}
+                    <div>
+                        <h4 className="font-heading text-base sm:text-lg md:text-xl font-bold uppercase tracking-tight line-clamp-2 min-h-[3rem] sm:min-h-[3.5rem] text-white group-hover:text-[#c5a059] transition-colors leading-snug">
+                            {video.title}
+                        </h4>
+                    </div>
+
+                    {/* Row 3: Action bar / Footer */}
+                    <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-bold uppercase tracking-wider">
+                        <button
+                            type="button"
+                            onClick={() => handlePlay(video.ytId)}
+                            className="flex items-center gap-2 text-white/70 hover:text-[#c5a059] transition-colors interactive"
+                        >
+                            <span className="w-2 h-2 rounded-full bg-[#c5a059] animate-pulse"></span>
+                            <span>{isPlaying ? "Now Playing" : "Watch Film ▶"}</span>
+                        </button>
+                        <a
+                            href={watchUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="px-3 py-1.5 rounded-full bg-white/5 hover:bg-[#c5a059] text-gray-300 hover:text-black border border-white/10 hover:border-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all interactive shadow-sm"
+                        >
+                            YouTube ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // 9:16 Vertical Short Card (used for podcast shorts)
+    const renderShortCard = (video) => {
+        const isPlaying = playingVideoId === video.ytId;
+        const imageSrc = getThumbnailSrc(video);
+        const watchUrl = video.originalWatchUrl || `https://youtube.com/shorts/${video.ytId}`;
+
+        return (
+            <div
+                key={video.ytId || video.idx}
+                className="group relative rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a] hover:border-[#c5a059]/80 transition-all duration-500 shadow-2xl flex flex-col justify-between w-full max-w-[340px] mx-auto h-full"
+            >
+                {/* TOP: 9:16 Vertical Video Frame */}
+                <div className="relative aspect-[9/16] w-full overflow-hidden bg-black flex-shrink-0">
+                    {isPlaying ? (
+                        <div className="relative w-full h-full bg-black">
+                            {iframeLoading && (
+                                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm pointer-events-none">
+                                    <div className="w-10 h-10 rounded-full border-2 border-purple-500/30 border-t-purple-400 animate-spin mb-3"></div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-purple-300">
+                                        Loading Short...
+                                    </span>
+                                </div>
+                            )}
+                            <iframe
+                                src={`https://www.youtube.com/embed/${video.ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                                title={video.accessibleTitle}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                loading="lazy"
+                                onLoad={() => setIframeLoading(false)}
+                                className="w-full h-full border-0 relative z-10"
+                            />
+                            <div className="absolute top-3 right-3 z-30 flex items-center gap-2">
+                                <a
+                                    href={watchUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-2.5 py-1 rounded-full bg-black/85 hover:bg-[#c5a059] text-white hover:text-black border border-white/20 text-[10px] font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-xl"
+                                >
+                                    ↗
+                                </a>
+                                <button
+                                    type="button"
+                                    onClick={handleClose}
+                                    className="px-2.5 py-1 rounded-full bg-black/85 hover:bg-red-600 text-white border border-white/20 text-[10px] font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-xl"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <div
+                            className="relative w-full h-full cursor-pointer interactive"
+                            onClick={() => handlePlay(video.ytId)}
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`Play short: ${video.title}`}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    handlePlay(video.ytId);
+                                }
+                            }}
+                        >
+                            <Image
+                                src={imageSrc}
+                                alt={`${video.title} - Video production short`}
+                                fill
+                                unoptimized
+                                loading="lazy"
+                                sizes="(max-width: 768px) 100vw, 340px"
+                                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
+                                onError={() => handleThumbnailError(video.ytId)}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none group-hover:opacity-60 transition-opacity"></div>
+
+                            {/* Centered Play Button */}
+                            <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                                <div className="w-14 h-14 rounded-full bg-[#c5a059] text-black flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.6)] group-hover:scale-110 group-hover:bg-white transition-all duration-300">
+                                    <svg className="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {/* Bottom-right 9:16 Shorts badge */}
+                            <div className="absolute bottom-3 right-3 z-10 pointer-events-none">
+                                <span className="px-2 py-0.5 rounded-md bg-black/80 backdrop-blur-md border border-purple-500/30 text-[9px] font-black uppercase tracking-wider text-purple-300">
+                                    9:16 Short
+                                </span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* BOTTOM: Dedicated Metadata Card */}
+                <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 bg-gradient-to-b from-[#111111] to-[#070707] border-t border-white/5 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                        <span className="px-2.5 py-1 rounded-full bg-purple-900/30 border border-purple-500/30 text-[9px] font-black uppercase tracking-wider text-purple-300 truncate max-w-[180px]">
+                            {video.show}
+                        </span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-white/40">
+                            Reel
+                        </span>
+                    </div>
+                    <div>
+                        <h4 className="font-heading text-sm sm:text-base font-bold uppercase tracking-tight line-clamp-2 min-h-[2.5rem] text-white group-hover:text-[#c5a059] transition-colors leading-snug">
+                            {video.title}
+                        </h4>
+                    </div>
+                    <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
+                        <button
+                            type="button"
+                            onClick={() => handlePlay(video.ytId)}
+                            className="text-white/70 hover:text-[#c5a059] transition-colors"
+                        >
+                            Play Short ▶
+                        </button>
+                        <a
+                            href={watchUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-purple-300 hover:text-white"
+                        >
+                            Shorts ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    // Symmetrical Grid Renderer: 2-column on Desktop & Tablet, 1-column on Mobile, Odd-Card Horizontally Centered
+    const renderVideoGrid = (videoList, isShortsList = false) => {
+        if (!videoList || videoList.length === 0) return null;
+
+        if (isShortsList) {
+            return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                    {videoList.map(renderShortCard)}
+                </div>
+            );
+        }
+
+        const totalCount = videoList.length;
+
+        // If only 1 video: render in a centered, prominent single column
+        if (totalCount === 1) {
+            return (
+                <div className="max-w-4xl mx-auto w-full">
+                    {renderStandardCard(videoList[0])}
+                </div>
+            );
+        }
+
+        // If 2 or more videos: 2-column grid on desktop/tablet, 1-column on mobile
+        // When total count is odd (3, 5, 7), the last card is centered horizontally across both columns
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 lg:gap-12 w-full">
+                {videoList.map((video, idx) => {
+                    const isOddLast = totalCount % 2 === 1 && idx === totalCount - 1;
+                    return (
+                        <div
+                            key={video.ytId || video.idx || idx}
+                            className={isOddLast ? "md:col-span-2 flex justify-center w-full" : "w-full flex flex-col"}
+                        >
+                            <div className={isOddLast ? "w-full md:w-[calc(50%-1.25rem)] lg:w-[calc(50%-1.5rem)] flex flex-col" : "w-full h-full flex flex-col"}>
+                                {renderStandardCard(video)}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         );
     };
@@ -381,7 +560,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         <section 
             id={pageSlug === "podcast-production-kolkata" ? "podcast-productions" : (pageSlug === "birthday-photography-kolkata" ? "birthday-photography-videos" : (pageSlug === "other-social-events-kolkata" ? "other-social-events-videos" : "service-video-showcase"))} 
             aria-label={title || "Video Showcase"} 
-            className="py-24 bg-[#050505] border-y border-white/5 relative"
+            className="py-16 md:py-24 bg-[#050505] border-y border-white/5 relative"
         >
             {/* Early DNS & CDN Preconnects for Instant Playback */}
             <link rel="preconnect" href="https://www.youtube.com" crossOrigin="anonymous" />
@@ -391,9 +570,9 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
             <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
             <link rel="dns-prefetch" href="https://img.youtube.com" />
 
-            <div className="px-6 sm:px-8 md:px-16 max-w-7xl mx-auto">
+            <div className="px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
                 {/* SECTION HEADER */}
-                <div className="mb-12 md:mb-16">
+                <div className="mb-10 md:mb-14">
                     <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.35em] mb-3 block">
                         Featured Portfolio
                     </span>
@@ -418,7 +597,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                         </p>
                     )}
 
-                    {/* FILTER TABS (When both standard and shorts are present) */}
+                    {/* FILTER TABS (When both standard and shorts are present, e.g. Podcast page) */}
                     {hasBothTypes && (
                         <div className="mt-8 flex flex-wrap items-center gap-3">
                             <button
@@ -458,52 +637,48 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                     )}
                 </div>
 
-                {/* VIDEO GALLERIES */}
+                {/* VIDEO GALLERIES: 2 LARGE VIDEOS PER ROW ON DESKTOP & TABLET, 1 PER ROW ON MOBILE */}
                 {/* 1. ALL VIEW: Both Full Episodes and Shorts in dedicated harmonious grids */}
                 {activeFilter === "all" && hasBothTypes && (
-                    <div className="space-y-16 md:space-y-24">
-                        {/* Full Episodes Sub-grid */}
+                    <div className="space-y-16 md:space-y-20">
+                        {/* Full Episodes Sub-grid: 2 Large Videos per row */}
                         <div>
-                            <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+                            <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                                 <div className="flex items-center gap-3">
                                     <span className="w-2.5 h-2.5 rounded-full bg-[#c5a059]"></span>
                                     <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
                                         Full Episodes &amp; Long-Form Interviews
                                     </h3>
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
                                     16:9 Broadcast Quality
                                 </span>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {standardVideos.map(renderVideoCard)}
-                            </div>
+                            {renderVideoGrid(standardVideos, false)}
                         </div>
 
                         {/* Podcast Shorts Sub-grid */}
                         <div>
-                            <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+                            <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                                 <div className="flex items-center gap-3">
                                     <span className="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
                                     <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
                                         Podcast Shorts &amp; Social Highlights
                                     </h3>
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-purple-300">
                                     9:16 Vertical Mobile Format
                                 </span>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                                {shortVideos.map(renderVideoCard)}
-                            </div>
+                            {renderVideoGrid(shortVideos, true)}
                         </div>
                     </div>
                 )}
 
-                {/* 2. FULL EPISODES FILTER */}
+                {/* 2. FULL EPISODES FILTER: 2 Large Videos per row */}
                 {activeFilter === "episodes" && (
                     <div>
-                        <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+                        <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                             <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
                                 Full Episode Productions
                             </h3>
@@ -511,16 +686,14 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                 {standardVideos.length} Videos Available
                             </span>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {standardVideos.map(renderVideoCard)}
-                        </div>
+                        {renderVideoGrid(standardVideos, false)}
                     </div>
                 )}
 
                 {/* 3. PODCAST SHORTS FILTER */}
                 {activeFilter === "shorts" && (
                     <div>
-                        <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+                        <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                             <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
                                 Podcast Shorts &amp; Reels
                             </h3>
@@ -528,24 +701,12 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                 {shortVideos.length} Shorts Available
                             </span>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                            {shortVideos.map(renderVideoCard)}
-                        </div>
+                        {renderVideoGrid(shortVideos, true)}
                     </div>
                 )}
 
-                {/* 4. DEFAULT SINGLE GRID (For other pages that don't have mixed types) */}
-                {!hasBothTypes && (
-                    <div className={`grid gap-8 ${
-                        enrichedVideos.length === 1 
-                            ? "grid-cols-1 max-w-3xl mx-auto" 
-                            : enrichedVideos.length === 2 
-                            ? "grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto" 
-                            : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                    }`}>
-                        {enrichedVideos.map(renderVideoCard)}
-                    </div>
-                )}
+                {/* 4. DEFAULT SINGLE GRID (Standard across Wedding, Pre Wedding, Birthday, Corporate, Drone, etc.): 2 Large Videos per row */}
+                {!hasBothTypes && renderVideoGrid(enrichedVideos, false)}
             </div>
         </section>
     );

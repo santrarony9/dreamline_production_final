@@ -22,9 +22,13 @@ const ServicePageSchema = new mongoose.Schema({
         alt: { type: String, default: "" }
     }],
     videos: [{
-        title: String,
-        url: String, // YouTube or direct link
-        thumbnail: String
+        title: { type: String, default: "" },
+        url: { type: String, default: "" }, // YouTube or direct link
+        thumbnail: { type: String, default: "" },
+        description: { type: String, default: "" },
+        category: { type: String, default: "" },
+        isFeatured: { type: Boolean, default: false },
+        order: { type: Number, default: 0 }
     }],
     videoSectionTitle: { type: String, default: "" },
     videoSectionSubtitle: { type: String, default: "" },

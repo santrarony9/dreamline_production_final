@@ -18,8 +18,9 @@ export default function AdminLayout({ children }) {
             title: "Studio",
             items: [
                 { label: "Dashboard", path: "/admin", icon: "📊" },
-                { label: "Inquiries", path: "/admin/bookings", icon: "✉️" },
+                { label: "VIDEO & SHOT MANAGEMENT", path: "/admin/video-shots", icon: "🎬" },
                 { label: "SERVICES MANAGEMENT", path: "/admin/services", icon: "🗂️" },
+                { label: "Inquiries", path: "/admin/bookings", icon: "✉️" },
             ]
         },
         {

@@ -5,17 +5,19 @@ async function main() {
     const db = mongoose.connection.db;
 
     const allPages = await db.collection('servicepages').find({}).toArray();
-    console.log('Total servicepages:', allPages.length);
     for (const p of allPages) {
-        console.log(`- Slug: "${p.slug}", Title: "${p.title}", Videos: ${(p.videos || []).length}, Gallery: ${(p.gallery || []).length}`);
+        if (p.videos && p.videos.length > 0) {
+            console.log(`\n======================================================`);
+            console.log(`PAGE: [${p.slug}] "${p.title}" (Total Videos: ${p.videos.length})`);
+            console.log(`======================================================`);
+            p.videos.forEach((v, i) => {
+                console.log(`[${i + 1}] Title: ${v.title}`);
+                console.log(`    URL: ${v.url}`);
+                console.log(`    Category Tag: ${v.category || 'N/A'}`);
+                console.log(`    Thumbnail: ${v.thumbnail || 'N/A'}`);
+            });
+        }
     }
-
-    const podcastVideos = await db.collection('podcastvideos').find({}).toArray();
-    console.log('\nTotal podcastvideos in DB:', podcastVideos.length);
-    podcastVideos.forEach((v, idx) => {
-        console.log(` [${idx + 1}] ${v.title} | ${v.url} | type: ${v.type} | published: ${v.isPublished}`);
-    });
-
     await mongoose.disconnect();
 }
 

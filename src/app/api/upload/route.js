@@ -87,11 +87,22 @@ export async function POST(request) {
             const bodyBuffer = await request.arrayBuffer();
             const contentType = request.headers.get("content-type") || "";
 
+            // If we authenticated via session cookie but don't have an authHeader, create a token to pass to the VPS
+            let forwardAuthHeader = authHeader;
+            if (!forwardAuthHeader) {
+                const { encode } = await import("next-auth/jwt");
+                const uploadToken = await encode({
+                    token: { uploadAuth: true, exp: Math.floor(Date.now() / 1000) + 3600 },
+                    secret,
+                });
+                forwardAuthHeader = `Bearer ${uploadToken}`;
+            }
+
             const vpsRes = await fetch(`${backendUrl}/api/upload`, {
                 method: "POST",
                 headers: {
                     "Content-Type": contentType,
-                    "Authorization": authHeader || "",
+                    "Authorization": forwardAuthHeader,
                 },
                 body: bodyBuffer,
             });
@@ -196,28 +207,12 @@ export async function POST(request) {
             }
         }
 
-        // ── Single-file upload flow ──
-        if (!ALLOWED_MIME_TYPES.includes(file.type)) {
-            return NextResponse.json({ error: "File type not allowed" }, { status: 400, headers: corsHeaders });
-        }
+        // ── Single-file or Multi-file upload flow ──
+        const allFiles = formData.getAll("files");
+        const uploadFiles = allFiles.length > 0 ? allFiles : (file ? [file] : []);
 
-        if (file.size > MAX_FILE_SIZE) {
-            return NextResponse.json({ error: "File size exceeds 50MB limit" }, { status: 400, headers: corsHeaders });
-        }
-
-        let buffer = Buffer.from(await file.arrayBuffer());
-        let originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-
-        if (file.type.startsWith("image/") && !file.type.includes("svg")) {
-            try {
-                buffer = await sharp(buffer)
-                    .resize({ width: 2000, withoutEnlargement: true })
-                    .webp({ quality: 80 })
-                    .toBuffer();
-                originalName = originalName.replace(/\.[^.]+$/, ".webp");
-            } catch (sharpErr) {
-                console.error("Sharp processing failed, saving original:", sharpErr);
-            }
+        if (uploadFiles.length === 0) {
+            return NextResponse.json({ error: "No file uploaded" }, { status: 400, headers: corsHeaders });
         }
 
         const fsPromises = await import('fs/promises');
@@ -225,14 +220,68 @@ export async function POST(request) {
         const uploadDir = path.join(process.cwd(), 'public', 'uploads');
         await fsPromises.mkdir(uploadDir, { recursive: true });
 
-        const finalFileName = `${Date.now()}-${originalName}`;
-        await fsPromises.writeFile(path.join(uploadDir, finalFileName), buffer);
-
         const baseStorageUrl = (process.env.LOCAL_STORAGE === 'true' || !process.env.BACKEND_URL) 
             ? '' 
             : process.env.BACKEND_URL.replace(/\/$/, '');
-        const publicUrl = `${baseStorageUrl}/uploads/${finalFileName}`;
-        return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
+
+        const uploadedResults = [];
+
+        for (let idx = 0; idx < uploadFiles.length; idx++) {
+            const currentFile = uploadFiles[idx];
+
+            if (!ALLOWED_MIME_TYPES.includes(currentFile.type)) {
+                continue;
+            }
+            if (currentFile.size > MAX_FILE_SIZE) {
+                continue;
+            }
+
+            let buffer = Buffer.from(await currentFile.arrayBuffer());
+            let originalName = currentFile.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+
+            let dimensions = { width: null, height: null };
+
+            if (currentFile.type.startsWith("image/") && !currentFile.type.includes("svg")) {
+                try {
+                    const metadata = await sharp(buffer).metadata();
+                    dimensions.width = metadata.width;
+                    dimensions.height = metadata.height;
+
+                    buffer = await sharp(buffer)
+                        .resize({ width: 2000, withoutEnlargement: true })
+                        .webp({ quality: 80 })
+                        .toBuffer();
+                    originalName = originalName.replace(/\.[^.]+$/, ".webp");
+                } catch (sharpErr) {
+                    console.error("Sharp processing failed, saving original:", sharpErr);
+                }
+            }
+
+            const finalFileName = `${Date.now()}-${idx}-${originalName}`;
+            await fsPromises.writeFile(path.join(uploadDir, finalFileName), buffer);
+
+            const publicUrl = `${baseStorageUrl}/uploads/${finalFileName}`;
+            uploadedResults.push({
+                url: publicUrl,
+                fileName: finalFileName,
+                originalName: currentFile.name,
+                fileSize: buffer.length,
+                width: dimensions.width,
+                height: dimensions.height
+            });
+        }
+
+        if (uploadedResults.length === 0) {
+            return NextResponse.json({ error: "No valid files could be processed. Verify file types and sizes." }, { status: 400, headers: corsHeaders });
+        }
+
+        return NextResponse.json({
+            success: true,
+            url: uploadedResults[0].url,
+            urls: uploadedResults.map(r => r.url),
+            files: uploadedResults,
+            count: uploadedResults.length
+        }, { headers: corsHeaders });
     } catch (error) {
         console.error("[Upload VPS] Error:", error);
         return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500, headers: corsHeaders });

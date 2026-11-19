@@ -58,6 +58,7 @@ create_favicon.mjs
 
 # Recovery/sensitive docs
 DISASTER_RECOVERY_BLUEPRINT.md
+backups/
 *.bak
 *.old
 *.swp

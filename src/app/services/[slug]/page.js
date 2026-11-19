@@ -371,26 +371,32 @@ export default async function DynamicServicePage({ params }) {
 
             {/* PHOTO GALLERY SECTION */}
             {page.gallery && page.gallery.length > 0 && (
-                <section className="py-24 px-8 md:px-16">
-                    <div className="mb-12">
-                        <h2 className="font-heading text-3xl font-black text-white uppercase italic tracking-tighter">
+                <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+                    <div className="mb-12 text-center md:text-left">
+                        <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Cinematic Stills</span>
+                        <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
                             Captured <span className="text-[#c5a059]">Frames.</span>
                         </h2>
                     </div>
-                    <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-                        {page.gallery.map((img, idx) => (
-                            <div key={idx} className="relative rounded-3xl overflow-hidden border border-white/5 group">
-                                <img 
-                                    src={img.url} 
-                                    alt={img.alt || img.caption || `${page.title} visual portfolio capture ${idx + 1} by Dreamline Production Kolkata`} 
-                                    loading="lazy"
-                                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
-                                />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                                    <p className="text-white text-[10px] font-black uppercase tracking-widest">{img.caption}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+                        {page.gallery.map((img, idx) => {
+                            const isOddLast = page.gallery.length % 2 === 1 && idx === page.gallery.length - 1;
+                            return (
+                                <div key={idx} className={isOddLast ? "md:col-span-2 flex justify-center w-full" : "w-full"}>
+                                    <div className={`relative aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 group shadow-2xl bg-neutral-950 ${isOddLast ? "w-full md:w-[calc(50%-1.25rem)]" : "w-full"}`}>
+                                        <img 
+                                            src={img.url} 
+                                            alt={img.alt || img.caption || `${page.title} visual portfolio capture ${idx + 1} by Dreamline Production Kolkata`} 
+                                            loading="lazy"
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                                            <p className="text-white text-xs md:text-sm font-black uppercase tracking-wider text-[#c5a059]">{img.caption}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </section>
             )}

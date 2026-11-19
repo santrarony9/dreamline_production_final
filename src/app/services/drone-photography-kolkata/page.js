@@ -1,4 +1,9 @@
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+import dbConnect from "@/lib/mongodb";
+import ServicePage from "@/models/ServicePage";
+import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
 import StructuredData from '@/components/seo/StructuredData';
 import Link from 'next/link';
 
@@ -16,7 +21,10 @@ export const metadata = {
   }
 };
 
-export default function ServicePage() {
+export default async function DronePhotographyPage() {
+  await dbConnect();
+  const rawPage = await ServicePage.findOne({ slug: 'drone-photography-kolkata' }).lean();
+  const page = rawPage ? JSON.parse(JSON.stringify(rawPage)) : null;
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is included in drone photography services in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Drone photography services generally include aerial image capture, flight planning, camera operation, and professionally selected images."}}, {"@type": "Question", "name": "Can drone videography be used for weddings and pre-wedding shoots?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, drone videography can add cinematic aerial views to weddings and pre-wedding shoots."}}, {"@type": "Question", "name": "Do I need permission for a drone shoot in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Drone operations in India are subject to applicable DGCA rules, airspace restrictions, and permissions where required."}}, {"@type": "Question", "name": "How long does a professional drone shoot take?", "acceptedAnswer": {"@type": "Answer", "text": "The duration depends on the project, location, number of shots, weather, and coverage required."}}, {"@type": "Question", "name": "Can drone photography be combined with regular photography?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, combining aerial and ground-level photography can create a more complete visual story."}}]}) }} />
@@ -67,7 +75,55 @@ export default function ServicePage() {
       </div>
     
           </article>
-          <div className="mt-16 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
+        </section>
+
+        {/* DYNAMIC VIDEO SHOWCASE - Full Width 2-Column Luxury Layout */}
+        {page?.videos && page.videos.length > 0 && (
+          <ServiceVideoShowcase 
+            videos={page.videos}
+            title={page.videoSectionTitle || "Drone Photography & Aerial Showcase"}
+            subtitle={page.videoSectionSubtitle || "Breathtaking 4K aerial photography for architecture, events & corporate infrastructure."}
+            pageSlug="drone-photography-kolkata"
+          />
+        )}
+
+        {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
+        {page?.gallery && page.gallery.length > 0 && (
+          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+            <div className="mb-12 text-center">
+              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Aerial Still Photography</span>
+              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+                Captured <span className="text-[#c5a059]">Perspectives.</span>
+              </h2>
+              <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
+                DGCA-certified high-resolution drone stills across Kolkata &amp; West Bengal
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+              {page.gallery.map((img, idx) => {
+                const isOddLast = page.gallery.length % 2 === 1 && idx === page.gallery.length - 1;
+                return (
+                  <div key={idx} className={isOddLast ? "md:col-span-2 flex justify-center w-full" : "w-full"}>
+                    <div className={`relative aspect-[16/10] rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 group shadow-2xl bg-neutral-950 ${isOddLast ? "w-full md:w-[calc(50%-1.25rem)]" : "w-full"}`}>
+                      <img 
+                        src={img.url} 
+                        alt={img.alt || img.caption || "Drone photography Kolkata by Dreamline Production"} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                        loading="lazy" 
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                        <p className="text-white text-xs md:text-sm font-black uppercase tracking-wider text-[#c5a059]">{img.caption}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        <section className="container mx-auto px-6 max-w-4xl pb-32">
+          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
             <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>

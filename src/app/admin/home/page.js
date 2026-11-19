@@ -939,7 +939,14 @@ function HomeEditorContent() {
                                                         value={v.videoUrl || ""}
                                                         onChange={(e) => {
                                                             const newList = [...content.videoVault];
-                                                            newList[i] = { ...newList[i], videoUrl: e.target.value };
+                                                            const newUrl = e.target.value;
+                                                            const m = newUrl.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|shorts\/)([^#\&\?]*).*/);
+                                                            const id = m && m[2].length === 11 ? m[2] : null;
+                                                            newList[i] = { 
+                                                                ...newList[i], 
+                                                                videoUrl: newUrl,
+                                                                image: (!newList[i].image && id) ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : (newList[i].image || "")
+                                                            };
                                                             setContent(prev => ({ ...prev, videoVault: newList }));
                                                         }}
                                                         placeholder="https://youtube.com/embed/..."
