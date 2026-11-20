@@ -9,15 +9,15 @@ export default function Stats({ stats }) {
     const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
     return (
-        <section className="py-4 md:py-8 bg-[#050505]">
+        <section className="py-8 md:py-10 bg-[#050505]">
             <div className="container mx-auto px-6">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12">
                     {displayStats.map((stat, index) => (
-                        <div key={index} className="border-l border-white/10 pl-8 py-4 group">
-                            <div className="text-[#c5a059] font-heading text-4xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform origin-left">
+                        <div key={index} className="border-l border-white/10 pl-4 md:pl-8 py-4 group">
+                            <div className="text-[#c5a059] font-heading text-3xl md:text-5xl font-bold mb-2 group-hover:scale-110 transition-transform origin-left">
                                 {stat.value}
                             </div>
-                            <div className="text-[10px] font-black uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
+                            <div className="text-[9px] md:text-[10px] font-black uppercase tracking-widest text-white/50 group-hover:text-white transition-colors leading-tight">
                                 {stat.label}
                             </div>
                         </div>

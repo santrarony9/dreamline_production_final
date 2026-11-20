@@ -83,7 +83,7 @@ export default function WeddingGallery({ images = [], altTexts = [], captions = 
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [currentIndex, images.length]);
+    }, [currentIndex, images]);
 
     if (!images || images.length === 0) {
         return (

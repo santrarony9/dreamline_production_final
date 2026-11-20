@@ -46,7 +46,7 @@ export default function QuoteSection({ quote, backgroundImage }) {
                         "{quote || defaultQuote}"
                     </h2>
 
-                    <div className="min-h-[100px] flex justify-center w-full mt-8">
+                    <div className="flex justify-center w-full mt-8">
                         {placeId && (
                             <div className="flex flex-col items-center gap-3 pt-8 border-t border-white/10 max-w-xs mx-auto w-full">
                                 <div className="flex gap-1">

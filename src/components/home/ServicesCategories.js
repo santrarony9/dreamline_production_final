@@ -78,7 +78,7 @@ export default function ServicesCategories({ services }) {
                                     </div>
                                 )}
                             </div>
-                            <div className="mt-6 md:mt-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                            <div className="mt-4 md:mt-0 opacity-60 md:opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 self-start md:self-auto">
                                 <p className="text-xs text-[#c5a059] uppercase font-bold">{srv.priceHint}</p>
                             </div>
                         </div>

@@ -13,7 +13,7 @@ export default function WhatsAppButton({ phoneNumber = "+918240054002" }) {
             href={waLink} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="fixed bottom-6 right-6 z-50 hover:scale-110 transition-transform duration-300"
+            className="fixed bottom-6 right-4 md:right-6 z-50 hover:scale-110 transition-transform duration-300"
             aria-label="Chat with us on WhatsApp"
         >
             <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_4px_14px_rgba(37,211,102,0.4)] border-2 border-white relative group">

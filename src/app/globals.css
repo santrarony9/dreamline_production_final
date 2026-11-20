@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @theme {
   --color-black: var(--black);
@@ -41,11 +41,6 @@
 
   .font-heading {
     font-family: 'Unbounded', sans-serif;
-  }
-
-  svg {
-    max-width: 100%;
-    vertical-align: middle;
   }
 }
 
@@ -170,6 +165,7 @@
   width: fit-content;
   animation: brand-glide 30s linear infinite;
   align-items: center;
+  will-change: transform;
 }
 
 @keyframes brand-glide {
@@ -207,10 +203,7 @@
   animation-play-state: paused;
 }
 
-@utility animate-scroll-left {
-  animation: scrollLeft 45s linear infinite;
-  will-change: transform;
-}
+
 
 .text-outline-thin {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
@@ -252,17 +245,17 @@
 
 /* Vertical Gallery Motion - Hardware Accelerated */
 .v-track-up {
-  animation: glide-up 30s linear infinite;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  animation: glide-up 30s linear infinite;
 }
 
 .v-track-down {
-  animation: glide-down 30s linear infinite;
   will-change: transform;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
+  animation: glide-down 30s linear infinite;
 }
 
 @keyframes glide-up {
@@ -410,6 +403,9 @@ video {
   background: rgba(197, 160, 89, 0.5);
 }
 
+
+
+
 /* Services 6-Column Mega Menu Grid & Text Containment */
 @media (min-width: 1024px) {
   .services-mega-grid-6col {
@@ -436,4 +432,64 @@ video {
   box-sizing: border-box !important;
 }
 
+/* Touch scroll improvements for carousels */
+.overflow-x-auto, .overflow-hidden {
+  -webkit-overflow-scrolling: touch;
+}
 
+/* Prevent orphan text on small screens for headings */
+h1, h2, h3 {
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+/* Minimum font size for legibility */
+@media (max-width: 375px) {
+  .text-\[9px\] { font-size: 9px; }
+  .text-\[10px\] { font-size: 10px; }
+  .tracking-widest { letter-spacing: 0.08em; }
+}
+
+/* Focus ring for accessible interactive elements */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid #c5a059;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+
+/* Blog Card */
+.blog-card {
+  background: var(--slate);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  overflow: hidden;
+}
+
+.blog-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-6px);
+}
+
+/* Fade-up animation for hero subtitle */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+/* Perspective utility for carousel */
+.perspective-\[1000px\] {
+  perspective: 1000px;
+}
+
+/* Safe area padding for mobile devices with notch / gesture bar */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .fixed-bottom-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
