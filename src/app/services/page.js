@@ -69,25 +69,67 @@ export const metadata = {
 // Main service categories with their hub pages
 const SERVICE_HUBS = [
     {
-        title: "Luxury Wedding Photography & Cinematography",
-        description: "Premium cinematic wedding documentation — candid photography, storytelling films, drone coverage, and heirloom albums. Specializing in luxury Bengali weddings and destination weddings across India.",
-        href: "/luxury",
-        icon: "💍",
-        highlights: ["Candid Photography", "Cinematic Films", "Drone Coverage", "Pre-Wedding Shoots", "Destination Weddings"],
+        title: "Wedding Photography & Cinema",
+        tag: "Signature Sector",
+        description: "Luxury candid wedding photography, storytelling films, drone coverage and heirloom albums across Kolkata and destination weddings.",
+        href: "/services/wedding-photography-kolkata/",
+        highlights: ["Pre Wedding", "Wedding", "Post Wedding", "Heirloom Albums"],
     },
     {
-        title: "Commercial Film Production",
-        description: "End-to-end production for corporate films, ad films, brand campaigns, factory videography, and commercial content. Trusted by TATA Trust, L&T, Carlsberg, BookMyShow.",
-        href: "/commercial",
-        icon: "🎥",
-        highlights: ["Corporate Films", "Ad Films", "Brand Campaigns", "Factory Videography", "Product Videos"],
+        title: "Corporate & Commercial Films",
+        tag: "Enterprise Sector",
+        description: "End-to-end commercial ad films, executive portraits, factory videography, brand documentaries and acoustic podcast productions.",
+        href: "/services/corporate-photography-kolkata/",
+        highlights: ["Commercial Ad", "Brand Promotion", "Corporate Film", "Podcast"],
     },
     {
-        title: "Tech, Digital & Innovation",
-        description: "Cutting-edge web development, 2D animation, motion graphics, drone videography, 3D area mapping, and digital solutions by Dreamline's tech division.",
+        title: "Drone & Aerial Cinematography",
+        tag: "DGCA Certified",
+        description: "DGCA-certified 4K aerial photography, FPV cinematic videography and high-precision 3D topographical area mapping.",
+        href: "/services/drone-videography-kolkata/",
+        highlights: ["Drone Photography", "Drone Videography", "3D Area Mapping"],
+    },
+    {
+        title: "Social Celebrations & Rituals",
+        tag: "Cultural Events",
+        description: "Documenting milestone birthdays, sacred Rice Ceremonies (Annaprashan), milestone anniversaries and festive gatherings.",
+        href: "/services/rice-ceremony-photography-kolkata/",
+        highlights: ["Birthday Photography", "Rice Ceremony", "Social Events"],
+    },
+    {
+        title: "Fashion Photography & Films",
+        tag: "Fashion Division",
+        description: "High-fashion editorials, designer lookbooks, runway videography, haute couture portfolios and 4K cinematic fashion films.",
+        href: "/services/fashion/",
+        highlights: ["Fashion Photography", "Fashion Videography", "Fashion Films"],
+    },
+    {
+        title: "Product Photography & Commercials",
+        tag: "Product Studio",
+        description: "E-commerce studio catalogs, 360 turntable videography, lifestyle flatlays and high-conversion commercial ad films.",
+        href: "/services/product/",
+        highlights: ["Product Photography", "Product Videography", "Product Commercials"],
+    },
+    {
+        title: "Post Production & Grading Suite",
+        tag: "Post Studio",
+        description: "Multi-track timeline video editing, DaVinci Resolve color grading, VFX compositing, 3D motion graphics and photo retouching.",
+        href: "/services/post-production/",
+        highlights: ["Video Editing", "Cinematic Editing", "Colour Grading", "VFX & Motion Graphics"],
+    },
+    {
+        title: "Tech, Digital & Live Broadcast",
+        tag: "Digital Innovation",
+        description: "Modern responsive web engineering, digital platforms, and broadcast-grade multi-camera 4K live streaming.",
         href: "/tech",
-        icon: "💻",
-        highlights: ["Web Development", "2D Animation", "Drone Videography", "3D Mapping", "Motion Graphics"],
+        highlights: ["Website Engineering", "Live Stream & Broadcast", "Digital Platforms"],
+    },
+    {
+        title: "Event Management & Production",
+        tag: "Coming Soon",
+        description: "Full-scale corporate summits, concerts, luxury brand activations and bespoke event production launching soon.",
+        href: "/contact",
+        highlights: ["Corporate Summits", "Brand Activations", "Stage Production"],
     },
 ];
 
@@ -148,29 +190,37 @@ export default async function ServicesPage() {
             {/* Main Service Hubs */}
             <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
                 <h2 className="text-xs font-black text-[#c5a059] uppercase tracking-[0.4em] mb-10">Service Divisions</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {SERVICE_HUBS.map((hub) => (
                         <Link
                             key={hub.href}
                             href={hub.href}
-                            className="group bg-white/[0.02] border border-white/5 rounded-3xl p-8 hover:border-[#c5a059]/30 transition-all duration-500 hover:bg-white/[0.04]"
+                            className="group bg-white/[0.02] border border-white/5 rounded-3xl p-8 hover:border-[#c5a059]/30 transition-all duration-500 hover:bg-white/[0.04] flex flex-col justify-between"
                         >
-                            <span className="text-4xl mb-6 block">{hub.icon}</span>
-                            <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-[#c5a059] transition-colors">
-                                {hub.title}
-                            </h3>
-                            <p className="text-white/50 text-sm leading-relaxed mb-6">
-                                {hub.description}
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                                {hub.highlights.map((h) => (
-                                    <span key={h} className="text-[9px] font-black uppercase tracking-widest text-white/30 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
-                                        {h}
+                            <div>
+                                {hub.tag && (
+                                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full border border-[#c5a059]/20 inline-block mb-5">
+                                        {hub.tag}
                                     </span>
-                                ))}
+                                )}
+                                <h3 className="text-xl font-black text-white uppercase tracking-tight mb-3 group-hover:text-[#c5a059] transition-colors leading-snug">
+                                    {hub.title}
+                                </h3>
+                                <p className="text-white/50 text-sm leading-relaxed mb-6">
+                                    {hub.description}
+                                </p>
                             </div>
-                            <div className="mt-6 text-[10px] font-black uppercase tracking-widest text-[#c5a059] group-hover:translate-x-2 transition-transform">
-                                Explore →
+                            <div>
+                                <div className="flex flex-wrap gap-2">
+                                    {hub.highlights.map((h) => (
+                                        <span key={h} className="text-[9px] font-black uppercase tracking-widest text-white/40 bg-white/5 px-3 py-1.5 rounded-full border border-white/5">
+                                            {h}
+                                        </span>
+                                    ))}
+                                </div>
+                                <div className="mt-6 text-[10px] font-black uppercase tracking-widest text-[#c5a059] group-hover:translate-x-2 transition-transform">
+                                    Explore Sector →
+                                </div>
                             </div>
                         </Link>
                     ))}

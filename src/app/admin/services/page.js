@@ -33,10 +33,8 @@ const DEFAULT_CATEGORIES = [
             { title: "Corporate Film", url: "/services/corporate-photography-kolkata/", badge: "", description: "Executive portraits, facility walkthroughs & brand documentaries", isActive: true, order: 3 },
             { title: "Short Film", url: "/services/short-film-production-kolkata/", badge: "", description: "Narrative fiction, festival entries & branded creative shorts", isActive: true, order: 4 },
             { title: "3D Visualization", url: "/services/3d-visualization-kolkata/", badge: "", description: "CGI rendering, architectural 3D walkthroughs & visual simulations", isActive: true, order: 5 },
-            { title: "Live Stream & Broadcast", url: "/services/live-stream-broadcast-kolkata/", badge: "", description: "Multi-camera live streaming, virtual conferences & hybrid broadcasts", isActive: true, order: 6 },
-            { title: "Fashion Photography", url: "/services/fashion-photography-kolkata/", badge: "", description: "Editorial lookbooks, studio catalogs & model portfolio shoots", isActive: true, order: 7 },
-            { title: "Podcast", url: "/services/podcast-production-kolkata/", badge: "", description: "Multi-camera 4K podcast recording, acoustic studio & engineering", isActive: true, order: 8 },
-            { title: "Documentary Film", url: "/services/documentary-film-production-kolkata/", badge: "", description: "Engaging cultural narratives, heritage films & institutional stories", isActive: true, order: 9 }
+            { title: "Documentary Film", url: "/services/documentary-film-production-kolkata/", badge: "", description: "Engaging cultural narratives, heritage films & institutional stories", isActive: true, order: 6 },
+            { title: "Podcast", url: "/services/podcast-production-kolkata/", badge: "", description: "Multi-camera 4K podcast recording, acoustic studio & engineering", isActive: true, order: 7 }
         ]
     },
     {
@@ -48,9 +46,9 @@ const DEFAULT_CATEGORIES = [
         isPublished: true,
         showInMegaMenu: true,
         items: [
-            { title: "DRONE PHOTOGRAPHY", url: "/services/drone-photography-kolkata/", badge: "CERTIFIED", description: "DGCA-CERTIFIED 4K AERIAL PHOTOGRAPHY FOR ARCHITECTURE & EVENTS", isActive: true, order: 1 },
-            { title: "DRONE VIDEOGRAPHY", url: "/services/drone-videography-kolkata/", badge: "POPULAR", description: "CINEMATIC 4K FPV AERIAL CINEMATOGRAPHY & DYNAMIC REELS", isActive: true, order: 2 },
-            { title: "3D AREA AND MAPPING", url: "/services/3d-area-mapping-kolkata/", badge: "", description: "AERIAL PHOTOGRAMMETRY, TOPOGRAPHICAL SURVEYS & 3D MODELS", isActive: true, order: 3 }
+            { title: "Drone Photography", url: "/services/drone-photography-kolkata/", badge: "Certified", description: "DGCA-certified 4K aerial photography for architecture & events", isActive: true, order: 1 },
+            { title: "Drone Videography", url: "/services/drone-videography-kolkata/", badge: "Popular", description: "Cinematic 4K FPV aerial cinematography & dynamic reels", isActive: true, order: 2 },
+            { title: "3D Area and Mapping", url: "/services/3d-area-mapping-kolkata/", badge: "", description: "Aerial photogrammetry, topographical surveys & 3D models", isActive: true, order: 3 }
         ]
     },
     {
@@ -62,28 +60,73 @@ const DEFAULT_CATEGORIES = [
         isPublished: true,
         showInMegaMenu: true,
         items: [
-            { title: "Birthday Photography", url: "/services/birthday-photography-kolkata/", badge: "", description: "MILESTONE CELEBRATIONS", isActive: true, order: 1 },
-            { title: "Rice Ceremony", url: "/services/rice-ceremony-photography-kolkata/", badge: "Traditional", description: "SACRED ANNAPRASHAN RITUALS", isActive: true, order: 2 },
-            { title: "Other Social Events", url: "/services/other-social-events-kolkata/", badge: "", description: "ANNIVERSARIES, CULTURAL AND FAMILY EVENTS", isActive: true, order: 3 }
+            { title: "Birthday Photography", url: "/services/birthday-photography-kolkata/", badge: "", description: "Milestone birthday cinematography, vibrant celebrations & candid moments", isActive: true, order: 1 },
+            { title: "Rice Ceremony", url: "/services/rice-ceremony-photography-kolkata/", badge: "Traditional", description: "Sacred Annaprashan rituals, baby photography & family blessings", isActive: true, order: 2 },
+            { title: "Other Social Events", url: "/services/other-social-events-kolkata/", badge: "", description: "Anniversaries, cultural gatherings & festive social celebrations", isActive: true, order: 3 }
         ]
     },
     {
-        name: "TECH",
-        slug: "tech",
-        description: "Modern responsive web design, portfolio showcases & custom web applications",
+        name: "FASHION",
+        slug: "fashion",
+        description: "Editorial fashion photography, runway videography and designer fashion films",
         order: 5,
         isActive: true,
         isPublished: true,
         showInMegaMenu: true,
         items: [
-            { title: "Website", url: "/tech", badge: "", description: "MODERN RESPONSIVE WEB DESIGN, PORTFOLIO SHOWCASES & CUSTOM WEB APPLICATIONS", isActive: true, order: 1 }
+            { title: "Fashion Photography", url: "/services/fashion-photography-kolkata/", badge: "Editorial", description: "High-fashion editorials, designer lookbooks, haute couture & agency portfolios", isActive: true, order: 1 },
+            { title: "Fashion Videography", url: "/services/fashion-videography-kolkata/", badge: "Cinematic", description: "Runway videography, fashion week coverage & dynamic stylized model reels", isActive: true, order: 2 },
+            { title: "Fashion Films", url: "/services/fashion-films-kolkata/", badge: "4K Cinema", description: "Narrative brand films, designer campaigns & artistic luxury fashion storytelling", isActive: true, order: 3 }
+        ]
+    },
+    {
+        name: "PRODUCT",
+        slug: "product",
+        description: "E-commerce product photography, 360 turntable videography and product commercials",
+        order: 6,
+        isActive: true,
+        isPublished: true,
+        showInMegaMenu: true,
+        items: [
+            { title: "Product Photography", url: "/services/product-photography-kolkata/", badge: "Studio 4K", description: "E-commerce white-background catalogs, lifestyle flatlays & luxury macro details", isActive: true, order: 1 },
+            { title: "Product Videography", url: "/services/product-videography-kolkata/", badge: "Dynamic", description: "360-degree rotating turntable captures, stop-motion & interactive product reels", isActive: true, order: 2 },
+            { title: "Product Commercials", url: "/services/product-commercials-kolkata/", badge: "Campaign", description: "High-conversion digital ad films, social media campaigns & launch commercials", isActive: true, order: 3 }
+        ]
+    },
+    {
+        name: "POST PRODUCTION",
+        slug: "post-production",
+        description: "Precision video editing, DaVinci Resolve color grading, VFX and high-end photo retouching",
+        order: 7,
+        isActive: true,
+        isPublished: true,
+        showInMegaMenu: true,
+        items: [
+            { title: "Video Editing", url: "/services/video-editing-kolkata/", badge: "Precision", description: "Multi-track timeline assembly, rhythmic pacing, dialogue editing & audio mastering", isActive: true, order: 1 },
+            { title: "Cinematic Editing", url: "/services/cinematic-editing-kolkata/", badge: "Narrative", description: "Dramatic film editing, emotional arc construction & feature-length pacing", isActive: true, order: 2 },
+            { title: "Colour Grading", url: "/services/colour-grading-kolkata/", badge: "DaVinci Pro", description: "DaVinci Resolve colour mastering, custom LUT creation & HDR tone mapping", isActive: true, order: 3 },
+            { title: "VFX & Motion Graphics", url: "/services/vfx-and-motion-graphics-kolkata/", badge: "CGI & 3D", description: "Visual effects compositing, 3D title design, logo animations & cleanups", isActive: true, order: 4 },
+            { title: "Photo Retouching", url: "/services/photo-retouching-kolkata/", badge: "High-End", description: "Frequency separation skin retouching, color correction & magazine finishing", isActive: true, order: 5 }
+        ]
+    },
+    {
+        name: "TECH",
+        slug: "tech",
+        description: "Modern responsive web design, multi-camera live streaming and hybrid broadcasts",
+        order: 8,
+        isActive: true,
+        isPublished: true,
+        showInMegaMenu: true,
+        items: [
+            { title: "Website", url: "/tech", badge: "Digital", description: "Modern responsive web engineering, digital portfolios & interactive platforms", isActive: true, order: 1 },
+            { title: "Live Stream & Broadcast", url: "/services/live-stream-broadcast-kolkata/", badge: "Multi-Cam", description: "Multi-camera 4K live streaming, virtual summits & hybrid event broadcasts", isActive: true, order: 2 }
         ]
     },
     {
         name: "EVENT MANAGEMENT",
         slug: "event-management",
         description: "Full-scale corporate summits, concerts & luxury event planning",
-        order: 6,
+        order: 9,
         isActive: true,
         isPublished: true,
         showInMegaMenu: true,

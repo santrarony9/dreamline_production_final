@@ -203,6 +203,12 @@ export default async function DynamicServicePage({ params }) {
         }
     }
 
+    const displayVideos = isPodcastPage
+        ? (podcastVideos.length > 0 ? podcastVideos : (page.videos && page.videos.length > 0 ? page.videos : DEFAULT_PODCAST_VIDEOS))
+        : (page.videos || []);
+
+    const hasMedia = displayVideos.length > 0 || (page.gallery && page.gallery.length > 0);
+
     return (
         <main className="bg-black pt-24 md:pt-32">
             <StructuredData data={{
@@ -259,10 +265,6 @@ export default async function DynamicServicePage({ params }) {
 
             {/* VIDEO SHOWCASE SECTION */}
             {(() => {
-                const displayVideos = isPodcastPage
-                    ? (podcastVideos.length > 0 ? podcastVideos : (page.videos && page.videos.length > 0 ? page.videos : DEFAULT_PODCAST_VIDEOS))
-                    : (page.videos || []);
-
                 if (!displayVideos || displayVideos.length === 0) return null;
 
                 const isBirthday = (page.slug === 'birthday-photography-kolkata' || slug === 'birthday-photography-kolkata');
@@ -397,6 +399,64 @@ export default async function DynamicServicePage({ params }) {
                                 </div>
                             );
                         })}
+                    </div>
+                </section>
+            )}
+
+            {/* LUXURY EMPTY STATE: PORTFOLIO IN PRODUCTION */}
+            {!hasMedia && (
+                <section className="py-20 px-6 sm:px-10 md:px-16 max-w-5xl mx-auto">
+                    <div className="relative rounded-3xl p-8 sm:p-12 md:p-16 bg-gradient-to-b from-[#14120c] via-[#0d0d0d] to-[#080808] border border-[#c5a059]/30 text-center shadow-2xl overflow-hidden">
+                        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#c5a059]/10 rounded-full blur-3xl pointer-events-none" />
+
+                        <div className="relative z-10 space-y-6">
+                            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#c5a059]/10 border border-[#c5a059]/30">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse"></span>
+                                <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#c5a059]">
+                                    Master Showcase In Production
+                                </span>
+                            </div>
+
+                            <h3 className="font-heading text-2xl sm:text-3xl md:text-4xl font-black text-white uppercase italic tracking-tight">
+                                Curated {page.title} <span className="text-[#c5a059]">Portfolio.</span>
+                            </h3>
+
+                            <p className="text-white/60 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-medium">
+                                Our dedicated cinema reels and client case studies for {page.title.toLowerCase()} are currently being mastered in our Kolkata color-grading suite. Private showreels, rate cards, and customized production decks are available upon request.
+                            </p>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 max-w-2xl mx-auto text-left">
+                                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-[#c5a059] block">Broadcast Cinema</span>
+                                    <p className="text-xs text-white/50">RED, Sony FX &amp; ARRI cinema packages available</p>
+                                </div>
+                                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-[#c5a059] block">Color &amp; Sound</span>
+                                    <p className="text-xs text-white/50">DaVinci Resolve HDR grading &amp; 5.1 mixing</p>
+                                </div>
+                                <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                                    <span className="text-[10px] font-black uppercase tracking-wider text-[#c5a059] block">NDA &amp; Commercial</span>
+                                    <p className="text-xs text-white/50">Full copyright ownership &amp; confidentiality</p>
+                                </div>
+                            </div>
+
+                            <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <Link
+                                    href={page.ctaLink || "/contact"}
+                                    className="w-full sm:w-auto px-8 py-4 bg-[#c5a059] text-black text-xs font-black uppercase tracking-widest rounded-full hover:bg-white transition-all transform hover:-translate-y-0.5 shadow-xl"
+                                >
+                                    Request Private Reel &amp; Quote
+                                </Link>
+                                <a
+                                    href="https://wa.me/918240054002"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full sm:w-auto px-8 py-4 bg-white/5 border border-white/10 text-white text-xs font-black uppercase tracking-widest rounded-full hover:bg-white/10 transition-all"
+                                >
+                                    Chat on WhatsApp ↗
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </section>
             )}

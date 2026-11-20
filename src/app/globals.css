@@ -421,15 +421,15 @@ video {
   background: rgba(197, 160, 89, 0.5);
 }
 
+/* Services Mega Menu Grid & Text Containment */
+.services-mega-grid-dynamic {
+  width: 100%;
+}
 
-
-
-/* Services 6-Column Mega Menu Grid & Text Containment */
-@media (min-width: 1024px) {
-  .services-mega-grid-6col {
+@media (min-width: 1280px) {
+  .services-mega-grid-dynamic {
     display: grid !important;
-    grid-template-columns: minmax(0, 1.0fr) minmax(0, 1.25fr) minmax(0, 1.25fr) minmax(0, 1.0fr) minmax(0, 1.20fr) minmax(0, 1.30fr) !important;
-    align-items: start !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   }
 }
 

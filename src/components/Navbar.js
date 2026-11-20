@@ -307,15 +307,15 @@ export default function Navbar({ initialServices, siteContent }) {
                                                 : "opacity-0 -translate-y-2 pointer-events-none invisible"
                                         }`}
                                         style={{ 
-                                            width: isServicesMegaMenu ? "min(1360px, 96vw)" : (grouped ? "780px" : "320px"), 
-                                            maxWidth: "96vw" 
+                                            width: isServicesMegaMenu ? "min(1420px, 98vw)" : (grouped ? "780px" : "320px"), 
+                                            maxWidth: "98vw" 
                                         }}
                                     >
                                         <div 
                                             data-lenis-prevent="true"
                                             className={`bg-[#0c0c0c] border border-[#c5a059]/35 rounded-3xl shadow-[0_30px_90px_rgba(0,0,0,0.98)] text-left w-full whitespace-normal ${
                                             isServicesMegaMenu 
-                                                ? "p-4 sm:p-5 lg:px-7 lg:py-4 max-h-[calc(100vh-80px)] xl:max-h-[calc(100vh-90px)] overflow-y-auto overscroll-contain custom-scrollbar" 
+                                                ? "p-4 sm:p-5 lg:px-7 lg:py-5 max-h-[calc(100vh-80px)] xl:max-h-[calc(100vh-90px)] overflow-y-auto overscroll-contain custom-scrollbar" 
                                                 : "p-6 lg:p-7"
                                         }`}>
                                             {/* Sub-variant 1: Mega Menu with Category Columns */}
@@ -323,276 +323,127 @@ export default function Navbar({ initialServices, siteContent }) {
                                                 <>
                                                     <div className={
                                                         isServicesMegaMenu
-                                                            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5 xl:gap-6 items-start services-mega-grid-6col"
+                                                            ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-x-5 xl:gap-x-6 gap-y-5 items-start services-mega-grid-dynamic"
                                                             : `grid grid-cols-1 md:grid-cols-${Math.min(grouped.length, 3)} gap-6 items-start`
                                                     }>
                                                         {grouped.map((group, gIdx) => {
                                                             const catName = (group.category || "").toUpperCase().trim();
-                                                            const isCorporate = catName === "CORPORATE";
-                                                            const isDrone = catName === "DRONE & AERIAL" || catName.includes("DRONE");
-                                                            const isTech = catName === "TECH";
-                                                            const isEventManagement = catName === "EVENT MANAGEMENT";
+                                                            const hasRealItems = group.items.length > 0 && group.items.some(it => it.badge !== "COMING SOON" && it.url !== "#");
 
-                                                            // Column 3: DRONE & AERIAL (Exact screenshot design)
-                                                            if (isDrone) {
-                                                                return (
-                                                                    <div key={gIdx} className="space-y-3 min-w-0 w-full">
-                                                                        <div className="flex items-center pb-2.5 border-b border-[#242424]">
-                                                                            <h3 className="text-xs font-black uppercase tracking-[0.22em] text-[#c5a059] truncate">
-                                                                                DRONE &amp; AERIAL
-                                                                            </h3>
-                                                                        </div>
-                                                                        <div className="space-y-3">
-                                                                            {group.items.map((sub, sIdx) => (
-                                                                                <Link
-                                                                                    key={sIdx}
-                                                                                    href={sub.url}
-                                                                                    target={sub.openInNewTab ? "_blank" : undefined}
-                                                                                    rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
-                                                                                    role="menuitem"
-                                                                                    onClick={() => setActiveDropdownId(null)}
-                                                                                    className="group/item flex flex-col p-2 rounded-lg hover:bg-white/[0.04] transition-all text-left min-w-0 w-full box-border"
-                                                                                >
-                                                                                    <div className="flex items-start justify-between gap-1.5 w-full min-w-0">
-                                                                                        <span className="text-[12px] xl:text-[13px] font-black text-white group-hover/item:text-[#c5a059] uppercase tracking-wide transition-colors min-w-0 break-words whitespace-normal leading-tight">
-                                                                                            {sub.title}
-                                                                                        </span>
-                                                                                        {sub.badge && (
-                                                                                            <span className="text-[7.5px] bg-[#332815] text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-0.5 rounded-[4px] font-black tracking-wider uppercase flex-shrink-0 whitespace-nowrap self-start mt-0.5">
-                                                                                                {sub.badge}
-                                                                                            </span>
-                                                                                        )}
-                                                                                    </div>
-                                                                                    {sub.description && (
-                                                                                        <p className="services-mega-col-desc text-[9px] text-[#858d98] font-medium leading-relaxed mt-1 group-hover/item:text-gray-300 transition-colors uppercase tracking-wide">
-                                                                                            {sub.description}
-                                                                                        </p>
-                                                                                    )}
-                                                                                </Link>
-                                                                            ))}
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            }
-
-                                                            // Column 2: CORPORATE (Commercial & Films)
-                                                            if (isCorporate) {
-                                                                return (
-                                                                    <div key={gIdx} className="space-y-1 min-w-0 w-full flex flex-col justify-start pb-3">
-                                                                        <div className="flex items-center pb-1.5 border-b border-[#c5a059]/20">
-                                                                            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#c5a059] truncate">
-                                                                                CORPORATE
-                                                                            </h3>
-                                                                        </div>
-                                                                        <div className="pb-1 border-b border-white/5 mb-0.5">
-                                                                            <span className="text-[8.5px] font-black uppercase tracking-widest text-[#c5a059]/80 block truncate">
-                                                                                COMMERCIAL &amp; FILMS
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="space-y-0.5 flex flex-col flex-1">
-                                                                            {group.items.map((sub, sIdx) => {
-                                                                                const isLast = sIdx === group.items.length - 1;
-                                                                                return (
-                                                                                    <Link
-                                                                                        key={sIdx}
-                                                                                        href={sub.url}
-                                                                                        target={sub.openInNewTab ? "_blank" : undefined}
-                                                                                        rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
-                                                                                        role="menuitem"
-                                                                                        onClick={() => setActiveDropdownId(null)}
-                                                                                        className={`group/item flex flex-col px-2 py-1 rounded-lg hover:bg-white/[0.05] border border-transparent hover:border-[#c5a059]/25 transition-all text-left min-w-0 w-full box-border ${
-                                                                                            isLast ? "pb-2" : ""
-                                                                                        }`}
-                                                                                    >
-                                                                                        <div className="flex items-start justify-between gap-1 w-full min-w-0">
-                                                                                            <span className="services-mega-col-title text-[11px] font-bold text-white group-hover/item:text-[#c5a059] uppercase tracking-wider transition-colors min-w-0 break-words whitespace-normal leading-tight">
-                                                                                                {sub.title}
-                                                                                            </span>
-                                                                                            {sub.badge && (
-                                                                                                <span className="text-[7px] bg-[#c5a059]/15 text-[#c5a059] px-1.5 py-0.5 rounded font-black tracking-widest uppercase flex-shrink-0 whitespace-nowrap self-start mt-0.5">
-                                                                                                    {sub.badge}
-                                                                                                </span>
-                                                                                            )}
-                                                                                        </div>
-                                                                                        {sub.description && (
-                                                                                            <p className="services-mega-col-desc text-[8.5px] text-gray-400 font-medium leading-[1.3] mt-0.5 group-hover/item:text-gray-300 transition-colors">
-                                                                                                {sub.description}
-                                                                                            </p>
-                                                                                        )}
-                                                                                    </Link>
-                                                                                );
-                                                                            })}
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            }
-
-                                                            // Column 5: TECH
-                                                            if (isTech) {
-                                                                return (
-                                                                    <div key={gIdx} className="space-y-2.5 min-w-0 w-full">
-                                                                        <div className="flex items-center pb-2 border-b border-[#c5a059]/20">
-                                                                            <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#c5a059] truncate">
-                                                                                TECH
-                                                                            </h3>
-                                                                        </div>
-                                                                        <div className="space-y-1">
-                                                                            {group.items.map((sub, sIdx) => (
-                                                                                <Link
-                                                                                    key={sIdx}
-                                                                                    href={sub.url}
-                                                                                    target={sub.openInNewTab ? "_blank" : undefined}
-                                                                                    rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
-                                                                                    role="menuitem"
-                                                                                    onClick={() => setActiveDropdownId(null)}
-                                                                                    className="group/item flex flex-col p-2 rounded-xl hover:bg-white/[0.05] border border-transparent hover:border-[#c5a059]/25 transition-all text-left min-w-0 w-full box-border"
-                                                                                >
-                                                                                    <div className="flex items-start justify-between gap-1.5 w-full min-w-0">
-                                                                                        <span className="text-[11.5px] xl:text-[12px] font-black text-white group-hover/item:text-[#c5a059] uppercase tracking-wider transition-colors min-w-0 break-words whitespace-normal leading-tight">
-                                                                                            {sub.title}
-                                                                                        </span>
-                                                                                        {sub.badge && (
-                                                                                            <span className="text-[7px] bg-[#c5a059]/15 text-[#c5a059] px-1.5 py-0.5 rounded font-black tracking-widest uppercase flex-shrink-0 whitespace-nowrap self-start mt-0.5">
-                                                                                                {sub.badge}
-                                                                                            </span>
-                                                                                        )}
-                                                                                    </div>
-                                                                                    {sub.description && (
-                                                                                        <p className="services-mega-col-desc text-[9px] text-gray-400 font-medium leading-relaxed mt-1 group-hover/item:text-gray-300 transition-colors uppercase tracking-wide">
-                                                                                            {sub.description}
-                                                                                        </p>
-                                                                                    )}
-                                                                                </Link>
-                                                                            ))}
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            }
-
-                                                            // Column 6: EVENT MANAGEMENT
-                                                            if (isEventManagement) {
-                                                                const hasRealItems = group.items.length > 0 && group.items.some(it => it.badge !== "COMING SOON" && it.url !== "#");
-                                                                return (
-                                                                    <div key={gIdx} className="space-y-2.5 min-w-0 w-full">
-                                                                        <div className="flex items-center justify-between gap-1 pb-2 border-b border-[#c5a059]/20">
-                                                                            <h3 className="text-[10.5px] xl:text-[11px] font-black uppercase tracking-[0.11em] xl:tracking-[0.13em] text-[#c5a059] whitespace-nowrap">
-                                                                                EVENT MANAGEMENT
-                                                                            </h3>
-                                                                            <span className="text-[6.5px] xl:text-[7px] bg-[#332815] text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-0.5 rounded font-black tracking-wider uppercase flex-shrink-0 whitespace-nowrap">
-                                                                                COMING SOON
-                                                                            </span>
-                                                                        </div>
-                                                                        <div className="space-y-1">
-                                                                            {hasRealItems ? (
-                                                                                group.items.map((sub, sIdx) => (
-                                                                                    <Link
-                                                                                        key={sIdx}
-                                                                                        href={sub.url}
-                                                                                        target={sub.openInNewTab ? "_blank" : undefined}
-                                                                                        rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
-                                                                                        role="menuitem"
-                                                                                        onClick={() => setActiveDropdownId(null)}
-                                                                                        className="group/item flex flex-col p-2 rounded-xl hover:bg-white/[0.05] border border-transparent hover:border-[#c5a059]/25 transition-all text-left min-w-0 w-full box-border"
-                                                                                    >
-                                                                                        <div className="flex items-start justify-between gap-1.5 w-full min-w-0">
-                                                                                            <span className="text-[11px] font-bold text-white group-hover/item:text-[#c5a059] uppercase tracking-wider transition-colors min-w-0 break-words whitespace-normal leading-tight">
-                                                                                                {sub.title}
-                                                                                            </span>
-                                                                                            {sub.badge && (
-                                                                                                <span className="text-[7px] bg-[#c5a059]/15 text-[#c5a059] px-1.5 py-0.5 rounded font-black tracking-widest uppercase flex-shrink-0 whitespace-nowrap self-start mt-0.5">
-                                                                                                    {sub.badge}
-                                                                                                </span>
-                                                                                            )}
-                                                                                        </div>
-                                                                                        {sub.description && (
-                                                                                            <p className="services-mega-col-desc text-[9px] text-gray-400 font-medium leading-relaxed mt-0.5 group-hover/item:text-gray-300 transition-colors">
-                                                                                                {sub.description}
-                                                                                            </p>
-                                                                                        )}
-                                                                                    </Link>
-                                                                                ))
-                                                                            ) : (
-                                                                                <div className="pt-2 space-y-2 select-none min-w-0 w-full text-left">
-                                                                                    <p className="services-mega-col-desc text-[9px] text-gray-400 font-medium leading-relaxed">
-                                                                                        {(group.items && group.items[0] && group.items[0].description) || "Full-scale corporate event planning, cultural festival stage production & artist coordination launching soon."}
-                                                                                    </p>
-                                                                                    <div className="flex items-center gap-1.5 pt-1 text-[8px] text-[#c5a059]/90 font-bold uppercase tracking-wider">
-                                                                                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse"></span>
-                                                                                        <span>Launching Soon</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            }
-
-                                                            // Columns: WEDDING, SOCIAL, TECH & Any Dynamic Category
                                                             return (
-                                                                <div key={gIdx} className="space-y-2.5 min-w-0 w-full">
-                                                                    <div className="flex items-center pb-2 border-b border-[#c5a059]/20">
-                                                                        <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#c5a059] truncate">
-                                                                            {group.category}
+                                                                <div key={gIdx} className="space-y-2 min-w-0 w-full flex flex-col justify-start">
+                                                                    {/* Consistent Luxury Gold Category Header */}
+                                                                    <div className="flex items-center justify-between gap-1 pb-2 border-b border-[#c5a059]/25">
+                                                                        <h3 className="text-[11px] xl:text-[11.5px] font-black uppercase tracking-[0.2em] text-[#c5a059] truncate">
+                                                                            {catName}
                                                                         </h3>
+                                                                        {group.badge && (
+                                                                            <span className="text-[6.5px] xl:text-[7px] bg-[#332815] text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-0.5 rounded font-black tracking-wider uppercase flex-shrink-0 whitespace-nowrap">
+                                                                                {group.badge}
+                                                                            </span>
+                                                                        )}
                                                                     </div>
-                                                                    <div className="space-y-1">
-                                                                        {group.items.map((sub, sIdx) => {
-                                                                            const isComingSoon = sub.badge === "COMING SOON" || sub.url === "#";
-                                                                            if (isComingSoon) {
+
+                                                                    {/* Category Service Items */}
+                                                                    <div className="space-y-0.5 flex flex-col flex-1">
+                                                                        {hasRealItems ? (
+                                                                            group.items.map((sub, sIdx) => {
+                                                                                const isComingSoonItem = sub.badge === "COMING SOON" || sub.url === "#";
+                                                                                if (isComingSoonItem) {
+                                                                                    return (
+                                                                                        <div key={sIdx} className="p-2 rounded-lg bg-white/[0.02] border border-white/5 space-y-1 select-none min-w-0 w-full box-border">
+                                                                                            <div className="flex items-center justify-between gap-1 w-full min-w-0">
+                                                                                                <span className="text-[11px] font-bold text-white/80 uppercase tracking-wide truncate">
+                                                                                                    {sub.title}
+                                                                                                </span>
+                                                                                                <span className="text-[6.5px] bg-[#332815] text-[#c5a059] border border-[#c5a059]/30 px-1 py-0.5 rounded font-black tracking-wider uppercase flex-shrink-0">
+                                                                                                    COMING SOON
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            {sub.description && (
+                                                                                                <p className="services-mega-col-desc text-[8.5px] text-gray-500 font-medium leading-[1.3] uppercase tracking-wide">
+                                                                                                    {sub.description}
+                                                                                                </p>
+                                                                                            )}
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+
                                                                                 return (
-                                                                                    <div 
+                                                                                    <Link
                                                                                         key={sIdx}
-                                                                                        className="p-2.5 rounded-xl bg-white/[0.03] border border-[#c5a059]/20 space-y-1.5 select-none min-w-0 w-full box-border"
+                                                                                        href={sub.url}
+                                                                                        target={sub.openInNewTab ? "_blank" : undefined}
+                                                                                        rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
+                                                                                        role="menuitem"
+                                                                                        onClick={() => setActiveDropdownId(null)}
+                                                                                        className="group/item flex flex-col px-2 py-1.5 rounded-lg hover:bg-white/[0.05] border border-transparent hover:border-[#c5a059]/25 transition-all text-left min-w-0 w-full box-border"
                                                                                     >
                                                                                         <div className="flex items-start justify-between gap-1 w-full min-w-0">
-                                                                                            <span className="text-[10px] font-bold text-white uppercase tracking-wider min-w-0 break-words whitespace-normal leading-tight">
+                                                                                            <span className="services-mega-col-title text-[11px] font-bold text-white group-hover/item:text-[#c5a059] uppercase tracking-wide transition-colors min-w-0 break-words whitespace-normal leading-tight">
                                                                                                 {sub.title}
                                                                                             </span>
-                                                                                            <span className="text-[7px] bg-[#332815] text-[#c5a059] border border-[#c5a059]/30 px-1.5 py-0.5 rounded font-black tracking-widest uppercase flex-shrink-0 whitespace-nowrap self-start">
-                                                                                                COMING SOON
-                                                                                            </span>
+                                                                                            {sub.badge && (
+                                                                                                <span className="text-[7px] bg-[#c5a059]/15 text-[#c5a059] px-1.5 py-0.5 rounded font-black tracking-widest uppercase flex-shrink-0 whitespace-nowrap self-start mt-0.5">
+                                                                                                    {sub.badge}
+                                                                                                </span>
+                                                                                            )}
                                                                                         </div>
                                                                                         {sub.description && (
-                                                                                            <p className="services-mega-col-desc text-[8.5px] text-gray-400 font-medium leading-relaxed">
+                                                                                            <p className="services-mega-col-desc text-[8.5px] text-gray-400 font-medium leading-[1.3] mt-0.5 group-hover/item:text-gray-300 transition-colors uppercase tracking-wide">
                                                                                                 {sub.description}
                                                                                             </p>
                                                                                         )}
-                                                                                    </div>
+                                                                                    </Link>
                                                                                 );
-                                                                            }
-
-                                                                            return (
-                                                                                <Link
-                                                                                    key={sIdx}
-                                                                                    href={sub.url}
-                                                                                    target={sub.openInNewTab ? "_blank" : undefined}
-                                                                                    rel={sub.openInNewTab ? "noopener noreferrer" : undefined}
-                                                                                    role="menuitem"
-                                                                                    onClick={() => setActiveDropdownId(null)}
-                                                                                    className="group/item flex flex-col p-2 rounded-xl hover:bg-white/[0.05] border border-transparent hover:border-[#c5a059]/25 transition-all text-left min-w-0 w-full box-border"
-                                                                                >
-                                                                                    <div className="flex items-start justify-between gap-1.5 w-full min-w-0">
-                                                                                        <span className="text-[11px] font-bold text-white group-hover/item:text-[#c5a059] uppercase tracking-wider transition-colors min-w-0 break-words whitespace-normal leading-tight">
-                                                                                            {sub.title}
-                                                                                        </span>
-                                                                                        {sub.badge && (
-                                                                                            <span className="text-[7px] bg-[#c5a059]/15 text-[#c5a059] px-1.5 py-0.5 rounded font-black tracking-widest uppercase flex-shrink-0 whitespace-nowrap self-start mt-0.5">
-                                                                                                {sub.badge}
-                                                                                            </span>
-                                                                                        )}
-                                                                                    </div>
-                                                                                    {sub.description && (
-                                                                                        <p className="services-mega-col-desc text-[9px] text-gray-400 font-medium leading-relaxed mt-0.5 group-hover/item:text-gray-300 transition-colors">
-                                                                                            {sub.description}
-                                                                                        </p>
-                                                                                    )}
-                                                                                </Link>
-                                                                            );
-                                                                        })}
+                                                                            })
+                                                                        ) : (
+                                                                            <div className="pt-2 space-y-1.5 select-none min-w-0 w-full text-left">
+                                                                                <p className="services-mega-col-desc text-[8.5px] text-gray-400 font-medium leading-relaxed">
+                                                                                    {(group.items && group.items[0] && group.items[0].description) || "Specialized production, summits and event management launching soon."}
+                                                                                </p>
+                                                                                <div className="flex items-center gap-1.5 pt-1 text-[8px] text-[#c5a059]/90 font-bold uppercase tracking-wider">
+                                                                                    <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse"></span>
+                                                                                    <span>Launching Soon</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
                                                                     </div>
                                                                 </div>
                                                             );
                                                         })}
+
+                                                        {/* Intelligent Grid Filler: If exactly 9 categories, render 10th Studio HQ Consult Card */}
+                                                        {grouped.length === 9 && (
+                                                            <div className="hidden xl:flex flex-col justify-between p-3.5 rounded-2xl bg-gradient-to-b from-[#14120c] to-[#0a0a0a] border border-[#c5a059]/25 shadow-xl space-y-2.5 min-w-0 w-full box-border">
+                                                                <div className="space-y-1.5">
+                                                                    <div className="flex items-center gap-1.5 pb-2 border-b border-[#c5a059]/20">
+                                                                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse"></span>
+                                                                        <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#c5a059]">
+                                                                            STUDIO HQ
+                                                                        </h3>
+                                                                    </div>
+                                                                    <h4 className="text-[11.5px] font-black text-white uppercase tracking-wide leading-tight">
+                                                                        Bespoke Production
+                                                                    </h4>
+                                                                    <p className="text-[8.5px] text-gray-400 font-medium leading-[1.3] uppercase tracking-wide">
+                                                                        Custom multi-sector corporate campaigns, celebrity shoots &amp; luxury film productions across India.
+                                                                    </p>
+                                                                </div>
+                                                                <div className="pt-2 border-t border-white/5 flex items-center justify-between gap-1.5">
+                                                                    <a href="tel:+918240054002" className="text-[9px] font-black text-[#c5a059] hover:text-white transition-colors">
+                                                                        +91 82400 54002
+                                                                    </a>
+                                                                    <Link 
+                                                                        href="/contact"
+                                                                        onClick={() => setActiveDropdownId(null)}
+                                                                        className="px-2.5 py-1 rounded-full bg-[#c5a059] text-black text-[8px] font-black uppercase tracking-wider hover:bg-white transition-all shadow-md"
+                                                                    >
+                                                                        Quote ↗
+                                                                    </Link>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </div>
 
                                                     {/* Dropdown Directory Footer */}

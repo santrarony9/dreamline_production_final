@@ -999,12 +999,9 @@ export default function VideoShotsAdmin() {
                                 className="bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-gray-300 outline-none focus:border-[#c5a059]"
                             >
                                 <option value="ALL">All Categories</option>
-                                <option value="WEDDING">WEDDING</option>
-                                <option value="CORPORATE">CORPORATE</option>
-                                <option value="DRONE & AERIAL">DRONE &amp; AERIAL</option>
-                                <option value="SOCIAL">SOCIAL</option>
-                                <option value="TECH">TECH</option>
-                                <option value="EVENT MANAGEMENT">EVENT MANAGEMENT</option>
+                                {categories.map((c, idx) => (
+                                    <option key={idx} value={c.name}>{c.name}</option>
+                                ))}
                             </select>
 
                             {/* Service Filter (for Videos and Shots) */}
@@ -1089,7 +1086,7 @@ export default function VideoShotsAdmin() {
                                     <p className="text-gray-400 text-xs">Direct links to manage content across each sector</p>
                                 </div>
                                 <span className="text-xs font-bold text-[#c5a059] uppercase tracking-wider">
-                                    6 Sectors
+                                    {categories.length} Sectors
                                 </span>
                             </div>
 
@@ -1892,12 +1889,9 @@ export default function VideoShotsAdmin() {
                                         onChange={(e) => setServiceForm({ ...serviceForm, category: e.target.value })}
                                         className="w-full bg-black border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
                                     >
-                                        <option value="WEDDING">WEDDING</option>
-                                        <option value="CORPORATE">CORPORATE</option>
-                                        <option value="DRONE & AERIAL">DRONE &amp; AERIAL</option>
-                                        <option value="SOCIAL">SOCIAL</option>
-                                        <option value="TECH">TECH</option>
-                                        <option value="EVENT MANAGEMENT">EVENT MANAGEMENT</option>
+                                        {categories.map((c, idx) => (
+                                            <option key={idx} value={c.name}>{c.name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
