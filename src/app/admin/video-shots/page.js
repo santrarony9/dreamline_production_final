@@ -33,9 +33,10 @@ export default function VideoShotsAdmin() {
     const [videoModal, setVideoModal] = useState({ open: false, isEdit: false, data: null });
     const [shotModal, setShotModal] = useState({ open: false, isEdit: false, data: null });
     const [bulkShotModal, setBulkShotModal] = useState({ open: false, serviceSlug: "", category: "", videoId: "", files: [], uploading: false });
-    const [previewVideoModal, setPreviewVideoModal] = useState({ open: false, url: "", title: "", ytId: "" });
+    const [previewVideoModal, setPreviewVideoModal] = useState({ open: false, url: "", title: "", ytId: "", thumbnail: "" });
     const [previewImageModal, setPreviewImageModal] = useState({ open: false, url: "", title: "" });
     const [confirmModal, setConfirmModal] = useState({ open: false, title: "", message: "", warning: false, onConfirm: null });
+    const [refreshingThumbnail, setRefreshingThumbnail] = useState(false);
 
     // Form states
     const [serviceForm, setServiceForm] = useState({
@@ -106,6 +107,13 @@ export default function VideoShotsAdmin() {
         if (match && match[2].length === 11) return match[2];
         if (/^[a-zA-Z0-9_-]{11}$/.test(url.trim())) return url.trim();
         return null;
+    };
+
+    // Extract Instagram Shortcode helper
+    const getInstagramShortcode = (url) => {
+        if (!url) return null;
+        const match = url.trim().match(/instagram\.com\/(?:[^\/]+\/)?(?:reel|p)\/([A-Za-z0-9_-]+)/i);
+        return match ? match[1] : null;
     };
 
     // Load Initial Data
@@ -340,6 +348,35 @@ export default function VideoShotsAdmin() {
                 status: "published"
             });
             setVideoModal({ open: true, isEdit: false, data: null });
+        }
+    };
+
+    const handleRefreshInstagramThumbnail = async () => {
+        const url = videoForm.youtubeUrl;
+        const shortcode = getInstagramShortcode(url);
+        if (!shortcode) {
+            showToast("Please provide a valid Instagram Reel URL first", "error");
+            return;
+        }
+        setRefreshingThumbnail(true);
+        try {
+            const res = await axios.post("/api/admin/videos", {
+                action: "refresh-thumbnail",
+                youtubeUrl: url,
+                _id: videoForm._id,
+                serviceSlug: videoForm.serviceSlug
+            });
+            if (res.data.success && res.data.thumbnail) {
+                setVideoForm(prev => ({ ...prev, customThumbnail: res.data.thumbnail }));
+                showToast("Downloaded and updated live Instagram poster!");
+                loadAllData();
+            } else {
+                showToast(res.data.error || "Could not retrieve Instagram poster", "error");
+            }
+        } catch (e) {
+            showToast("Failed to refresh thumbnail: " + (e.response?.data?.error || e.message), "error");
+        } finally {
+            setRefreshingThumbnail(false);
         }
     };
 
@@ -1433,13 +1470,13 @@ export default function VideoShotsAdmin() {
                                         {/* 16:9 Thumbnail with Click-to-Play Preview */}
                                         <div
                                             className="relative aspect-video w-full bg-black cursor-pointer group"
-                                            onClick={() => setPreviewVideoModal({ open: true, url: video.youtubeUrl, title: video.title, ytId: video.youtubeId })}
+                                            onClick={() => setPreviewVideoModal({ open: true, url: video.youtubeUrl, title: video.title, ytId: video.youtubeId, thumbnail: video.customThumbnail || video.thumbnail })}
                                         >
                                             <img
-                                                src={video.customThumbnail || video.thumbnail || (video.youtubeId ? `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg` : "/logo-banner.png")}
+                                                src={video.customThumbnail || video.thumbnail || ((video.platform === 'instagram' || video.youtubeUrl?.includes('instagram.com')) && (video.instagramId || getInstagramShortcode(video.youtubeUrl)) ? `/uploads/fashion/reels/reel-${(video.instagramId || getInstagramShortcode(video.youtubeUrl)).toLowerCase()}.jpg` : (video.youtubeId ? `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg` : "/logo-banner.png"))}
                                                 alt={video.title}
                                                 onError={(e) => {
-                                                    if (video.youtubeId && !e.currentTarget.src.includes('hqdefault.jpg')) {
+                                                    if (video.youtubeId && !e.currentTarget.src.includes('hqdefault.jpg') && !e.currentTarget.src.includes('.jpg')) {
                                                         e.currentTarget.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
                                                     }
                                                 }}
@@ -1460,7 +1497,9 @@ export default function VideoShotsAdmin() {
                                             {/* Format pill */}
                                             <div className="absolute bottom-2.5 right-2.5">
                                                 <span className="px-2 py-0.5 rounded bg-black/80 text-[9px] font-black text-[#c5a059] uppercase border border-white/10">
-                                                    {video.videoType === 'shorts' ? '9:16 Shorts' : '16:9 Cinema'}
+                                                    {video.platform === 'instagram' || video.youtubeUrl?.includes('instagram.com') || getInstagramShortcode(video.youtubeUrl)
+                                                        ? 'Instagram Reel'
+                                                        : (video.videoType === 'shorts' ? '9:16 Shorts' : '16:9 Cinema')}
                                                 </span>
                                             </div>
                                             {/* Status Badge */}
@@ -1489,7 +1528,9 @@ export default function VideoShotsAdmin() {
                                             </h3>
 
                                             <p className="text-[10px] font-mono text-gray-500 truncate">
-                                                ID: {video.youtubeId}
+                                                {video.platform === 'instagram' || video.youtubeUrl?.includes('instagram.com')
+                                                    ? `Reel: ${video.instagramId || video.youtubeId || getInstagramShortcode(video.youtubeUrl)}`
+                                                    : `YouTube ID: ${video.youtubeId}`}
                                             </p>
 
                                             {/* Reorder Buttons & Status Toggle */}
@@ -2073,19 +2114,34 @@ export default function VideoShotsAdmin() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className="text-[10px] font-black uppercase tracking-wider text-gray-400 block mb-1">
-                                        YouTube URL or Video ID *
+                                        YouTube or Instagram Reel URL *
                                     </label>
                                     <input
                                         type="text"
                                         required
                                         value={videoForm.youtubeUrl}
-                                        onChange={(e) => setVideoForm({ ...videoForm, youtubeUrl: e.target.value })}
-                                        placeholder="https://www.youtube.com/watch?v=..."
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            const isInsta = val.includes('instagram.com');
+                                            setVideoForm({
+                                                ...videoForm,
+                                                youtubeUrl: val,
+                                                videoType: isInsta ? 'shorts' : videoForm.videoType,
+                                                tag: isInsta ? 'Instagram Reel' : videoForm.tag
+                                            });
+                                        }}
+                                        placeholder="https://www.youtube.com/... or https://www.instagram.com/reel/..."
                                         className="w-full bg-black border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none focus:border-[#c5a059]"
                                     />
                                     {getYouTubeId(videoForm.youtubeUrl) && (
-                                        <p className="text-[10px] text-green-400 mt-1">
-                                            ✓ Extracted ID: {getYouTubeId(videoForm.youtubeUrl)}
+                                        <p className="text-[10px] text-green-400 mt-1 font-bold">
+                                            ✓ Extracted YouTube ID: {getYouTubeId(videoForm.youtubeUrl)}
+                                        </p>
+                                    )}
+                                    {getInstagramShortcode(videoForm.youtubeUrl) && (
+                                        <p className="text-[10px] text-pink-400 mt-1 font-bold flex items-center gap-1">
+                                            <span>📷</span>
+                                            <span>✓ Extracted Instagram Reel: {getInstagramShortcode(videoForm.youtubeUrl)}</span>
                                         </p>
                                     )}
                                 </div>
@@ -2125,7 +2181,7 @@ export default function VideoShotsAdmin() {
                                 <div className="flex flex-col sm:flex-row gap-4 items-start">
                                     <div className="relative w-36 aspect-video bg-neutral-900 rounded-xl overflow-hidden border border-white/10 flex-shrink-0">
                                         <img
-                                            src={videoForm.customThumbnail || (getYouTubeId(videoForm.youtubeUrl) ? `https://img.youtube.com/vi/${getYouTubeId(videoForm.youtubeUrl)}/maxresdefault.jpg` : "/logo-banner.png")}
+                                            src={videoForm.customThumbnail || (getInstagramShortcode(videoForm.youtubeUrl) ? `/uploads/fashion/reels/reel-${getInstagramShortcode(videoForm.youtubeUrl).toLowerCase()}.jpg` : (getYouTubeId(videoForm.youtubeUrl) ? `https://img.youtube.com/vi/${getYouTubeId(videoForm.youtubeUrl)}/maxresdefault.jpg` : "/logo-banner.png"))}
                                             alt="Preview"
                                             className="w-full h-full object-cover"
                                         />
@@ -2138,21 +2194,33 @@ export default function VideoShotsAdmin() {
                                             placeholder="Leave empty for auto YouTube thumbnail or paste custom URL..."
                                             className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-[#c5a059]"
                                         />
-                                        <label className="inline-flex cursor-pointer px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-[#c5a059] text-gray-300 hover:text-black text-[10px] font-black uppercase transition-all">
-                                            <span>Upload Custom Thumbnail</span>
-                                            <input
-                                                type="file"
-                                                accept="image/*"
-                                                className="hidden"
-                                                onChange={(e) => {
-                                                    if (e.target.files && e.target.files[0]) {
-                                                        handleFileUpload([e.target.files[0]], (res) => {
-                                                            setVideoForm(prev => ({ ...prev, customThumbnail: res.url }));
-                                                        });
-                                                    }
-                                                }}
-                                            />
-                                        </label>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            <label className="inline-flex cursor-pointer px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-[#c5a059] text-gray-300 hover:text-black text-[10px] font-black uppercase transition-all">
+                                                <span>Upload Custom Thumbnail</span>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    className="hidden"
+                                                    onChange={(e) => {
+                                                        if (e.target.files && e.target.files[0]) {
+                                                            handleFileUpload([e.target.files[0]], (res) => {
+                                                                setVideoForm(prev => ({ ...prev, customThumbnail: res.url }));
+                                                            });
+                                                        }
+                                                    }}
+                                                />
+                                            </label>
+                                            {getInstagramShortcode(videoForm.youtubeUrl) && (
+                                                <button
+                                                    type="button"
+                                                    onClick={handleRefreshInstagramThumbnail}
+                                                    disabled={refreshingThumbnail}
+                                                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#c5a059]/20 hover:bg-[#c5a059] text-[#c5a059] hover:text-black border border-[#c5a059]/40 text-[10px] font-black uppercase transition-all"
+                                                >
+                                                    <span>{refreshingThumbnail ? "Downloading..." : "🔄 Refresh Reel Poster"}</span>
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2588,14 +2656,56 @@ export default function VideoShotsAdmin() {
                                 Close ✕
                             </button>
                         </div>
-                        <div className="relative aspect-video w-full">
-                            <iframe
-                                src={`https://www.youtube.com/embed/${previewVideoModal.ytId}?autoplay=1&rel=0`}
-                                title={previewVideoModal.title}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                className="w-full h-full border-0"
-                            />
+                        <div className="relative aspect-video w-full flex items-center justify-center bg-black min-h-[480px]">
+                            {previewVideoModal.url?.includes('instagram.com') || getInstagramShortcode(previewVideoModal.url) ? (
+                                <div className="flex flex-col md:flex-row items-center justify-center p-8 gap-8 w-full max-w-2xl mx-auto">
+                                    <div className="relative aspect-[9/16] w-60 rounded-2xl overflow-hidden border border-[#c5a059]/40 shadow-2xl bg-black flex-shrink-0">
+                                        <img
+                                            src={previewVideoModal.thumbnail || `/uploads/fashion/reels/reel-${(getInstagramShortcode(previewVideoModal.url) || previewVideoModal.ytId).toLowerCase()}.jpg`}
+                                            alt={previewVideoModal.title}
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.currentTarget.src = "/logo-banner.png";
+                                            }}
+                                        />
+                                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                            <div className="w-14 h-14 rounded-full bg-[#c5a059] text-black flex items-center justify-center shadow-lg">
+                                                <span className="translate-x-0.5 font-bold text-lg">▶</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col space-y-4 text-center md:text-left">
+                                        <span className="px-3 py-1 rounded-full bg-[#c5a059]/10 border border-[#c5a059]/30 text-xs font-black uppercase tracking-wider text-[#c5a059] self-center md:self-start">
+                                            Instagram Reel · 9:16 Vertical
+                                        </span>
+                                        <h4 className="text-white text-lg font-bold uppercase tracking-tight">
+                                            {previewVideoModal.title}
+                                        </h4>
+                                        <p className="text-gray-400 text-xs font-mono break-all max-w-sm">
+                                            {previewVideoModal.url}
+                                        </p>
+                                        <div className="pt-2">
+                                            <a
+                                                href={previewVideoModal.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#c5a059] hover:bg-white text-black font-black text-xs uppercase tracking-wider transition-all shadow-lg"
+                                            >
+                                                <span>Open Reel on Instagram</span>
+                                                <span>↗</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${previewVideoModal.ytId}?autoplay=1&rel=0`}
+                                    title={previewVideoModal.title}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="w-full h-full border-0"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

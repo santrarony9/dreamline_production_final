@@ -5,6 +5,12 @@ import dbConnect from "@/lib/mongodb";
 import ServicePage from "@/models/ServicePage";
 import PodcastVideo from "@/models/PodcastVideo";
 import { ensurePodcastVideosSeeded } from "@/lib/podcast-defaults";
+import ProductImage from "@/models/ProductImage";
+import ProductCategory from "@/models/ProductCategory";
+import { ensureProductGallerySeeded, INITIAL_PRODUCT_CATEGORIES, INITIAL_PRODUCT_IMAGES } from "@/lib/product-gallery-defaults";
+import ProductImageGallery from "@/components/product/ProductImageGallery";
+import JewelleryItem from "@/models/JewelleryItem";
+import JewelleryPureGallery from "@/components/jewellery/JewelleryPureGallery";
 import Content from "@/models/Content";
 import Image from "next/image";
 import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";
@@ -203,11 +209,51 @@ export default async function DynamicServicePage({ params }) {
         }
     }
 
+    const isJewelleryProductPage = (page.slug || slug) === 'product-photography-kolkata';
+    let jewelleryItems = [];
+    if (isJewelleryProductPage) {
+        try {
+            const rawJewels = await JewelleryItem.find({ isPublished: true, isUnclassified: { $ne: true } })
+                .sort({ order: 1, createdAt: -1 })
+                .lean();
+            if (rawJewels && rawJewels.length > 0) {
+                jewelleryItems = rawJewels.map(item => ({
+                    id: item.slug || item._id.toString(),
+                    coverImage: item.coverImage,
+                    images: (item.images && item.images.length > 0)
+                        ? item.images.map(img => typeof img === 'string' ? img : img.url)
+                        : [item.coverImage]
+                }));
+            }
+        } catch (e) {
+            console.error("Failed to query jewellery gallery items:", e);
+        }
+    }
+
+    const isProductPage = (page.slug || slug) === 'product';
+    let productImages = [];
+    let productCategories = [];
+    if (isProductPage) {
+        try {
+            await ensureProductGallerySeeded();
+            const [imgs, cats] = await Promise.all([
+                ProductImage.find({ isPublished: true }).sort({ order: 1, isFeatured: -1, createdAt: -1 }).lean(),
+                ProductCategory.find({ isActive: true }).sort({ order: 1 }).lean()
+            ]);
+            productImages = JSON.parse(JSON.stringify(imgs && imgs.length > 0 ? imgs : INITIAL_PRODUCT_IMAGES));
+            productCategories = JSON.parse(JSON.stringify(cats && cats.length > 0 ? cats : INITIAL_PRODUCT_CATEGORIES));
+        } catch (e) {
+            console.error("Failed to query product gallery:", e);
+            productImages = INITIAL_PRODUCT_IMAGES;
+            productCategories = INITIAL_PRODUCT_CATEGORIES;
+        }
+    }
+
     const displayVideos = isPodcastPage
         ? (podcastVideos.length > 0 ? podcastVideos : (page.videos && page.videos.length > 0 ? page.videos : DEFAULT_PODCAST_VIDEOS))
         : (page.videos || []);
 
-    const hasMedia = displayVideos.length > 0 || (page.gallery && page.gallery.length > 0);
+    const hasMedia = isJewelleryProductPage || isProductPage || displayVideos.length > 0 || (page.gallery && page.gallery.length > 0);
 
     return (
         <main className="page-main">
@@ -246,8 +292,20 @@ export default async function DynamicServicePage({ params }) {
                 </div>
             </section>
 
-            {/* HERO IMAGE / VIDEO AREA */}
-            {page.heroImage && !isPodcastPage && (
+            {/* PURE IMAGE-ONLY JEWELLERY GALLERY */}
+            {isJewelleryProductPage ? (
+                <JewelleryPureGallery initialItems={jewelleryItems} />
+            ) : isProductPage ? (
+                <ProductImageGallery 
+                    initialImages={productImages}
+                    initialCategories={productCategories}
+                    heroTitle={page.title}
+                    heroSubtitle={page.subtitle}
+                />
+            ) : (
+                <>
+                    {/* HERO IMAGE / VIDEO AREA */}
+                    {page.heroImage && !isPodcastPage && (
                 <section className="content-container mb-16 md:mb-20">
                     <div className="relative aspect-[21/9] w-full rounded-[1.75rem] md:rounded-[2rem] overflow-hidden border border-white/5">
                         <Image 
@@ -471,6 +529,8 @@ export default async function DynamicServicePage({ params }) {
                     {page.ctaText || "Get a Quote"}
                 </Link>
             </section>
+                </>
+            )}
         </main>
     );
 }

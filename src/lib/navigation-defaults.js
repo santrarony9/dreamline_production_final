@@ -256,25 +256,12 @@ export const DEFAULT_NAVIGATION_SEED = [
                 displayMobile: true
             },
 
-            // Category 5: FASHION (3 items)
-            {
-                title: "Fashion Photography",
-                url: "/services/fashion-photography-kolkata/",
-                type: "internal",
-                order: 17,
-                group: "FASHION",
-                badge: "Editorial",
-                description: "High-fashion editorials, designer lookbooks, haute couture & agency portfolios",
-                openInNewTab: false,
-                isActive: true,
-                displayDesktop: true,
-                displayMobile: true
-            },
+            // Category 5: FASHION (1 item)
             {
                 title: "Fashion Videography",
                 url: "/services/fashion-videography-kolkata/",
                 type: "internal",
-                order: 18,
+                order: 17,
                 group: "FASHION",
                 badge: "Cinematic",
                 description: "Runway videography, fashion week coverage & dynamic stylized model reels",
@@ -283,21 +270,8 @@ export const DEFAULT_NAVIGATION_SEED = [
                 displayDesktop: true,
                 displayMobile: true
             },
-            {
-                title: "Fashion Films",
-                url: "/services/fashion-films-kolkata/",
-                type: "internal",
-                order: 19,
-                group: "FASHION",
-                badge: "4K Cinema",
-                description: "Narrative brand films, designer campaigns & artistic luxury fashion storytelling",
-                openInNewTab: false,
-                isActive: true,
-                displayDesktop: true,
-                displayMobile: true
-            },
 
-            // Category 6: PRODUCT (3 items)
+            // Category 6: PRODUCT (1 item)
             {
                 title: "Product Photography",
                 url: "/services/product-photography-kolkata/",
@@ -306,32 +280,6 @@ export const DEFAULT_NAVIGATION_SEED = [
                 group: "PRODUCT",
                 badge: "Studio 4K",
                 description: "E-commerce white-background catalogs, lifestyle flatlays & luxury macro details",
-                openInNewTab: false,
-                isActive: true,
-                displayDesktop: true,
-                displayMobile: true
-            },
-            {
-                title: "Product Videography",
-                url: "/services/product-videography-kolkata/",
-                type: "internal",
-                order: 21,
-                group: "PRODUCT",
-                badge: "Dynamic",
-                description: "360-degree rotating turntable captures, stop-motion & interactive product reels",
-                openInNewTab: false,
-                isActive: true,
-                displayDesktop: true,
-                displayMobile: true
-            },
-            {
-                title: "Product Commercials",
-                url: "/services/product-commercials-kolkata/",
-                type: "internal",
-                order: 22,
-                group: "PRODUCT",
-                badge: "Campaign",
-                description: "High-conversion digital ad films, social media campaigns & launch commercials",
                 openInNewTab: false,
                 isActive: true,
                 displayDesktop: true,

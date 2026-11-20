@@ -15,8 +15,8 @@ const DEFAULT_SEED_CATEGORIES = [
     { name: "CORPORATE", slug: "corporate", order: 2, description: "Commercial ad films, brand promotions, documentaries and corporate media", showInMegaMenu: true, isActive: true, isPublished: true },
     { name: "DRONE & AERIAL", slug: "drone-and-aerial", order: 3, description: "DGCA-certified 4K aerial cinematography, mapping and photogrammetry", showInMegaMenu: true, isActive: true, isPublished: true },
     { name: "SOCIAL", slug: "social", order: 4, description: "Birthdays, rice ceremonies, family celebrations and cultural events", showInMegaMenu: true, isActive: true, isPublished: true },
-    { name: "FASHION", slug: "fashion", order: 5, description: "Editorial fashion photography, runway videography and designer fashion films", showInMegaMenu: true, isActive: true, isPublished: true },
-    { name: "PRODUCT", slug: "product", order: 6, description: "E-commerce product photography, 360 turntable videography and product commercials", showInMegaMenu: true, isActive: true, isPublished: true },
+    { name: "FASHION", slug: "fashion", order: 5, description: "Runway videography, fashion week coverage and dynamic stylized model reels", showInMegaMenu: true, isActive: true, isPublished: true },
+    { name: "PRODUCT", slug: "product", order: 6, description: "E-commerce product photography, lifestyle flatlays and studio product showcase", showInMegaMenu: true, isActive: true, isPublished: true },
     { name: "POST PRODUCTION", slug: "post-production", order: 7, description: "Precision video editing, DaVinci Resolve color grading, VFX and high-end photo retouching", showInMegaMenu: true, isActive: true, isPublished: true },
     { name: "TECH", slug: "tech", order: 8, description: "Modern responsive web design, multi-camera live streaming and hybrid broadcasts", showInMegaMenu: true, isActive: true, isPublished: true },
     { name: "EVENT MANAGEMENT", slug: "event-management", order: 9, description: "Full-scale corporate summits, concerts & luxury event planning", showInMegaMenu: true, isActive: true, isPublished: true, badge: "COMING SOON" }

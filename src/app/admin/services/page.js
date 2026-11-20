@@ -68,29 +68,25 @@ const DEFAULT_CATEGORIES = [
     {
         name: "FASHION",
         slug: "fashion",
-        description: "Editorial fashion photography, runway videography and designer fashion films",
+        description: "Runway videography, fashion week coverage and dynamic stylized model reels",
         order: 5,
         isActive: true,
         isPublished: true,
         showInMegaMenu: true,
         items: [
-            { title: "Fashion Photography", url: "/services/fashion-photography-kolkata/", badge: "Editorial", description: "High-fashion editorials, designer lookbooks, haute couture & agency portfolios", isActive: true, order: 1 },
-            { title: "Fashion Videography", url: "/services/fashion-videography-kolkata/", badge: "Cinematic", description: "Runway videography, fashion week coverage & dynamic stylized model reels", isActive: true, order: 2 },
-            { title: "Fashion Films", url: "/services/fashion-films-kolkata/", badge: "4K Cinema", description: "Narrative brand films, designer campaigns & artistic luxury fashion storytelling", isActive: true, order: 3 }
+            { title: "Fashion Videography", url: "/services/fashion-videography-kolkata/", badge: "Cinematic", description: "Runway videography, fashion week coverage & dynamic stylized model reels", isActive: true, order: 1 }
         ]
     },
     {
         name: "PRODUCT",
         slug: "product",
-        description: "E-commerce product photography, 360 turntable videography and product commercials",
+        description: "E-commerce product photography, lifestyle flatlays and studio product showcase",
         order: 6,
         isActive: true,
         isPublished: true,
         showInMegaMenu: true,
         items: [
-            { title: "Product Photography", url: "/services/product-photography-kolkata/", badge: "Studio 4K", description: "E-commerce white-background catalogs, lifestyle flatlays & luxury macro details", isActive: true, order: 1 },
-            { title: "Product Videography", url: "/services/product-videography-kolkata/", badge: "Dynamic", description: "360-degree rotating turntable captures, stop-motion & interactive product reels", isActive: true, order: 2 },
-            { title: "Product Commercials", url: "/services/product-commercials-kolkata/", badge: "Campaign", description: "High-conversion digital ad films, social media campaigns & launch commercials", isActive: true, order: 3 }
+            { title: "Product Photography", url: "/services/product-photography-kolkata/", badge: "Studio 4K", description: "E-commerce white-background catalogs, lifestyle flatlays & luxury macro details", isActive: true, order: 1 }
         ]
     },
     {

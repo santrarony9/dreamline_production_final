@@ -20,13 +20,18 @@ export async function POST(request) {
         // Revalidate the specified path
         revalidatePath(path);
 
-        // Also revalidate the homepage always (most common use case)
+        // Revalidate root layout so Navbar, Mega Menu & Footer sync immediately
+        revalidatePath('/', 'layout');
+
+        // Also revalidate homepage and services hub
         if (path !== "/") {
             revalidatePath("/");
         }
+        revalidatePath("/services");
+        revalidatePath("/portfolio");
 
-        console.log("Revalidated path:", path);
-        return NextResponse.json({ revalidated: true, path });
+        console.log("[Revalidate] Successfully purged cache for:", path, "and root layout");
+        return NextResponse.json({ revalidated: true, path, layout: true });
     } catch (error) {
         return safeErrorResponse(error, "Revalidation");
     }

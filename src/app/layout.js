@@ -454,7 +454,7 @@ export default async function RootLayout({ children }) {
         "Line Production Kolkata",
         "Drone Videography Kolkata",
         "Event Photography Kolkata",
-        "Fashion Photography Kolkata",
+        "Fashion Videography Kolkata",
         "Live Streaming Services Kolkata"
       ],
 

@@ -251,7 +251,7 @@ export default async function Home() {
           "Drone Videography",
           "Line Production",
           "Event Photography",
-          "Fashion Photography",
+          "Fashion Videography",
           "Live Streaming"
         ],
         "hasOfferCatalog": {

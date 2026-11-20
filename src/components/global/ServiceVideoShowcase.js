@@ -148,41 +148,68 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         return null;
     };
 
+    const getInstagramShortcode = (url) => {
+        if (!url) return null;
+        const match = url.trim().match(/instagram\.com\/(?:[^\/]+\/)?(?:reel|p)\/([A-Za-z0-9_-]+)/i);
+        return match ? match[1] : null;
+    };
+
     // Enrich video items with type (standard or shorts) and metadata
     const enrichedVideos = videos.map((video, idx) => {
         const ytId = getYouTubeId(video.url);
+        const instaShortcode = getInstagramShortcode(video.url);
+        const isInstagram = Boolean(instaShortcode) || video.platform === "instagram" || Boolean(video.url?.includes("instagram.com"));
         const meta = ytId && PODCAST_METADATA[ytId] ? PODCAST_METADATA[ytId] : null;
-        const isShort = video.type === "shorts" || (meta ? (meta.type === "shorts") : (video.url?.includes("/shorts/")));
+        const isShort = isInstagram || video.type === "shorts" || (meta ? (meta.type === "shorts") : (video.url?.includes("/shorts/")));
         const isBirthdayPage = pageSlug === "birthday-photography-kolkata" || pageSlug?.includes("birthday");
         const isOtherSocialPage = pageSlug === "other-social-events-kolkata" || pageSlug?.includes("social-events");
-        const show = video.category || meta?.show || (isBirthdayPage ? "Birthday Photography" : isOtherSocialPage ? "Social Events" : (pageSlug === "podcast-production-kolkata" ? "Dreamline Podcast" : "Dreamline Film"));
-        const tag = video.tag || (isShort ? "Short Highlight" : (pageSlug === "podcast-production-kolkata" ? "Full Episode" : "4K Cinematic"));
+        const isFashionPage = pageSlug === "fashion-videography-kolkata" || pageSlug?.includes("fashion");
+        
+        const show = video.category || meta?.show || (
+            isInstagram ? "Instagram Reel" :
+            isFashionPage ? "Fashion Cinema" :
+            isBirthdayPage ? "Birthday Photography" : 
+            isOtherSocialPage ? "Social Events" : 
+            (pageSlug === "podcast-production-kolkata" ? "Dreamline Podcast" : "Dreamline Film")
+        );
+        const tag = video.tag || (isInstagram ? "Instagram Reel" : (isShort ? "Short Highlight" : (pageSlug === "podcast-production-kolkata" ? "Full Episode" : "4K Cinematic")));
         const accessibleTitle = meta?.accessibleTitle || `${video.title} - Video production by Dreamline Production Kolkata`;
         
-        // Prefer reliable hqdefault thumbnail with automatic resilient fallbacks
+        // Prefer reliable thumbnail with resilient fallbacks
         let primaryThumbnail = "";
-        if (video.thumbnail && video.thumbnail.trim()) {
+        if (video.customThumbnail && video.customThumbnail.trim()) {
+            primaryThumbnail = video.customThumbnail.trim();
+        } else if (video.thumbnail && video.thumbnail.trim()) {
             primaryThumbnail = video.thumbnail.trim();
+        } else if (isInstagram && instaShortcode) {
+            primaryThumbnail = `/uploads/fashion/reels/reel-${instaShortcode.toLowerCase()}.jpg`;
         } else if (ytId) {
             primaryThumbnail = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
         } else {
             primaryThumbnail = "/logo-banner.png";
         }
 
-        // Canonical original YouTube watch URL
-        const originalWatchUrl = isShort 
+        // Canonical original watch URL
+        const originalWatchUrl = isInstagram
+            ? video.url
+            : isShort 
             ? `https://youtube.com/shorts/${ytId}` 
             : `https://www.youtube.com/watch?v=${ytId}`;
+
+        const videoKey = ytId || instaShortcode || `vid-${idx}`;
 
         return {
             ...video,
             ytId,
+            instaShortcode,
+            isInstagram,
             isShort,
             show,
             tag,
             accessibleTitle,
             primaryThumbnail,
             originalWatchUrl,
+            videoKey,
             idx
         };
     });
@@ -192,15 +219,24 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
     const hasBothTypes = standardVideos.length > 0 && shortVideos.length > 0;
 
     const getThumbnailSrc = (video) => {
-        const errors = thumbnailErrorCount[video.ytId] || 0;
-        if (errors === 0) {
+        if (video.customThumbnail && video.customThumbnail.trim()) {
+            return video.customThumbnail.trim();
+        }
+        if (video.thumbnail && video.thumbnail.trim()) {
+            return video.thumbnail.trim();
+        }
+        if (video.isInstagram && video.instaShortcode) {
+            return `/uploads/fashion/reels/reel-${video.instaShortcode.toLowerCase()}.jpg`;
+        }
+        const errors = thumbnailErrorCount[video.ytId || video.videoKey] || 0;
+        if (errors === 0 && video.primaryThumbnail) {
             return video.primaryThumbnail;
         } else if (errors === 1 && video.ytId) {
             return `https://i.ytimg.com/vi/${video.ytId}/hqdefault.jpg`;
         } else if (errors === 2 && video.ytId) {
             return `https://img.youtube.com/vi/${video.ytId}/mqdefault.jpg`;
         }
-        return video.primaryThumbnail;
+        return video.primaryThumbnail || "/logo-banner.png";
     };
 
     // Click-to-Play handlers
@@ -377,15 +413,93 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
         );
     };
 
-    // 9:16 Vertical Short Card (used for podcast shorts)
+    // 9:16 Vertical Short Card (used for podcast shorts & Instagram reels)
     const renderShortCard = (video) => {
-        const isPlaying = playingVideoId === video.ytId;
+        const videoId = video.ytId || video.instaShortcode || video.videoKey || video._id;
         const imageSrc = getThumbnailSrc(video);
-        const watchUrl = video.originalWatchUrl || `https://youtube.com/shorts/${video.ytId}`;
+        const watchUrl = video.originalWatchUrl || (video.isInstagram ? (video.instagramUrl || video.url || video.youtubeUrl) : `https://youtube.com/shorts/${video.ytId}`);
+
+        // For Instagram Reels: Always render as clean, premium 9:16 card that opens the original Reel in a new tab
+        // ZERO iframes, ZERO white backgrounds, ZERO Instagram UI, ZERO scrollbars!
+        if (video.isInstagram) {
+            return (
+                <a
+                    key={videoId || video.idx}
+                    href={watchUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a] hover:border-[#c5a059] hover:shadow-[0_0_35px_rgba(197,160,89,0.3)] transition-all duration-500 shadow-2xl flex flex-col justify-between w-full max-w-[340px] mx-auto h-full block cursor-pointer interactive"
+                    aria-label={`Watch ${video.title} on Instagram`}
+                >
+                    {/* TOP: 9:16 Vertical Video Frame - Pure Black Background, No Scrollbars */}
+                    <div className="relative aspect-[9/16] w-full overflow-hidden bg-black flex-shrink-0">
+                        <Image
+                            src={imageSrc}
+                            alt={`${video.title} - Instagram Reel by Dreamline Production`}
+                            fill
+                            loading="lazy"
+                            sizes="(max-width: 768px) 100vw, 340px"
+                            className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
+                            onError={() => handleThumbnailError(videoId)}
+                        />
+                        {/* Luxury dark gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none group-hover:opacity-60 transition-opacity duration-300"></div>
+
+                        {/* Centered Golden Play Button */}
+                        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                            <div className="w-14 h-14 rounded-full bg-[#c5a059] text-black flex items-center justify-center shadow-[0_0_30px_rgba(197,160,89,0.6)] group-hover:scale-110 group-hover:bg-white group-hover:shadow-[0_0_35px_rgba(255,255,255,0.85)] transition-all duration-300">
+                                <svg className="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        {/* Bottom-right Instagram Reel pill badge */}
+                        <div className="absolute bottom-3 right-3 z-10 pointer-events-none">
+                            <span className="px-2.5 py-1 rounded-full backdrop-blur-md text-[9px] font-black uppercase tracking-wider bg-black/85 border border-[#c5a059]/40 text-[#c5a059] shadow-md flex items-center gap-1.5">
+                                <svg className="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                                <span>Instagram Reel</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* BOTTOM: Dedicated Metadata Card */}
+                    <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 bg-gradient-to-b from-[#111111] to-[#070707] border-t border-white/5 space-y-3">
+                        <div className="flex items-center justify-between gap-2">
+                            <span className="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider truncate max-w-[180px] bg-[#c5a059]/10 border border-[#c5a059]/30 text-[#c5a059]">
+                                {video.show}
+                            </span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-[#c5a059] font-mono">
+                                9:16 Reel
+                            </span>
+                        </div>
+                        <div>
+                            <h4 className="font-heading text-sm sm:text-base font-bold uppercase tracking-tight line-clamp-2 min-h-[2.5rem] text-white group-hover:text-[#c5a059] transition-colors leading-snug">
+                                {video.title}
+                            </h4>
+                        </div>
+                        <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
+                            <span className="text-white/70 group-hover:text-[#c5a059] transition-colors font-bold flex items-center gap-1.5">
+                                <span>Watch on Instagram</span>
+                                <span>▶</span>
+                            </span>
+                            <span className="px-2.5 py-1 rounded-full bg-white/5 group-hover:bg-[#c5a059] text-[#c5a059] group-hover:text-black border border-[#c5a059]/30 text-[9px] font-black uppercase tracking-wider transition-all shadow-sm">
+                                Open ↗
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            );
+        }
+
+        // For standard YouTube shorts (e.g. podcast page)
+        const isPlaying = playingVideoId === videoId;
 
         return (
             <div
-                key={video.ytId || video.idx}
+                key={videoId || video.idx}
                 className="group relative rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a] hover:border-[#c5a059]/80 transition-all duration-500 shadow-2xl flex flex-col justify-between w-full max-w-[340px] mx-auto h-full"
             >
                 {/* TOP: 9:16 Vertical Video Frame */}
@@ -394,22 +508,34 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                         <div className="relative w-full h-full bg-black">
                             {iframeLoading && (
                                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/95 backdrop-blur-sm pointer-events-none">
-                                    <div className="w-10 h-10 rounded-full border-2 border-purple-500/30 border-t-purple-400 animate-spin mb-3"></div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-purple-300">
-                                        Loading Short...
+                                    <div className="w-10 h-10 rounded-full border-2 border-[#c5a059]/30 border-t-[#c5a059] animate-spin mb-3"></div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
+                                        Loading Reel...
                                     </span>
                                 </div>
                             )}
-                            <iframe
-                                src={`https://www.youtube.com/embed/${video.ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                                title={video.accessibleTitle}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                                referrerPolicy="strict-origin-when-cross-origin"
-                                loading="lazy"
-                                onLoad={() => setIframeLoading(false)}
-                                className="w-full h-full border-0 relative z-10"
-                            />
+                            {video.isInstagram ? (
+                                <iframe
+                                    src={`https://www.instagram.com/reel/${video.instaShortcode}/embed/`}
+                                    title={video.accessibleTitle || video.title}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                    loading="lazy"
+                                    onLoad={() => setIframeLoading(false)}
+                                    className="w-full h-full border-0 relative z-10"
+                                />
+                            ) : (
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${video.ytId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                                    title={video.accessibleTitle}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                    referrerPolicy="strict-origin-when-cross-origin"
+                                    loading="lazy"
+                                    onLoad={() => setIframeLoading(false)}
+                                    className="w-full h-full border-0 relative z-10"
+                                />
+                            )}
                             <div className="absolute top-3 right-3 z-30 flex items-center gap-2">
                                 <a
                                     href={watchUrl}
@@ -417,7 +543,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                     rel="noopener noreferrer"
                                     className="px-2.5 py-1 rounded-full bg-black/85 hover:bg-[#c5a059] text-white hover:text-black border border-white/20 text-[10px] font-black uppercase tracking-wider backdrop-blur-md transition-all shadow-xl"
                                 >
-                                    ↗
+                                    ↗ {video.isInstagram ? "Instagram" : "YouTube"}
                                 </a>
                                 <button
                                     type="button"
@@ -431,27 +557,27 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                     ) : (
                         <div
                             className="relative w-full h-full cursor-pointer interactive"
-                            onClick={() => handlePlay(video.ytId)}
+                            onClick={() => handlePlay(videoId)}
                             role="button"
                             tabIndex={0}
-                            aria-label={`Play short: ${video.title}`}
+                            aria-label={`Play: ${video.title}`}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                     e.preventDefault();
-                                    handlePlay(video.ytId);
+                                    handlePlay(videoId);
                                 }
                             }}
                         >
                             <Image
                                 src={imageSrc}
-                                alt={`${video.title} - Video production short`}
+                                alt={`${video.title} - Video production`}
                                 fill
                                 loading="lazy"
                                 sizes="(max-width: 768px) 100vw, 340px"
                                 className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-95 group-hover:opacity-100"
-                                onError={() => handleThumbnailError(video.ytId)}
+                                onError={() => handleThumbnailError(video.ytId || videoId)}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 pointer-events-none group-hover:opacity-60 transition-opacity"></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none group-hover:opacity-60 transition-opacity"></div>
 
                             {/* Centered Play Button */}
                             <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
@@ -462,10 +588,14 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                 </div>
                             </div>
 
-                            {/* Bottom-right 9:16 Shorts badge */}
+                            {/* Bottom-right Reel / Shorts badge */}
                             <div className="absolute bottom-3 right-3 z-10 pointer-events-none">
-                                <span className="px-2 py-0.5 rounded-md bg-black/80 backdrop-blur-md border border-purple-500/30 text-[9px] font-black uppercase tracking-wider text-purple-300">
-                                    9:16 Short
+                                <span className={`px-2 py-0.5 rounded-md backdrop-blur-md text-[9px] font-black uppercase tracking-wider ${
+                                    video.isInstagram
+                                        ? "bg-gradient-to-r from-[#f09433] via-[#dc2743] to-[#bc1888] text-white border border-pink-500/30 shadow-md"
+                                        : "bg-black/80 border border-purple-500/30 text-purple-300"
+                                }`}>
+                                    {video.isInstagram ? "Instagram Reel" : "9:16 Short"}
                                 </span>
                             </div>
                         </div>
@@ -475,11 +605,15 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                 {/* BOTTOM: Dedicated Metadata Card */}
                 <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 bg-gradient-to-b from-[#111111] to-[#070707] border-t border-white/5 space-y-3">
                     <div className="flex items-center justify-between gap-2">
-                        <span className="px-2.5 py-1 rounded-full bg-purple-900/30 border border-purple-500/30 text-[9px] font-black uppercase tracking-wider text-purple-300 truncate max-w-[180px]">
+                        <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider truncate max-w-[180px] ${
+                            video.isInstagram
+                                ? "bg-[#c5a059]/10 border border-[#c5a059]/30 text-[#c5a059]"
+                                : "bg-purple-900/30 border border-purple-500/30 text-purple-300"
+                        }`}>
                             {video.show}
                         </span>
                         <span className="text-[9px] font-black uppercase tracking-widest text-white/40">
-                            Reel
+                            {video.isInstagram ? "Reel" : "Short"}
                         </span>
                     </div>
                     <div>
@@ -490,19 +624,19 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                     <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] font-bold uppercase tracking-wider">
                         <button
                             type="button"
-                            onClick={() => handlePlay(video.ytId)}
-                            className="text-white/70 hover:text-[#c5a059] transition-colors"
+                            onClick={() => handlePlay(videoId)}
+                            className="text-white/70 hover:text-[#c5a059] transition-colors font-bold"
                         >
-                            Play Short ▶
+                            {isPlaying ? "Now Playing" : (video.isInstagram ? "Watch Reel ▶" : "Play Short ▶")}
                         </button>
                         <a
                             href={watchUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="text-purple-300 hover:text-white"
+                            className={video.isInstagram ? "text-[#c5a059] hover:text-white font-bold" : "text-purple-300 hover:text-white"}
                         >
-                            Shorts ↗
+                            {video.isInstagram ? "Instagram ↗" : "Shorts ↗"}
                         </a>
                     </div>
                 </div>
@@ -516,7 +650,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
 
         if (isShortsList) {
             return (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
                     {videoList.map(renderShortCard)}
                 </div>
             );
@@ -595,7 +729,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                         </p>
                     )}
 
-                    {/* FILTER TABS (When both standard and shorts are present, e.g. Podcast page) */}
+                    {/* FILTER TABS (When both standard and shorts are present, e.g. Podcast or Fashion page) */}
                     {hasBothTypes && (
                         <div className="mt-8 flex flex-wrap items-center gap-3">
                             <button
@@ -618,7 +752,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                         : "bg-white/5 text-gray-400 hover:text-white border border-white/10 hover:border-white/20"
                                 }`}
                             >
-                                Full Episodes ({standardVideos.length})
+                                {pageSlug === "fashion-videography-kolkata" ? "Cinema Films" : (pageSlug === "podcast-production-kolkata" ? "Full Episodes" : "Featured Films")} ({standardVideos.length})
                             </button>
                             <button
                                 type="button"
@@ -629,7 +763,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                         : "bg-white/5 text-gray-400 hover:text-white border border-white/10 hover:border-white/20"
                                 }`}
                             >
-                                Podcast Shorts ({shortVideos.length})
+                                {pageSlug === "fashion-videography-kolkata" ? "Fashion Reels" : (pageSlug === "podcast-production-kolkata" ? "Podcast Shorts" : "Reels & Shorts")} ({shortVideos.length})
                             </button>
                         </div>
                     )}
@@ -645,7 +779,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                                 <div className="flex items-center gap-3">
                                     <span className="w-2.5 h-2.5 rounded-full bg-[#c5a059]"></span>
                                     <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
-                                        Full Episodes &amp; Long-Form Interviews
+                                        {pageSlug === "fashion-videography-kolkata" ? "Fashion Cinema & Commercial Ad Films" : (pageSlug === "podcast-production-kolkata" ? "Full Episodes & Long-Form Interviews" : "Featured Films & Commercials")}
                                     </h3>
                                 </div>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
@@ -655,16 +789,16 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                             {renderVideoGrid(standardVideos, false)}
                         </div>
 
-                        {/* Podcast Shorts Sub-grid */}
+                        {/* Shorts / Reels Sub-grid */}
                         <div>
                             <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                                 <div className="flex items-center gap-3">
-                                    <span className="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+                                    <span className="w-2.5 h-2.5 rounded-full bg-[#c5a059]"></span>
                                     <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
-                                        Podcast Shorts &amp; Social Highlights
+                                        {pageSlug === "fashion-videography-kolkata" ? "Fashion Reels & Instagram Showcase" : (pageSlug === "podcast-production-kolkata" ? "Podcast Shorts & Social Highlights" : "Reels & Social Highlights")}
                                     </h3>
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-purple-300">
+                                <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
                                     9:16 Vertical Mobile Format
                                 </span>
                             </div>
@@ -673,12 +807,12 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                     </div>
                 )}
 
-                {/* 2. FULL EPISODES FILTER: 2 Large Videos per row */}
+                {/* 2. FULL FILMS FILTER: 2 Large Videos per row */}
                 {activeFilter === "episodes" && (
                     <div>
                         <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                             <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
-                                Full Episode Productions
+                                {pageSlug === "fashion-videography-kolkata" ? "Fashion Cinema Productions" : (pageSlug === "podcast-production-kolkata" ? "Full Episode Productions" : "Cinema Productions")}
                             </h3>
                             <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
                                 {standardVideos.length} Videos Available
@@ -688,23 +822,41 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                     </div>
                 )}
 
-                {/* 3. PODCAST SHORTS FILTER */}
+                {/* 3. SHORTS / REELS FILTER */}
                 {activeFilter === "shorts" && (
                     <div>
                         <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
                             <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
-                                Podcast Shorts &amp; Reels
+                                {pageSlug === "fashion-videography-kolkata" ? "Fashion Reels & Instagram Showcase" : (pageSlug === "podcast-production-kolkata" ? "Podcast Shorts & Reels" : "Reels & Shorts")}
                             </h3>
                             <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
-                                {shortVideos.length} Shorts Available
+                                {shortVideos.length} Reels Available
                             </span>
                         </div>
                         {renderVideoGrid(shortVideos, true)}
                     </div>
                 )}
 
-                {/* 4. DEFAULT SINGLE GRID (Standard across Wedding, Pre Wedding, Birthday, Corporate, Drone, etc.): 2 Large Videos per row */}
-                {!hasBothTypes && renderVideoGrid(enrichedVideos, false)}
+                {/* 4. DEFAULT SINGLE GRID */}
+                {!hasBothTypes && shortVideos.length > 0 && (
+                    <div>
+                        {pageSlug !== "fashion-videography-kolkata" && (
+                            <div className="mb-6 md:mb-8 flex items-center justify-between border-b border-white/10 pb-4">
+                                <div className="flex items-center gap-3">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-[#c5a059]"></span>
+                                    <h3 className="text-xl md:text-2xl font-black text-white uppercase italic tracking-tight">
+                                        Podcast Shorts &amp; Social Highlights
+                                    </h3>
+                                </div>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-[#c5a059]">
+                                    9:16 Vertical Mobile Format
+                                </span>
+                            </div>
+                        )}
+                        {renderVideoGrid(shortVideos, true)}
+                    </div>
+                )}
+                {!hasBothTypes && shortVideos.length === 0 && renderVideoGrid(enrichedVideos, false)}
             </div>
         </section>
     );

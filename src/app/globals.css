@@ -426,10 +426,10 @@ video {
   width: 100%;
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
   .services-mega-grid-dynamic {
     display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   }
 }
 

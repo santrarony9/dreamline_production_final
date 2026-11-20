@@ -307,7 +307,7 @@ export default function Navbar({ initialServices, siteContent }) {
                                                 : "opacity-0 -translate-y-2 pointer-events-none invisible"
                                         }`}
                                         style={{ 
-                                            width: isServicesMegaMenu ? "min(1420px, 98vw)" : (grouped ? "780px" : "320px"), 
+                                            width: isServicesMegaMenu ? "min(1180px, 98vw)" : (grouped ? "780px" : "320px"), 
                                             maxWidth: "98vw" 
                                         }}
                                     >
@@ -323,7 +323,7 @@ export default function Navbar({ initialServices, siteContent }) {
                                                 <>
                                                     <div className={
                                                         isServicesMegaMenu
-                                                            ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-x-5 xl:gap-x-6 gap-y-5 items-start services-mega-grid-dynamic"
+                                                            ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-x-6 xl:gap-x-8 gap-y-6 items-start services-mega-grid-dynamic"
                                                             : `grid grid-cols-1 md:grid-cols-${Math.min(grouped.length, 3)} gap-6 items-start`
                                                     }>
                                                         {grouped.map((group, gIdx) => {
@@ -413,37 +413,6 @@ export default function Navbar({ initialServices, siteContent }) {
                                                             );
                                                         })}
 
-                                                        {/* Intelligent Grid Filler: If exactly 9 categories, render 10th Studio HQ Consult Card */}
-                                                        {grouped.length === 9 && (
-                                                            <div className="hidden xl:flex flex-col justify-between p-3.5 rounded-2xl bg-gradient-to-b from-[#14120c] to-[#0a0a0a] border border-[#c5a059]/25 shadow-xl space-y-2.5 min-w-0 w-full box-border">
-                                                                <div className="space-y-1.5">
-                                                                    <div className="flex items-center gap-1.5 pb-2 border-b border-[#c5a059]/20">
-                                                                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-pulse"></span>
-                                                                        <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-[#c5a059]">
-                                                                            STUDIO HQ
-                                                                        </h3>
-                                                                    </div>
-                                                                    <h4 className="text-[11.5px] font-black text-white uppercase tracking-wide leading-tight">
-                                                                        Bespoke Production
-                                                                    </h4>
-                                                                    <p className="text-[8.5px] text-gray-400 font-medium leading-[1.3] uppercase tracking-wide">
-                                                                        Custom multi-sector corporate campaigns, celebrity shoots &amp; luxury film productions across India.
-                                                                    </p>
-                                                                </div>
-                                                                <div className="pt-2 border-t border-white/5 flex items-center justify-between gap-1.5">
-                                                                    <a href="tel:+918240054002" className="text-[9px] font-black text-[#c5a059] hover:text-white transition-colors">
-                                                                        +91 82400 54002
-                                                                    </a>
-                                                                    <Link 
-                                                                        href="/contact"
-                                                                        onClick={() => setActiveDropdownId(null)}
-                                                                        className="px-2.5 py-1 rounded-full bg-[#c5a059] text-black text-[8px] font-black uppercase tracking-wider hover:bg-white transition-all shadow-md"
-                                                                    >
-                                                                        Quote ↗
-                                                                    </Link>
-                                                                </div>
-                                                            </div>
-                                                        )}
                                                     </div>
 
                                                     {/* Dropdown Directory Footer */}

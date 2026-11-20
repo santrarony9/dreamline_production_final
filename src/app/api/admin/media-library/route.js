@@ -6,11 +6,15 @@ import MediaAsset from "@/models/MediaAsset";
 import ServicePage from "@/models/ServicePage";
 import ServiceVideo from "@/models/ServiceVideo";
 import ServiceShot from "@/models/ServiceShot";
+import Content from "@/models/Content";
+import CustomPage from "@/models/CustomPage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";
+import { syncServicePage } from "@/lib/service-sync";
 import path from "path";
 import fs from "fs/promises";
+import { revalidatePath } from "next/cache";
 
 export async function GET(request) {
     const session = await getServerSession(authOptions);
@@ -193,5 +197,120 @@ export async function DELETE(request) {
         });
     } catch (err) {
         return safeErrorResponse(err, "Media Library DELETE");
+    }
+}
+
+export async function PATCH(request) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await dbConnect();
+    try {
+        const body = await request.json();
+        const { url, alt, title, caption, category, newUrl } = body;
+
+        if (!url) {
+            return NextResponse.json({ error: "Media URL is required" }, { status: 400 });
+        }
+
+        // If replacing an old URL with a new URL across the entire database
+        if (newUrl && newUrl !== url) {
+            const cleanOld = url.trim();
+            const cleanNew = newUrl.trim();
+
+            // 1. Update ServicePage hero & gallery
+            await ServicePage.updateMany(
+                { heroImage: cleanOld },
+                { $set: { heroImage: cleanNew } }
+            );
+            await ServicePage.updateMany(
+                { "gallery.url": cleanOld },
+                { $set: { "gallery.$[elem].url": cleanNew } },
+                { arrayFilters: [{ "elem.url": cleanOld }] }
+            );
+
+            // 2. Update ServiceVideo
+            await ServiceVideo.updateMany(
+                { thumbnail: cleanOld },
+                { $set: { thumbnail: cleanNew } }
+            );
+            await ServiceVideo.updateMany(
+                { customThumbnail: cleanOld },
+                { $set: { customThumbnail: cleanNew } }
+            );
+
+            // 3. Update ServiceShot
+            await ServiceShot.updateMany(
+                { imageUrl: cleanOld },
+                { $set: { imageUrl: cleanNew } }
+            );
+
+            // 4. Update CustomPage
+            await CustomPage.updateMany(
+                { featuredImage: cleanOld },
+                { $set: { featuredImage: cleanNew } }
+            );
+            await CustomPage.updateMany(
+                { bannerImage: cleanOld },
+                { $set: { bannerImage: cleanNew } }
+            );
+
+            // 5. Update MediaAsset
+            await MediaAsset.findOneAndUpdate(
+                { url: cleanOld },
+                { 
+                    $set: { 
+                        url: cleanNew,
+                        alt: alt !== undefined ? alt : "",
+                        title: title !== undefined ? title : "",
+                        category: category || "general"
+                    } 
+                },
+                { upsert: true }
+            );
+
+            // Synchronize affected service pages
+            const affectedPages = await ServicePage.find({
+                $or: [{ heroImage: cleanNew }, { "gallery.url": cleanNew }]
+            }, 'slug').lean();
+
+            for (const p of affectedPages) {
+                if (p.slug) await syncServicePage(p.slug);
+            }
+
+            try {
+                revalidatePath('/', 'layout');
+            } catch (e) {}
+
+            return NextResponse.json({
+                success: true,
+                message: `Image replaced successfully across ${affectedPages.length} service page(s) and database records.`
+            });
+        }
+
+        // Standard metadata update (alt, title, caption, category)
+        const updated = await MediaAsset.findOneAndUpdate(
+            { url },
+            {
+                $set: {
+                    ...(alt !== undefined && { alt: alt.trim() }),
+                    ...(title !== undefined && { title: title.trim() }),
+                    ...(caption !== undefined && { caption: caption.trim() }),
+                    ...(category !== undefined && { category }),
+                    isManualApproved: true
+                }
+            },
+            { upsert: true, returnDocument: 'after' }
+        );
+
+        return NextResponse.json({
+            success: true,
+            asset: updated,
+            message: "Media metadata updated successfully."
+        });
+    } catch (err) {
+        return safeErrorResponse(err, "Media Library PATCH");
     }
 }

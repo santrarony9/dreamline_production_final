@@ -43,6 +43,7 @@ next-env.d.ts
 
 .vercel
 scratch/
+temp_gdrive/
 
 # Utility scripts with credentials (DO NOT COMMIT)
 check_db.mjs

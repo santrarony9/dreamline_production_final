@@ -15,43 +15,48 @@ export default function AdminLayout({ children }) {
 
     const navSections = [
         {
-            title: "Studio",
+            title: "Studio Overview & Media",
             items: [
                 { label: "Dashboard", path: "/admin", icon: "📊" },
-                { label: "VIDEO & SHOT MANAGEMENT", path: "/admin/video-shots", icon: "🎬" },
-                { label: "SERVICES MANAGEMENT", path: "/admin/services", icon: "🗂️" },
-                { label: "Inquiries", path: "/admin/bookings", icon: "✉️" },
+                { label: "Media Library", path: "/admin/media-library", icon: "🖼️" },
+                { label: "Video & Shot Management", path: "/admin/video-shots", icon: "🎬" },
+                { label: "Services Management", path: "/admin/services", icon: "🗂️" },
+                { label: "Enquiries & Bookings", path: "/admin/bookings", icon: "✉️" },
             ]
         },
         {
-            title: "Content & Portfolios",
+            title: "Galleries & Portfolios",
             items: [
+                { label: "Portfolio Central", path: "/admin/portfolio", icon: "📁" },
+                { label: "Fashion Videography", path: "/admin/fashion-videography", icon: "👗" },
+                { label: "Jewellery Gallery", path: "/admin/jewellery-gallery", icon: "💎" },
+                { label: "Product Gallery", path: "/admin/product-gallery", icon: "📸" },
                 { label: "Podcast Video Management", path: "/admin/podcasts", icon: "🎙️" },
-                { label: "Blog Management", path: "/admin/journal", icon: "📝" },
+                { label: "Blog / Story Archive", path: "/admin/journal", icon: "📝" },
                 { label: "Weddings", path: "/admin/weddings", icon: "💍" },
                 { label: "Commercial", path: "/admin/commercial", icon: "🎥" },
-                { label: "Tech / Web", path: "/admin/tech", icon: "💻" },
-                { label: "Luxury", path: "/admin/luxury", icon: "✨" },
                 { label: "Galleries", path: "/admin/gallery", icon: "🎬" },
             ]
         },
         {
-            title: "Website Setup",
+            title: "Website Builder & Setup",
             items: [
                 { label: "Pages Builder", path: "/admin/pages", icon: "📑" },
-                { label: "Home Page", path: "/admin/home", icon: "🏠" },
-                { label: "Navigation & Banner", path: "/admin/navigation", icon: "🧭" },
+                { label: "Home Page Management", path: "/admin/home", icon: "🏠" },
+                { label: "Navigation & Mega Menu", path: "/admin/navigation", icon: "🧭" },
                 { label: "About Page", path: "/admin/about", icon: "🏢" },
-                { label: "Google Business", path: "/admin/google-business", icon: "🌐" },
+                { label: "Tech / Web", path: "/admin/tech", icon: "💻" },
+                { label: "Luxury Showcase", path: "/admin/luxury", icon: "✨" },
             ]
         }
     ];
 
     const bottomNavItems = [
-        { label: "Image Alt SEO", path: "/admin/image-seo", icon: "🖼️" },
-        { label: "SEO Settings", path: "/admin/seo", icon: "🔍" },
-        { label: "Users & Settings", path: "/admin/users", icon: "⚙️" },
-        { label: "Global Info", path: "/admin/global", icon: "🌍" },
+        { label: "Global Settings & Info", path: "/admin/global", icon: "🌍" },
+        { label: "SEO Matrix", path: "/admin/seo", icon: "🔍" },
+        { label: "Image Alt SEO", path: "/admin/image-seo", icon: "🏷️" },
+        { label: "Users & Security", path: "/admin/users", icon: "⚙️" },
+        { label: "Google Business", path: "/admin/google-business", icon: "🌐" },
         { label: "Diagnostics", path: "/admin/diagnostics", icon: "🩺" },
     ];
 

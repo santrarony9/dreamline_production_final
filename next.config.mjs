@@ -79,7 +79,7 @@ const nextConfig = {
               "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googleapis.com https://*.doubleclick.net https://*.google.com https://*.google.co.in https://*.youtube.com https://*.googlevideo.com wss:",
               "media-src 'self' data: blob: https://backend.dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://*.googlevideo.com https://*.youtube.com",
-              "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://youtube-nocookie.com https://player.vimeo.com https://vimeo.com",
+              "frame-src 'self' https://www.google.com https://maps.google.com https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com https://youtube-nocookie.com https://player.vimeo.com https://vimeo.com https://www.instagram.com https://instagram.com",
               "frame-ancestors 'self'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -239,6 +239,26 @@ const nextConfig = {
       {
         source: '/services/event-photography',
         destination: '/services/wedding-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/product-videography-kolkata',
+        destination: '/services/product-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/product-commercials-kolkata',
+        destination: '/services/product-photography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/fashion-photography-kolkata',
+        destination: '/services/fashion-videography-kolkata/',
+        permanent: true,
+      },
+      {
+        source: '/services/fashion-films-kolkata',
+        destination: '/services/fashion-videography-kolkata/',
         permanent: true,
       },
       // Aliases for About Us and Contact Us

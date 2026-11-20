@@ -8,14 +8,35 @@ const ServiceVideoSchema = new mongoose.Schema({
     },
     youtubeUrl: {
         type: String,
-        required: [true, 'YouTube URL is required'],
+        default: "",
         trim: true
     },
     youtubeId: {
         type: String,
-        required: [true, 'YouTube Video ID is required'],
+        default: "",
         trim: true,
         index: true
+    },
+    videoUrl: {
+        type: String,
+        default: "",
+        trim: true
+    },
+    platform: {
+        type: String,
+        enum: ['youtube', 'instagram', 'direct', 'other'],
+        default: 'youtube',
+        index: true
+    },
+    instagramUrl: {
+        type: String,
+        default: "",
+        trim: true
+    },
+    instagramId: {
+        type: String,
+        default: "",
+        trim: true
     },
     thumbnail: {
         type: String,

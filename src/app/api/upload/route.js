@@ -7,6 +7,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getToken, encode } from "next-auth/jwt";
 import { safeErrorResponse } from "@/lib/error-handler";
+import dbConnect from "@/lib/mongodb";
+import MediaAsset from "@/models/MediaAsset";
 
 const ALLOWED_MIME_TYPES = [
     "image/jpeg",
@@ -201,6 +203,27 @@ export async function POST(request) {
                     ? '' 
                     : process.env.BACKEND_URL.replace(/\/$/, '');
                 const publicUrl = `${baseStorageUrl}/uploads/${finalFileName}`;
+
+                // Index asset in MediaAsset
+                try {
+                    await dbConnect();
+                    await MediaAsset.findOneAndUpdate(
+                        { url: publicUrl },
+                        {
+                            $set: {
+                                url: publicUrl,
+                                title: safeFileName,
+                                mimeType: contentType || 'image/webp',
+                                fileSize: assembledBuffer.length,
+                                source: 'upload'
+                            }
+                        },
+                        { upsert: true }
+                    );
+                } catch (assetErr) {
+                    console.warn("[MediaAsset Index Error - Chunk]:", assetErr.message);
+                }
+
                 return NextResponse.json({ success: true, url: publicUrl }, { headers: corsHeaders });
             } else {
                 return NextResponse.json({ success: true, message: `Chunk ${chunkIndex} received` }, { headers: corsHeaders });
@@ -273,6 +296,31 @@ export async function POST(request) {
 
         if (uploadedResults.length === 0) {
             return NextResponse.json({ error: "No valid files could be processed. Verify file types and sizes." }, { status: 400, headers: corsHeaders });
+        }
+
+        // Index uploaded assets in MediaAsset collection
+        try {
+            await dbConnect();
+            for (const item of uploadedResults) {
+                await MediaAsset.findOneAndUpdate(
+                    { url: item.url },
+                    {
+                        $set: {
+                            url: item.url,
+                            title: item.originalName,
+                            alt: item.originalName.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " "),
+                            fileSize: item.fileSize,
+                            width: item.width,
+                            height: item.height,
+                            mimeType: item.url.endsWith('.webp') ? 'image/webp' : (item.url.endsWith('.png') ? 'image/png' : 'image/jpeg'),
+                            source: 'upload'
+                        }
+                    },
+                    { upsert: true }
+                );
+            }
+        } catch (assetErr) {
+            console.warn("[MediaAsset Index Error - Multi]:", assetErr.message);
         }
 
         return NextResponse.json({

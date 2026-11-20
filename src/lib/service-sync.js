@@ -30,10 +30,12 @@ export async function syncServicePage(serviceSlug) {
 
     const formattedVideos = publishedVideos.map((v, idx) => ({
         title: v.title || "",
-        url: v.youtubeUrl || "",
+        url: v.youtubeUrl || v.videoUrl || v.instagramUrl || "",
         thumbnail: v.customThumbnail || v.thumbnail || "",
         description: v.description || "",
         category: v.tag || v.category || "",
+        platform: v.platform || (v.youtubeUrl?.includes('instagram.com') ? 'instagram' : 'youtube'),
+        type: v.videoType || (v.platform === 'instagram' ? 'shorts' : 'standard'),
         isFeatured: Boolean(v.isFeatured),
         order: v.order !== undefined ? v.order : idx + 1
     }));
