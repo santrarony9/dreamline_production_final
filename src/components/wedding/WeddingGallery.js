@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -27,28 +27,32 @@ export default function WeddingGallery({ images = [], altTexts = [], captions = 
         }
     };
 
-    const closeLightbox = () => {
+    const closeLightbox = useCallback(() => {
         setSelectedImage(null);
         if (typeof document !== "undefined") {
             document.body.style.overflow = "auto";
         }
-    };
+    }, []);
 
-    const nextImage = (e) => {
+    const nextImage = useCallback((e) => {
         if (e && e.stopPropagation) e.stopPropagation();
         if (images.length === 0) return;
-        const newIndex = (currentIndex + 1) % images.length;
-        setCurrentIndex(newIndex);
-        setSelectedImage(images[newIndex]);
-    };
+        setCurrentIndex((prev) => {
+            const newIndex = (prev + 1) % images.length;
+            setSelectedImage(images[newIndex]);
+            return newIndex;
+        });
+    }, [images]);
 
-    const prevImage = (e) => {
+    const prevImage = useCallback((e) => {
         if (e && e.stopPropagation) e.stopPropagation();
         if (images.length === 0) return;
-        const newIndex = (currentIndex - 1 + images.length) % images.length;
-        setCurrentIndex(newIndex);
-        setSelectedImage(images[newIndex]);
-    };
+        setCurrentIndex((prev) => {
+            const newIndex = (prev - 1 + images.length) % images.length;
+            setSelectedImage(images[newIndex]);
+            return newIndex;
+        });
+    }, [images]);
 
     // Mobile touch swipe handlers
     const handleTouchStart = (e) => {
@@ -83,7 +87,7 @@ export default function WeddingGallery({ images = [], altTexts = [], captions = 
         };
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [currentIndex, images]);
+    }, [closeLightbox, nextImage, prevImage]);
 
     if (!images || images.length === 0) {
         return (
