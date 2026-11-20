@@ -168,6 +168,11 @@
   will-change: transform;
 }
 
+.brand-track:hover,
+.brand-track:active {
+  animation-play-state: paused;
+}
+
 @keyframes brand-glide {
   from {
     transform: translateX(0);
@@ -180,6 +185,12 @@
 
 .animate-brand-glide {
   animation: brand-glide 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-brand-glide:hover,
+.animate-brand-glide:active {
+  animation-play-state: paused;
 }
 
 /* Kinetic Scrolling Text */
@@ -225,6 +236,12 @@
   display: flex;
   gap: 2rem;
   animation: scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.marquee:hover .marquee-inner,
+.marquee:active .marquee-inner {
+  animation-play-state: paused;
 }
 
 @media (min-width: 768px) {

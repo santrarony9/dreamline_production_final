@@ -1,4 +1,5 @@
 import StructuredData from "@/components/seo/StructuredData";
+import Link from "next/link";
 
 export async function generateMetadata() {
     return {
@@ -187,12 +188,12 @@ export default function FAQPage() {
                             We'd love to hear from you. Get in touch and let's discuss your project.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <a
+                            <Link
                                 href="/contact"
                                 className="inline-flex items-center justify-center px-10 py-5 bg-[#c5a059] text-black text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white transition-all duration-500"
                             >
                                 Discuss Your Project
-                            </a>
+                            </Link>
                             <a
                                 href="tel:+918240054002"
                                 className="inline-flex items-center justify-center px-10 py-5 border border-white/20 text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all duration-500"

@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+import Link from "next/link";
 import dbConnect from "@/lib/mongodb";
 import Analytics from "@/models/Analytics";
 import Booking from "@/models/Booking";
@@ -37,25 +38,25 @@ export default async function AdminDashboard() {
 
             {/* QUICK ACTIONS HUB */}
             <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <a href="/admin/weddings" className="group bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
+                <Link href="/admin/weddings" className="group bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
                     <span className="text-3xl mb-3 group-hover:scale-110 transition-transform">📸</span>
                     <span className="text-xs font-black uppercase tracking-widest text-white group-hover:text-[#c5a059] transition-colors">Upload Wedding</span>
-                </a>
-                <a href="/admin/journal" className="group bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
+                </Link>
+                <Link href="/admin/journal" className="group bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
                     <span className="text-3xl mb-3 group-hover:scale-110 transition-transform">📝</span>
                     <span className="text-xs font-black uppercase tracking-widest text-white group-hover:text-[#c5a059] transition-colors">Write Blog</span>
-                </a>
-                <a href="/admin/bookings" className="group relative bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
+                </Link>
+                <Link href="/admin/bookings" className="group relative bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
                     {activeBookings > 0 && (
                         <div className="absolute top-4 right-4 w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
                     )}
                     <span className="text-3xl mb-3 group-hover:scale-110 transition-transform">✉️</span>
                     <span className="text-xs font-black uppercase tracking-widest text-white group-hover:text-[#c5a059] transition-colors">View Inquiries</span>
-                </a>
-                <a href="/admin/home" className="group bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
+                </Link>
+                <Link href="/admin/home" className="group bg-gradient-to-br from-[#0a0a0a] to-[#111] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/50 transition-all text-center flex flex-col items-center justify-center min-h-[140px] hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#c5a059]/10">
                     <span className="text-3xl mb-3 group-hover:scale-110 transition-transform">⚙️</span>
                     <span className="text-xs font-black uppercase tracking-widest text-white group-hover:text-[#c5a059] transition-colors">Edit Homepage</span>
-                </a>
+                </Link>
             </section>
 
             {/* Stats Grid */}
@@ -75,34 +76,34 @@ export default async function AdminDashboard() {
             <section className="space-y-6">
                 <h3 className="text-xs font-black uppercase tracking-widest text-[#c5a059]">Quick Management</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <a href="/admin/home?tab=BANNER" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                    <Link href="/admin/home?tab=BANNER" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🎬</div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white">Update Banner</p>
                             <p className="text-[9px] text-gray-500 font-bold uppercase">Front office visuals</p>
                         </div>
-                    </a>
-                    <a href="/admin/services" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                    </Link>
+                    <Link href="/admin/services" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🗂️</div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white">Service Pages</p>
                             <p className="text-[9px] text-gray-500 font-bold uppercase">Manage dynamic content</p>
                         </div>
-                    </a>
-                    <a href="/admin/journal" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                    </Link>
+                    <Link href="/admin/journal" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">📝</div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white">Story Archive</p>
                             <p className="text-[9px] text-gray-500 font-bold uppercase">Journal & Narratives</p>
                         </div>
-                    </a>
-                    <a href="/admin/global" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
+                    </Link>
+                    <Link href="/admin/global" className="group bg-[#0a0a0a] border border-white/5 p-6 rounded-3xl hover:border-[#c5a059]/30 transition-all flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🌐</div>
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-white">Global Settings</p>
                             <p className="text-[9px] text-gray-500 font-bold uppercase">SEO & Social links</p>
                         </div>
-                    </a>
+                    </Link>
                 </div>
             </section>
 

@@ -193,7 +193,7 @@ export default async function WeddingDetailPage({ params }) {
     const embedUrl = getEmbedUrl(wedding.videoUrl);
 
     return (
-        <main className="bg-black pt-32 min-h-screen">
+        <main className="bg-black pt-28 md:pt-36 min-h-screen">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "CreativeWork",
@@ -215,7 +215,7 @@ export default async function WeddingDetailPage({ params }) {
             }} />
             {/* Header Section */}
             <section className="container mx-auto px-6 mb-16 text-center">
-                <Link href="/luxury" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 hover:text-[#c5a059] transition-colors mb-10 group interactive">
+                <Link href="/luxury" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 hover:text-[#c5a059] transition-colors mb-8 sm:mb-10 group interactive">
                     <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
@@ -223,7 +223,7 @@ export default async function WeddingDetailPage({ params }) {
                 </Link>
                 <div className="max-w-4xl mx-auto">
                     <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-4 block">Cinematic Story</span>
-                    <h1 className="font-heading text-4xl md:text-7xl font-black mb-6 leading-none text-white uppercase tracking-tighter pb-2 md:pb-4">
+                    <h1 className="font-heading text-3xl sm:text-4xl md:text-7xl font-black mb-6 leading-none text-white uppercase tracking-tighter pb-2 md:pb-4">
                         {wedding.title}
                     </h1>
                     <p className="text-gray-500 text-sm uppercase tracking-widest font-bold mb-10">

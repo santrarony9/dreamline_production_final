@@ -219,7 +219,7 @@ export default async function DynamicServicePage({ params }) {
                 "areaServed": ["Kolkata", "West Bengal", "India"]
             }} />
             {/* HERO SECTION */}
-            <section className="px-8 md:px-16 mb-20">
+            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
                 <nav aria-label="Breadcrumb" className="mb-6 text-xs font-bold uppercase tracking-widest text-gray-500">
                     <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
                     <span className="mx-2">/</span>
@@ -231,7 +231,7 @@ export default async function DynamicServicePage({ params }) {
                     <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">
                         {page.subtitle || "Service Specialty"}
                     </span>
-                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white leading-[0.9]">
+                    <h1 className="font-heading text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6 sm:mb-8 uppercase text-white leading-[0.95]">
                         {page.title}
                     </h1>
                     <p className="text-white/60 text-lg leading-relaxed max-w-2xl font-medium">

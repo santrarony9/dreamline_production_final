@@ -88,9 +88,9 @@ export default async function JournalPage() {
     return (
         <>
         <StructuredData data={blogsPageSchema} />
-        <main className="bg-black pt-32 min-h-screen">
-            <section className="container mx-auto px-6 mb-20 text-center">
-                <h1 className="font-heading text-6xl md:text-8xl font-black mb-8 uppercase text-white">
+        <main className="bg-black pt-28 md:pt-36 min-h-screen">
+            <section className="container mx-auto px-6 mb-16 md:mb-20 text-center">
+                <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black mb-6 md:mb-8 uppercase text-white">
                     The <span className="text-[#c5a059]">Journal.</span>
                 </h1>
                 <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">

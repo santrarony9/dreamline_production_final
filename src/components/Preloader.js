@@ -87,7 +87,7 @@ export default function Preloader() {
                 `}</style>
             </noscript>
             <div
-                className="preloader-overlay fixed inset-0 z-[100] bg-black flex items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.85,0,0.15,1)]"
+                className="preloader-overlay fixed inset-0 z-[9999] bg-black flex items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.85,0,0.15,1)]"
                 aria-hidden="true"
                 role="presentation"
                 style={{

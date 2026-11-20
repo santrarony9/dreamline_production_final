@@ -73,8 +73,9 @@ export function generateStaticParams() {
   return LOCATIONS.map(l => ({ slug: l.slug }));
 }
 
-export function generateMetadata({ params }) {
-  const loc = LOCATIONS.find(l => l.slug === params.slug);
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const loc = LOCATIONS.find(l => l.slug === slug);
   if (!loc) return {};
   return {
     title: `${loc.headline} | Dreamline Production`,
@@ -92,8 +93,9 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function LocationPage({ params }) {
-  const loc = LOCATIONS.find(l => l.slug === params.slug);
+export default async function LocationPage({ params }) {
+  const { slug } = await params;
+  const loc = LOCATIONS.find(l => l.slug === slug);
   if (!loc) notFound();
 
   const schema = {
@@ -130,14 +132,14 @@ export default function LocationPage({ params }) {
   return (
     <>
       <StructuredData data={schema} />
-      <main className="bg-black pt-32 min-h-screen">
+      <main className="bg-black pt-28 md:pt-36 min-h-screen">
         <section className="container mx-auto px-6 max-w-5xl pb-32">
           {/* Hero */}
           <div className="mb-16 border-b border-white/10 pb-16">
             <p className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-4">
               {loc.service} • {loc.location}
             </p>
-            <h1 className="font-heading text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-8">
+            <h1 className="font-heading text-3xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-6 sm:mb-8">
               {loc.headline.split(',')[0]}
               <br />
               <span className="text-[#c5a059]">

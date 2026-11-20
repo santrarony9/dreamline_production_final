@@ -46,7 +46,7 @@ export default function TechPage() {
                     />
                 </motion.div>
 
-                <div className="relative z-10 text-center px-6 mt-20">
+                <div className="relative z-10 text-center px-6 pt-12 sm:pt-16">
                     <noscript>
                         <style>{`.tech-header-motion { opacity: 1 !important; transform: none !important; }`}</style>
                     </noscript>
@@ -56,13 +56,13 @@ export default function TechPage() {
                         transition={{ duration: 1, ease: [0.165, 0.84, 0.44, 1] }}
                         className="tech-header-motion"
                     >
-                        <p className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-6">
+                        <p className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-4 sm:mb-6">
                             DIGITAL PRODUCT STUDIO
                         </p>
                         <h1 className="font-heading text-5xl sm:text-7xl md:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-none mb-6 pb-2 md:pb-4">
                             TECH<span className="text-[#c5a059]">.</span>
                         </h1>
-                        <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-400 font-medium">
+                        <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
                             Beyond cinematic filmmaking, Dreamline Production engineers high-performance digital experiences.
                             We design and develop premium websites that elevate brands to their peak potential.
                         </p>

@@ -43,12 +43,12 @@ export default function JournalSection({ journals = [] }) {
                                     <span className="text-[#c5a059]">•</span>
                                     <span>{post.category || "Journal"}</span>
                                 </div>
-                                <h3 className="font-heading text-2xl font-black text-white italic uppercase leading-tight mb-3 group-hover:text-[#c5a059] transition-colors pb-2 md:pb-4">
+                                <h3 className="font-heading text-xl sm:text-2xl font-black text-white italic uppercase leading-tight mb-3 group-hover:text-[#c5a059] transition-colors pb-1 md:pb-2">
                                     <Link href={postUrl}>
                                         {post.title}
                                     </Link>
                                 </h3>
-                                <p className="text-sm text-gray-500 line-clamp-2">
+                                <p className="text-sm text-gray-400 leading-relaxed line-clamp-2">
                                     {post.excerpt}
                                 </p>
                                 <Link

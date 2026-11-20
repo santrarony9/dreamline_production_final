@@ -724,7 +724,27 @@ export default function Navbar({ initialServices, siteContent }) {
                     isMenuOpen ? "translate-x-0 shadow-2xl" : "translate-x-full"
                 }`}
             >
-                <div className="flex flex-col text-left mt-24 px-6 sm:px-8 space-y-1">
+                {/* Mobile Drawer Header with Branding and Close Button */}
+                <div className="flex items-center justify-between px-6 sm:px-8 pt-6 pb-4 border-b border-white/10 shrink-0">
+                    <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-end gap-1.5" aria-label="Dreamline Production">
+                        <span className="font-heading font-black text-2xl tracking-tighter text-white">
+                            D<span className="text-[#c5a059]">/</span>P
+                        </span>
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] mb-1.5"></span>
+                    </Link>
+                    <button
+                        type="button"
+                        aria-label="Close navigation menu"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="w-10 h-10 rounded-full border border-white/15 bg-white/5 flex items-center justify-center text-white/80 hover:text-white hover:border-[#c5a059] hover:bg-[#c5a059]/10 transition-all cursor-pointer"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div className="flex flex-col text-left py-4 px-6 sm:px-8 space-y-1">
                     {mobileItems.map((item, idx) => {
                         const active = isItemActive(item);
                         const hasChildren = Array.isArray(item.children) && item.children.length > 0;

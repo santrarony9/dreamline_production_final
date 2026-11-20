@@ -36,9 +36,9 @@ export default function ServicesCategories({ services }) {
     return (
         <section id="services" className="py-16 md:py-32 bg-black text-white border-t border-white/5">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-24 gap-6">
-                    <h2 className="font-heading text-5xl md:text-7xl font-black">SERVICES<br /><span className="text-[#c5a059]">CATEGORIES</span></h2>
-                    <p className="max-w-xs text-gray-500 text-sm uppercase tracking-widest leading-loose">Specialized divisions catering to elite clientele across Bengal and beyond.</p>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-24 gap-6">
+                    <h2 className="font-heading text-3xl sm:text-4xl md:text-7xl font-black">SERVICES<br /><span className="text-[#c5a059]">CATEGORIES</span></h2>
+                    <p className="max-w-xs text-gray-400 text-xs sm:text-sm uppercase tracking-widest leading-loose">Specialized divisions catering to elite clientele across Bengal and beyond.</p>
                 </div>
 
                 <div className="space-y-4">
@@ -61,8 +61,8 @@ export default function ServicesCategories({ services }) {
                         >
                             <div className="flex flex-col gap-4">
                                 <Link href={getServiceLink(srv)} className="flex items-center gap-4 md:gap-10 group/link">
-                                    <span className="text-gray-600 font-heading text-xl">{srv.number}</span>
-                                    <h3 className="font-heading text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase group-hover/link:text-[#c5a059]">{srv.title}</h3>
+                                    <span className="text-gray-600 font-heading text-lg sm:text-xl">{srv.number}</span>
+                                    <h3 className="font-heading text-2xl sm:text-3xl md:text-5xl group-hover:translate-x-4 transition-transform mask-text uppercase group-hover/link:text-[#c5a059]">{srv.title}</h3>
                                 </Link>
                                 
                                 {/* SUBCATEGORIES LIST */}

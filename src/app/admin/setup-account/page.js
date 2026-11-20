@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import axios from "axios";
 import QRCode from "qrcode";
 
@@ -100,12 +101,12 @@ function SetupAccountForm() {
                     </div>
                     <h2 className="text-xl font-black uppercase text-white tracking-widest">Setup Link Invalid</h2>
                     <p className="text-gray-400 text-xs leading-relaxed font-bold uppercase">{tokenError}</p>
-                    <a 
+                    <Link 
                         href="/admin/login" 
                         className="inline-block bg-white/5 hover:bg-white/10 text-white text-xs font-black uppercase tracking-widest px-6 py-3 rounded-2xl transition-all"
                     >
                         Go to Admin Login
-                    </a>
+                    </Link>
                 </div>
             </div>
         );

@@ -71,7 +71,7 @@ export default function Hero({ content }) {
             </motion.div>
 
 
-            <div className="container mx-auto px-6 relative z-20 text-center">
+            <div className="container mx-auto px-6 relative z-20 text-center pt-16 md:pt-20">
 
                 <div className="overflow-hidden mb-4">
                     <p className="text-xs md:text-sm font-black uppercase tracking-[0.5em] text-[#c5a059] animate-fade-up">
@@ -89,7 +89,7 @@ export default function Hero({ content }) {
                 </h1>
 
                 {/* SEO: 2-line descriptive content for on-page relevance */}
-                <p className="text-gray-400 text-sm md:text-base max-w-3xl mx-auto mb-10 leading-relaxed">
+                <p className="text-gray-300 text-sm md:text-base max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed font-normal">
                     Dreamline Production is a leading wedding photography and videography studio in Kolkata, specializing in cinematic storytelling. From breathtaking wedding photography to professionally edited wedding films with advanced color grading and sound design, we preserve every emotion beautifully.
                 </p>
 

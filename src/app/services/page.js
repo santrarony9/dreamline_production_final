@@ -133,7 +133,7 @@ export default async function ServicesPage() {
             }} />
 
             {/* Hero */}
-            <section className="px-8 md:px-16 mb-20">
+            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
                 <div className="max-w-4xl">
                     <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
                         Our <br />
@@ -146,7 +146,7 @@ export default async function ServicesPage() {
             </section>
 
             {/* Main Service Hubs */}
-            <section className="px-8 md:px-16 mb-20">
+            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
                 <h2 className="text-xs font-black text-[#c5a059] uppercase tracking-[0.4em] mb-10">Service Divisions</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {SERVICE_HUBS.map((hub) => (
@@ -179,7 +179,7 @@ export default async function ServicesPage() {
 
             {/* Individual Service Pages (from DB) */}
             {serializedServicePages.length > 0 && (
-                <section className="px-8 md:px-16 mb-20">
+                <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
                     <h2 className="text-xs font-black text-[#c5a059] uppercase tracking-[0.4em] mb-10">Specialized Services</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {serializedServicePages.map((sp) => (
@@ -204,7 +204,7 @@ export default async function ServicesPage() {
             )}
 
             {/* CTA */}
-            <section className="px-8 md:px-16 pb-32">
+            <section className="px-6 sm:px-8 md:px-16 pb-32">
                 <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-12 text-center">
                     <h2 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tighter mb-4">
                         Ready to <span className="text-[#c5a059]">Create?</span>

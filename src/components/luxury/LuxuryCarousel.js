@@ -37,7 +37,7 @@ export default function LuxuryCarousel({ images }) {
     };
 
     return (
-        <section className="py-32 bg-[#050505] overflow-hidden relative border-t border-white/5">
+        <section className="py-16 md:py-32 bg-[#050505] overflow-hidden relative border-t border-white/5">
             <div className="container mx-auto px-6 mb-16 text-center z-10 relative">
                 <span className="text-[#c5a059] font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Signature Frames</span>
                 <h2 className="font-heading text-4xl md:text-6xl font-black text-white uppercase tracking-tighter italic">

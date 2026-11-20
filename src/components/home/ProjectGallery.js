@@ -111,11 +111,11 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
 
-                                <div className="absolute inset-0 p-10 flex flex-col justify-end transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                    <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-[0.3em] mb-4">
+                                <div className="absolute inset-0 p-6 sm:p-8 md:p-10 flex flex-col justify-end transform translate-y-0 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                    <p className="text-[#c5a059] text-[9px] font-black uppercase tracking-[0.3em] mb-2 sm:mb-4">
                                         {project.type}
                                     </p>
-                                    <h3 className="text-white font-heading text-2xl font-black uppercase leading-tight mb-6 pb-2 md:pb-4">
+                                    <h3 className="text-white font-heading text-xl sm:text-2xl font-black uppercase leading-tight mb-4 sm:mb-6 pb-1 md:pb-2">
                                         {project.title}
                                     </h3>
 

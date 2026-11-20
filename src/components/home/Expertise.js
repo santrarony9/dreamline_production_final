@@ -8,7 +8,7 @@ export default function Expertise({ expertise }) {
         <section className="py-16 md:py-32 bg-[#050505] overflow-hidden">
             <div className="container mx-auto px-6">
                 <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-                    <div className="relative group pb-16 md:pb-0">
+                    <div className="relative group pb-6 lg:pb-0">
                         <div className="aspect-square rounded-3xl overflow-hidden transition-all duration-1000 relative bg-[#050505] border border-white/5">
                             <Image
                                 src={image || "https://images.unsplash.com/photo-1492691523567-6170c24e5fb9?q=80&w=2070&auto=format&fit=crop"}
@@ -18,10 +18,10 @@ export default function Expertise({ expertise }) {
                                 sizes="(max-width: 1024px) 100vw, 50vw"
                             />
                         </div>
-                        {/* Experience Badge */}
-                        <div className="absolute bottom-4 right-4 md:-bottom-10 md:-right-10 bg-[#c5a059] p-4 md:p-10 rounded-3xl shadow-2xl z-10 w-28 md:w-auto flex flex-col items-center justify-center text-center">
-                            <div className="font-heading text-4xl md:text-6xl font-black text-black">{expertise?.yearsExperience || "15"}</div>
-                            <div className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-black/60">
+                        {/* Experience Badge - Inside on mobile/tablet, offset on desktop 2-col */}
+                        <div className="absolute bottom-4 right-4 lg:-bottom-10 lg:-right-10 bg-[#c5a059] p-4 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl shadow-2xl z-10 w-28 md:w-36 lg:w-auto flex flex-col items-center justify-center text-center">
+                            <div className="font-heading text-3xl sm:text-4xl lg:text-6xl font-black text-black">{expertise?.yearsExperience || "15"}</div>
+                            <div className="text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-black/70">
                                 Years of Storytelling
                             </div>
                         </div>
@@ -36,7 +36,7 @@ export default function Expertise({ expertise }) {
                                 className="font-heading text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.15] pb-4 mb-8 uppercase break-words md:break-normal"
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(heading || "LUXURY<br/>EMOTION<br/>STORYTELLING.") }}
                             />
-                            <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed">
+                            <p className="text-gray-300 text-base md:text-lg max-w-xl leading-relaxed">
                                 {description || "Dreamline Production moves away from \"standard shots.\" We build cinematic experiences that preserve the soul of the event, treated with high-end color grading and sound design."}
                             </p>
                         </div>

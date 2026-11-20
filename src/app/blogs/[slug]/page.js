@@ -345,20 +345,20 @@ export default async function JournalDetailPage({ params, searchParams }) {
 
                     {/* Rich HTML Content */}
                     <div
-                        className="prose prose-invert max-w-none text-gray-300 leading-relaxed text-lg 
+                        className="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base sm:text-lg break-words overflow-hidden
                         prose-headings:font-heading prose-headings:text-white prose-headings:uppercase
-                        prose-h1:text-4xl prose-h1:font-black prose-h1:mb-8 prose-h1:mt-12
-                        prose-h2:text-3xl prose-h2:font-bold prose-h2:text-[#c5a059] prose-h2:mb-6 prose-h2:mt-12
-                        prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-white prose-h3:mb-4 prose-h3:mt-8
-                        prose-p:mb-6 prose-p:leading-relaxed prose-p:text-gray-300
+                        prose-h1:text-3xl sm:prose-h1:text-4xl prose-h1:font-black prose-h1:mb-6 sm:prose-h1:mb-8 prose-h1:mt-10 sm:prose-h1:mt-12
+                        prose-h2:text-2xl sm:prose-h2:text-3xl prose-h2:font-bold prose-h2:text-[#c5a059] prose-h2:mb-4 sm:prose-h2:mb-6 prose-h2:mt-10 sm:prose-h2:mt-12
+                        prose-h3:text-xl sm:prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-white prose-h3:mb-3 sm:prose-h3:mb-4 prose-h3:mt-6 sm:prose-h3:mt-8
+                        prose-p:mb-5 sm:prose-p:mb-6 prose-p:leading-relaxed prose-p:text-gray-300
                         prose-strong:text-white prose-strong:font-bold
                         prose-a:text-[#c5a059] prose-a:underline hover:prose-a:text-white prose-a:transition-colors
-                        prose-blockquote:border-l-[#c5a059] prose-blockquote:bg-white/[0.02] prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:italic
-                        prose-ul:my-6 prose-ul:list-disc prose-ul:pl-6
-                        prose-ol:my-6 prose-ol:list-decimal prose-ol:pl-6
-                        prose-li:my-2 prose-li:text-gray-300
-                        prose-img:rounded-3xl prose-img:border prose-img:border-white/10 prose-img:my-8 prose-img:w-full
-                        prose-figure:my-10 prose-figure:text-center
+                        prose-blockquote:border-l-[#c5a059] prose-blockquote:bg-white/[0.02] prose-blockquote:p-4 sm:prose-blockquote:p-6 prose-blockquote:rounded-r-2xl prose-blockquote:italic
+                        prose-ul:my-5 sm:prose-ul:my-6 prose-ul:list-disc prose-ul:pl-5 sm:prose-ul:pl-6
+                        prose-ol:my-5 sm:prose-ol:my-6 prose-ol:list-decimal prose-ol:pl-5 sm:prose-ol:pl-6
+                        prose-li:my-1.5 sm:prose-li:my-2 prose-li:text-gray-300
+                        prose-img:rounded-3xl prose-img:border prose-img:border-white/10 prose-img:my-6 sm:prose-img:my-8 prose-img:w-full
+                        prose-figure:my-8 sm:prose-figure:my-10 prose-figure:text-center
                         prose-figcaption:text-xs prose-figcaption:text-gray-500 prose-figcaption:mt-3 prose-figcaption:tracking-wider uppercase font-bold"
                         dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
                     />

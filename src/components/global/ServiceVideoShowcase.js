@@ -132,6 +132,11 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
     const [iframeLoading, setIframeLoading] = useState(false);
     const [thumbnailErrorCount, setThumbnailErrorCount] = useState({});
 
+    // Resilient fallback mechanism if a thumbnail fails to load
+    const handleThumbnailError = useCallback((id) => {
+        setThumbnailErrorCount(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
+    }, []);
+
     if (!videos || videos.length === 0) return null;
 
     const getYouTubeId = (url) => {
@@ -185,11 +190,6 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
     const standardVideos = enrichedVideos.filter(v => !v.isShort);
     const shortVideos = enrichedVideos.filter(v => v.isShort);
     const hasBothTypes = standardVideos.length > 0 && shortVideos.length > 0;
-
-    // Resilient fallback mechanism if a thumbnail fails to load
-    const handleThumbnailError = useCallback((id) => {
-        setThumbnailErrorCount(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
-    }, []);
 
     const getThumbnailSrc = (video) => {
         const errors = thumbnailErrorCount[video.ytId] || 0;

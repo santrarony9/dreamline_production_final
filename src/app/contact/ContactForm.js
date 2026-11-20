@@ -155,10 +155,16 @@ export default function ContactForm({ globalData }) {
                                         onChange={handleChange}
                                         className="bg-black border-b border-white/20 text-white w-full py-4 outline-none focus:border-[#c5a059] transition-colors"
                                     >
-                                        <option>Luxury Wedding</option>
-                                        <option>Commercial Ad</option>
-                                        <option>Music Video</option>
-                                        <option>Corporate Event</option>
+                                        <option value="Luxury Wedding">Luxury Wedding Photography & Films</option>
+                                        <option value="Pre-Wedding Shoot">Cinematic Pre-Wedding Shoot</option>
+                                        <option value="Rice Ceremony">Rice Ceremony / Annaprashan</option>
+                                        <option value="Commercial Ad">Commercial Ad & Brand Film</option>
+                                        <option value="Corporate Event">Corporate Film & Industrial Shoot</option>
+                                        <option value="Drone Photography">Drone & Aerial Videography</option>
+                                        <option value="Podcast Production">Podcast Studio & Production</option>
+                                        <option value="Music Video">Music Video Production</option>
+                                        <option value="Line Production">Line Production & Logistics</option>
+                                        <option value="Other">Other Creative Project</option>
                                     </select>
                                 </div>
                             </div>
@@ -205,8 +211,8 @@ export default function ContactForm({ globalData }) {
                     </div>
 
                     {/* Map & Info */}
-                    <div className="space-y-12">
-                        <div className="w-full h-[400px] rounded-[2rem] overflow-hidden border border-white/10 relative">
+                    <div className="space-y-8 sm:space-y-12">
+                        <div className="w-full h-[280px] sm:h-[350px] md:h-[400px] rounded-[2rem] overflow-hidden border border-white/10 relative">
                             <div className="absolute inset-0 bg-[#c5a059] mix-blend-overlay opacity-10 pointer-events-none z-10"></div>
                             {(globalData?.google?.placeId && globalData?.google?.mapsApiKey) ? (
                                 <iframe
@@ -231,30 +237,28 @@ export default function ContactForm({ globalData }) {
                             )}
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
-                            <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent("Dreamline Production, " + (contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082"))}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group interactive">
-                                <svg className="w-5 h-5 text-[#c5a059] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                            <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent("Dreamline Production, " + (contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082"))}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-3.5 sm:py-4 px-2 rounded-xl group interactive text-center">
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#c5a059] group-hover:text-black transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
                                 </svg>
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Get Directions</span>
+                                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate">Directions</span>
                             </a>
                             {globalData?.google?.placeId ? (
-                                <a href={`https://search.google.com/local/writereview?placeid=${globalData.google.placeId}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-[#c5a059]/30 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group interactive">
-                                    <div className="flex -space-x-1">
+                                <a href={`https://search.google.com/local/writereview?placeid=${globalData.google.placeId}`} target="_blank" className="flex items-center justify-center gap-1.5 sm:gap-2 bg-white/5 border border-[#c5a059]/30 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-3.5 sm:py-4 px-2 rounded-xl group interactive text-center">
+                                    <div className="flex -space-x-1 shrink-0 hidden xs:flex">
                                         {[1, 2, 3, 4, 5].map((i) => (
-                                            <svg key={i} className="w-3 h-3 text-[#c5a059] group-hover:text-black" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                                            <svg key={i} className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#c5a059] group-hover:text-black" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
                                         ))}
                                     </div>
-                                    <span className="text-[10px] font-bold uppercase tracking-widest">Review Us</span>
+                                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate">Review Us</span>
                                 </a>
                             ) : (
-                                <a href={`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(contact.address || "Dreamline Production Kolkata")}`} target="_blank" className="flex flex-col items-center justify-center gap-1 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-4 rounded-xl group relative overflow-hidden interactive">
-                                    <div className="flex items-center gap-2">
-                                        <svg className="w-5 h-5 text-[#c5a059] group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                        </svg>
-                                        <span className="text-[10px] font-bold uppercase tracking-widest">Book A Cab</span>
-                                    </div>
+                                <a href={`https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(contact.address || "Dreamline Production Kolkata")}`} target="_blank" className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-[#c5a059] hover:text-black hover:border-[#c5a059] transition-all duration-300 py-3.5 sm:py-4 px-2 rounded-xl group relative overflow-hidden interactive text-center">
+                                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#c5a059] group-hover:text-black transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider truncate">Book A Cab</span>
                                 </a>
                             )}
                         </div>

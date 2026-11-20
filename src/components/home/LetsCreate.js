@@ -22,9 +22,9 @@ export default function LetsCreate({ global }) {
                             href="https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-[#c5a059] transition-colors group"
+                            className="hover:text-[#c5a059] transition-colors group block"
                         >
-                            <address className="not-italic text-2xl md:text-3xl font-bold font-heading leading-snug group-hover:text-[#c5a059] transition-colors">
+                            <address className="not-italic text-xl sm:text-2xl md:text-3xl font-bold font-heading leading-snug group-hover:text-[#c5a059] transition-colors">
                                 {contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082"}
                             </address>
                             <span className="text-[9px] uppercase tracking-widest text-[#c5a059]/60 font-black mt-2 block">
@@ -35,7 +35,7 @@ export default function LetsCreate({ global }) {
 
                     <div>
                         <h3 className="text-[10px] uppercase font-bold text-white/30 tracking-[0.2em] mb-4">INQUIRIES</h3>
-                        <a href={`tel:${contact.phone || "+918240054002"}`} className="text-4xl md:text-5xl font-black font-heading hover:text-[#c5a059] transition-colors">
+                        <a href={`tel:${contact.phone || "+918240054002"}`} className="text-2xl sm:text-3xl md:text-5xl font-black font-heading hover:text-[#c5a059] transition-colors block break-words">
                             {contact.phone || "+91 82400 54002"}
                         </a>
                     </div>
