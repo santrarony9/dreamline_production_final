@@ -12,8 +12,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { safeErrorResponse } from "@/lib/error-handler";
 import { syncServicePage } from "@/lib/service-sync";
-import path from "path";
-import fs from "fs/promises";
 import { revalidatePath } from "next/cache";
 
 export async function GET(request) {
@@ -63,40 +61,18 @@ export async function GET(request) {
         if (s.imageUrl) recordUsage(s.imageUrl, { type: 'Photography Shot', title: s.title, serviceSlug: s.serviceSlug });
     });
 
-    // Also scan public/uploads directory for disk files
-    let diskFiles = [];
-    try {
-        const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-        const dirEntries = await fs.readdir(uploadDir, { withFileTypes: true });
-        for (const entry of dirEntries) {
-            if (entry.isFile()) {
-                const stat = await fs.stat(path.join(uploadDir, entry.name));
-                diskFiles.push({
-                    name: entry.name,
-                    url: `/uploads/${entry.name}`,
-                    size: stat.size,
-                    modifiedAt: stat.mtime
-                });
-            }
-        }
-    } catch (e) {
-        // uploads directory might not exist yet
-    }
-
-    // Combine MediaAsset entries with disk files and unique usage URLs
+    // Combine MediaAsset entries with unique usage URLs from database
     const allUrls = new Set([
         ...mediaDocs.map(m => m.url),
-        ...diskFiles.map(d => d.url),
         ...usageMap.keys()
     ]);
 
     let results = [];
     for (const url of allUrls) {
         const matchingDoc = mediaDocs.find(m => m.url === url);
-        const matchingDisk = diskFiles.find(d => d.url === url);
         const uses = usageMap.get(url) || [];
 
-        const fileName = matchingDisk?.name || path.basename(url.split('?')[0]);
+        const fileName = matchingDoc?.title || url.split('/').pop()?.split('?')[0] || "image";
         const isYouTubeThumb = url.includes('img.youtube.com') || url.includes('ytimg.com');
 
         // Apply search filter if provided
@@ -110,20 +86,21 @@ export async function GET(request) {
 
         // Apply category filter if provided
         if (category && category !== 'ALL') {
-            const matchesCat = uses.some(u => u.serviceSlug?.toLowerCase().includes(category.toLowerCase()));
+            const matchesCat = (matchingDoc?.category?.toLowerCase() === category.toLowerCase()) || 
+                               uses.some(u => u.serviceSlug?.toLowerCase().includes(category.toLowerCase()));
             if (!matchesCat) continue;
         }
 
         results.push({
             url,
             fileName,
-            fileSize: matchingDisk?.size || matchingDoc?.fileSize || null,
+            fileSize: matchingDoc?.fileSize || null,
             mimeType: matchingDoc?.mimeType || (url.endsWith('.webp') ? 'image/webp' : url.endsWith('.png') ? 'image/png' : 'image/jpeg'),
             isExternal: url.startsWith('http'),
             isYouTubeThumb,
             usageCount: uses.length,
             usedIn: uses,
-            createdAt: matchingDoc?.createdAt || matchingDisk?.modifiedAt || null
+            createdAt: matchingDoc?.createdAt || null
         });
     }
 
@@ -179,14 +156,14 @@ export async function DELETE(request) {
         }
 
         // Safe to delete or forced:
-        if (url.startsWith('/uploads/')) {
-            const fileName = path.basename(url);
-            const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
+        if (process.env.VERCEL !== '1' && url.startsWith('/uploads/')) {
             try {
-                await fs.unlink(filePath);
-            } catch (e) {
-                // Ignore if already unlinked
-            }
+                const fs = await import('fs/promises');
+                const path = await import('path');
+                const fileName = path.basename(url);
+                const filePath = path.join(process.cwd(), 'public', 'uploads', fileName);
+                await fs.unlink(filePath).catch(() => {});
+            } catch (e) {}
         }
 
         await MediaAsset.deleteOne({ url });

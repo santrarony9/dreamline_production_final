@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   trailingSlash: true,
+  outputFileTracingExcludes: {
+    '*': [
+      './public/uploads/**/*',
+      './public/uploads/**',
+    ],
+  },
   images: {
     minimumCacheTTL: 5184000, // 60 days to stay within free tier optimization limits
     formats: ['image/avif', 'image/webp'],
