@@ -157,7 +157,7 @@ export default async function ServicesPage() {
     }
 
     return (
-        <main className="bg-black pt-24 md:pt-32">
+        <main className="page-main">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "CollectionPage",
@@ -175,21 +175,31 @@ export default async function ServicesPage() {
             }} />
 
             {/* Hero */}
-            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
+            <section className="page-hero-section">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Services</span>
+                </nav>
                 <div className="max-w-4xl">
-                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
-                        Our <br />
-                        <span className="text-[#c5a059]">Services.</span>
+                    <span className="page-category-label">Full Spectrum Visual Solutions</span>
+                    <h1 className="page-hero-title">
+                        Our <span className="text-[#c5a059]">Services.</span>
                     </h1>
-                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
+                    <p className="page-hero-desc">
                         From luxury wedding cinematography to corporate film production — we craft visual narratives that resonate. Explore our complete range of cinematic and digital services.
                     </p>
                 </div>
             </section>
 
             {/* Main Service Hubs */}
-            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
-                <h2 className="text-xs font-black text-[#c5a059] uppercase tracking-[0.4em] mb-10">Service Divisions</h2>
+            <section className="content-container section-spacing">
+                <div className="mb-10">
+                    <span className="page-category-label">Nine Core Disciplines</span>
+                    <h2 className="section-title italic tracking-tight">
+                        Service <span className="text-[#c5a059]">Divisions.</span>
+                    </h2>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {SERVICE_HUBS.map((hub) => (
                         <Link
@@ -229,8 +239,11 @@ export default async function ServicesPage() {
 
             {/* Individual Service Pages (from DB) */}
             {serializedServicePages.length > 0 && (
-                <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
-                    <h2 className="text-xs font-black text-[#c5a059] uppercase tracking-[0.4em] mb-10">Specialized Services</h2>
+                <section className="content-container section-spacing">
+                    <div className="mb-10">
+                        <span className="page-category-label">Tailored Production</span>
+                        <h2 className="section-title italic tracking-tight">Specialized <span className="text-[#c5a059]">Services.</span></h2>
+                    </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {serializedServicePages.map((sp) => (
                             <Link

@@ -33,7 +33,7 @@ export default function Expertise({ expertise }) {
                                 OUR PHILOSOPHY
                             </p>
                             <h2
-                                className="font-heading text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.12] md:leading-tight pb-4 mb-8 uppercase break-words"
+                                className="section-title text-white leading-[1.15] pb-2 mb-6 uppercase break-words"
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(heading || "LUXURY<br/>EMOTION<br/>STORYTELLING.") }}
                             />
                             <p className="text-gray-300 text-base md:text-lg max-w-xl leading-relaxed">

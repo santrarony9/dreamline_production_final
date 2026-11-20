@@ -36,8 +36,8 @@ export default function ServicesCategories({ services }) {
     return (
         <section id="services" className="py-16 md:py-32 bg-black text-white border-t border-white/5">
             <div className="container mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-24 gap-6">
-                    <h2 className="font-heading text-3xl sm:text-4xl md:text-7xl font-black">SERVICES<br /><span className="text-[#c5a059]">CATEGORIES</span></h2>
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 md:mb-16 gap-6">
+                    <h2 className="section-title">SERVICES<br /><span className="text-[#c5a059]">CATEGORIES</span></h2>
                     <p className="max-w-xs text-gray-400 text-xs sm:text-sm uppercase tracking-widest leading-loose">Specialized divisions catering to elite clientele across Bengal and beyond.</p>
                 </div>
 

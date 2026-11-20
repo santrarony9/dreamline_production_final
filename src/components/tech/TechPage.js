@@ -56,10 +56,10 @@ export default function TechPage() {
                         transition={{ duration: 1, ease: [0.165, 0.84, 0.44, 1] }}
                         className="tech-header-motion"
                     >
-                        <p className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-4 sm:mb-6">
+                        <p className="page-category-label">
                             DIGITAL PRODUCT STUDIO
                         </p>
-                        <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-tight sm:leading-[1.05] mb-6 pb-2 md:pb-4">
+                        <h1 className="page-hero-title mx-auto mb-6">
                             TECH<span className="text-[#c5a059]">.</span>
                         </h1>
                         <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">

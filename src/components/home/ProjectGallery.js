@@ -42,7 +42,7 @@ export default function ProjectGallery({ initialProjects, category = "all" }) {
         <section className="py-16 md:py-32 bg-[#050505]">
             <div className="container mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-10 md:mb-16 gap-6 md:gap-8">
-                    <h2 className="font-heading text-4xl sm:text-5xl font-black text-white uppercase italic">
+                    <h2 className="section-title text-white uppercase italic">
                         Portfolio.
                     </h2>
                     {category === "all" && (

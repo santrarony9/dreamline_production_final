@@ -132,22 +132,31 @@ export default async function LocationPage({ params }) {
   return (
     <>
       <StructuredData data={schema} />
-      <main className="bg-black pt-28 md:pt-36 min-h-screen">
-        <section className="container mx-auto px-6 max-w-5xl pb-32">
+      <main className="page-main">
+        <section className="page-hero-section">
+          <nav aria-label="Breadcrumb" className="page-breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/locations">Locations</Link>
+            <span>/</span>
+            <span className="current">{loc.location}</span>
+          </nav>
           {/* Hero */}
-          <div className="mb-16 border-b border-white/10 pb-16">
-            <p className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-4">
+          <div className="mb-12 border-b border-white/10 pb-10">
+            <span className="page-category-label">
               {loc.service} • {loc.location}
-            </p>
-            <h1 className="font-heading text-3xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-6 sm:mb-8">
+            </span>
+            <h1 className="page-hero-title">
               {loc.headline.split(',')[0]}
-              <br />
               <span className="text-[#c5a059]">
-                {loc.headline.split(',').slice(1).join(',') || loc.location}
+                {loc.headline.split(',').length > 1 ? `, ${loc.headline.split(',').slice(1).join(',')}` : ""}
               </span>
             </h1>
-            <p className="text-gray-400 text-lg leading-relaxed max-w-3xl">{loc.desc}</p>
+            <p className="page-hero-desc">{loc.desc}</p>
           </div>
+        </section>
+
+        <section className="content-container pb-24">
 
           {/* Why Dreamline */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
@@ -181,7 +190,7 @@ export default async function LocationPage({ params }) {
 
           {/* CTA */}
           <div className="text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-16">
-            <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">
+            <h2 className="section-title mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>
             <p className="text-gray-400 mb-10 max-w-xl mx-auto">

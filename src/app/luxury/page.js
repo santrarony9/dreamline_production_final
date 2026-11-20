@@ -70,7 +70,7 @@ export default async function LuxuryPage() {
     }));
 
     return (
-        <main className="bg-black pt-24 md:pt-32">
+        <main className="page-main">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Service",
@@ -123,13 +123,19 @@ export default async function LuxuryPage() {
                     }
                 ]
             }} />
-            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
+            <section className="page-hero-section">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Luxury Wedding Cinema</span>
+                </nav>
                 <div className="max-w-4xl">
-                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
-                        {luxuryData.hero?.titleLine1 || "The Heritage"} <br />
+                    <span className="page-category-label">Signature Wedding Collections</span>
+                    <h1 className="page-hero-title">
+                        {luxuryData.hero?.titleLine1 || "The Heritage"}{" "}
                         <span className="text-[#c5a059]">{luxuryData.hero?.titleLine2 || "Collection."}</span>
                     </h1>
-                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
+                    <p className="page-hero-desc">
                         {luxuryData.hero?.description || "We don't just photograph; we archive emotions. Specializing in luxury Bengali weddings and destination cinematic films across India."}
                     </p>
                 </div>

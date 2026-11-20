@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import StructuredData from "@/components/seo/StructuredData";
+import Link from "next/link";
 
 const schema = {
     "@context": "https://schema.org",
@@ -111,13 +112,18 @@ export default async function CompanyDetailsPage() {
     return (
         <>
         <StructuredData data={schema} />
-        <main className="bg-black pt-32 pb-24 min-h-screen">
-            <div className="container mx-auto px-6 max-w-4xl">
+        <main className="page-main">
+            <div className="content-container">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Company Details</span>
+                </nav>
                 {/* Header */}
-                <div className="mb-16 border-b border-white/10 pb-12">
-                    <p className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-4">Official Documentation</p>
-                    <h1 className="font-heading text-5xl md:text-7xl font-black text-white uppercase tracking-tighter">
-                        COMPANY <br /> <span className="text-[#c5a059]">DETAILS.</span>
+                <div className="mb-12 border-b border-white/10 pb-8">
+                    <span className="page-category-label">Official Documentation</span>
+                    <h1 className="page-hero-title">
+                        COMPANY <span className="text-[#c5a059]">DETAILS.</span>
                     </h1>
                 </div>
 

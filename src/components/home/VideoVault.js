@@ -50,7 +50,7 @@ export default function VideoVault({
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-[#c5a059] mb-6">
                             {title}
                         </p>
-                        <h2 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black text-white uppercase italic leading-none md:leading-[1.05]">
+                        <h2 className="section-title text-white uppercase italic leading-tight">
                             {subtitle.includes('.') ? (
                                 <>{subtitle.split('.')[0]} <span className="text-outline">{subtitle.split('.')[1]}.</span></>
                             ) : subtitle}

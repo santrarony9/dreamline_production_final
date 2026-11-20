@@ -105,18 +105,25 @@ export default function LocationsHubPage() {
     return (
         <>
             <StructuredData data={schema} />
-            <main className="bg-black pt-32 min-h-screen text-white">
+            <main className="page-main">
                 {/* Hero */}
-                <section className="container mx-auto px-6 max-w-6xl mb-16 text-center">
-                    <span className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-4 block">
-                        KOLKATA SERVICE REGIONS &amp; HUBS
-                    </span>
-                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter mb-8 text-white">
-                        Our <span className="text-[#c5a059]">Locations.</span>
-                    </h1>
-                    <p className="text-gray-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
-                        From heritage South Kolkata residences to New Town banquets and Salt Lake corporate towers — Dreamline Production captures Kolkata&apos;s finest moments with cinema-grade storytelling.
-                    </p>
+                <section className="page-hero-section text-center">
+                    <nav aria-label="Breadcrumb" className="page-breadcrumb justify-center">
+                        <Link href="/">Home</Link>
+                        <span>/</span>
+                        <span className="current">Locations</span>
+                    </nav>
+                    <div className="max-w-4xl mx-auto">
+                        <span className="page-category-label">
+                            Kolkata Service Regions &amp; Hubs
+                        </span>
+                        <h1 className="page-hero-title mx-auto">
+                            Our <span className="text-[#c5a059]">Locations.</span>
+                        </h1>
+                        <p className="page-hero-desc mx-auto">
+                            From heritage South Kolkata residences to New Town banquets and Salt Lake corporate towers — Dreamline Production captures Kolkata&apos;s finest moments with cinema-grade storytelling.
+                        </p>
+                    </div>
                 </section>
 
                 {/* Locations Grid */}

@@ -154,19 +154,25 @@ export default function FAQPage() {
         <>
             <StructuredData data={faqSchema} />
             <StructuredData data={breadcrumbSchema} />
-            <main className="bg-black pt-32 min-h-screen">
+            <main className="page-main">
                 {/* Hero Section */}
-                <section className="container mx-auto px-6 mb-16 text-center">
-                    <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
-                        Got Questions?
-                    </span>
-                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black mb-8 uppercase text-white leading-tight sm:leading-[1.05]">
-                        Frequently<br />
-                        <span className="text-[#c5a059] italic">Asked.</span>
-                    </h1>
-                    <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-                        Everything you need to know about working with Dreamline Production — Kolkata's premier cinematic production house for corporate films, weddings, podcasts, drone, animation, and more.
-                    </p>
+                <section className="page-hero-section text-center">
+                    <nav aria-label="Breadcrumb" className="page-breadcrumb justify-center">
+                        <Link href="/">Home</Link>
+                        <span>/</span>
+                        <span className="current">FAQ</span>
+                    </nav>
+                    <div className="max-w-4xl mx-auto">
+                        <span className="page-category-label">
+                            Got Questions?
+                        </span>
+                        <h1 className="page-hero-title mx-auto">
+                            Frequently <span className="text-[#c5a059] italic">Asked.</span>
+                        </h1>
+                        <p className="page-hero-desc mx-auto">
+                            Everything you need to know about working with Dreamline Production — Kolkata's premier cinematic production house for corporate films, weddings, podcasts, drone, animation, and more.
+                        </p>
+                    </div>
                 </section>
 
                 {/* FAQ Accordion */}

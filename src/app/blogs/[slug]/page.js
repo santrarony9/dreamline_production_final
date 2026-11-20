@@ -253,7 +253,7 @@ export default async function JournalDetailPage({ params, searchParams }) {
     };
 
     return (
-        <main className="bg-black pt-32 min-h-screen text-white">
+        <main className="page-main">
             <StructuredData data={blogPostingSchema} />
 
             {/* Admin Draft / Scheduled Banner */}
@@ -264,19 +264,17 @@ export default async function JournalDetailPage({ params, searchParams }) {
             )}
 
             {/* Header & Title Section */}
-            <section className="container mx-auto px-6 mb-12">
-                <Link 
-                    href="/blogs/" 
-                    className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 hover:text-[#c5a059] transition-colors mb-10 group interactive"
-                >
-                    <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                    Back to Journal
-                </Link>
+            <section className="page-hero-section">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <Link href="/blogs/">Blogs</Link>
+                    <span>/</span>
+                    <span className="current">{post.title}</span>
+                </nav>
 
                 <div className="max-w-4xl">
-                    <div className="flex flex-wrap items-center gap-4 mb-6 text-[10px] uppercase font-bold tracking-widest text-gray-500">
+                    <div className="flex flex-wrap items-center gap-4 mb-4 text-[10px] uppercase font-bold tracking-widest text-gray-500">
                         <span className="text-[#c5a059] bg-[#c5a059]/10 px-3 py-1 rounded-full border border-[#c5a059]/20">
                             {post.category || "Insight"}
                         </span>
@@ -286,12 +284,12 @@ export default async function JournalDetailPage({ params, searchParams }) {
                         <span>{readingTime}</span>
                     </div>
 
-                    <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.1] text-white uppercase">
+                    <h1 className="article-hero-title">
                         {post.title}
                     </h1>
 
                     {post.subtitle && (
-                        <p className="text-xl md:text-2xl text-[#c5a059] font-light leading-relaxed mb-8">
+                        <p className="text-lg md:text-xl text-[#c5a059] font-light leading-relaxed mb-6">
                             {post.subtitle}
                         </p>
                     )}

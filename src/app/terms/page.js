@@ -38,11 +38,17 @@ export default function TermsOfService() {
     return (
         <>
         <StructuredData data={schema} />
-        <main className="pt-40 pb-20 bg-black min-h-screen">
-            <div className="container mx-auto px-6 max-w-4xl">
-                <header className="mb-16">
-                    <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4">Terms of <span className="text-gray-700">Service.</span></h1>
-                    <p className="text-[#c5a059] text-xs font-black uppercase tracking-[0.4em]">Effective Date: May 2024</p>
+        <main className="page-main">
+            <div className="content-container">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Terms of Service</span>
+                </nav>
+                <header className="mb-12">
+                    <span className="page-category-label">Legal Agreement</span>
+                    <h1 className="page-hero-title">Terms of <span className="text-[#c5a059]">Service.</span></h1>
+                    <p className="text-[#c5a059] text-xs font-bold uppercase tracking-[0.3em] mt-3">Effective Date: May 2024</p>
                 </header>
 
                 <div className="space-y-12 text-gray-400 text-sm leading-relaxed font-medium">

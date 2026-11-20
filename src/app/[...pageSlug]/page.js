@@ -213,24 +213,33 @@ export default async function CustomDynamicPage({ params, searchParams }) {
                     ))
                 ) : (
                     /* Fallback default section if page has no sections configured */
-                    <section className="py-36 text-center container mx-auto px-6">
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em] px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-[#c5a059] mb-6 inline-block">
-                            DREAMLINE PRODUCTION
-                        </span>
-                        <h1 className="font-heading text-4xl sm:text-6xl font-black uppercase tracking-tight text-white mb-6">
-                            {page.title}
-                        </h1>
-                        {page.description && (
-                            <p className="text-gray-400 text-base max-w-2xl mx-auto leading-relaxed mb-8">
-                                {page.description}
-                            </p>
-                        )}
-                        <Link
-                            href="/contact"
-                            className="inline-block px-8 py-4 bg-[#c5a059] text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white transition-all shadow-xl"
-                        >
-                            Inquire With Studio
-                        </Link>
+                    <section className="page-hero-section text-center">
+                        <nav aria-label="Breadcrumb" className="page-breadcrumb justify-center">
+                            <Link href="/">Home</Link>
+                            <span>/</span>
+                            <span className="current">{page.title}</span>
+                        </nav>
+                        <div className="max-w-4xl mx-auto">
+                            <span className="page-category-label">
+                                Dreamline Production
+                            </span>
+                            <h1 className="page-hero-title mx-auto">
+                                {page.title}
+                            </h1>
+                            {page.description && (
+                                <p className="page-hero-desc mx-auto">
+                                    {page.description}
+                                </p>
+                            )}
+                            <div className="mt-8">
+                                <Link
+                                    href="/contact"
+                                    className="inline-block px-8 py-4 bg-[#c5a059] text-black font-black uppercase tracking-widest text-xs rounded-full hover:bg-white transition-all shadow-xl"
+                                >
+                                    Inquire With Studio
+                                </Link>
+                            </div>
+                        </div>
                     </section>
                 )}
             </div>

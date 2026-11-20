@@ -88,14 +88,24 @@ export default async function JournalPage() {
     return (
         <>
         <StructuredData data={blogsPageSchema} />
-        <main className="bg-black pt-28 md:pt-36 min-h-screen">
-            <section className="container mx-auto px-6 mb-16 md:mb-20 text-center">
-                <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black mb-6 md:mb-8 uppercase text-white">
-                    The <span className="text-[#c5a059]">Journal.</span>
-                </h1>
-                <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-                    Stories, insights, and technical breakdowns from the heart of Dreamline Production. Explore our deep dives into cinematic excellence.
-                </p>
+        <main className="page-main">
+            <section className="page-hero-section text-center">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb justify-center">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Blogs</span>
+                </nav>
+                <div className="max-w-4xl mx-auto">
+                    <span className="page-category-label">
+                        Insights &amp; Stories
+                    </span>
+                    <h1 className="page-hero-title mx-auto">
+                        The <span className="text-[#c5a059]">Journal.</span>
+                    </h1>
+                    <p className="page-hero-desc mx-auto">
+                        Stories, insights, and technical breakdowns from the heart of Dreamline Production. Explore our deep dives into cinematic excellence.
+                    </p>
+                </div>
             </section>
 
             <section className="container mx-auto px-6 pb-32">

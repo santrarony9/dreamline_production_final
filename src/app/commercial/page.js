@@ -88,7 +88,7 @@ export default async function CommercialPage() {
     };
 
     return (
-        <main className="bg-black pt-24 md:pt-32">
+        <main className="page-main">
             <StructuredData data={videoSchema} />
             <StructuredData data={{
                 "@context": "https://schema.org",
@@ -142,13 +142,21 @@ export default async function CommercialPage() {
                     }
                 ]
             }} />
-            <section className="px-6 sm:px-8 md:px-16 mb-16 md:mb-20">
-                <div className="max-w-4xl">
-                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-8 uppercase text-white">
-                        {commercialData.hero?.titleLine1 || "Commercial"} <br />
+            <section className="page-hero-section">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Commercial</span>
+                </nav>
+                <div>
+                    <span className="page-category-label">
+                        Brand &amp; Corporate Films
+                    </span>
+                    <h1 className="page-hero-title">
+                        {commercialData.hero?.titleLine1 || "Commercial"}{" "}
                         <span className="text-[#c5a059]">{commercialData.hero?.titleLine2 || "Stories."}</span>
                     </h1>
-                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
+                    <p className="page-hero-desc">
                         {commercialData.hero?.description || "Elevating brands through cinematic narratives. From high-fashion edits to corporate documentaries, we craft visuals that sell."}
                     </p>
                 </div>

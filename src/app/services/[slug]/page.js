@@ -210,7 +210,7 @@ export default async function DynamicServicePage({ params }) {
     const hasMedia = displayVideos.length > 0 || (page.gallery && page.gallery.length > 0);
 
     return (
-        <main className="bg-black pt-24 md:pt-32">
+        <main className="page-main">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "Service",
@@ -225,22 +225,22 @@ export default async function DynamicServicePage({ params }) {
                 "areaServed": ["Kolkata", "West Bengal", "India"]
             }} />
             {/* HERO SECTION */}
-            <section className="px-6 sm:px-8 md:px-16 pt-28 sm:pt-32 md:pt-36 mb-16 md:mb-20">
-                <nav aria-label="Breadcrumb" className="mb-6 text-xs font-bold uppercase tracking-widest text-gray-500">
-                    <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
-                    <span className="mx-2">/</span>
-                    <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
-                    <span className="mx-2">/</span>
-                    <span className="text-[#c5a059]">{page.title}</span>
+            <section className="page-hero-section">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <Link href="/services/">Services</Link>
+                    <span>/</span>
+                    <span className="current">{page.title}</span>
                 </nav>
                 <div className="max-w-4xl">
-                    <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">
+                    <span className="page-category-label">
                         {page.subtitle || "Service Specialty"}
                     </span>
-                    <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tighter mb-6 sm:mb-8 uppercase text-white leading-tight sm:leading-[1.05]">
+                    <h1 className="page-hero-title">
                         {page.title}
                     </h1>
-                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl font-medium">
+                    <p className="page-hero-desc">
                         {page.description}
                     </p>
                 </div>
@@ -248,15 +248,15 @@ export default async function DynamicServicePage({ params }) {
 
             {/* HERO IMAGE / VIDEO AREA */}
             {page.heroImage && !isPodcastPage && (
-                <section className="px-4 md:px-10 mb-24">
-                    <div className="relative aspect-[21/9] w-full rounded-[2rem] overflow-hidden border border-white/5">
+                <section className="content-container mb-16 md:mb-20">
+                    <div className="relative aspect-[21/9] w-full rounded-[1.75rem] md:rounded-[2rem] overflow-hidden border border-white/5">
                         <Image 
                             src={page.heroImage} 
                             alt={page.heroImageAlt || `${page.title} - Professional cinematography service by Dreamline Production Kolkata`} 
                             fill 
                             className="object-cover opacity-80"
                             priority
-                            sizes="100vw"
+                            sizes="(max-width: 1400px) 100vw, 1400px"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     </div>
@@ -373,10 +373,10 @@ export default async function DynamicServicePage({ params }) {
 
             {/* PHOTO GALLERY SECTION */}
             {page.gallery && page.gallery.length > 0 && (
-                <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
-                    <div className="mb-12 text-center md:text-left">
-                        <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Cinematic Stills</span>
-                        <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+                <section className="content-container py-16 md:py-20 w-full">
+                    <div className="mb-10 text-center md:text-left">
+                        <span className="page-category-label">Cinematic Stills</span>
+                        <h2 className="section-title italic tracking-tight">
                             Captured <span className="text-[#c5a059]">Frames.</span>
                         </h2>
                     </div>

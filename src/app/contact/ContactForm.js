@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function ContactForm({ globalData }) {
     const [formData, setFormData] = useState({
@@ -70,14 +71,19 @@ export default function ContactForm({ globalData }) {
     };
 
     return (
-        <main className="pt-32 min-h-screen bg-black">
-            <section className="container mx-auto px-6 mb-20">
+        <main className="page-main">
+            <section className="content-container mb-20">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb mb-8">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Contact</span>
+                </nav>
                 <div className="grid lg:grid-cols-2 gap-16">
                     {/* Booking Form */}
                     <div>
-                        <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">Begin the Journey</span>
-                        <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-10 md:mb-12 leading-tight sm:leading-[1.05] uppercase text-white break-words pb-2 md:pb-4">
-                            Book Your<br /><span className="text-[#c5a059]">Experience.</span>
+                        <span className="page-category-label">Begin the Journey</span>
+                        <h1 className="page-hero-title mb-8">
+                            Book Your <span className="text-[#c5a059]">Experience.</span>
                         </h1>
 
                         <form onSubmit={handleSubmit} className="space-y-8">

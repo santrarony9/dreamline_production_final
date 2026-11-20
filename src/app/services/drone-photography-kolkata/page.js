@@ -28,19 +28,30 @@ export default async function DronePhotographyPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is included in drone photography services in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Drone photography services generally include aerial image capture, flight planning, camera operation, and professionally selected images."}}, {"@type": "Question", "name": "Can drone videography be used for weddings and pre-wedding shoots?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, drone videography can add cinematic aerial views to weddings and pre-wedding shoots."}}, {"@type": "Question", "name": "Do I need permission for a drone shoot in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Drone operations in India are subject to applicable DGCA rules, airspace restrictions, and permissions where required."}}, {"@type": "Question", "name": "How long does a professional drone shoot take?", "acceptedAnswer": {"@type": "Answer", "text": "The duration depends on the project, location, number of shots, weather, and coverage required."}}, {"@type": "Question", "name": "Can drone photography be combined with regular photography?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, combining aerial and ground-level photography can create a more complete visual story."}}]}) }} />
-      <main className="bg-black pt-32 min-h-screen text-white">
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
-            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
-            <span className="mx-2">/</span>
-            <span className="text-[#c5a059]">Drone Photography Kolkata</span>
+      <main className="page-main">
+        <section className="page-hero-section">
+          <nav aria-label="Breadcrumb" className="page-breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/services/">Services</Link>
+            <span>/</span>
+            <span className="current">Drone Photography Kolkata</span>
           </nav>
+          <div>
+            <span className="page-category-label">
+              Drone &amp; Aerial
+            </span>
+            <h1 className="page-hero-title">
+              Drone <span className="text-[#c5a059]">Photography &amp; Videography</span> Services in Kolkata
+            </h1>
+            <p className="page-hero-desc">
+              Take your visuals to new heights, literally! Our Drone Photography in Kolkata service captures breathtaking aerial views that ground-level cameras simply cannot match. Whether it's a grand wedding, a sprawling property, or a corporate event, we bring a cinematic bird's-eye perspective to every story we shoot.
+            </p>
+          </div>
+        </section>
+
+        <section className="content-container pb-20">
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
-            
-      <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8">Drone <span className="text-[#c5a059]">Photography & Videography</span> Services in Kolkata</h1>
-      <p className="mb-4">Take your visuals to new heights, literally! Our Drone Photography in Kolkata service captures breathtaking aerial views that ground-level cameras simply cannot match. Whether it's a grand wedding, a sprawling property, or a corporate event, we bring a cinematic bird's-eye perspective to every story we shoot.</p>
       <h2 className="font-heading text-2xl font-bold mt-10 mb-4 text-[#c5a059]">Why Choose Our Aerial Photography Service</h2>
       <p className="mb-4">As a trusted Aerial Photography Service in Kolkata, we combine skilled pilots, high-end drone equipment, and a creative eye to deliver crisp, stable footage every time. From sweeping landscape shots to dramatic reveal videos, our team knows how to frame the perfect angle for maximum impact.</p>
       <h3 className="font-heading text-xl font-bold mt-8 mb-4">Professional Drone Photography in Kolkata</h3>
@@ -89,10 +100,10 @@ export default async function DronePhotographyPage() {
 
         {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
         {page?.gallery && page.gallery.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+          <section className="content-container py-16 md:py-20 w-full">
             <div className="mb-12 text-center">
-              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Aerial Still Photography</span>
-              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+              <span className="page-category-label">Aerial Still Photography</span>
+              <h2 className="section-title italic tracking-tight">
                 Captured <span className="text-[#c5a059]">Perspectives.</span>
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
@@ -122,9 +133,9 @@ export default async function DronePhotographyPage() {
           </section>
         )}
 
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
-            <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">
+        <section className="content-container pb-20">
+          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-10 md:p-14">
+            <h2 className="section-title mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">

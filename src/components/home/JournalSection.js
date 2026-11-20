@@ -11,7 +11,7 @@ export default function JournalSection({ journals = [] }) {
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
                             LATEST INSIGHTS
                         </p>
-                        <h2 className="font-heading text-4xl md:text-6xl font-black text-white italic leading-tight pb-2 md:pb-4">
+                        <h2 className="section-title text-white italic leading-tight pb-2">
                             The <span className="text-[#c5a059]">Journal.</span>
                         </h2>
                     </div>

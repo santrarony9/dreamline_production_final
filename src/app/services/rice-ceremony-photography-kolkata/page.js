@@ -28,19 +28,30 @@ export default async function RiceCeremonyPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does rice ceremony photography cost in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "The cost depends on event duration, venue, photography style, number of photographers, and deliverables."}}, {"@type": "Question", "name": "What does a rice ceremony photography package include?", "acceptedAnswer": {"@type": "Answer", "text": "A package may include candid photography, traditional portraits, baby photographs, family pictures, ritual coverage, and edited images."}}, {"@type": "Question", "name": "Can you cover a Bengali Annaprashan ceremony at home?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, Annaprashan ceremonies held at home can be covered."}}, {"@type": "Question", "name": "When should I book baby rice ceremony photography?", "acceptedAnswer": {"@type": "Answer", "text": "It is better to book your photographer a few weeks in advance, especially during busy wedding and festive seasons."}}, {"@type": "Question", "name": "Can grandparents and family members be included in the photographs?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. Family members are an important part of an Annaprashan celebration."}}]}) }} />
-      <main className="bg-black pt-32 min-h-screen text-white">
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
-            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
-            <span className="mx-2">/</span>
-            <span className="text-[#c5a059]">Rice Ceremony Photography Kolkata</span>
+      <main className="page-main">
+        <section className="page-hero-section">
+          <nav aria-label="Breadcrumb" className="page-breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/services/">Services</Link>
+            <span>/</span>
+            <span className="current">Rice Ceremony Photography Kolkata</span>
           </nav>
+          <div>
+            <span className="page-category-label">
+              Social
+            </span>
+            <h1 className="page-hero-title">
+              <span className="text-[#c5a059]">Rice Ceremony</span> Photography in Kolkata
+            </h1>
+            <p className="page-hero-desc">
+              A baby’s first rice ceremony is one of the most special moments for a family. From the little one tasting rice for the first time to the blessings of grandparents and the happiness of everyone around, every moment deserves to be remembered. Professional Rice Ceremony Photography in Kolkata helps you preserve these precious memories for years to come.
+            </p>
+          </div>
+        </section>
+
+        <section className="content-container pb-20">
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
-            
-      <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8"><span className="text-[#c5a059]">Rice Ceremony</span> Photography in Kolkata</h1>
-      <p className="mb-4">A baby’s first rice ceremony is one of the most special moments for a family. From the little one tasting rice for the first time to the blessings of grandparents and the happiness of everyone around, every moment deserves to be remembered. Professional Rice Ceremony Photography in Kolkata helps you preserve these precious memories for years to come.</p>
       <p className="mb-4">Whether you are planning a traditional Bengali ceremony or a modern family celebration, the right photography team can capture the emotions, rituals, decorations, family interactions, and adorable moments of your little one naturally.</p>
       <h2 className="font-heading text-2xl font-bold mt-10 mb-4 text-[#c5a059]">Capture Your Baby’s Special Day in Kolkata</h2>
       <p className="mb-4">Your child's first rice ceremony happens only once. The photographs from this day become memories that your family can revisit as your little one grows up.</p>
@@ -71,10 +82,10 @@ export default async function RiceCeremonyPage() {
 
         {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
         {page?.gallery && page.gallery.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+          <section className="content-container py-16 md:py-20 w-full">
             <div className="mb-12 text-center">
-              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Sacred First Grain Stills</span>
-              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+              <span className="page-category-label">Sacred First Grain Stills</span>
+              <h2 className="section-title italic tracking-tight">
                 Captured <span className="text-[#c5a059]">Blessings.</span>
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
@@ -104,9 +115,9 @@ export default async function RiceCeremonyPage() {
           </section>
         )}
 
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
-            <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">
+        <section className="content-container pb-20">
+          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-10 md:p-14">
+            <h2 className="section-title mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">

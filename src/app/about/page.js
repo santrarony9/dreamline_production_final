@@ -54,7 +54,7 @@ export default async function AboutPage() {
     const aboutData = siteContent?.about || {};
 
     return (
-        <main className="bg-black pt-24 md:pt-32">
+        <main className="page-main">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "AboutPage",
@@ -81,18 +81,25 @@ export default async function AboutPage() {
                 }
             }} />
             {/* Hero Section */}
-            <section className="container mx-auto px-6 mb-20">
-                <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
-                    {aboutData.hero?.subtitle || "Est. 2010 • Govt. Registered"}
-                </span>
-                <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-black mb-10 md:mb-12 leading-tight sm:leading-[1.08] text-white uppercase pb-2 md:pb-4">
-                    {aboutData.hero?.titleLine1 || "TRUSTED PRODUCTION"}<br />
-                    <span className="text-white/20">{aboutData.hero?.titleLine2 || "HOUSE IN KOLKATA."}</span>
-                </h1>
-                <p className="max-w-3xl text-lg text-gray-400 leading-relaxed mb-12">
-                    {aboutData.hero?.description || "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions..."}
-                </p>
-                <div className="h-[1px] w-full bg-white/10 mb-20"></div>
+            <section className="page-hero-section">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">About Us</span>
+                </nav>
+                <div className="max-w-4xl">
+                    <span className="page-category-label">
+                        {aboutData.hero?.subtitle || "Est. 2010 • Govt. Registered"}
+                    </span>
+                    <h1 className="page-hero-title">
+                        {aboutData.hero?.titleLine1 || "TRUSTED PRODUCTION"}{" "}
+                        <span className="text-[#c5a059]">{aboutData.hero?.titleLine2 || "HOUSE IN KOLKATA."}</span>
+                    </h1>
+                    <p className="page-hero-desc mb-8">
+                        {aboutData.hero?.description || "Dreamline Production is a leading production house in Kolkata delivering cinematic video production, photography, and digital content solutions..."}
+                    </p>
+                </div>
+                <div className="h-[1px] w-full bg-white/10 mb-16"></div>
 
                 {/* About & Vision */}
                 <div className="grid md:grid-cols-2 gap-16 mb-24">

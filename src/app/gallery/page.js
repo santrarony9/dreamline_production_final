@@ -118,7 +118,7 @@ export default async function GalleryPage() {
     ];
 
     return (
-        <main className="bg-[#050505] text-white min-h-screen pt-28 md:pt-36">
+        <main className="page-main">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "ImageGallery",
@@ -133,16 +133,23 @@ export default async function GalleryPage() {
             }} />
 
             {/* Hero Section */}
-            <section className="container mx-auto px-6 py-12 md:py-16 text-center max-w-4xl">
-                <span className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-4 inline-block">
-                    The Archive of Emotion &amp; Light
-                </span>
-                <h1 className="font-heading text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white mb-6">
-                    Master <span className="text-[#c5a059] italic">Gallery.</span>
-                </h1>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-light">
-                    Every frame tells an authentic story calibrated for timeless elegance. Browse our verified luxury wedding portraits, sacred ritual ceremonies, pre-wedding narratives, and commercial cinematography.
-                </p>
+            <section className="page-hero-section text-center">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb justify-center">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Gallery</span>
+                </nav>
+                <div className="max-w-4xl mx-auto">
+                    <span className="page-category-label">
+                        The Archive of Emotion &amp; Light
+                    </span>
+                    <h1 className="page-hero-title mx-auto">
+                        Master <span className="text-[#c5a059] italic">Gallery.</span>
+                    </h1>
+                    <p className="page-hero-desc mx-auto">
+                        Every frame tells an authentic story calibrated for timeless elegance. Browse our verified luxury wedding portraits, sacred ritual ceremonies, pre-wedding narratives, and commercial cinematography.
+                    </p>
+                </div>
 
                 {/* Quick Segment Jump Links */}
                 <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -150,19 +157,19 @@ export default async function GalleryPage() {
                         href="/luxury" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        💍 Wedding Stories
+                        Wedding Stories
                     </Link>
                     <Link 
                         href="/portfolio/" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        🎬 Master Portfolio
+                        Master Portfolio
                     </Link>
                     <Link 
                         href="/services/drone-videography-kolkata/" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        🛸 Aerial Cinematography
+                        Aerial Cinematography
                     </Link>
                 </div>
             </section>

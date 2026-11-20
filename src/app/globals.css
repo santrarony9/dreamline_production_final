@@ -517,3 +517,158 @@ a:focus-visible, button:focus-visible {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* ==========================================================================
+   DREAMLINE PRODUCTION — CENTRALIZED RESPONSIVE DESIGN SYSTEM
+   Fluid Typography with clamp(), Calibrated Navbar Clearance, Clean Breadcrumbs
+   ========================================================================== */
+
+/* 1. Page Main Container: Exact clearance for floating navbar without duplicate gaps */
+.page-main {
+  background-color: #000000;
+  min-height: 100vh;
+  padding-top: clamp(6.25rem, 8vw + 2rem, 8rem);
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+/* 2. Hero Section Container: Consistent layout boundaries across all pages */
+.page-hero-section {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 4vw, 3.5rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* 3. Content Container: Symmetrical margins & fluid gutters */
+.content-container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.25rem, 4vw, 3.5rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* 4. Breadcrumb Navigation: Strict hierarchy and clean golden hover */
+.page-breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #6b7280;
+  margin-bottom: 1.25rem;
+}
+
+.page-breadcrumb a {
+  color: #9ca3af;
+  transition: color 0.2s ease;
+}
+
+.page-breadcrumb a:hover {
+  color: #c5a059;
+}
+
+.page-breadcrumb .current {
+  color: #c5a059;
+  font-weight: 800;
+}
+
+/* 5. Category / Specialty Tag Label: 11px luxury gold tracking */
+.page-category-label {
+  display: inline-block;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: #c5a059;
+  margin-bottom: 0.75rem;
+}
+
+/* 6. Main Page Heading (H1) — Fluid clamp prevents 8xl multi-line explosion */
+.page-hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2rem, 3.6vw + 0.5rem, 3.75rem); /* ~32px on mobile -> 46px on tablet -> 60px on desktop */
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  max-width: 56rem;
+  text-wrap: balance;
+  word-break: normal;
+  overflow-wrap: break-word;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Flagship Homepage Hero H1 */
+.home-hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(2.5rem, 6.2vw, 5.25rem); /* 40px to 84px */
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-wrap: balance;
+  word-break: normal;
+}
+
+/* Article / Editorial Title H1 */
+.article-hero-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.75rem, 2.8vw + 0.5rem, 2.75rem); /* 28px to 44px */
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  max-width: 50rem;
+  text-wrap: balance;
+  word-break: normal;
+  margin-bottom: 1.25rem;
+}
+
+/* 7. Section Heading (H2): Consistent sizing across galleries & sections */
+.section-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.65rem, 2.6vw + 0.25rem, 2.75rem); /* 26px to 44px */
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-wrap: balance;
+  word-break: normal;
+}
+
+/* 8. Card / Subsection Heading (H3) */
+.card-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: clamp(1.05rem, 1.3vw + 0.2rem, 1.35rem); /* 17px to 22px */
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+/* 9. Introductory Paragraph: Comfortable 704px reading measure */
+.page-hero-desc {
+  font-size: clamp(0.95rem, 0.85vw + 0.25rem, 1.125rem); /* 15px to 18px */
+  line-height: 1.65;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  max-width: 44rem;
+  text-wrap: pretty;
+}
+
+/* 10. Uniform Section Spacing */
+.section-spacing {
+  margin-bottom: clamp(3rem, 6vw, 5.5rem);
+}
+

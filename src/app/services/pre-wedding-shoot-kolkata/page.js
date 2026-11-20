@@ -28,19 +28,30 @@ export default async function PreWeddingShootPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much does a pre-wedding shoot in Kolkata cost?", "acceptedAnswer": {"@type": "Answer", "text": "The cost of a pre-wedding shoot in Kolkata depends on the number of hours, locations, number of outfits, photography style, and services included."}}, {"@type": "Question", "name": "Which locations are best for pre-wedding photography in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Kolkata offers many options for pre-wedding photography, including heritage areas, modern cityscapes, gardens, cafes, and private locations."}}, {"@type": "Question", "name": "How early should we book a pre-wedding shoot photographer?", "acceptedAnswer": {"@type": "Answer", "text": "Ideally, couples should book their pre-wedding shoot photographer at least 1\u20132 months in advance."}}, {"@type": "Question", "name": "Can we choose our own concept for a pre-wedding photoshoot?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, you can share your ideas, favourite locations, outfits, or references for the pre-wedding photoshoot."}}, {"@type": "Question", "name": "How long does a couple pre-wedding shoot usually take?", "acceptedAnswer": {"@type": "Answer", "text": "A couple pre-wedding shoot can take anywhere from a few hours to a full day."}}]}) }} />
-      <main className="bg-black pt-32 min-h-screen text-white">
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
-            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
-            <span className="mx-2">/</span>
-            <span className="text-[#c5a059]">Pre-Wedding Shoot Kolkata</span>
+      <main className="page-main">
+        <section className="page-hero-section">
+          <nav aria-label="Breadcrumb" className="page-breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/services/">Services</Link>
+            <span>/</span>
+            <span className="current">Pre-Wedding Shoot Kolkata</span>
           </nav>
+          <div>
+            <span className="page-category-label">
+              Wedding
+            </span>
+            <h1 className="page-hero-title">
+              <span className="text-[#c5a059]">Pre-Wedding</span> Photographer in Kolkata
+            </h1>
+            <p className="page-hero-desc">
+              Planning your special day? Before you say “I do,” let's capture the magic of your love story with a stunning pre-wedding shoot in the City of Joy! At Dreamline Production, we specialize in creating dreamy, cinematic pre-wedding photography that tells your unique story, set against Kolkata's iconic heritage buildings, riverside ghats, and charming old-world lanes.
+            </p>
+          </div>
+        </section>
+
+        <section className="content-container pb-20">
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
-            
-      <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8"><span className="text-[#c5a059]">Pre-Wedding</span> Photographer in Kolkata</h1>
-      <p className="mb-4">Planning your special day? Before you say “I do,” let's capture the magic of your love story with a stunning pre-wedding shoot in the City of Joy! At Dreamline Production, we specialize in creating dreamy, cinematic pre-wedding photography that tells your unique story, set against Kolkata's iconic heritage buildings, riverside ghats, and charming old-world lanes.</p>
       <h2 className="font-heading text-2xl font-bold mt-10 mb-4 text-[#c5a059]">Why a Pre-Wedding Photoshoot Matters</h2>
       <p className="mb-4">A pre-wedding photoshoot isn't just about pretty pictures; it captures the excitement, nerves, and pure joy of two people about to start a new chapter together. It's also a lovely way to get comfortable in front of the camera before the wedding day itself, so you look relaxed and natural in every frame.</p>
       <h3 className="font-heading text-xl font-bold mt-8 mb-4">Best Locations for Pre-Wedding Photography in Kolkata</h3>
@@ -81,10 +92,10 @@ export default async function PreWeddingShootPage() {
 
         {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
         {page?.gallery && page.gallery.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+          <section className="content-container py-16 md:py-20 w-full">
             <div className="mb-12 text-center">
-              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Cinematic Frames</span>
-              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+              <span className="page-category-label">Cinematic Frames</span>
+              <h2 className="section-title italic tracking-tight">
                 Captured <span className="text-[#c5a059]">Moments.</span>
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
@@ -114,9 +125,9 @@ export default async function PreWeddingShootPage() {
           </section>
         )}
 
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
-            <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">
+        <section className="content-container pb-20">
+          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-10 md:p-14">
+            <h2 className="section-title mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">

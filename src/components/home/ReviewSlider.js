@@ -40,7 +40,7 @@ export default function ReviewSlider({
                         <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40 mb-4">
                             {sectionSubtitle}
                         </p>
-                        <h2 className="font-heading text-5xl font-black text-white italic">
+                        <h2 className="section-title text-white italic">
                             {sectionTitle}
                         </h2>
                     </div>

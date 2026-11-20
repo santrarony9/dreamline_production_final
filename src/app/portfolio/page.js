@@ -78,7 +78,7 @@ export default async function PortfolioPage() {
     ];
 
     return (
-        <main className="bg-[#050505] text-white min-h-screen pt-28 md:pt-36">
+        <main className="page-main text-white">
             <StructuredData data={{
                 "@context": "https://schema.org",
                 "@type": "CollectionPage",
@@ -93,14 +93,19 @@ export default async function PortfolioPage() {
             }} />
 
             {/* Hero Header */}
-            <section className="container mx-auto px-6 py-12 md:py-16 text-center max-w-4xl">
-                <span className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-4 inline-block">
+            <section className="page-hero-section text-center max-w-4xl">
+                <nav aria-label="Breadcrumb" className="page-breadcrumb justify-center">
+                    <Link href="/">Home</Link>
+                    <span>/</span>
+                    <span className="current">Portfolio</span>
+                </nav>
+                <span className="page-category-label">
                     The Archive of Excellence
                 </span>
-                <h1 className="font-heading text-4xl sm:text-6xl md:text-7xl font-black uppercase tracking-tight text-white mb-6">
+                <h1 className="page-hero-title mx-auto">
                     Master <span className="text-[#c5a059] italic">Portfolio.</span>
                 </h1>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto font-light">
+                <p className="page-hero-desc mx-auto">
                     Every frame is calibrated for emotional resonance and cinematic grandeur. Explore our documented luxury weddings, commercial ad films, and technical innovations.
                 </p>
 
@@ -110,25 +115,25 @@ export default async function PortfolioPage() {
                         href="/luxury" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        💍 Luxury Weddings
+                        Luxury Weddings
                     </Link>
                     <Link 
                         href="/commercial" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        🎥 Commercial Films
+                        Commercial Films
                     </Link>
                     <Link 
                         href="/services/drone-videography-kolkata/" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        🛸 Drone & Aerial
+                        Drone &amp; Aerial
                     </Link>
                     <Link 
                         href="/tech" 
                         className="px-5 py-2.5 rounded-full border border-white/10 hover:border-[#c5a059] bg-white/[0.03] text-xs font-black uppercase tracking-widest text-white hover:text-[#c5a059] transition-all"
                     >
-                        💻 Tech & 3D
+                        Tech &amp; 3D
                     </Link>
                 </div>
             </section>

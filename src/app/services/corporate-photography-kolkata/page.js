@@ -69,24 +69,31 @@ export default async function CorporatePhotographyPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqData) }}
       />
-      <main className="bg-black pt-32 min-h-screen text-white">
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
-            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
-            <span className="mx-2">/</span>
-            <span className="text-[#c5a059]">Corporate Photography Kolkata</span>
+      <main className="page-main">
+        <section className="page-hero-section">
+          <nav aria-label="Breadcrumb" className="page-breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/services/">Services</Link>
+            <span>/</span>
+            <span className="current">Corporate Photography Kolkata</span>
           </nav>
 
-          <article className="prose prose-invert prose-lg max-w-none text-gray-300">
-            <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8 leading-tight">
+          <div>
+            <span className="page-category-label">
+              Corporate
+            </span>
+            <h1 className="page-hero-title">
               Corporate <span className="text-[#c5a059]">Photography</span> &amp; Films in Kolkata
             </h1>
-
-            <p className="text-xl text-gray-200 leading-relaxed mb-8 font-light">
+            <p className="page-hero-desc">
               Elevate your corporate brand narrative with high-impact visual media. Serving business leaders, IT enterprises, and industrial corporations across Kolkata, Salt Lake Sector V, and New Town, Dreamline Production delivers executive portraits, corporate brand documentaries, and industrial facility videos that build authority and trust.
             </p>
+          </div>
+        </section>
+
+        <section className="content-container pb-20">
+          <article className="prose prose-invert prose-lg max-w-none text-gray-300">
 
             <h2 className="font-heading text-2xl font-bold mt-12 mb-4 text-[#c5a059]">
               Commercial Visual Excellence for Industry Leaders
@@ -132,10 +139,10 @@ export default async function CorporatePhotographyPage() {
 
         {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
         {page?.gallery && page.gallery.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+          <section className="content-container py-16 md:py-20 w-full">
             <div className="mb-12 text-center">
-              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Industrial &amp; Corporate Stills</span>
-              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+              <span className="page-category-label">Industrial &amp; Corporate Stills</span>
+              <h2 className="section-title italic tracking-tight">
                 Captured <span className="text-[#c5a059]">Frames.</span>
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
@@ -166,9 +173,9 @@ export default async function CorporatePhotographyPage() {
         )}
 
         {/* Booking CTA Box */}
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
+        <section className="content-container pb-20">
           <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-10 md:p-14">
-            <h2 className="text-3xl md:text-4xl font-black text-white uppercase tracking-tighter mb-4">
+            <h2 className="section-title mb-4">
               Schedule Your <span className="text-[#c5a059]">Corporate Shoot</span>
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto text-sm leading-relaxed">

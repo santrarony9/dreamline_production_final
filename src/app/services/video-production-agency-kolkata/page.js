@@ -28,19 +28,30 @@ export default async function VideoProductionAgencyPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What services does a video production agency in Kolkata offer?", "acceptedAnswer": {"@type": "Answer", "text": "A video production agency can handle concept planning, scripting, filming, lighting, sound, editing, colour grading, motion graphics and final delivery."}}, {"@type": "Question", "name": "How much does video production cost in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Video production costs depend on the concept, shoot duration, locations, crew, equipment, talent, editing and post-production requirements."}}, {"@type": "Question", "name": "Can you produce commercial videos for businesses?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, commercial videos can be created for businesses across industries."}}, {"@type": "Question", "name": "Do you provide music video production in Kolkata?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, music video production can cover concept development, location planning, cinematography, direction, editing and colour grading."}}, {"@type": "Question", "name": "Can I visit your studio before booking a project?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, visiting the studio can help you understand the production setup, discuss your requirements and share your creative ideas with the team."}}]}) }} />
-      <main className="bg-black pt-32 min-h-screen text-white">
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <nav aria-label="Breadcrumb" className="mb-8 text-xs font-bold uppercase tracking-widest text-gray-500">
-            <Link href="/" className="hover:text-[#c5a059] transition-colors">Home</Link>
-            <span className="mx-2">/</span>
-            <Link href="/services/" className="hover:text-[#c5a059] transition-colors">Services</Link>
-            <span className="mx-2">/</span>
-            <span className="text-[#c5a059]">Video Production Agency Kolkata</span>
+      <main className="page-main">
+        <section className="page-hero-section">
+          <nav aria-label="Breadcrumb" className="page-breadcrumb">
+            <Link href="/">Home</Link>
+            <span>/</span>
+            <Link href="/services/">Services</Link>
+            <span>/</span>
+            <span className="current">Video Production Agency Kolkata</span>
           </nav>
+          <div>
+            <span className="page-category-label">
+              Corporate
+            </span>
+            <h1 className="page-hero-title">
+              Video <span className="text-[#c5a059]">Production Agency</span> in Kolkata
+            </h1>
+            <p className="page-hero-desc">
+              A powerful video can do more than showcase your brand - it can tell a story, create an emotional connection, and leave a lasting impression. Whether you are a business looking for promotional content, an artist planning a music video, or a brand preparing a commercial campaign, choosing the right video production agency in Kolkata can make a significant difference.
+            </p>
+          </div>
+        </section>
+
+        <section className="content-container pb-20">
           <article className="prose prose-invert prose-lg max-w-none text-gray-300">
-            
-      <h1 className="font-heading text-4xl md:text-6xl font-black uppercase tracking-tighter mb-8">Video <span className="text-[#c5a059]">Production Agency</span> in Kolkata</h1>
-      <p className="mb-4">A powerful video can do more than showcase your brand - it can tell a story, create an emotional connection, and leave a lasting impression. Whether you are a business looking for promotional content, an artist planning a music video, or a brand preparing a commercial campaign, choosing the right video production agency in Kolkata can make a significant difference.</p>
       <p className="mb-4">At Dreamline Production, we bring together creative ideas, professional production, cinematography, and post-production to create videos that are visually engaging and aligned with your goals.</p>
       
       <h2 className="font-heading text-2xl font-bold mt-10 mb-4 text-[#c5a059]">Commercial Videographer in Kolkata</h2>
@@ -102,10 +113,10 @@ export default async function VideoProductionAgencyPage() {
 
         {/* DYNAMIC PHOTO GALLERY - Full Width 2-Column Luxury Layout */}
         {page?.gallery && page.gallery.length > 0 && (
-          <section className="py-20 px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+          <section className="content-container py-16 md:py-20 w-full">
             <div className="mb-12 text-center">
-              <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] block mb-2">Production Stills</span>
-              <h2 className="font-heading text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">
+              <span className="page-category-label">Production Stills</span>
+              <h2 className="section-title italic tracking-tight">
                 Captured <span className="text-[#c5a059]">Productions.</span>
               </h2>
               <p className="text-gray-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-2">
@@ -135,9 +146,9 @@ export default async function VideoProductionAgencyPage() {
           </section>
         )}
 
-        <section className="container mx-auto px-6 max-w-4xl pb-32">
-          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-12">
-            <h2 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">
+        <section className="content-container pb-20">
+          <div className="mt-8 text-center bg-gradient-to-br from-[#c5a059]/10 to-transparent border border-[#c5a059]/20 rounded-3xl p-10 md:p-14">
+            <h2 className="section-title mb-4">
               Ready to <span className="text-[#c5a059]">Book?</span>
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">

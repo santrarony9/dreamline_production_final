@@ -568,13 +568,13 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
             <link rel="dns-prefetch" href="https://www.youtube-nocookie.com" />
             <link rel="dns-prefetch" href="https://img.youtube.com" />
 
-            <div className="px-4 sm:px-6 md:px-10 lg:px-12 max-w-7xl mx-auto w-full">
+            <div className="content-container w-full">
                 {/* SECTION HEADER */}
-                <div className="mb-10 md:mb-14">
-                    <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.35em] mb-3 block">
+                <div className="mb-10 md:mb-12">
+                    <span className="page-category-label">
                         Featured Portfolio
                     </span>
-                    <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-tight sm:leading-[1.08] mb-4">
+                    <h2 className="section-title italic tracking-tight leading-tight mb-3">
                         {title ? (
                             title.toLowerCase().includes("our podcast productions") ? (
                                 <>Our Podcast <span className="text-[#c5a059]">Productions</span></>
@@ -590,7 +590,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                         )}
                     </h2>
                     {subtitle && (
-                        <p className="text-white/60 text-base md:text-lg max-w-2xl font-medium leading-relaxed">
+                        <p className="page-hero-desc">
                             {subtitle}
                         </p>
                     )}
