@@ -59,7 +59,7 @@ export default function ReviewSlider({
                                 key={`review-${index}`}
                                 className="w-[290px] md:w-[340px] flex-shrink-0 p-6 md:p-8 bg-[#151515] border border-white/5 rounded-2xl relative interactive group flex flex-col justify-between min-h-[280px]"
                             >
-                                <div className="text-[#c5a059] text-5xl font-serif absolute top-6 right-8 opacity-10 group-hover:opacity-100 transition-opacity">
+                                <div className="text-[#c5a059] text-5xl font-serif absolute top-6 right-8 opacity-5 group-hover:opacity-15 pointer-events-none select-none transition-opacity z-0">
                                     &quot;
                                 </div>
                                 <div className="mb-6">

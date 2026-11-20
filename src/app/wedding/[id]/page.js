@@ -223,7 +223,7 @@ export default async function WeddingDetailPage({ params }) {
                 </Link>
                 <div className="max-w-4xl mx-auto">
                     <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-4 block">Cinematic Story</span>
-                    <h1 className="font-heading text-3xl sm:text-4xl md:text-7xl font-black mb-6 leading-none text-white uppercase tracking-tighter pb-2 md:pb-4">
+                    <h1 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight sm:leading-[1.1] text-white uppercase tracking-tighter pb-2 md:pb-4">
                         {wedding.title}
                     </h1>
                     <p className="text-gray-500 text-sm uppercase tracking-widest font-bold mb-10">

@@ -57,7 +57,7 @@ export default function ServicesCategories({ services }) {
                                     handleRowClick(srv);
                                 }
                             }}
-                            className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-center group cursor-pointer overflow-hidden"
+                            className="reveal border-t border-white/10 py-8 md:py-16 flex flex-col md:flex-row justify-between items-start md:items-center group cursor-pointer overflow-hidden"
                         >
                             <div className="flex flex-col gap-4">
                                 <Link href={getServiceLink(srv)} className="flex items-center gap-4 md:gap-10 group/link">

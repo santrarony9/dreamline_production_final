@@ -79,18 +79,19 @@
   transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
 }
 
-/* Cinematic Masking */
+/* Cinematic Masking - High Legibility & Smooth Hover */
 .mask-text {
-  background: linear-gradient(to right, #fff 50%, #444 50%);
+  background: linear-gradient(to right, #c5a059 50%, #e6e6e6 50%);
   background-size: 200% 100%;
   background-position: 100% 0;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  transition: background-position 1s ease;
+  transition: background-position 0.8s ease;
 }
 
-.reveal:hover .mask-text {
+.reveal:hover .mask-text,
+.group:hover .mask-text {
   background-position: 0 0;
 }
 
@@ -454,10 +455,16 @@ video {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Prevent orphan text on small screens for headings */
-h1, h2, h3 {
+/* Prevent orphan text on small screens for headings and eliminate letter/line overlap */
+h1, h2, h3, h4 {
   text-wrap: balance;
   overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Guard: Prevent sub-1.0 line height overlap on multiline headings */
+.font-heading {
+  min-height: min-content;
 }
 
 /* Minimum font size for legibility */

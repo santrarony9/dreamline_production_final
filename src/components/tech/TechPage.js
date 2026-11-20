@@ -35,7 +35,7 @@ export default function TechPage() {
     return (
         <main className="bg-[#050505] min-h-screen text-white">
             {/* Cinematic Hero */}
-            <section ref={containerRef} className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+            <section ref={containerRef} className="relative min-h-[75vh] flex flex-col items-center justify-center overflow-hidden py-24 sm:py-28 md:py-32">
                 <motion.div style={{ y }} className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-black/80 z-10" />
                     <img
@@ -46,7 +46,7 @@ export default function TechPage() {
                     />
                 </motion.div>
 
-                <div className="relative z-10 text-center px-6 pt-12 sm:pt-16">
+                <div className="relative z-10 text-center px-6 my-auto">
                     <noscript>
                         <style>{`.tech-header-motion { opacity: 1 !important; transform: none !important; }`}</style>
                     </noscript>
@@ -59,7 +59,7 @@ export default function TechPage() {
                         <p className="text-[#c5a059] text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] mb-4 sm:mb-6">
                             DIGITAL PRODUCT STUDIO
                         </p>
-                        <h1 className="font-heading text-5xl sm:text-7xl md:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-none mb-6 pb-2 md:pb-4">
+                        <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-tight sm:leading-[1.05] mb-6 pb-2 md:pb-4">
                             TECH<span className="text-[#c5a059]">.</span>
                         </h1>
                         <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-300 font-medium leading-relaxed">
@@ -70,8 +70,8 @@ export default function TechPage() {
                 </div>
 
                 {/* Scroll Indicator */}
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-                    <div className="w-[1px] h-20 bg-gradient-to-t from-[#c5a059] to-transparent" />
+                <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce pointer-events-none hidden sm:block opacity-60">
+                    <div className="w-[1px] h-12 md:h-16 bg-gradient-to-t from-[#c5a059] to-transparent" />
                 </div>
             </section>
 

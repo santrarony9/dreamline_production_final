@@ -11,7 +11,7 @@ export default function LetsCreate({ global }) {
             <div className="flex-1 py-16 md:py-32 px-6 md:px-16 lg:px-24 flex flex-col justify-center">
                 <p className="text-[#c5a059] font-black uppercase tracking-[0.4em] text-[10px] mb-6 md:mb-8">Ready For Action.</p>
 
-                <h2 className="font-heading text-5xl md:text-8xl lg:text-[100px] font-black leading-[0.9] tracking-tighter uppercase mb-12 md:mb-20 drop-shadow-lg break-words">
+                <h2 className="font-heading text-4xl sm:text-6xl md:text-8xl lg:text-[90px] font-black leading-tight sm:leading-[1.05] tracking-tighter uppercase mb-10 md:mb-16 drop-shadow-lg break-words">
                     LET&apos;S<br />CREATE.
                 </h2>
 

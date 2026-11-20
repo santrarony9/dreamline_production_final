@@ -383,7 +383,7 @@ export default function MasterGallery({ images = [] }) {
                         <span className="text-[#c5a059] text-[10px] font-black uppercase tracking-[0.4em] mb-3 block">
                             The Master Visual Archive
                         </span>
-                        <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-[90px] font-black uppercase tracking-tighter leading-[0.88] mb-4">
+                        <h2 className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-[85px] font-black uppercase tracking-tighter leading-tight sm:leading-[1.05] mb-4">
                             MASTER<br /><span className="text-[#c5a059]">GALLERY.</span>
                         </h2>
                         <p className="text-gray-400 text-xs sm:text-sm font-light max-w-xl leading-relaxed">

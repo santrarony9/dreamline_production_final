@@ -574,7 +574,7 @@ export default function ServiceVideoShowcase({ videos, title, subtitle, pageSlug
                     <span className="text-[#c5a059] text-[10px] md:text-xs font-black uppercase tracking-[0.35em] mb-3 block">
                         Featured Portfolio
                     </span>
-                    <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-none mb-4">
+                    <h2 className="font-heading text-3xl sm:text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-tight sm:leading-[1.08] mb-4">
                         {title ? (
                             title.toLowerCase().includes("our podcast productions") ? (
                                 <>Our Podcast <span className="text-[#c5a059]">Productions</span></>

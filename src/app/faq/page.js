@@ -160,7 +160,7 @@ export default function FAQPage() {
                     <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                         Got Questions?
                     </span>
-                    <h1 className="font-heading text-5xl sm:text-6xl md:text-8xl font-black mb-8 uppercase text-white leading-[0.95]">
+                    <h1 className="font-heading text-4xl sm:text-6xl md:text-8xl font-black mb-8 uppercase text-white leading-tight sm:leading-[1.05]">
                         Frequently<br />
                         <span className="text-[#c5a059] italic">Asked.</span>
                     </h1>

@@ -19,7 +19,7 @@ export default function Expertise({ expertise }) {
                             />
                         </div>
                         {/* Experience Badge - Inside on mobile/tablet, offset on desktop 2-col */}
-                        <div className="absolute bottom-4 right-4 lg:-bottom-10 lg:-right-10 bg-[#c5a059] p-4 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl shadow-2xl z-10 w-28 md:w-36 lg:w-auto flex flex-col items-center justify-center text-center">
+                        <div className="absolute bottom-4 right-4 lg:-bottom-6 lg:-right-6 xl:-bottom-10 xl:-right-10 bg-[#c5a059] p-4 md:p-8 lg:p-10 rounded-2xl md:rounded-3xl shadow-2xl z-10 w-28 md:w-36 lg:w-auto flex flex-col items-center justify-center text-center">
                             <div className="font-heading text-3xl sm:text-4xl lg:text-6xl font-black text-black">{expertise?.yearsExperience || "15"}</div>
                             <div className="text-[8px] md:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-black/70">
                                 Years of Storytelling
@@ -33,7 +33,7 @@ export default function Expertise({ expertise }) {
                                 OUR PHILOSOPHY
                             </p>
                             <h2
-                                className="font-heading text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.15] pb-4 mb-8 uppercase break-words md:break-normal"
+                                className="font-heading text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.12] md:leading-tight pb-4 mb-8 uppercase break-words"
                                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(heading || "LUXURY<br/>EMOTION<br/>STORYTELLING.") }}
                             />
                             <p className="text-gray-300 text-base md:text-lg max-w-xl leading-relaxed">

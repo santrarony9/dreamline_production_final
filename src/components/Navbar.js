@@ -223,7 +223,7 @@ export default function Navbar({ initialServices, siteContent }) {
             {/* Main Floating Glass Navbar */}
             <nav
                 ref={dropdownContainerRef}
-                className={`fixed left-1/2 -translate-x-1/2 z-[100] w-[94%] max-w-6xl rounded-full nav-glass py-2.5 px-6 md:px-8 flex justify-between items-center transition-all duration-500 ${
+                className={`fixed left-1/2 -translate-x-1/2 z-[100] w-[95%] xl:w-[94%] max-w-6xl rounded-full nav-glass py-2.5 px-4 sm:px-6 lg:px-7 xl:px-8 flex justify-between items-center transition-all duration-500 ${
                     isScrolled 
                         ? "top-3 md:top-4 shadow-[0_10px_35px_rgba(0,0,0,0.85)] scale-[0.99] border-white/15 bg-black/85 backdrop-blur-xl" 
                         : (announcement.enabled !== false ? "top-8 sm:top-9 lg:top-10" : "top-4 lg:top-6")
@@ -231,7 +231,7 @@ export default function Navbar({ initialServices, siteContent }) {
                 style={{ overflow: 'visible' }}
             >
                 {/* COLUMN 1: BRAND LOGO */}
-                <div className="flex items-center justify-start min-w-[120px]">
+                <div className="flex items-center justify-start flex-shrink-0 min-w-[70px] lg:min-w-[90px] xl:min-w-[110px]">
                     <Link href="/" className="flex items-end gap-1.5 group interactive" aria-label="Dreamline Production Home">
                         <span className="font-heading font-black text-2xl tracking-tighter text-white group-hover:text-[#c5a059] transition-colors">
                             D<span className="text-[#c5a059]">/</span>P
@@ -241,7 +241,7 @@ export default function Navbar({ initialServices, siteContent }) {
                 </div>
 
                 {/* COLUMN 2: DYNAMIC HORIZONTAL MENU ITEMS */}
-                <div className="hidden lg:flex justify-center items-center gap-5 xl:gap-7 text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap">
+                <div className="hidden lg:flex justify-center items-center gap-3.5 xl:gap-6 text-[10px] xl:text-[11px] font-black uppercase tracking-wider xl:tracking-[0.2em] whitespace-nowrap flex-shrink-0">
                     {desktopItems.map((item, idx) => {
                         const active = isItemActive(item);
                         const hasChildren = Array.isArray(item.children) && item.children.length > 0;
@@ -678,12 +678,12 @@ export default function Navbar({ initialServices, siteContent }) {
                 </div>
 
                 {/* COLUMN 3: CTA BUTTON ("GET A QUOTE") & MOBILE HAMBURGER BUTTON */}
-                <div className="flex items-center justify-end gap-3 min-w-[120px]">
+                <div className="flex items-center justify-end gap-3 flex-shrink-0 min-w-[70px] lg:min-w-[90px] xl:min-w-[110px]">
                     {/* Desktop CTA Button */}
                     {cta.enabled !== false && (
                         <Link
                             href={cta.href || "/contact"}
-                            className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#c5a059] text-black text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white hover:shadow-[0_0_20px_rgba(197,160,89,0.5)] transition-all duration-300 interactive shadow-md"
+                            className="hidden lg:inline-flex items-center gap-2 px-4 xl:px-5 py-2.5 rounded-full bg-[#c5a059] text-black text-[9.5px] xl:text-[10px] font-black uppercase tracking-wider xl:tracking-[0.2em] hover:bg-white hover:shadow-[0_0_20px_rgba(197,160,89,0.5)] transition-all duration-300 interactive shadow-md whitespace-nowrap"
                         >
                             <span>{cta.label || "GET A QUOTE"}</span>
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

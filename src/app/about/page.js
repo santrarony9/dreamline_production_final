@@ -85,7 +85,7 @@ export default async function AboutPage() {
                 <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                     {aboutData.hero?.subtitle || "Est. 2010 • Govt. Registered"}
                 </span>
-                <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-black mb-12 leading-none text-white uppercase pb-2 md:pb-4">
+                <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-black mb-10 md:mb-12 leading-tight sm:leading-[1.08] text-white uppercase pb-2 md:pb-4">
                     {aboutData.hero?.titleLine1 || "TRUSTED PRODUCTION"}<br />
                     <span className="text-white/20">{aboutData.hero?.titleLine2 || "HOUSE IN KOLKATA."}</span>
                 </h1>
@@ -179,7 +179,7 @@ export default async function AboutPage() {
                         <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.6em] mb-6 block ml-[0.6em]">
                             Our Journey
                         </span>
-                        <h2 className="font-heading text-4xl md:text-6xl font-black mb-6 uppercase text-white leading-none pb-2 md:pb-4">
+                        <h2 className="font-heading text-4xl md:text-6xl font-black mb-6 uppercase text-white leading-tight sm:leading-[1.08] pb-2 md:pb-4">
                             Milestones & <br className="md:hidden" /><span className="text-white/20">Memories.</span>
                         </h2>
                         <div className="h-[60px] w-[1px] bg-gradient-to-b from-[#c5a059] to-transparent mt-8"></div>
@@ -258,7 +258,7 @@ export default async function AboutPage() {
                             <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                                 {aboutData.bts?.sectionSubtitle || "By The Numbers"}
                             </span>
-                            <h2 className="font-heading text-4xl md:text-6xl font-black mb-12 uppercase leading-none text-white pb-2 md:pb-4" dangerouslySetInnerHTML={{ __html: sanitizeHtml(aboutData.bts?.heading || "Proven<br>Excellence.") }} />
+                            <h2 className="font-heading text-4xl md:text-6xl font-black mb-12 uppercase leading-tight sm:leading-[1.08] text-white pb-2 md:pb-4" dangerouslySetInnerHTML={{ __html: sanitizeHtml(aboutData.bts?.heading || "Proven<br>Excellence.") }} />
 
                             <div className="grid grid-cols-2 gap-12">
                                 <div>
@@ -312,7 +312,7 @@ export default async function AboutPage() {
                             <span className="text-[#c5a059] font-bold text-xs uppercase tracking-[0.4em] mb-6 block">
                                 {aboutData.whyUs?.sectionSubtitle || "Why Us"}
                             </span>
-                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-none text-white uppercase pb-2 md:pb-4" dangerouslySetInnerHTML={{ __html: sanitizeHtml(aboutData.whyUs?.heading || "THE DREAMLINE<br>DIFFERENCE.") }} />
+                            <h2 className="font-heading text-4xl md:text-5xl font-black mb-10 leading-tight sm:leading-[1.08] text-white uppercase pb-2 md:pb-4" dangerouslySetInnerHTML={{ __html: sanitizeHtml(aboutData.whyUs?.heading || "THE DREAMLINE<br>DIFFERENCE.") }} />
                             <p className="text-gray-400 mb-8">
                                 {aboutData.whyUs?.description || "We don't just record events; we craft stories that emotionally connect with audiences."}
                             </p>
