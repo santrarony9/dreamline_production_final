@@ -5,7 +5,7 @@ export const metadata = {
     title: 'Privacy Policy',
     description: 'Privacy policy for Dreamline Production — how we collect, use, and protect your personal information.',
     alternates: {
-        canonical: 'https://dreamlineproduction.com/privacy-policy',
+        canonical: 'https://dreamlineproduction.com/privacy-policy/',
     },
     robots: {
         index: false,
@@ -18,8 +18,8 @@ const schema = {
     "@graph": [
         {
             "@type": "WebPage",
-            "@id": "https://dreamlineproduction.com/privacy-policy",
-            "url": "https://dreamlineproduction.com/privacy-policy",
+            "@id": "https://dreamlineproduction.com/privacy-policy/",
+            "url": "https://dreamlineproduction.com/privacy-policy/",
             "name": "Privacy Policy | Dreamline Production",
             "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
             "inLanguage": "en-IN"
@@ -27,8 +27,8 @@ const schema = {
         {
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
-                { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://dreamlineproduction.com/privacy-policy" }
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com/" },
+                { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://dreamlineproduction.com/privacy-policy/" }
             ]
         }
     ]

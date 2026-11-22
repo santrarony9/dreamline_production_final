@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 import TechPage from "@/components/tech/TechPage";
 import StructuredData from '@/components/seo/StructuredData';
 
@@ -7,12 +6,12 @@ export const metadata = {
     title: "Tech & Web Development",
     description: "Explore the digital product studio of Dreamline Production. We engineer high-performance, cinematic web experiences.",
     alternates: {
-        canonical: 'https://dreamlineproduction.com/tech',
+        canonical: 'https://dreamlineproduction.com/tech/',
     },
     openGraph: {
         title: "Tech & Web Development",
         description: "Explore the digital product studio of Dreamline Production. We engineer high-performance, cinematic web experiences.",
-        url: 'https://dreamlineproduction.com/tech',
+        url: 'https://dreamlineproduction.com/tech/',
         siteName: 'Dreamline Production',
         locale: 'en_IN',
         type: 'website',
@@ -35,7 +34,7 @@ export default function Page() {
                 "name": "Web Development & Digital Solutions Kolkata",
                 "description": "High-performance web development, UI/UX design, and digital product engineering by Dreamline Production's tech division.",
                 "provider": { "@type": "Organization", "name": "Dreamline Production", "url": "https://dreamlineproduction.com" },
-                "url": "https://dreamlineproduction.com/tech",
+                "url": "https://dreamlineproduction.com/tech/",
                 "serviceType": ["Web Development", "UI/UX Design", "Digital Product Engineering"]
             }} />
             <TechPage />

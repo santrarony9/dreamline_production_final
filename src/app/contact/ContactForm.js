@@ -95,7 +95,7 @@ export default function ContactForm({ globalData }) {
                                         name="firstName"
                                         value={formData.firstName}
                                         onChange={handleChange}
-                                        placeholder="John"
+                                        placeholder="Your First Name"
                                         className="placeholder-white/20 bg-transparent border-b border-white/20 text-white w-full py-4 outline-none focus:border-[#c5a059] transition-colors"
                                         required
                                     />
@@ -107,7 +107,7 @@ export default function ContactForm({ globalData }) {
                                         name="lastName"
                                         value={formData.lastName}
                                         onChange={handleChange}
-                                        placeholder="Doe"
+                                        placeholder="Your Last Name"
                                         className="placeholder-white/20 bg-transparent border-b border-white/20 text-white w-full py-4 outline-none focus:border-[#c5a059] transition-colors"
                                         required
                                     />
@@ -122,7 +122,7 @@ export default function ContactForm({ globalData }) {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        placeholder="john@example.com"
+                                        placeholder="your@email.com"
                                         className="placeholder-white/20 bg-transparent border-b border-white/20 text-white w-full py-4 outline-none focus:border-[#c5a059] transition-colors"
                                         required
                                     />
@@ -220,27 +220,20 @@ export default function ContactForm({ globalData }) {
                     <div className="space-y-8 sm:space-y-12">
                         <div className="w-full h-[280px] sm:h-[350px] md:h-[400px] rounded-[2rem] overflow-hidden border border-white/10 relative">
                             <div className="absolute inset-0 bg-[#c5a059] mix-blend-overlay opacity-10 pointer-events-none z-10"></div>
-                            {(globalData?.google?.placeId && globalData?.google?.mapsApiKey) ? (
-                                <iframe
-                                    src={`https://www.google.com/maps/embed/v1/place?key=${globalData.google.mapsApiKey}&q=place_id:${globalData.google.placeId}`}
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0, filter: 'grayscale(100%) invert(100%) contrast(80%)' }}
-                                    allowFullScreen=""
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                ></iframe>
-                            ) : (
-                                <iframe
-                                    src={`https://maps.google.com/maps?q=${encodeURIComponent("Dreamline Production, " + (contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082"))}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0, filter: 'grayscale(100%) invert(100%) contrast(80%)' }}
-                                    allowFullScreen=""
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                ></iframe>
-                            )}
+                            {/* Always use the no-API-key embed as primary to avoid PERMISSION_DENIED */}
+                            <iframe
+                                src={
+                                    (globalData?.google?.placeId && globalData?.google?.mapsApiKey)
+                                        ? `https://www.google.com/maps/embed/v1/place?key=${globalData.google.mapsApiKey}&q=place_id:${globalData.google.placeId}`
+                                        : `https://maps.google.com/maps?q=${encodeURIComponent("Dreamline Production, " + (contact.address || "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082"))}&t=&z=15&ie=UTF8&iwloc=&output=embed`
+                                }
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0, filter: 'grayscale(100%) invert(100%) contrast(80%)' }}
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3 sm:gap-4">

@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 // On-demand revalidation handles immediate updates
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
@@ -29,12 +28,12 @@ export async function generateMetadata() {
         description: description,
         keywords: keywords,
         alternates: {
-            canonical: 'https://dreamlineproduction.com/luxury',
+            canonical: 'https://dreamlineproduction.com/luxury/',
         },
         openGraph: {
             title: title,
             description: description,
-            url: 'https://dreamlineproduction.com/luxury',
+            url: 'https://dreamlineproduction.com/luxury/',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
@@ -82,7 +81,7 @@ export default async function LuxuryPage() {
                     "url": "https://dreamlineproduction.com"
                 },
                 "areaServed": ["Kolkata", "West Bengal", "India"],
-                "url": "https://dreamlineproduction.com/luxury",
+                "url": "https://dreamlineproduction.com/luxury/",
                 "serviceType": ["Wedding Photography", "Wedding Cinematography", "Pre-Wedding Photography", "Destination Wedding Photography"]
             }} />
             <StructuredData data={{

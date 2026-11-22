@@ -1,3 +1,5 @@
+export const revalidate = 120;
+
 import dbConnect from "@/lib/mongodb";
 import GalleryItem from "@/models/GalleryItem";
 import WeddingAlbum from "@/models/WeddingAlbum";
@@ -7,14 +9,13 @@ import StructuredData from "@/components/seo/StructuredData";
 import InteractiveGalleryView from "@/components/gallery/InteractiveGalleryView";
 import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
 
 export async function generateMetadata() {
     await dbConnect();
     const siteContent = await Content.findOne().lean();
     const globalSeo = siteContent?.global?.seo || {};
 
-    const title = "Master Gallery — Dreamline Production | Luxury Wedding & Commercial Visual Archive";
+    const title = "Master Gallery — Luxury Wedding & Commercial Visual Archive";
     const description = "Explore Dreamline Production's curated photography and cinema gallery. Over 500+ luxury weddings, candid Bengali rituals, cinematic pre-wedding narratives, and drone aerials in Kolkata.";
 
     return {

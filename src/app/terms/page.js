@@ -5,7 +5,7 @@ export const metadata = {
     title: 'Terms of Service',
     description: 'Terms of service for Dreamline Production — production agreements, intellectual property, payment terms, and governing law.',
     alternates: {
-        canonical: 'https://dreamlineproduction.com/terms',
+        canonical: 'https://dreamlineproduction.com/terms/',
     },
     robots: {
         index: false,
@@ -18,8 +18,8 @@ const schema = {
     "@graph": [
         {
             "@type": "WebPage",
-            "@id": "https://dreamlineproduction.com/terms",
-            "url": "https://dreamlineproduction.com/terms",
+            "@id": "https://dreamlineproduction.com/terms/",
+            "url": "https://dreamlineproduction.com/terms/",
             "name": "Terms & Conditions | Dreamline Production",
             "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
             "inLanguage": "en-IN"
@@ -27,8 +27,8 @@ const schema = {
         {
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
-                { "@type": "ListItem", "position": 2, "name": "Terms & Conditions", "item": "https://dreamlineproduction.com/terms" }
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com/" },
+                { "@type": "ListItem", "position": 2, "name": "Terms & Conditions", "item": "https://dreamlineproduction.com/terms/" }
             ]
         }
     ]

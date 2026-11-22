@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 // On-demand revalidation handles immediate updates
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
@@ -27,12 +26,12 @@ export async function generateMetadata() {
         description: description,
         keywords: keywords,
         alternates: {
-            canonical: 'https://dreamlineproduction.com/commercial',
+            canonical: 'https://dreamlineproduction.com/commercial/',
         },
         openGraph: {
             title: title,
             description: description,
-            url: 'https://dreamlineproduction.com/commercial',
+            url: 'https://dreamlineproduction.com/commercial/',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
@@ -83,8 +82,8 @@ export default async function CommercialPage() {
             "name": "Dreamline Production",
             "logo": { "@type": "ImageObject", "url": "https://dreamlineproduction.com/logo.png" }
         },
-        "contentUrl": "https://dreamlineproduction.com/commercial",
-        "embedUrl": "https://dreamlineproduction.com/commercial"
+        "contentUrl": "https://dreamlineproduction.com/commercial/",
+        "embedUrl": "https://dreamlineproduction.com/commercial/"
     };
 
     return (
@@ -101,7 +100,7 @@ export default async function CommercialPage() {
                     "url": "https://dreamlineproduction.com"
                 },
                 "areaServed": ["Kolkata", "West Bengal", "India"],
-                "url": "https://dreamlineproduction.com/commercial",
+                "url": "https://dreamlineproduction.com/commercial/",
                 "serviceType": ["Corporate Film Production", "Ad Film Production", "Brand Films", "Commercial Videography", "Factory Videography"]
             }} />
             <StructuredData data={{

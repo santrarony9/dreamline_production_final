@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 // On-demand revalidation handles immediate updates
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
@@ -27,12 +26,12 @@ export async function generateMetadata() {
         description: description,
         keywords: keywords,
         alternates: {
-            canonical: 'https://dreamlineproduction.com/about',
+            canonical: 'https://dreamlineproduction.com/about/',
         },
         openGraph: {
             title: title,
             description: description,
-            url: 'https://dreamlineproduction.com/about',
+            url: 'https://dreamlineproduction.com/about/',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
@@ -60,7 +59,7 @@ export default async function AboutPage() {
                 "@type": "AboutPage",
                 "name": "About Dreamline Production",
                 "description": "Learn about Dreamline Production, Kolkata's premier cinematic production house founded by Rony Santra.",
-                "url": "https://dreamlineproduction.com/about",
+                "url": "https://dreamlineproduction.com/about/",
                 "mainEntity": {
                     "@type": "Organization",
                     "name": "Dreamline Production",
@@ -89,7 +88,7 @@ export default async function AboutPage() {
                 </nav>
                 <div className="max-w-4xl">
                     <span className="page-category-label">
-                        {aboutData.hero?.subtitle || "Est. 2010 • Govt. Registered"}
+                        {aboutData.hero?.subtitle || "Est. 2010 · Premier Production Studio"}
                     </span>
                     <h1 className="page-hero-title">
                         {aboutData.hero?.titleLine1 || "TRUSTED PRODUCTION"}{" "}
@@ -154,7 +153,7 @@ export default async function AboutPage() {
                                 Capturing <br />The Unseen.
                             </h2>
                             <p className="text-gray-400 leading-relaxed mb-8 italic">
-                                "{aboutData.founder?.note || "At Dreamline, we don't just record events; we archive feelings..."}"
+                                &ldquo;{aboutData.founder?.note ? aboutData.founder.note.replace(/^["'\u201C\u201D]|["'\u201C\u201D]$/g, '').trim() : "At Dreamline, we don't just record events; we archive feelings..."}&rdquo;
                             </p>
                             <div className="flex items-end gap-4">
                                 <div className="h-[1px] w-12 bg-[#c5a059] mb-4"></div>

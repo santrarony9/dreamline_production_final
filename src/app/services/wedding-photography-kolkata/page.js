@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 import dbConnect from "@/lib/mongodb";
 import ServicePage from "@/models/ServicePage";
 import ServiceVideoShowcase from "@/components/global/ServiceVideoShowcase";

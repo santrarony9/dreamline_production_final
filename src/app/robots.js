@@ -1,6 +1,7 @@
 export default function robots() {
     const isProduction = process.env.NEXT_PUBLIC_SITE_URL === 'https://dreamlineproduction.com' || 
-                         process.env.VERCEL_ENV === 'production';
+                         process.env.VERCEL_ENV === 'production' ||
+                         process.env.NODE_ENV === 'production';
 
     return {
         rules: [

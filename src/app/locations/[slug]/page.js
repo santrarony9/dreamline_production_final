@@ -1,3 +1,5 @@
+export const revalidate = 86400;
+
 import { notFound } from 'next/navigation';
 import StructuredData from '@/components/seo/StructuredData';
 import Link from 'next/link';
@@ -78,13 +80,13 @@ export async function generateMetadata({ params }) {
   const loc = LOCATIONS.find(l => l.slug === slug);
   if (!loc) return {};
   return {
-    title: `${loc.headline} | Dreamline Production`,
+    title: loc.headline,
     description: loc.desc,
-    alternates: { canonical: `https://dreamlineproduction.com/locations/${loc.slug}` },
+    alternates: { canonical: `https://dreamlineproduction.com/locations/${loc.slug}/` },
     openGraph: {
       title: `${loc.headline} | Dreamline Production`,
       description: loc.desc,
-      url: `https://dreamlineproduction.com/locations/${loc.slug}`,
+      url: `https://dreamlineproduction.com/locations/${loc.slug}/`,
       siteName: 'Dreamline Production',
       locale: 'en_IN',
       type: 'website',

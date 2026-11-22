@@ -1,16 +1,18 @@
+export const revalidate = 86400;
+
 import Link from 'next/link';
 import StructuredData from '@/components/seo/StructuredData';
 
 export const metadata = {
-    title: "Photography & Production Locations in Kolkata | Dreamline Production",
+    title: "Photography & Production Locations in Kolkata",
     description: "Explore Dreamline Production's photography and cinematic production service areas across Kolkata — Salt Lake, New Town, Howrah, Park Street, Ballygunge, and top pre-wedding shoot spots.",
     alternates: {
-        canonical: "https://dreamlineproduction.com/locations",
+        canonical: "https://dreamlineproduction.com/locations/",
     },
     openGraph: {
         title: "Photography & Production Locations in Kolkata | Dreamline Production",
         description: "Explore our photography and film production service areas across Kolkata and West Bengal.",
-        url: "https://dreamlineproduction.com/locations",
+        url: "https://dreamlineproduction.com/locations/",
         siteName: "Dreamline Production",
         locale: "en_IN",
         type: "website",

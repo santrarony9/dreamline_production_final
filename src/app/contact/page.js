@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import ContactForm from "./ContactForm";
@@ -10,12 +9,12 @@ export async function generateMetadata() {
         title: "Contact & Book Us",
         description: "Book your luxury wedding photography or commercial film project with Dreamline Production. Call +91 82400 54002 or visit our studio at Tilottama Plaza, Kolkata.",
         alternates: {
-            canonical: 'https://dreamlineproduction.com/contact',
+            canonical: 'https://dreamlineproduction.com/contact/',
         },
         openGraph: {
             title: "Contact & Book Us",
             description: "Book your luxury wedding photography or commercial film project with Dreamline Production. Call +91 82400 54002 or visit our studio at Tilottama Plaza, Kolkata.",
-            url: 'https://dreamlineproduction.com/contact',
+            url: 'https://dreamlineproduction.com/contact/',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',

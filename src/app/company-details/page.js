@@ -1,3 +1,5 @@
+export const revalidate = 86400;
+
 import dbConnect from "@/lib/mongodb";
 import Content from "@/models/Content";
 import StructuredData from "@/components/seo/StructuredData";
@@ -8,8 +10,8 @@ const schema = {
     "@graph": [
         {
             "@type": "WebPage",
-            "@id": "https://dreamlineproduction.com/company-details",
-            "url": "https://dreamlineproduction.com/company-details",
+            "@id": "https://dreamlineproduction.com/company-details/",
+            "url": "https://dreamlineproduction.com/company-details/",
             "name": "Company Details & Registration | Dreamline Production",
             "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
             "inLanguage": "en-IN"
@@ -17,8 +19,8 @@ const schema = {
         {
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
-                { "@type": "ListItem", "position": 2, "name": "Company Details", "item": "https://dreamlineproduction.com/company-details" }
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com/" },
+                { "@type": "ListItem", "position": 2, "name": "Company Details", "item": "https://dreamlineproduction.com/company-details/" }
             ]
         },
         {
@@ -42,7 +44,16 @@ export async function generateMetadata() {
         title: "Company Details & Registration",
         description: "Official registration, bank details, and certification information for Dreamline Production.",
         alternates: {
-            canonical: 'https://dreamlineproduction.com/company-details',
+            canonical: 'https://dreamlineproduction.com/company-details/',
+        },
+        openGraph: {
+            title: "Company Details & Registration",
+            description: "Official registration, bank details, and certification information for Dreamline Production.",
+            url: 'https://dreamlineproduction.com/company-details/',
+            siteName: 'Dreamline Production',
+            locale: 'en_IN',
+            type: 'website',
+            images: [{ url: '/logo-banner.png', width: 1200, height: 630 }],
         },
         openGraph: {
             title: "Company Details & Registration",

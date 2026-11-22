@@ -7,8 +7,7 @@ import SmoothScroll from "@/components/global/SmoothScroll";
 import MediaProtection from "@/components/global/MediaProtection";
 import "./globals.css";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 60;
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -75,8 +74,8 @@ export async function generateMetadata() {
         images: [
           {
             url: (globalSeo.ogImage && !globalSeo.ogImage.includes('unsplash.com')) ? globalSeo.ogImage : "https://dreamlineproduction.com/logo-banner.png",
-            width: 1000,
-            height: 1000,
+            width: 1200,
+            height: 630,
             alt: "Dreamline Production - Photography, VFX and Animation",
           }
         ],
@@ -84,7 +83,7 @@ export async function generateMetadata() {
         locale: 'en_IN',
       },
       twitter: {
-        card: "summary",
+        card: "summary_large_image",
         title: globalSeo.title || "Dreamline Production | Kolkata's Premier Photography & Cinematic Production House",
         description: globalSeo.description || "Kolkata's premier photography studio. Luxury weddings and commercial films across India.",
         images: [(globalSeo.ogImage && !globalSeo.ogImage.includes('unsplash.com')) ? globalSeo.ogImage : "https://dreamlineproduction.com/logo-banner.png"],
@@ -114,7 +113,7 @@ export async function generateMetadata() {
       },
 
       verification: {
-        google: siteContent?.global?.google?.searchConsoleId || "",
+        google: siteContent?.global?.google?.searchConsoleId || "google73a1d08223bd0627",
       },
       other: {
         'ai-content-declaration': 'This website allows AI search engines to index and cite its content for search results and recommendations. See https://dreamlineproduction.com/ai.txt for full AI usage policy.',
@@ -206,7 +205,7 @@ export default async function RootLayout({ children }) {
     // Schema 3: ProfessionalService + PhotographyBusiness — main business entity
     // Multi-type ensures AI recognizes us for BOTH "production house" and "wedding photography" queries
     jsonLdGraph.push({
-      "@type": ["ProfessionalService", "PhotographyBusiness"],
+      "@type": ["LocalBusiness", "ProfessionalService", "PhotographyBusiness"],
       "@id": "https://dreamlineproduction.com/#business",
       "name": "Dreamline Production",
       "alternateName": [

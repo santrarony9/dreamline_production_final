@@ -9,13 +9,16 @@ export default function Hero({ content }) {
     const { titleLine1, titleLine2, subtitle, backgroundImage, cta1Text, cta1Link, cta2Text, cta2Link } = content || {};
     const containerRef = useRef(null);
 
-    // Guard against the accidental corporate building image and restore intended hero visual
-    const DEFAULT_HERO_IMAGE = "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80";
+    // Use a cinematic wedding-themed fallback — never show generic stock photos
+    // This image shows a bride/groom in golden light — matches brand identity
+    const DEFAULT_HERO_IMAGE = "https://backend.dreamlineproduction.com/uploads/hero-default.jpg";
+    const SAFE_FALLBACK = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80";
     const isCorporateBuilding = backgroundImage && (
         backgroundImage.includes("1790056541863") || 
-        backgroundImage.includes("DREAMLINE-PRODUCTION-IMAGE-1")
+        backgroundImage.includes("DREAMLINE-PRODUCTION-IMAGE-1") ||
+        backgroundImage.includes("1492691527719") // mountain hiker — wrong image
     );
-    const activeBackground = (!backgroundImage || isCorporateBuilding) ? DEFAULT_HERO_IMAGE : backgroundImage;
+    const activeBackground = (!backgroundImage || isCorporateBuilding) ? SAFE_FALLBACK : backgroundImage;
     const activeSubtitle = (subtitle && subtitle !== "Loading Experience") ? subtitle : "EST. 2010 • DREAMLINE PRODUCTION";
 
     // Smooth Parallax for Marquee and Background
@@ -81,10 +84,10 @@ export default function Hero({ content }) {
 
                 <h1 className="home-hero-title font-heading font-black text-white leading-[1.08] tracking-tighter mb-6 uppercase break-words mx-auto pb-2">
                     <span className="block reveal-text">
-                        <span className="reveal-inner-anim inline-block">{titleLine1 || "VISIONARY"}</span>
+                        <span className="reveal-inner-anim inline-block">{titleLine1 || "TIMELESS"}</span>
                     </span>
                     <span className="block italic text-outline reveal-text">
-                        <span className="reveal-inner-anim inline-block">{titleLine2 || "CINEMA."}</span>
+                        <span className="reveal-inner-anim inline-block">{titleLine2 || "STORIES."}</span>
                     </span>
                 </h1>
 

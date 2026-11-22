@@ -13,12 +13,19 @@ export default function Footer({ siteContent }) {
     const reviewsUrl = google.reviewsUrl || "https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs";
 
     const getEmbedSrc = (raw) => {
-        if (!raw) return "https://maps.google.com/maps?q=Dreamline+Production,+85,+Tilottama+Plaza,+Tower+2,+First+Floor,+Karunamoyee+Ghat+Road,+Kolkata,+West+Bengal+700082&t=&z=16&ie=UTF8&iwloc=&output=embed";
+        // Use a reliable no-API-key embed as the primary default
+        // This avoids PLACES_GET_PLACE: PERMISSION_DENIED errors from the Places API
+        const noApiEmbed = `https://maps.google.com/maps?q=${encodeURIComponent("Dreamline Production, 85 Tilottama Plaza Tower 2 Karunamoyee Ghat Road Kolkata 700082")}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+        if (!raw) return noApiEmbed;
         if (typeof raw === 'string' && raw.includes('<iframe')) {
             const match = raw.match(/src=["']([^"']+)["']/i);
             if (match && match[1]) return match[1];
         }
-        return raw;
+        // If it's a Places API URL (requires API key), fall back to no-key embed
+        if (typeof raw === 'string' && raw.includes('place_id:') && !raw.includes('output=embed')) {
+            return noApiEmbed;
+        }
+        return raw || noApiEmbed;
     };
     const embedSrc = getEmbedSrc(google.embedCode);
     
@@ -152,7 +159,7 @@ export default function Footer({ siteContent }) {
                                     >
                                         <span className="text-yellow-400">★★★★★</span>
                                         <span className="text-[11px] font-black text-white">4.9 on Google</span>
-                                        <span className="text-[10px] text-gray-500 font-bold">(150+ Verified Reviews)</span>
+                                        <span className="text-[10px] text-gray-500 font-bold">(95+ Verified Reviews)</span>
                                         <span className="text-[10px] text-[#c5a059]">↗</span>
                                     </a>
 

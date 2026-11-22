@@ -55,14 +55,14 @@ export default function Preloader() {
             window.addEventListener('load', handleLoad);
         }
 
-        // Fail-safe: never show loader for more than 700ms
+        // Fail-safe: never show loader for more than 400ms (reduced from 700ms)
         const failSafe = setTimeout(() => {
             setProgress(100);
             setTimeout(() => {
                 setIsLoading(false);
                 try { sessionStorage.setItem('dreamline_preloaded', '1'); } catch (e) {}
-            }, 250);
-        }, 700);
+            }, 150);
+        }, 400);
 
         return () => {
             clearInterval(interval);

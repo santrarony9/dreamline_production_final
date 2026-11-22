@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300;
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -64,7 +63,7 @@ export async function generateMetadata({ params, searchParams }) {
 
         if (!post) {
             return {
-                title: 'Blog Post Not Found | Dreamline Production',
+                title: 'Blog Post Not Found',
                 description: 'The requested blog post could not be found.',
                 robots: { index: false, follow: false }
             };
@@ -79,7 +78,7 @@ export async function generateMetadata({ params, searchParams }) {
             const isAuthorized = !!session || sp.preview === 'true';
             if (!isAuthorized) {
                 return {
-                    title: 'Blog Post Not Found | Dreamline Production',
+                    title: 'Blog Post Not Found',
                     robots: { index: false, follow: false }
                 };
             }
@@ -91,9 +90,10 @@ export async function generateMetadata({ params, searchParams }) {
             ? post.content.replace(/<[^>]+>/g, ' ').substring(0, 160).trim() + '...' 
             : `Read our latest story about ${post.title}.`;
 
-        const metaTitle = post.seo?.title || `${post.title} | Dreamline Production`;
+        const rawTitle = post.seo?.title || post.title || 'Blog Post';
+        const metaTitle = rawTitle.replace(/\s*\|\s*Dreamline Production.*$/i, '').trim();
         const metaDesc = post.seo?.description || post.excerpt || plainTextDesc;
-        const ogTitle = post.seo?.ogTitle || metaTitle;
+        const ogTitle = post.seo?.ogTitle || (rawTitle.toLowerCase().includes('dreamline') ? rawTitle : `${rawTitle} | Dreamline Production`);
         const ogDesc = post.seo?.ogDescription || metaDesc;
         const ogImage = post.seo?.ogImage || post.image || `${SITE_URL}/logo-banner.png`;
         const imageAlt = post.seo?.ogImageAlt || post.featuredImageAlt || post.title;

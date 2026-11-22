@@ -1,6 +1,5 @@
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 300;
 import dbConnect from "@/lib/mongodb";
 import Wedding from "@/models/Wedding";
 import WeddingAlbum from "@/models/WeddingAlbum";
@@ -55,7 +54,7 @@ export async function generateMetadata({ params }) {
                 type: "video.movie",
             },
             alternates: {
-                canonical: `https://dreamlineproduction.com/wedding/${wedding.weddingId || wedding.id || id}`,
+                canonical: `https://dreamlineproduction.com/wedding/${wedding.weddingId || wedding.id || id}/`,
             },
             twitter: {
                 card: 'summary_large_image',
@@ -136,7 +135,7 @@ export default async function WeddingDetailPage({ params }) {
     // SEO: Canonical slug redirection if accessed via raw _id
     const canonicalSlug = wedding.weddingId || wedding.id;
     if (canonicalSlug && id !== canonicalSlug && !id.startsWith('album-')) {
-        redirect(`/wedding/${canonicalSlug}`);
+        redirect(`/wedding/${canonicalSlug}/`);
     }
 
     // Collect all photographs, captions, and alt texts
@@ -205,7 +204,7 @@ export default async function WeddingDetailPage({ params }) {
                     "name": "Dreamline Production",
                     "url": "https://dreamlineproduction.com"
                 },
-                "url": `https://dreamlineproduction.com/wedding/${canonicalSlug}`,
+                "url": `https://dreamlineproduction.com/wedding/${canonicalSlug}/`,
                 "dateCreated": wedding.date,
                 "locationCreated": {
                     "@type": "Place",

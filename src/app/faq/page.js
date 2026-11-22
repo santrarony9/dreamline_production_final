@@ -1,3 +1,5 @@
+﻿export const revalidate = 300;
+
 import StructuredData from "@/components/seo/StructuredData";
 import Link from "next/link";
 
@@ -6,12 +8,12 @@ export async function generateMetadata() {
         title: "Frequently Asked Questions",
         description: "Common questions about Dreamline Production's services — corporate films, wedding photography, podcast production, drone video, 3D mapping, 2D animation, line production, and news interviews in Kolkata.",
         alternates: {
-            canonical: 'https://dreamlineproduction.com/faq',
+            canonical: 'https://dreamlineproduction.com/faq/',
         },
         openGraph: {
             title: "Frequently Asked Questions",
             description: "Common questions about Dreamline Production's services — corporate films, wedding photography, podcast production, drone video, 3D mapping, 2D animation, line production, and news interviews in Kolkata.",
-            url: 'https://dreamlineproduction.com/faq',
+            url: 'https://dreamlineproduction.com/faq/',
             siteName: 'Dreamline Production',
             locale: 'en_IN',
             type: 'website',
@@ -145,8 +147,8 @@ export default function FAQPage() {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
-            { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://dreamlineproduction.com/faq" }
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com/" },
+            { "@type": "ListItem", "position": 2, "name": "FAQ", "item": "https://dreamlineproduction.com/faq/" }
         ]
     };
 

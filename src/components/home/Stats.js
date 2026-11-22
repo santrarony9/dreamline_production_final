@@ -2,7 +2,7 @@ export default function Stats({ stats }) {
     const defaultStats = [
         { value: "15+", label: "YEARS OF EXCELLENCE" },
         { value: "500+", label: "WEDDINGS CAPTURED" },
-        { value: "150+", label: "GOOGLE REVIEWS" },
+        { value: "95+", label: "GOOGLE REVIEWS" },
         { value: "24/7", label: "CREATIVE DEDICATION" }
     ];
 

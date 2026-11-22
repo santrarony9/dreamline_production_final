@@ -5,7 +5,7 @@ export const metadata = {
     title: 'Refund Policy',
     description: 'Refund and cancellation policy for Dreamline Production bookings — booking amounts, rescheduling, and quality guarantees.',
     alternates: {
-        canonical: 'https://dreamlineproduction.com/refund-policy',
+        canonical: 'https://dreamlineproduction.com/refund-policy/',
     },
     robots: {
         index: false,
@@ -18,8 +18,8 @@ const schema = {
     "@graph": [
         {
             "@type": "WebPage",
-            "@id": "https://dreamlineproduction.com/refund-policy",
-            "url": "https://dreamlineproduction.com/refund-policy",
+            "@id": "https://dreamlineproduction.com/refund-policy/",
+            "url": "https://dreamlineproduction.com/refund-policy/",
             "name": "Refund Policy | Dreamline Production",
             "isPartOf": { "@id": "https://dreamlineproduction.com/#website" },
             "inLanguage": "en-IN"
@@ -27,8 +27,8 @@ const schema = {
         {
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com" },
-                { "@type": "ListItem", "position": 2, "name": "Refund Policy", "item": "https://dreamlineproduction.com/refund-policy" }
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://dreamlineproduction.com/" },
+                { "@type": "ListItem", "position": 2, "name": "Refund Policy", "item": "https://dreamlineproduction.com/refund-policy/" }
             ]
         }
     ]

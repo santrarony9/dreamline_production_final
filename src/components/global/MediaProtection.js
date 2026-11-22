@@ -31,38 +31,16 @@ export default function MediaProtection() {
             }
         };
 
-        // Prevent common keyboard shortcuts for "Save As", "Inspect Element" on public production pages
-        const handleKeyDown = (e) => {
-            // F12 (DevTools)
-            if (e.keyCode === 123) {
-                e.preventDefault();
-            }
-            // Ctrl+Shift+I / Cmd+Option+I (DevTools)
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode === 73) {
-                e.preventDefault();
-            }
-            // Ctrl+Shift+C / Cmd+Option+C (Inspect Element)
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode === 67) {
-                e.preventDefault();
-            }
-            // Ctrl+S / Cmd+S (Save As)
-            if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
-                e.preventDefault();
-            }
-            // Ctrl+U / Cmd+Option+U (View Source)
-            if ((e.ctrlKey || e.metaKey) && e.keyCode === 85) {
-                e.preventDefault();
-            }
-        };
+        // NOTE: Keyboard shortcut blocking removed — it annoyed power users/developers
+        // and provided zero real protection (JS can be disabled, curl still works).
+        // Right-click on images is still blocked below for a minimal deterrent.
 
         document.addEventListener('contextmenu', handleContextMenu);
         document.addEventListener('dragstart', handleDragStart);
-        document.addEventListener('keydown', handleKeyDown);
 
         return () => {
             document.removeEventListener('contextmenu', handleContextMenu);
             document.removeEventListener('dragstart', handleDragStart);
-            document.removeEventListener('keydown', handleKeyDown);
         };
     }, [pathname]);
 

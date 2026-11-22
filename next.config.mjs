@@ -21,26 +21,6 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'dreamlinepro.s3.ap-south-2.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'dreamlinepro.s3.ap-south-1.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'dreamlinepro.s3.amazonaws.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'image.thum.io',
-      },
-      {
-        protocol: 'https',
         hostname: 'images.unsplash.com',
       },
       {
@@ -81,7 +61,7 @@ const nextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://maps.googleapis.com https://*.doubleclick.net",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: blob: https://backend.dreamlineproduction.com https://dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://res.cloudinary.com https://image.thum.io https://images.unsplash.com https://i.ytimg.com https://img.youtube.com https://*.googleapis.com https://*.googleusercontent.com https://*.doubleclick.net https://*.google.com https://*.google.co.in",
+              "img-src 'self' data: blob: https://www.transparenttextures.com https://backend.dreamlineproduction.com https://dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://res.cloudinary.com https://image.thum.io https://images.unsplash.com https://i.ytimg.com https://img.youtube.com https://*.googleapis.com https://*.googleusercontent.com https://*.doubleclick.net https://*.google.com https://*.google.co.in",
               "font-src 'self' data: https://fonts.gstatic.com",
               "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googleapis.com https://*.doubleclick.net https://*.google.com https://*.google.co.in https://*.youtube.com https://*.googlevideo.com wss:",
               "media-src 'self' data: blob: https://backend.dreamlineproduction.com https://dreamlinepro.s3.ap-south-2.amazonaws.com https://dreamlinepro.s3.ap-south-1.amazonaws.com https://dreamlinepro.s3.amazonaws.com https://*.googlevideo.com https://*.youtube.com",

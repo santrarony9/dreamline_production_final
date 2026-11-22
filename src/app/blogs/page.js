@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+export const revalidate = 120;
 import dbConnect from "@/lib/mongodb";
 import Journal from "@/models/Journal";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import StructuredData from "@/components/seo/StructuredData";
 
 export async function generateMetadata() {
     return {
-        title: "Photography Journal & Stories | Dreamline Production",
+        title: "Photography Journal & Stories",
         description: "Explore photography tips, behind-the-scenes stories, and cinematic insights from Dreamline Production — Kolkata's premier photography and film production studio.",
         alternates: {
             canonical: 'https://dreamlineproduction.com/blogs/',

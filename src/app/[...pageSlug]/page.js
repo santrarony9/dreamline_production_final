@@ -7,7 +7,7 @@ import SectionRenderer from "@/components/page-builder/SectionRenderer";
 import StructuredData from "@/components/seo/StructuredData";
 import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dreamlineproduction.com';
 
