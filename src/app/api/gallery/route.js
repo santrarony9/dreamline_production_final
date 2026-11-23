@@ -1,4 +1,4 @@
-export const dynamic = 'force-dynamic';
+﻿export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 import { NextResponse } from "next/server";
@@ -37,7 +37,7 @@ const INITIAL_GALLERY_SEED = [
         order: 1,
         published: true,
         weddingId: "wedding-1771743825332",
-        projectUrl: "/wedding/wedding-1771743825332"
+        projectUrl: "/wedding/sid-trina-luxury-bengali-wedding/"
     },
     {
         title: "Rajlaxmi & Mohit - Shubho Drishti Ceremony",
@@ -49,7 +49,7 @@ const INITIAL_GALLERY_SEED = [
         order: 2,
         published: true,
         weddingId: "wedding-1778663588915",
-        projectUrl: "/wedding/wedding-1778663588915"
+        projectUrl: "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/"
     },
     {
         title: "Diandra & Surjo - Heritage Mandap Sunset at Howrah",
@@ -61,7 +61,7 @@ const INITIAL_GALLERY_SEED = [
         order: 3,
         published: true,
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         title: "Rajlaxmi & Mohit - Sacred Bengali Sindoor Daan",
@@ -73,7 +73,7 @@ const INITIAL_GALLERY_SEED = [
         order: 4,
         published: true,
         weddingId: "wedding-1778663588915",
-        projectUrl: "/wedding/wedding-1778663588915"
+        projectUrl: "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/"
     },
     {
         title: "Cinematic Pre-Wedding Gimbal Shoot",
@@ -95,7 +95,7 @@ const INITIAL_GALLERY_SEED = [
         order: 6,
         published: true,
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         title: "Diandra & Surjo - Palace Courtyard Mandap Celebration",
@@ -107,7 +107,7 @@ const INITIAL_GALLERY_SEED = [
         order: 7,
         published: true,
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         title: "Diandra & Surjo - Cinematic Wedding Aisle Entry",
@@ -119,7 +119,7 @@ const INITIAL_GALLERY_SEED = [
         order: 8,
         published: true,
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         title: "Diandra & Surjo - Royal Palace Heritage Estate at Twilight",
@@ -131,7 +131,7 @@ const INITIAL_GALLERY_SEED = [
         order: 9,
         published: true,
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         title: "Prinsep Ghat Monument Aerial Sweep",

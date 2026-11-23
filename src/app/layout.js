@@ -231,9 +231,10 @@ export default async function RootLayout({ children }) {
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": 22.498,
-        "longitude": 88.357
+        "latitude": 22.4850486,
+        "longitude": 88.3339622
       },
+      "hasMap": "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9",
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
         "dayOfWeek": [

@@ -10,22 +10,24 @@ import mongoose from "mongoose";
 import WeddingVideoPlayer from "@/components/wedding/WeddingVideoPlayer";
 import WeddingGallery from "@/components/wedding/WeddingGallery";
 import StructuredData from '@/components/seo/StructuredData';
+import { getCanonicalWeddingSlug, getOriginalWeddingId } from "@/lib/wedding-slugs";
 
 export async function generateMetadata({ params }) {
     await dbConnect();
     const { id } = await params;
+    const lookupId = getOriginalWeddingId(id);
 
     try {
         let wedding;
-        if (mongoose.Types.ObjectId.isValid(id)) {
-            wedding = await WeddingAlbum.findById(id).lean();
-            if (!wedding) wedding = await Wedding.findById(id).lean();
+        if (mongoose.Types.ObjectId.isValid(lookupId)) {
+            wedding = await WeddingAlbum.findById(lookupId).lean();
+            if (!wedding) wedding = await Wedding.findById(lookupId).lean();
         }
         if (!wedding) {
-            wedding = await WeddingAlbum.findOne({ $or: [{ albumId: id }, { weddingId: id }] }).lean();
+            wedding = await WeddingAlbum.findOne({ $or: [{ albumId: lookupId }, { weddingId: lookupId }, { albumId: id }, { weddingId: id }] }).lean();
         }
         if (!wedding) {
-            wedding = await Wedding.findOne({ id }).lean();
+            wedding = await Wedding.findOne({ $or: [{ id: lookupId }, { id }] }).lean();
         }
         if (!wedding) {
             try {
@@ -34,7 +36,7 @@ export async function generateMetadata({ params }) {
                 const filePath = path.join(process.cwd(), 'weddings.json');
                 if (fs.existsSync(filePath)) {
                     const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                    wedding = list.find(w => w.id === id || w._id === id || w.albumId === id || w.weddingId === id);
+                    wedding = list.find(w => w.id === lookupId || w._id === lookupId || w.id === id || w.weddingId === lookupId || w.weddingId === id);
                 }
             } catch(e) {}
         }
@@ -43,6 +45,7 @@ export async function generateMetadata({ params }) {
 
         const title = wedding.title || "Wedding Film";
         const cover = wedding.coverImage || wedding.img || (wedding.photos?.[0]?.url) || "";
+        const canonicalSlug = getCanonicalWeddingSlug(wedding.weddingId || wedding.id || id);
 
         return {
             title: `${title} | A Cinematic Wedding Story`,
@@ -54,7 +57,7 @@ export async function generateMetadata({ params }) {
                 type: "video.movie",
             },
             alternates: {
-                canonical: `https://dreamlineproduction.com/wedding/${wedding.weddingId || wedding.id || id}/`,
+                canonical: `https://dreamlineproduction.com/wedding/${canonicalSlug}/`,
             },
             twitter: {
                 card: 'summary_large_image',
@@ -88,22 +91,23 @@ function getEmbedUrl(url) {
 
 export default async function WeddingDetailPage({ params }) {
     const { id } = await params;
+    const lookupId = getOriginalWeddingId(id);
     await dbConnect();
 
     let wedding = null;
     let album = null;
     try {
-        if (mongoose.Types.ObjectId.isValid(id)) {
-            album = await WeddingAlbum.findById(id).lean();
+        if (mongoose.Types.ObjectId.isValid(lookupId)) {
+            album = await WeddingAlbum.findById(lookupId).lean();
             if (!album) {
-                wedding = await Wedding.findById(id).lean();
+                wedding = await Wedding.findById(lookupId).lean();
             }
         }
         if (!album && !wedding) {
-            album = await WeddingAlbum.findOne({ $or: [{ albumId: id }, { weddingId: id }] }).lean();
+            album = await WeddingAlbum.findOne({ $or: [{ albumId: lookupId }, { weddingId: lookupId }, { albumId: id }, { weddingId: id }] }).lean();
         }
         if (!album && !wedding) {
-            wedding = await Wedding.findOne({ id: id }).lean();
+            wedding = await Wedding.findOne({ $or: [{ id: lookupId }, { id }] }).lean();
         }
     } catch (err) {
         // Fallback below
@@ -117,7 +121,7 @@ export default async function WeddingDetailPage({ params }) {
             const filePath = path.join(process.cwd(), 'weddings.json');
             if (fs.existsSync(filePath)) {
                 const list = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-                wedding = list.find(w => w.id === id || w._id === id || w.albumId === id || w.weddingId === id);
+                wedding = list.find(w => w.id === lookupId || w._id === lookupId || w.id === id || w.weddingId === lookupId || w.weddingId === id);
             }
         } catch(e) {}
     }
@@ -132,8 +136,8 @@ export default async function WeddingDetailPage({ params }) {
         };
     }
 
-    // SEO: Canonical slug redirection if accessed via raw _id
-    const canonicalSlug = wedding.weddingId || wedding.id;
+    // SEO: Canonical slug redirection if accessed via raw _id or legacy timestamp
+    const canonicalSlug = getCanonicalWeddingSlug(wedding.weddingId || wedding.id);
     if (canonicalSlug && id !== canonicalSlug && !id.startsWith('album-')) {
         redirect(`/wedding/${canonicalSlug}/`);
     }

@@ -3,6 +3,7 @@ import Wedding from "@/models/Wedding";
 import Journal from "@/models/Journal";
 import ServicePage from "@/models/ServicePage";
 import CustomPage from "@/models/CustomPage";
+import { getCanonicalWeddingSlug } from "@/lib/wedding-slugs";
 
 const LOCATION_SLUGS = [
     "wedding-photographer-salt-lake-kolkata",
@@ -147,7 +148,7 @@ export default async function sitemap() {
         const weddingRoutes = weddings
             .filter(w => w.id)
             .map((w) => ({
-                url: `${baseUrl}/wedding/${w.id}/`,
+                url: `${baseUrl}/wedding/${getCanonicalWeddingSlug(w.id)}/`,
                 lastModified: w.updatedAt || w.date || new Date(),
                 changeFrequency: 'monthly',
                 priority: 0.8,

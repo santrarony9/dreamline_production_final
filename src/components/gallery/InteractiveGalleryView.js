@@ -210,11 +210,11 @@ export default function InteractiveGalleryView({ initialItems = [], counts = {},
                     <AnimatePresence mode="popLayout">
                         {filteredItems.map((item, index) => {
                             const isHorizontal = item.aspectRatio === "horizontal";
-                            const targetProjectUrl = item.projectUrl || (item.weddingId ? `/wedding/${item.weddingId}` : (
+                            const targetProjectUrl = item.projectUrl || (item.weddingId ? `/wedding/${item.weddingId}/` : (
                                 item.category === "weddings" ? (
-                                    item.title?.toLowerCase().includes("sid") ? "/wedding/wedding-1771743825332" :
-                                    item.title?.toLowerCase().includes("diandra") || item.title?.toLowerCase().includes("surjo") ? "/wedding/zamindar-soul" :
-                                    item.title?.toLowerCase().includes("rajlaxmi") || item.title?.toLowerCase().includes("mohit") ? "/wedding/wedding-1778663588915" : ""
+                                    item.title?.toLowerCase().includes("sid") ? "/wedding/sid-trina-luxury-bengali-wedding/" :
+                                    item.title?.toLowerCase().includes("diandra") || item.title?.toLowerCase().includes("surjo") ? "/wedding/zamindar-soul/" :
+                                    item.title?.toLowerCase().includes("rajlaxmi") || item.title?.toLowerCase().includes("mohit") ? "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/" : ""
                                 ) : ""
                             ));
 

@@ -77,11 +77,11 @@ export default function GalleryLightbox({
     const imgCaption = currentItem.caption || "";
     const imgCategory = currentItem.category || "wedding";
     const imgAlt = currentItem.altText || currentItem.alt || imgTitle;
-    const targetProjectUrl = currentItem.projectUrl || (currentItem.weddingId ? `/wedding/${currentItem.weddingId}` : (
+    const targetProjectUrl = currentItem.projectUrl || (currentItem.weddingId ? `/wedding/${currentItem.weddingId}/` : (
         imgCategory === "weddings" || imgCategory === "wedding" ? (
-            imgTitle?.toLowerCase().includes("sid") ? "/wedding/wedding-1771743825332" :
-            imgTitle?.toLowerCase().includes("diandra") || imgTitle?.toLowerCase().includes("surjo") ? "/wedding/zamindar-soul" :
-            imgTitle?.toLowerCase().includes("rajlaxmi") || imgTitle?.toLowerCase().includes("mohit") ? "/wedding/wedding-1778663588915" : ""
+            imgTitle?.toLowerCase().includes("sid") ? "/wedding/sid-trina-luxury-bengali-wedding/" :
+            imgTitle?.toLowerCase().includes("diandra") || imgTitle?.toLowerCase().includes("surjo") ? "/wedding/zamindar-soul/" :
+            imgTitle?.toLowerCase().includes("rajlaxmi") || imgTitle?.toLowerCase().includes("mohit") ? "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/" : ""
         ) : ""
     ));
 

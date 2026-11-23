@@ -186,6 +186,17 @@ export default function Footer({ siteContent }) {
                                             <span>Google Profile</span>
                                             <span className="text-xs">↗</span>
                                         </a>
+
+                                        <a
+                                            href={reviewsUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white/5 border border-white/15 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white/10 hover:border-[#c5a059] hover:text-[#c5a059] transition-all"
+                                            title="Leave a 5-star review for Dreamline Production on Google"
+                                        >
+                                            <span>Write Review</span>
+                                            <span className="text-yellow-400">★</span>
+                                        </a>
                                     </div>
                                 </div>
 

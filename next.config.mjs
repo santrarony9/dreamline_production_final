@@ -269,6 +269,33 @@ const nextConfig = {
         destination: '/blogs/:slug*/',
         permanent: true,
       },
+      // Google Review Fast-Redirects for Clients & WhatsApp campaigns
+      {
+        source: '/review',
+        destination: 'https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs',
+        permanent: false,
+      },
+      {
+        source: '/reviews-google',
+        destination: 'https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs',
+        permanent: false,
+      },
+      {
+        source: '/feedback',
+        destination: 'https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs',
+        permanent: false,
+      },
+      // Semantic Wedding Slugs 301 Permanent Redirects (replacing raw timestamp IDs)
+      {
+        source: '/wedding/wedding-1771743825332',
+        destination: '/wedding/sid-trina-luxury-bengali-wedding/',
+        permanent: true,
+      },
+      {
+        source: '/wedding/wedding-1778663588915',
+        destination: '/wedding/rajlaxmi-mohit-royal-wedding-kolkata/',
+        permanent: true,
+      },
     ];
   },
 };

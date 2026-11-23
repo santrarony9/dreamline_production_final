@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -13,7 +13,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Sacred vows and floral garland exchange from Sid & Trina's luxury wedding film in Kolkata",
         category: "weddings",
         weddingId: "wedding-1771743825332",
-        projectUrl: "/wedding/wedding-1771743825332"
+        projectUrl: "/wedding/sid-trina-luxury-bengali-wedding/"
     },
     {
         src: "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg",
@@ -21,7 +21,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Bride Rajlaxmi holding sacred betel leaves during traditional Shubho Drishti ritual in Kolkata",
         category: "weddings",
         weddingId: "wedding-1778663588915",
-        projectUrl: "/wedding/wedding-1778663588915"
+        projectUrl: "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/"
     },
     {
         src: "/thumbnails/seo_thumb_holud.jpg",
@@ -29,7 +29,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Royal heritage wedding celebration overlooking the iconic Howrah Bridge at golden hour sunset",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         src: "/thumbnails/seo_sindoor_daan.jpg",
@@ -37,7 +37,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Sacred sindoor daan wedding ceremony before the holy Agni fire captured with warm ambient lighting",
         category: "weddings",
         weddingId: "wedding-1778663588915",
-        projectUrl: "/wedding/wedding-1778663588915"
+        projectUrl: "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/"
     },
     {
         src: "/thumbnails/seo_thumb_drishti.jpg",
@@ -45,7 +45,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Intimate black-and-white couple portrait under luxury floral wedding mandap",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         src: "/thumbnails/seo_thumb_1.jpg",
@@ -53,7 +53,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Grand floral garland exchange under heritage palace courtyard mandap with festive illuminations",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         src: "/thumbnails/seo_thumb_2.jpg",
@@ -61,7 +61,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Cinematographer tracking bride and groom aisle entrance with Ronin gimbal stabilizer",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         src: "/thumbnails/seo_thumb_11.jpg",
@@ -69,7 +69,7 @@ const AUTHENTIC_FALLBACK_IMAGES = [
         caption: "Architectural twilight view of illuminated heritage palace courtyard and wedding reflection pool",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     {
         src: "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg",
@@ -121,28 +121,28 @@ const KNOWN_IMAGE_METADATA = {
         caption: "Sacred vows and floral garland exchange from Sid & Trina's luxury wedding film in Kolkata",
         category: "weddings",
         weddingId: "wedding-1771743825332",
-        projectUrl: "/wedding/wedding-1771743825332"
+        projectUrl: "/wedding/sid-trina-luxury-bengali-wedding/"
     },
     "https://img.youtube.com/vi/mM59Ah26olI/maxresdefault.jpg": {
         title: "Rajlaxmi & Mohit - Shubho Drishti Ceremony",
         caption: "Bride Rajlaxmi holding sacred betel leaves during traditional Shubho Drishti ritual in Kolkata",
         category: "weddings",
         weddingId: "wedding-1778663588915",
-        projectUrl: "/wedding/wedding-1778663588915"
+        projectUrl: "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/"
     },
     "/thumbnails/seo_thumb_holud.jpg": {
         title: "Diandra & Surjo - Heritage Mandap Sunset at Howrah",
         caption: "Royal heritage wedding celebration overlooking the iconic Howrah Bridge at golden hour sunset",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     "/thumbnails/seo_sindoor_daan.jpg": {
         title: "Rajlaxmi & Mohit - Sacred Bengali Sindoor Daan",
         caption: "Sacred sindoor daan wedding ceremony before the holy Agni fire",
         category: "weddings",
         weddingId: "wedding-1778663588915",
-        projectUrl: "/wedding/wedding-1778663588915"
+        projectUrl: "/wedding/rajlaxmi-mohit-royal-wedding-kolkata/"
     },
     "https://backend.dreamlineproduction.com/uploads/1790861448333-WhatsApp_Image_2026-.jpeg": {
         title: "Cinematic Pre-Wedding Gimbal Shoot",
@@ -154,28 +154,28 @@ const KNOWN_IMAGE_METADATA = {
         caption: "Intimate black-and-white couple portrait under luxury floral wedding mandap",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     "/thumbnails/seo_thumb_1.jpg": {
         title: "Diandra & Surjo - Palace Courtyard Mandap Celebration",
         caption: "Grand floral garland exchange under heritage palace courtyard mandap with festive illuminations",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     "/thumbnails/seo_thumb_2.jpg": {
         title: "Diandra & Surjo - Cinematic Wedding Aisle Entry",
         caption: "Cinematographer tracking bride and groom aisle entrance with Ronin gimbal stabilizer",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     "/thumbnails/seo_thumb_11.jpg": {
         title: "Diandra & Surjo - Royal Palace Heritage Estate at Twilight",
         caption: "Architectural twilight view of illuminated heritage palace courtyard and wedding reflection pool",
         category: "weddings",
         weddingId: "zamindar-soul",
-        projectUrl: "/wedding/zamindar-soul"
+        projectUrl: "/wedding/zamindar-soul/"
     },
     "/thumbnails/prinsep-ghat.jpg": {
         title: "Prinsep Ghat Monument Aerial",
