@@ -220,6 +220,41 @@
   color: transparent;
 }
 
+/* Studio Address Top Bar Continuous Marquee */
+.address-marquee-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 14px, black calc(100% - 14px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 14px, black calc(100% - 14px), transparent 100%);
+}
+
+@keyframes addressMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.animate-address-marquee {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  animation: addressMarquee 32s linear infinite;
+  will-change: transform;
+}
+
+.address-marquee-container:hover .animate-address-marquee,
+.address-marquee-container:active .animate-address-marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-address-marquee {
+    animation: none;
+    overflow-x: auto;
+  }
+}
+
 
 
 /* Marquee Animation */
@@ -608,9 +643,9 @@ a:focus-visible, button:focus-visible {
 /* Flagship Homepage Hero H1 */
 .home-hero-title {
   font-family: 'Unbounded', sans-serif;
-  font-size: clamp(2.5rem, 6.2vw, 5.25rem); /* 40px to 84px */
-  line-height: 1.05;
-  letter-spacing: -0.035em;
+  font-size: clamp(1.5rem, 3.1vw, 2.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   font-weight: 900;
   text-transform: uppercase;
   color: #ffffff;

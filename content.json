@@ -209,7 +209,7 @@
       "name": "Dreamline Production"
     },
     "contact": {
-      "address": "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata, West Bengal 700082",
+      "address": "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082.",
       "email": "info.dreamlineproduction@gmail.com",
       "phone": "+91 82400 54002"
     },
@@ -241,6 +241,17 @@
       "mapsUrl": "https://www.google.com/maps/place/Dreamline+Production/@22.4850486,88.3313873,17z/data=!4m6!3m5!1s0x3a027090db628e8f:0x3b8514dce7da523b!8m2!3d22.4850486!4d88.3339622!16s%2Fg%2F11hb2thsvp",
       "profileUrl": "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9",
       "reviewsUrl": "https://search.google.com/local/writereview?placeid=ChIJj45i25BwAjoRO1La59wUhTs"
+    },
+    "announcement": {
+      "badge": "STUDIO HQ",
+      "enabled": true,
+      "link": "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9",
+      "text": "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082.",
+      "lines": [
+        "85, Tilottama Plaza, Tower 2, First Floor",
+        "Karunamoyee Ghat Road, Kolkata 700082",
+        "Dreamline Production Studio • Kolkata, West Bengal"
+      ]
     }
   },
   "home": {
@@ -251,8 +262,8 @@
       "cta2Link": "/commercial",
       "cta2Text": "Commercial Works",
       "subtitle": "EST. 2010 • DREAMLINE PRODUCTION",
-      "titleLine1": "Visionary",
-      "titleLine2": "Cinema"
+      "titleLine1": "Photography & Videography",
+      "titleLine2": "Production House in Kolkata"
     },
     "stats": [],
     "marquee": [],

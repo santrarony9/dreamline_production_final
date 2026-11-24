@@ -21,6 +21,13 @@ export default function Hero({ content }) {
     const activeBackground = (!backgroundImage || isCorporateBuilding) ? SAFE_FALLBACK : backgroundImage;
     const activeSubtitle = (subtitle && subtitle !== "Loading Experience") ? subtitle : "EST. 2010 • DREAMLINE PRODUCTION";
 
+    // Cleanly replace old legacy headings if encountered and fallback to specified hero heading
+    const isLegacyLine1 = !titleLine1 || titleLine1 === "CINEMATIC MASTER" || titleLine1 === "Visionary" || titleLine1 === "VISIONARY";
+    const isLegacyLine2 = !titleLine2 || titleLine2 === "Cinema" || titleLine2 === "CINEMA" || titleLine2 === "CINEMA." || titleLine2 === "Cinema.";
+    
+    const activeLine1 = isLegacyLine1 ? "Photography & Videography" : titleLine1;
+    const activeLine2 = isLegacyLine2 ? "Production House in Kolkata" : titleLine2;
+
     // Smooth Parallax for Marquee and Background
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -82,12 +89,16 @@ export default function Hero({ content }) {
                     </p>
                 </div>
 
-                <h1 className="home-hero-title font-heading font-black text-white leading-[1.08] tracking-tighter mb-6 uppercase break-words mx-auto pb-2">
-                    <span className="block reveal-text">
-                        <span className="reveal-inner-anim inline-block">{titleLine1 || "TIMELESS"}</span>
+                <h1 className="home-hero-title font-heading font-black leading-[1.12] sm:leading-[1.1] tracking-tight mb-6 uppercase break-words mx-auto pb-2 max-w-6xl">
+                    <span className="block reveal-text text-white py-0.5">
+                        <span className="reveal-inner-anim inline-block">
+                            {activeLine1}
+                        </span>
                     </span>
-                    <span className="block italic text-outline reveal-text">
-                        <span className="reveal-inner-anim inline-block">{titleLine2 || "STORIES."}</span>
+                    <span className="block reveal-text text-[#c5a059] mt-1 sm:mt-2 py-0.5">
+                        <span className="reveal-inner-anim inline-block">
+                            {activeLine2}
+                        </span>
                     </span>
                 </h1>
 

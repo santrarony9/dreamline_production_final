@@ -45,6 +45,14 @@ const ContentSchema = new mongoose.Schema({
             enabled: { type: Boolean, default: true },
             badge: { type: String, default: "STUDIO HQ" },
             text: { type: String, default: "85, Tilottama Plaza, Tower 2, First Floor, Karunamoyee Ghat Road, Kolkata 700082" },
+            lines: {
+                type: [String],
+                default: [
+                    "85, Tilottama Plaza, Tower 2, First Floor",
+                    "Karunamoyee Ghat Road, Kolkata 700082",
+                    "Dreamline Production Studio • Kolkata, West Bengal"
+                ]
+            },
             link: { type: String, default: "https://maps.app.goo.gl/xRnnVxWCbLFWo8oT9" }
         },
         navigation: {
@@ -84,8 +92,8 @@ const ContentSchema = new mongoose.Schema({
             ogImage: { type: String, default: "" }
         },
         hero: {
-            titleLine1: { type: String, default: "Visionary" },
-            titleLine2: { type: String, default: "Cinema." },
+            titleLine1: { type: String, default: "Photography & Videography" },
+            titleLine2: { type: String, default: "Production House in Kolkata" },
             subtitle: { type: String, default: "EST. 2010 • DREAMLINE PRODUCTION" },
             backgroundImage: { type: String, default: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80" },
             cta1Text: { type: String, default: "Explore Weddings" },
