@@ -60,7 +60,14 @@ export default function AdminLayout({ children }) {
         { label: "Diagnostics", path: "/admin/diagnostics", icon: "🩺" },
     ];
 
-    if (pathname === "/admin/login") return <>{children}</>;
+    // Don't render admin sidebar/layout on login or account setup pages
+    // Handles trailing slashes from trailingSlash: true in next.config.mjs
+    const isAuthRoute = pathname?.startsWith("/admin/login") || pathname?.startsWith("/admin/setup-account");
+    if (isAuthRoute) return <>{children}</>;
+
+    const cleanPath = (pathname && pathname.length > 1 && pathname.endsWith("/")) 
+        ? pathname.slice(0, -1) 
+        : (pathname || "");
 
     return (
         <div className="flex min-h-screen bg-[#050505] text-white overflow-x-hidden">
@@ -126,7 +133,7 @@ export default function AdminLayout({ children }) {
                                         key={item.path}
                                         href={item.path}
                                         className={`flex items-center gap-4 px-4 py-2.5 rounded-xl font-bold uppercase text-[9px] tracking-widest transition-all ${
-                                            (pathname === item.path || (item.path === '/admin/journal' && pathname.startsWith('/admin/blog')))
+                                            (cleanPath === item.path || (item.path === '/admin/journal' && cleanPath.startsWith('/admin/blog')))
                                             ? "bg-[#c5a059] text-black shadow-lg shadow-[#c5a059]/20"
                                             : "text-gray-500 hover:bg-white/5 hover:text-white"
                                             }`}
@@ -149,7 +156,7 @@ export default function AdminLayout({ children }) {
                                 href={item.path}
                                 className={`
                                     flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold transition-all
-                                    ${pathname === item.path 
+                                    ${cleanPath === item.path 
                                         ? "bg-white/10 text-white" 
                                         : "text-gray-400 hover:text-white hover:bg-white/5"}
                                 `}
